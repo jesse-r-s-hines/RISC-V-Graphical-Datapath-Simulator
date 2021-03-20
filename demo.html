@@ -5,9 +5,14 @@
   </head>
   <body>
     <script type="module" src="./dist/demo.js"></script>
+    <script type="module" src="./dist/memory.js"></script>
     <script type="module">
-      import {sum} from "./dist/demo.js";
-      console.log(sum(2, 2))
+      import {Memory} from "./dist/memory.js";
+
+      window.mem = new Memory(2n**32n)
+      window.mem.storeDoubleWord(0n, 100n)
+      window.mem.storeDoubleWord(8n, 101n)
+      window.mem.storeDoubleWord(64n, 10n**10n)
     </script>
   </body>
 </html>
