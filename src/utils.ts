@@ -31,3 +31,36 @@ export class BitArray {
         return num
     }
 }
+
+export class TruthTable {
+    // TODO Error Checking
+    // TODO return/take BitArray?
+    // TODO "compile" the table
+    // private table: [(boolean|null)[], bigint[]][]
+
+    constructor(private table: [string[], string[]][]) {}
+
+    /**
+     * Takes a bit array, and a string of bits with optional "Don't Cares" and checks if input mathes expected.
+     * Example: matchInputs([true, false, false], "1X0") 
+     */
+    private static matchInput(input: bigint, expected: string): boolean {
+        let inputB = BitArray.fromInt(expected.length, input)
+
+        for (let i = 0; i < inputB.length; i++) {
+            if (expected[i] != "X" && Number(expected[i]) != Number(inputB[i])) {
+                return false
+            }
+        }
+        return true
+    }
+
+    match(inputs: bigint[]): bigint[] {
+        for (let [rowInputs, rowOutputs] of this.table) {
+            if (rowInputs.every( (expected, i) => TruthTable.matchInput(inputs[i], expected) )) {
+                return rowOutputs.map(o => BigInt(parseInt(o, 2)))
+            }
+        }
+        throw Error(`No match for inputs [${inputs}] in truth table.`)
+    }
+}
