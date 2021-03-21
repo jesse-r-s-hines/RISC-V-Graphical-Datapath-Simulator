@@ -35,20 +35,26 @@ export class BitArray {
 export class TruthTable {
     // TODO Error Checking
     // TODO return/take BitArray?
-    // TODO "compile" the table
-    // private table: [(boolean|null)[], bigint[]][]
+    private table: [(boolean|null)[][], bigint[]][]
 
-    constructor(private table: [string[], string[]][]) {}
+    constructor(table: [string[], string[]][]) {
+        this.table = []
+        for (let [rowInput, rowOutput] of table) {
+            // Convert to boolean[] with nulls for X
+            let rowInputConv = rowInput.map( x => [...x].map(c => c == "X" ? null : !!+c) )
+            // Convert bigint[]
+            let rowOutputConv = rowOutput.map( x => BigInt("0b"+x) )
+            this.table.push([rowInputConv, rowOutputConv])
+        }
+    }
 
     /**
-     * Takes a bit array, and a string of bits with optional "Don't Cares" and checks if input mathes expected.
-     * Example: matchInputs([true, false, false], "1X0") 
+     * Takes a bit array, and an array of booleans or nulls for don't cares
+     * Example: matchInputs([true, false, false], [true, null, false]) 
      */
-    private static matchInput(input: bigint, expected: string): boolean {
-        let inputB = BitArray.fromInt(expected.length, input)
-
-        for (let i = 0; i < inputB.length; i++) {
-            if (expected[i] != "X" && Number(expected[i]) != Number(inputB[i])) {
+    private static matchInput(input: boolean[], expected: (boolean|null)[]): boolean {
+        for (let i = 0; i < input.length; i++) {
+            if (expected[i] != null && expected[i] != input[i]) {
                 return false
             }
         }
@@ -56,9 +62,11 @@ export class TruthTable {
     }
 
     match(inputs: bigint[]): bigint[] {
+        let inputsB = inputs.map((x, i) => BitArray.fromInt(this.table[0][i].length, x))
+
         for (let [rowInputs, rowOutputs] of this.table) {
-            if (rowInputs.every( (expected, i) => TruthTable.matchInput(inputs[i], expected) )) {
-                return rowOutputs.map(o => BigInt(parseInt(o, 2)))
+            if (rowInputs.every( (expected, i) => TruthTable.matchInput(inputsB[i], expected) )) {
+                return rowOutputs
             }
         }
         throw Error(`No match for inputs [${inputs}] in truth table.`)
