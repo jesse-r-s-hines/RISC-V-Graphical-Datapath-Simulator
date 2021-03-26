@@ -2,10 +2,10 @@ export type Bits = number[]
 export namespace Bits {
     /**
      * Converts a number to an array of bits, returning a Bits containing 0s and 1s.
-     * @param size The number of bits in the array
      * @param num The number to convert into bits. Should be positive.
+     * @param size The number of bits in the array
      */
-    export function fromInt(size: number, num: bigint): Bits {
+    export function fromInt(num: bigint, size: number): Bits {
         // TODO check for invalid num
         // TODO sign extend?
         // if (start < 0n || (start + sizeB) >= this.size) throw Error(`Memory index ${start} out of range for ${size} bytes.`)
@@ -33,10 +33,12 @@ export namespace Bits {
     }
 
     /**
-     * Sign extends a bit array to the given size.
+     * Extends a bit array to the given size.
+     * @param size the size to extend to
+     * @param signed if True, will sign extend
      */
-    export function signExtend(size: number, bits: Bits): Bits {
-        let sign = bits[0]
+    export function extend(bits: Bits, size: number, signed = false): Bits {
+        let sign = signed ? bits[0] : 0
         let extend = Array(size - bits.length).fill(sign)
         return [...extend, ...bits]
     }
@@ -78,7 +80,7 @@ export class TruthTable<T> {
      * Return the proper output for the given inputs to the truth table.
      */
     match(inputs: bigint[]): T {
-        let inputsB = inputs.map((x, i) => Bits.fromInt(this.inputLengths[i], x))
+        let inputsB = inputs.map((x, i) => Bits.fromInt(x, this.inputLengths[i]))
 
         for (let [rowInputs, rowOutputs] of this.table) {
             if (rowInputs.every( (expected, i) => TruthTable.matchInput(inputsB[i], expected) )) {

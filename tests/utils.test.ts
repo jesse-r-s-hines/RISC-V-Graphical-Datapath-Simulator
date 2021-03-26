@@ -3,45 +3,59 @@ import { Bits, TruthTable } from '../src/utils';
 
 describe("Bit Array", () => {
     it('Create', () => {
-        let ba = Bits.fromInt(5, 0n)
+        let ba = Bits.fromInt(0n, 5)
         expect(ba).to.have.ordered.members([0, 0, 0, 0, 0])
 
-        ba = Bits.fromInt(5, 1n)
+        ba = Bits.fromInt(1n, 5)
         expect(ba).to.have.ordered.members([0, 0, 0, 0, 1])
 
-        ba = Bits.fromInt(3, 6n)
+        ba = Bits.fromInt(6n, 3)
         expect(ba).to.have.ordered.members([1, 1, 0])
 
-        ba = Bits.fromInt(3, 7n)
+        ba = Bits.fromInt(7n, 3)
         expect(ba).to.have.ordered.members([1, 1, 1])
     });
 
     it('To Int', () => {
-        let ba = Bits.fromInt(5, 0n)
+        let ba = Bits.fromInt(0n, 5)
         expect(Bits.toInt(ba)).to.equal(0n)
 
-        ba = Bits.fromInt(5, 1n)
+        ba = Bits.fromInt(1n, 5)
         expect(Bits.toInt(ba)).to.equal(1n)
 
-        ba = Bits.fromInt(3, 6n)
+        ba = Bits.fromInt(6n, 3)
         expect(Bits.toInt(ba)).to.equal(6n)
 
-        ba = Bits.fromInt(3, 7n)
+        ba = Bits.fromInt(7n, 3)
         expect(Bits.toInt(ba)).to.equal(7n)
     });
 
-    it("Sign Extend", () => {
-        let ba = Bits.fromInt(3, 0n)
-        expect(Bits.signExtend(5, ba)).to.have.ordered.members([0, 0, 0, 0, 0])
+    it("Extend", () => {
+        let ba = Bits.fromInt(0n, 3)
+        expect(Bits.extend(ba, 5)).to.have.ordered.members([0, 0, 0, 0, 0])
 
         ba = [0, 1, 0, 1]
-        expect(Bits.signExtend(6, ba)).to.have.ordered.members([0, 0, 0, 1, 0, 1])
+        expect(Bits.extend(ba, 6, false)).to.have.ordered.members([0, 0, 0, 1, 0, 1])
 
         ba = [1, 0, 1]  // -3
-        expect(Bits.signExtend(5, ba)).to.have.ordered.members([1, 1, 1, 0, 1])
+        expect(Bits.extend(ba, 5)).to.have.ordered.members([0, 0, 1, 0, 1])
 
         ba = [1, 0, 1]  // -3
-        expect(Bits.signExtend(3, ba)).to.have.ordered.members([1, 0, 1])
+        expect(Bits.extend(ba, 3)).to.have.ordered.members([1, 0, 1])
+    })
+
+    it("Sign Extend", () => {
+        let ba = Bits.fromInt(0n, 3)
+        expect(Bits.extend(ba, 5, true)).to.have.ordered.members([0, 0, 0, 0, 0])
+
+        ba = [0, 1, 0, 1]
+        expect(Bits.extend(ba, 6, true)).to.have.ordered.members([0, 0, 0, 1, 0, 1])
+
+        ba = [1, 0, 1]  // -3
+        expect(Bits.extend(ba, 5, true)).to.have.ordered.members([1, 1, 1, 0, 1])
+
+        ba = [1, 0, 1]  // -3
+        expect(Bits.extend(ba, 3, true)).to.have.ordered.members([1, 0, 1])
     })
 })
 
