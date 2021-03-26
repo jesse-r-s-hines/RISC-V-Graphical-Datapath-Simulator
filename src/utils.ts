@@ -32,19 +32,21 @@ export class BitArray {
     }
 }
 
-export class TruthTable {
+export class TruthTable<T> {
     // TODO Error Checking
     // TODO return/take BitArray?
-    private table: [(boolean|null)[][], bigint[]][]
+    private table: [(boolean|null)[][], T][]
+    private inputLengths: number[]
 
-    constructor(table: [string[], string[]][]) {
+    constructor(table: [string[], T][]) {
         this.table = []
+        this.inputLengths = table[0][0].map(s => s.length)
+
         for (let [rowInput, rowOutput] of table) {
             // Convert to boolean[] with nulls for X
             let rowInputConv = rowInput.map( x => [...x].map(c => c == "X" ? null : !!+c) )
             // Convert bigint[]
-            let rowOutputConv = rowOutput.map( x => BigInt("0b"+x) )
-            this.table.push([rowInputConv, rowOutputConv])
+            this.table.push([rowInputConv, rowOutput])
         }
     }
 
@@ -61,8 +63,11 @@ export class TruthTable {
         return true
     }
 
-    match(inputs: bigint[]): bigint[] {
-        let inputsB = inputs.map((x, i) => BitArray.fromInt(this.table[0][i].length, x))
+    /**
+     * Return the proper output for the given inputs to the truth table.
+     */
+    match(inputs: bigint[]): T {
+        let inputsB = inputs.map((x, i) => BitArray.fromInt(this.inputLengths[i], x))
 
         for (let [rowInputs, rowOutputs] of this.table) {
             if (rowInputs.every( (expected, i) => TruthTable.matchInput(inputsB[i], expected) )) {

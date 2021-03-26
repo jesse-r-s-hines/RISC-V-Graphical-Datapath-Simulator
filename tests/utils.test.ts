@@ -34,21 +34,21 @@ describe("Bit Array", () => {
 describe("Truth Table", () => {
     it('Basic', () => {
         let table = new TruthTable([
-            [["0X", "0"], ["00"]],
-            [["00", "1"], ["01"]],
-            [["01", "1"], ["10"]],
-            [["10", "X"], ["11"]],
+            [["0X", "0"], 0b00n],
+            [["00", "1"], 0b01n],
+            [["01", "1"], 0b10n],
+            [["10", "X"], 0b11n],
         ])
 
-        expect(table.match([0b00n, 0b0n])[0]).to.equal(0b00n)
-        expect(table.match([0b01n, 0b0n])[0]).to.equal(0b00n)
+        expect(table.match([0b00n, 0b0n])).to.equal(0b00n)
+        expect(table.match([0b01n, 0b0n])).to.equal(0b00n)
 
-        expect(table.match([0b00n, 0b1n])[0]).to.equal(0b01n)
+        expect(table.match([0b00n, 0b1n])).to.equal(0b01n)
 
-        expect(table.match([0b01n, 0b1n])[0]).to.equal(0b10n)
+        expect(table.match([0b01n, 0b1n])).to.equal(0b10n)
 
-        expect(table.match([0b10n, 0b0n])[0]).to.equal(0b11n)
-        expect(table.match([0b10n, 0b1n])[0]).to.equal(0b11n)
+        expect(table.match([0b10n, 0b0n])).to.equal(0b11n)
+        expect(table.match([0b10n, 0b1n])).to.equal(0b11n)
 
         expect(() => table.match([0b11n, 0b0n])).to.throw("No match for inputs")
         expect(() => table.match([0b11n, 0b1n])).to.throw("No match for inputs")
