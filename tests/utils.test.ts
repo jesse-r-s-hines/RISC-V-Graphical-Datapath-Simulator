@@ -1,47 +1,47 @@
 import { expect } from 'chai';
-import { BitArray, TruthTable } from '../src/utils';
+import { Bits, TruthTable } from '../src/utils';
 
 describe("Bit Array", () => {
     it('Create', () => {
-        let ba = BitArray.fromInt(5)
+        let ba = Bits.fromInt(5, 0n)
         expect(ba).to.have.ordered.members([0, 0, 0, 0, 0])
 
-        ba = BitArray.fromInt(5, 1n)
+        ba = Bits.fromInt(5, 1n)
         expect(ba).to.have.ordered.members([0, 0, 0, 0, 1])
 
-        ba = BitArray.fromInt(3, 6n)
+        ba = Bits.fromInt(3, 6n)
         expect(ba).to.have.ordered.members([1, 1, 0])
 
-        ba = BitArray.fromInt(3, 7n)
+        ba = Bits.fromInt(3, 7n)
         expect(ba).to.have.ordered.members([1, 1, 1])
     });
 
     it('To Int', () => {
-        let ba = BitArray.fromInt(5, 0n)
-        expect(BitArray.toInt(ba)).to.equal(0n)
+        let ba = Bits.fromInt(5, 0n)
+        expect(Bits.toInt(ba)).to.equal(0n)
 
-        ba = BitArray.fromInt(5, 1n)
-        expect(BitArray.toInt(ba)).to.equal(1n)
+        ba = Bits.fromInt(5, 1n)
+        expect(Bits.toInt(ba)).to.equal(1n)
 
-        ba = BitArray.fromInt(3, 6n)
-        expect(BitArray.toInt(ba)).to.equal(6n)
+        ba = Bits.fromInt(3, 6n)
+        expect(Bits.toInt(ba)).to.equal(6n)
 
-        ba = BitArray.fromInt(3, 7n)
-        expect(BitArray.toInt(ba)).to.equal(7n)
+        ba = Bits.fromInt(3, 7n)
+        expect(Bits.toInt(ba)).to.equal(7n)
     });
 
     it("Sign Extend", () => {
-        let ba = BitArray.fromInt(3, 0n)
-        expect(BitArray.signExtend(5, ba)).to.have.ordered.members([0, 0, 0, 0, 0])
+        let ba = Bits.fromInt(3, 0n)
+        expect(Bits.signExtend(5, ba)).to.have.ordered.members([0, 0, 0, 0, 0])
 
         ba = [0, 1, 0, 1]
-        expect(BitArray.signExtend(6, ba)).to.have.ordered.members([0, 0, 0, 1, 0, 1])
+        expect(Bits.signExtend(6, ba)).to.have.ordered.members([0, 0, 0, 1, 0, 1])
 
         ba = [1, 0, 1]  // -3
-        expect(BitArray.signExtend(5, ba)).to.have.ordered.members([1, 1, 1, 0, 1])
+        expect(Bits.signExtend(5, ba)).to.have.ordered.members([1, 1, 1, 0, 1])
 
         ba = [1, 0, 1]  // -3
-        expect(BitArray.signExtend(3, ba)).to.have.ordered.members([1, 0, 1])
+        expect(Bits.signExtend(3, ba)).to.have.ordered.members([1, 0, 1])
     })
 })
 
