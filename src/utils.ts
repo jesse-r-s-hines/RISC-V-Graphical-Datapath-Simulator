@@ -1,4 +1,7 @@
 export class BitArray {
+    // TODO change to number instead of boolean[]?
+    // TODO add type alias?
+
     /**
      * Converts a number to an array of bits, returning a boolean[].
      * @param size The number of bits in the array
@@ -29,6 +32,15 @@ export class BitArray {
             if (bit) num = num | 0x1n
         }
         return num
+    }
+
+    /**
+     * Sign extends a bit array to the given size.
+     */
+    static signExtend(size: number, bits: boolean[]): boolean[] {
+        let sign = bits[0]
+        let extend = Array(size - bits.length).fill(sign)
+        return [...extend, ...bits]
     }
 }
 

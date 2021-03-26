@@ -29,6 +29,20 @@ describe("Bit Array", () => {
         ba = BitArray.fromInt(3, 7n)
         expect(BitArray.toInt(ba)).to.equal(7n)
     });
+
+    it("Sign Extend", () => {
+        let ba = BitArray.fromInt(3, 0n)
+        expect(BitArray.signExtend(5, ba)).to.have.ordered.members([false, false, false, false, false])
+
+        ba = [false, true, false, true]
+        expect(BitArray.signExtend(6, ba)).to.have.ordered.members([false, false, false, true, false, true])
+
+        ba = [true, false, true]  // -3
+        expect(BitArray.signExtend(5, ba)).to.have.ordered.members([true, true, true, false, true])
+
+        ba = [true, false, true]  // -3
+        expect(BitArray.signExtend(3, ba)).to.have.ordered.members([true, false, true])
+    })
 })
 
 describe("Truth Table", () => {
