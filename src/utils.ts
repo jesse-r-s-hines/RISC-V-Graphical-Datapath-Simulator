@@ -1,21 +1,20 @@
 export class BitArray {
-    // TODO change to number instead of boolean[]?
     // TODO add type alias?
 
     /**
-     * Converts a number to an array of bits, returning a boolean[].
+     * Converts a number to an array of bits, returning a number[] containing 0s and 1s.
      * @param size The number of bits in the array
      * @param num The number to convert into bits. Should be positive.
      */
-    static fromInt(size: number, num: bigint = 0n): boolean[] {
+    static fromInt(size: number, num: bigint = 0n): number[] {
         // TODO check for invalid num
         // TODO sign extend?
         // if (start < 0n || (start + sizeB) >= this.size) throw Error(`Memory index ${start} out of range for ${size} bytes.`)
         // if (val < 0n || val >= 2n ** (8n * sizeB))
         //     throw Error(`${val} is invalid. Expected a positive integer that fits in ${size} bytes.`)
-        let arr = Array(size)
+        let arr: number[] = Array(size)
         for (let i = size - 1; i >= 0; i--) {
-            arr[i] = Boolean(num & 0x1n)
+            arr[i] = Number(num & 0x1n)
             num = num >> 1n
         }
         return arr
@@ -24,7 +23,7 @@ export class BitArray {
     /**
      * Converts a boolean[] to a bigint
      */
-    static toInt(bits: boolean[]): bigint {
+    static toInt(bits: number[]): bigint {
         // TODO signed?
         let num = 0n
         for (let bit of bits) {
@@ -37,7 +36,7 @@ export class BitArray {
     /**
      * Sign extends a bit array to the given size.
      */
-    static signExtend(size: number, bits: boolean[]): boolean[] {
+    static signExtend(size: number, bits: number[]): number[] {
         let sign = bits[0]
         let extend = Array(size - bits.length).fill(sign)
         return [...extend, ...bits]
@@ -47,7 +46,7 @@ export class BitArray {
 export class TruthTable<T> {
     // TODO Error Checking
     // TODO return/take BitArray?
-    private table: [(boolean|null)[][], T][]
+    private table: [(number|null)[][], T][]
     private inputLengths: number[]
 
     constructor(table: [string[], T][]) {
@@ -56,17 +55,17 @@ export class TruthTable<T> {
 
         for (let [rowInput, rowOutput] of table) {
             // Convert to boolean[] with nulls for X
-            let rowInputConv = rowInput.map( x => [...x].map(c => c == "X" ? null : !!+c) )
+            let rowInputConv = rowInput.map( x => [...x].map(c => c == "X" ? null : Number(c)) )
             // Convert bigint[]
             this.table.push([rowInputConv, rowOutput])
         }
     }
 
     /**
-     * Takes a bit array, and an array of booleans or nulls for don't cares
+     * Takes a bit array, and an array of bits or nulls for don't cares
      * Example: matchInputs([true, false, false], [true, null, false]) 
      */
-    private static matchInput(input: boolean[], expected: (boolean|null)[]): boolean {
+    private static matchInput(input: number[], expected: (number|null)[]): boolean {
         for (let i = 0; i < input.length; i++) {
             if (expected[i] != null && expected[i] != input[i]) {
                 return false

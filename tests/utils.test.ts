@@ -4,16 +4,16 @@ import { BitArray, TruthTable } from '../src/utils';
 describe("Bit Array", () => {
     it('Create', () => {
         let ba = BitArray.fromInt(5)
-        expect(ba).to.have.ordered.members([false, false, false, false, false])
+        expect(ba).to.have.ordered.members([0, 0, 0, 0, 0])
 
         ba = BitArray.fromInt(5, 1n)
-        expect(ba).to.have.ordered.members([false, false, false, false, true])
+        expect(ba).to.have.ordered.members([0, 0, 0, 0, 1])
 
         ba = BitArray.fromInt(3, 6n)
-        expect(ba).to.have.ordered.members([true, true, false])
+        expect(ba).to.have.ordered.members([1, 1, 0])
 
         ba = BitArray.fromInt(3, 7n)
-        expect(ba).to.have.ordered.members([true, true, true])
+        expect(ba).to.have.ordered.members([1, 1, 1])
     });
 
     it('To Int', () => {
@@ -32,16 +32,16 @@ describe("Bit Array", () => {
 
     it("Sign Extend", () => {
         let ba = BitArray.fromInt(3, 0n)
-        expect(BitArray.signExtend(5, ba)).to.have.ordered.members([false, false, false, false, false])
+        expect(BitArray.signExtend(5, ba)).to.have.ordered.members([0, 0, 0, 0, 0])
 
-        ba = [false, true, false, true]
-        expect(BitArray.signExtend(6, ba)).to.have.ordered.members([false, false, false, true, false, true])
+        ba = [0, 1, 0, 1]
+        expect(BitArray.signExtend(6, ba)).to.have.ordered.members([0, 0, 0, 1, 0, 1])
 
-        ba = [true, false, true]  // -3
-        expect(BitArray.signExtend(5, ba)).to.have.ordered.members([true, true, true, false, true])
+        ba = [1, 0, 1]  // -3
+        expect(BitArray.signExtend(5, ba)).to.have.ordered.members([1, 1, 1, 0, 1])
 
-        ba = [true, false, true]  // -3
-        expect(BitArray.signExtend(3, ba)).to.have.ordered.members([true, false, true])
+        ba = [1, 0, 1]  // -3
+        expect(BitArray.signExtend(3, ba)).to.have.ordered.members([1, 0, 1])
     })
 })
 
