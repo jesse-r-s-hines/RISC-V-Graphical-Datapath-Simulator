@@ -1,61 +1,93 @@
 import { expect } from 'chai';
 import { Bits, TruthTable } from '../src/utils';
 
-describe("Bit Array", () => {
-    it('Create', () => {
-        let ba = Bits.fromInt(0n, 5)
-        expect(ba).to.have.ordered.members([0, 0, 0, 0, 0])
+describe("Bits", () => {
+    it('From array', () => {
+        let ba = Bits.from([1, 0, 1, 0])
+        // stored backwards
+        expect(ba).to.eql([0, 1, 0, 1])
 
-        ba = Bits.fromInt(1n, 5)
-        expect(ba).to.have.ordered.members([0, 0, 0, 0, 1])
+        ba = Bits.from([1, 0, 0, 0])
+        // stored backwards
+        expect(ba).to.eql([0, 0, 0, 1])
 
-        ba = Bits.fromInt(6n, 3)
-        expect(ba).to.have.ordered.members([1, 1, 0])
+        ba = Bits.from([0])
+        expect(ba).to.eql([0])
 
-        ba = Bits.fromInt(7n, 3)
-        expect(ba).to.have.ordered.members([1, 1, 1])
+        ba = Bits.from([])
+        expect(ba).to.eql([])
+    });
+
+    it('From Int', () => {
+        let ba = Bits.from(0n, 5)
+        expect(ba).to.eql(Bits.from([0, 0, 0, 0, 0]))
+
+        ba = Bits.from(1n, 5)
+        expect(ba).to.eql(Bits.from([0, 0, 0, 0, 1]))
+
+        ba = Bits.from(6n, 3)
+        expect(ba).to.eql(Bits.from([1, 1, 0]))
+
+        ba = Bits.from(7n, 3)
+        expect(ba).to.eql(Bits.from([1, 1, 1]))
+    });
+
+    it('From Int No Size', () => {
+        let ba = Bits.from(0n)
+        expect(ba).to.eql(Bits.from([0]))
+
+        ba = Bits.from(1n)
+        expect(ba).to.eql(Bits.from([1]))
+
+        ba = Bits.from(6n)
+        expect(ba).to.eql(Bits.from([1, 1, 0]))
+    });
+
+    it('msb0', () => {
+        let ba = Bits.from(10n)
+        expect(Bits.msb0(ba)).to.eql([1, 0, 1, 0])
     });
 
     it('To Int', () => {
-        let ba = Bits.fromInt(0n, 5)
+        let ba = Bits.from(0n, 5)
         expect(Bits.toInt(ba)).to.equal(0n)
 
-        ba = Bits.fromInt(1n, 5)
+        ba = Bits.from(1n, 5)
         expect(Bits.toInt(ba)).to.equal(1n)
 
-        ba = Bits.fromInt(6n, 3)
+        ba = Bits.from(6n, 3)
         expect(Bits.toInt(ba)).to.equal(6n)
 
-        ba = Bits.fromInt(7n, 3)
+        ba = Bits.from(7n, 3)
         expect(Bits.toInt(ba)).to.equal(7n)
     });
 
-    it("Extend", () => {
-        let ba = Bits.fromInt(0n, 3)
-        expect(Bits.extend(ba, 5)).to.have.ordered.members([0, 0, 0, 0, 0])
+    it("Extended", () => {
+        let ba = Bits.from(0n, 3)
+        expect(Bits.extended(ba, 5)).to.eql(Bits.from([0, 0, 0, 0, 0]))
 
-        ba = [0, 1, 0, 1]
-        expect(Bits.extend(ba, 6, false)).to.have.ordered.members([0, 0, 0, 1, 0, 1])
+        ba = Bits.from([0, 1, 0, 1])
+        expect(Bits.extended(ba, 6, false)).to.eql(Bits.from([0, 0, 0, 1, 0, 1]))
 
-        ba = [1, 0, 1]  // -3
-        expect(Bits.extend(ba, 5)).to.have.ordered.members([0, 0, 1, 0, 1])
+        ba = Bits.from([1, 0, 1])
+        expect(Bits.extended(ba, 5)).to.eql(Bits.from([0, 0, 1, 0, 1]))
 
-        ba = [1, 0, 1]  // -3
-        expect(Bits.extend(ba, 3)).to.have.ordered.members([1, 0, 1])
+        ba = Bits.from([1, 0, 1])
+        expect(Bits.extended(ba, 3)).to.eql(Bits.from([1, 0, 1]))
     })
 
     it("Sign Extend", () => {
-        let ba = Bits.fromInt(0n, 3)
-        expect(Bits.extend(ba, 5, true)).to.have.ordered.members([0, 0, 0, 0, 0])
+        let ba = Bits.from(0n, 3)
+        expect(Bits.extended(ba, 5, true)).to.eql(Bits.from([0, 0, 0, 0, 0]))
 
-        ba = [0, 1, 0, 1]
-        expect(Bits.extend(ba, 6, true)).to.have.ordered.members([0, 0, 0, 1, 0, 1])
+        ba = Bits.from([0, 1, 0, 1])
+        expect(Bits.extended(ba, 6, true)).to.eql(Bits.from([0, 0, 0, 1, 0, 1]))
 
-        ba = [1, 0, 1]  // -3
-        expect(Bits.extend(ba, 5, true)).to.have.ordered.members([1, 1, 1, 0, 1])
+        ba = Bits.from([1, 0, 1])
+        expect(Bits.extended(ba, 5, true)).to.eql(Bits.from([1, 1, 1, 0, 1]))
 
-        ba = [1, 0, 1]  // -3
-        expect(Bits.extend(ba, 3, true)).to.have.ordered.members([1, 0, 1])
+        ba = Bits.from([1, 0, 1])
+        expect(Bits.extended(ba, 3, true)).to.eql(Bits.from([1, 0, 1]))
     })
 })
 
