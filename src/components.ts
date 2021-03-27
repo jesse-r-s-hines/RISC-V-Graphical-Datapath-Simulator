@@ -3,11 +3,11 @@ import {Bit, Bits, TruthTable} from "./utils"
 
 export class PC {
     // inputs
-    public in: Bits = [] // 64 bits
+    public in: Bits = [] // 32 bits
     // output
-    public out: Bits = []; // 64 bits
+    public out: Bits = []; // 32 bits
     // state
-    public data: bigint; // 64 bits
+    public data: bigint; // 32 bits
 
     constructor() {
         // this.data = 0x0000_0000_0040_0000n
@@ -16,7 +16,7 @@ export class PC {
 
     tick() {
         this.data = Bits.toInt(this.in) // edge-triggered write
-        this.out = Bits(this.data, 64)
+        this.out = Bits(this.data, 32)
     }
 }
 
@@ -74,12 +74,12 @@ export class ALUControl {
 
 export class ALU {
     // input
-    public in1: Bits = [] // 64 bits
-    public in2: Bits = [] // 64 bits
+    public in1: Bits = [] // 32 bits
+    public in2: Bits = [] // 32 bits
     public aluControl: Bits = [] // 4 bits
     
     // output
-    public result: Bits = [] // 64 bits
+    public result: Bits = [] // 32 bits
     public zero: Bit = 0
 
     private static table = new TruthTable<(a: bigint, b: bigint) => bigint>([
@@ -93,7 +93,7 @@ export class ALU {
         let op = ALU.table.match([this.aluControl])
         let resultInt = op(Bits.toInt(this.in1, true), Bits.toInt(this.in2, true))
 
-        this.result = Bits(resultInt, 64, true)
+        this.result = Bits(resultInt, 32, true)
         this.zero = (resultInt == 0n)
     }
 }
@@ -103,7 +103,7 @@ export class ImmGen {
     public instruction: Bits = [] // 32 bits
 
     // outputs
-    public immediate: Bits = []// 64 bits
+    public immediate: Bits = []// 32 bits
 
     tick() {
         let instr = this.instruction
@@ -124,7 +124,7 @@ export class ImmGen {
             imm = instr.slice(20, 32)
         }
 
-        this.immediate = Bits.extended(imm, 64, true)
+        this.immediate = Bits.extended(imm, 32, true)
     }
 }
 
@@ -134,11 +134,11 @@ export class RegisterFile {
     public readReg2: Bits = [] // 5 bits
     public regWrite: Bit = 0
     public writeReg: Bits = [] // 5 bits
-    public writeData: Bits = [] // 64 bits
+    public writeData: Bits = [] // 32 bits
 
     // outputs
-    public readData1: Bits = [] // 64 bits
-    public readData2: Bits = [] // 64 bits
+    public readData1: Bits = [] // 32 bits
+    public readData2: Bits = [] // 32 bits
 
     // state
     public registers: bigint[];
@@ -153,14 +153,14 @@ export class RegisterFile {
             this.registers[Bits.toNumber(this.writeReg)] = Bits.toInt(this.writeData, true)
         }
 
-        this.readData1 = Bits(this.registers[Bits.toNumber(this.readReg1)], 64, true)
-        this.readData2 = Bits(this.registers[Bits.toNumber(this.readReg2)], 64, true)
+        this.readData1 = Bits(this.registers[Bits.toNumber(this.readReg1)], 32, true)
+        this.readData2 = Bits(this.registers[Bits.toNumber(this.readReg2)], 32, true)
     }
 }
 
 export class InstructionMemory {
     // inputs
-    public address: Bits = [] // 64 bits
+    public address: Bits = [] // 32 bits
 
     // outputs
     public instruction: Bits = [] // 32 bits
@@ -169,7 +169,7 @@ export class InstructionMemory {
     public data: Memory;
 
     constructor() {
-        this.data = new Memory(2n**64n)
+        this.data = new Memory(2n**32n)
     }
 
     tick() {
@@ -181,27 +181,27 @@ export class DataMemory {
     // inputs
     public memRead: Bit = 0
     public memWrite: Bit = 0
-    public address: Bits = [] // 64 bits
-    public writeData: Bits = [] // 64 bits
+    public address: Bits = [] // 32 bits
+    public writeData: Bits = [] // 32 bits
 
     // outputs
-    public readData: Bits = [] // 64 bits
+    public readData: Bits = [] // 32 bits
 
     // state
     public data: Memory;
 
     constructor() {
-        this.data = new Memory(2n**64n)
+        this.data = new Memory(2n**32n)
     }
 
     tick() {
         if (this.memRead && this.memWrite) throw Error("Only memRead or memWrite allowed")
 
         if (this.memRead) {
-            this.readData = Bits(this.data.loadDoubleWord(Bits.toInt(this.address)), 64, true)
+            this.readData = Bits(this.data.loadWord(Bits.toInt(this.address)), 32, true)
         } else if (this.memWrite) {
-            this.data.storeDoubleWord(Bits.toInt(this.address), Bits.toInt(this.writeData, true))
-            this.readData = Bits(0n, 64) // Not required but will make visualization clearer
+            this.data.storeWord(Bits.toInt(this.address), Bits.toInt(this.writeData, true))
+            this.readData = Bits(0n, 32) // Not required but will make visualization clearer
         }
     }
 }
@@ -219,7 +219,7 @@ export class AndGate {
     }
 }
 
-/** Select between 2 64 bit inputs, in1 on 0, in2 on 1. */
+/** Select between 2 32 bit inputs, in1 on 0, in2 on 1. */
 export class Mux2to1 {
     // inputs
     public in0: Bits = []
