@@ -4,8 +4,6 @@
     <title>TypeScript Demo</title>
   </head>
   <body>
-    <script type="module" src="./dist/demo.js"></script>
-    <script type="module" src="./dist/memory.js"></script>
     <script type="module">
       import {Memory} from "./dist/memory.js";
 
@@ -13,6 +11,7 @@
       window.mem.storeDoubleWord(0n, 100n)
       window.mem.storeDoubleWord(8n, 101n)
       window.mem.storeDoubleWord(64n, 10n**10n)
+      console.log(window.mem.toString())
     </script>
   </body>
 </html>
