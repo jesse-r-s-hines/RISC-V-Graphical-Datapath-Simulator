@@ -6,49 +6,67 @@
 export type Bits = number[]
 
 export namespace Bits {
+
+    function fromArray(arr: number[]): Bits {
+        return arr.reverse()
+    }
+
+    function fromInt(num: bigint, length: number, signed: boolean = false): Bits {
+        let [lb, ub] = signed ? [-(2**(length - 1)), 2**(length - 1) - 1] : [0, 2**(length) - 1]
+        if (num < lb || num > ub) throw Error(`${num} out of range for ${signed?"":"un"}signed ${length} bits.`)
+
+        let bits = Array(length)
+        for (let i = 0; i < length; i++) {
+            bits[i] = Number(num & 0x1n) // Least Significant Bit 0
+            num = num >> 1n
+        }
+        return bits
+    }
+
     /**
      * Make Bits from an array of 0 and 1s.
      * The array should be given in MSB 0 order, i.e. most significant bit first.
      * Eg. `Bits([1, 0, 1, 0])` represents 10
+     * @param arr The array to convert
      */
     export function from(arr: number[]): Bits
 
     /**
      * Converts a number to an array of bits
      * @param num The number to convert into bits. Should be positive.
-     * @param length The number of bits in the array. If omitted it will use the smallest size that fits the number.
+     * @param length The number of bits in the array.
+     * @param signed Whether the bits should be signed or not. Defaults to false.
      */
-    export function from(num: bigint, length?: number): Bits
-     
-    export function from(src: bigint|number[], length?: number): Bits {
-        // TODO check for invalid src
-        // TODO sign extend?
-        // if (start < 0n || (start + sizeB) >= this.size) throw Error(`Memory index ${start} out of range for ${size} bytes.`)
-        // if (val < 0n || val >= 2n ** (8n * sizeB))
-        //     throw Error(`${val} is invalid. Expected a positive integer that fits in ${size} bytes.`)
-        if (typeof src == "object") { // array
-            return src.reverse()
-        } else { // bigint
-            let bits = []
-            if (length == undefined) length = 1 // It will go to the longer of src or length.
-            while (bits.length < length || src != 0n) {
-                bits.push(Number(src & 0x1n)) // Least Significant Bit 0
-                src = src >> 1n
-            }
-            return bits
+    export function from(num: bigint, length: number, signed?: boolean): Bits
+
+    export function from(src: bigint|number[], length?: number, signed?: boolean): Bits {
+        if (typeof src == "object") {
+            if (length != undefined || signed != undefined) throw Error("Invalid arguments to Bits.from")
+            return fromArray(src)
+        } else {
+            if (length == undefined) throw Error("Invalid arguments to Bits.from")
+            return fromInt(src, length, signed)
         }
     }
 
     /**
      * Converts a Bits to a unsigned bigint
+     * @param bits The bits to convert to an int
+     * @param signed Whether the bits should be interpreted signed or not. Defaults to false.
      */
-    export function toInt(bits: Bits): bigint {
+    export function toInt(bits: Bits, signed: boolean = false): bigint {
+        let negative = (signed && bits[bits.length - 1])
+
+        if (negative) bits = bits.map(b => +!b) // two's complement, +1 later
+
         // TODO signed?
         let num = 0n
         for (let i = bits.length - 1; i >= 0; i--) { // Stored backwards, 0 is the index of the LAST bit in binary representation
             num = num << 1n
             if (bits[i]) num = num | 0x1n
         }
+
+        if (negative) num = -(num + 1n) // 2's complement. We can't use bitwise ~ here since bigint is already signed.
         return num
     }
 

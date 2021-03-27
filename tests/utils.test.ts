@@ -18,7 +18,7 @@ describe("Bits", () => {
         expect(ba).to.eql([])
     });
 
-    it('From Int', () => {
+    it('From Int Unsigned', () => {
         let ba = Bits.from(0n, 5)
         expect(ba).to.eql(Bits.from([0, 0, 0, 0, 0]))
 
@@ -28,27 +28,53 @@ describe("Bits", () => {
         ba = Bits.from(6n, 3)
         expect(ba).to.eql(Bits.from([1, 1, 0]))
 
-        ba = Bits.from(7n, 3)
+        ba = Bits.from(7n, 3, false)
         expect(ba).to.eql(Bits.from([1, 1, 1]))
     });
 
-    it('From Int No Size', () => {
-        let ba = Bits.from(0n)
-        expect(ba).to.eql(Bits.from([0]))
+    it('From Int Signed', () => {
+        let ba = Bits.from(0n, 5, true)
+        expect(ba).to.eql(Bits.from([0, 0, 0, 0, 0]))
 
-        ba = Bits.from(1n)
-        expect(ba).to.eql(Bits.from([1]))
+        ba = Bits.from(-1n, 5, true)
+        expect(ba).to.eql(Bits.from([1, 1, 1, 1, 1]))
 
-        ba = Bits.from(6n)
-        expect(ba).to.eql(Bits.from([1, 1, 0]))
+        ba = Bits.from(-6n, 4, true)
+        expect(ba).to.eql(Bits.from([1, 0, 1, 0]))
+
+        ba = Bits.from(-7n, 4, true)
+        expect(ba).to.eql(Bits.from([1, 0, 0, 1]))
+    });
+
+    it('From Int Errors', () => {
+        expect(() => Bits.from(0n, 8, false)).to.not.throw()
+        expect(() => Bits.from(255n, 8, false)).to.not.throw()
+
+        expect(() => Bits.from(256n, 8, false)).to.throw("256 out of range for unsigned 8 bits")
+        expect(() => Bits.from(-1n, 8, false)).to.throw()
+
+        expect(() => Bits.from(0n, 8, true)).to.not.throw()
+        expect(() => Bits.from(-32768n, 16, true)).to.not.throw()
+        expect(() => Bits.from(32767n, 16, true)).to.not.throw()
+
+        expect(() => Bits.from(-32769n, 16, true)).to.throw()
+        expect(() => Bits.from(32768n, 16, true)).to.throw()
+    });
+
+    it('Large Ints', () => {
+        let ba = Bits.from(123456789012345n, 64)
+        expect(Bits.toInt(ba)).to.equal(123456789012345n)
+
+        ba = Bits.from(-123456789012345n, 64, true)
+        expect(Bits.toInt(ba, true)).to.equal(-123456789012345n)
     });
 
     it('msb0', () => {
-        let ba = Bits.from(10n)
+        let ba = Bits.from(10n, 4)
         expect(Bits.msb0(ba)).to.eql([1, 0, 1, 0])
     });
 
-    it('To Int', () => {
+    it('To Int Unsigned', () => {
         let ba = Bits.from(0n, 5)
         expect(Bits.toInt(ba)).to.equal(0n)
 
@@ -59,7 +85,24 @@ describe("Bits", () => {
         expect(Bits.toInt(ba)).to.equal(6n)
 
         ba = Bits.from(7n, 3)
-        expect(Bits.toInt(ba)).to.equal(7n)
+        expect(Bits.toInt(ba, false)).to.equal(7n)
+    });
+
+    it('To Int Signed', () => {
+        let ba = Bits.from(0n, 5, true)
+        expect(Bits.toInt(ba, true)).to.equal(0n)
+
+        ba = Bits.from(5n, 5, true)
+        expect(Bits.toInt(ba, true)).to.equal(5n)
+
+        ba = Bits.from(-1n, 5, true)
+        expect(Bits.toInt(ba, true)).to.equal(-1n)
+
+        ba = Bits.from(-6n, 4, true)
+        expect(Bits.toInt(ba, true)).to.equal(-6n)
+
+        ba = Bits.from(-7n, 4, true)
+        expect(Bits.toInt(ba, true)).to.equal(-7n)
     });
 
     it("Extended", () => {
