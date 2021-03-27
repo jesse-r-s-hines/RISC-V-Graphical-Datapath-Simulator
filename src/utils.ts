@@ -1,6 +1,7 @@
 /** Represents a bit as either a boolean or a 0|1 value. */
 export type Bit = number|boolean
 
+
 /**
  * Represents an array of bits as a number[] containing 0s and 1s.
  * Note that the most significant bit is actually at the end of the array. i.e. the arrays are stored backwards.
@@ -8,64 +9,64 @@ export type Bit = number|boolean
  */
 export type Bits = Bit[]
 
+/**
+ * Make Bits from an array of 0 and 1s.
+ * The array should be given in MSB 0 order, i.e. most significant bit first.
+ * Eg. `Bits.from([1, 0, 1, 0])` represents 10
+ * @param arr The array to convert
+ */
+export function Bits(arr: Bit[]): Bits
+
+/**
+ * Make Bits from an string of 0 and 1s.
+ * The string should be given in MSB 0 order, i.e. most significant bit first.
+ * Eg. `Bits.from("1010")` represents 10
+ * @param arr The array to convert
+ */
+export function Bits(are: string): Bits
+
+/**
+ * Converts a bigint to an array of bits
+ * @param num The bigint to convert into bits. Should be positive.
+ * @param length The number of bits in the array.
+ * @param signed Whether the bits should be signed or not. Defaults to false.
+ */
+export function Bits(num: bigint, length: number, signed?: boolean): Bits
+
+export function Bits(src: Bit[]|string|bigint, length?: number, signed?: boolean): Bits {
+    if (typeof src == "object") {
+        if (length != undefined || signed != undefined) throw Error("Invalid arguments to Bits.from")
+        return fromArray(src)
+    } else if (typeof src == "string") {
+        return fromString(src)
+    } else { // bigint
+        if (length == undefined) throw Error("Invalid arguments to Bits.from")
+        return fromInt(src, length, signed)
+    }
+}
+
+// Private methods to module
+function fromArray(arr: Bit[]): Bits {
+    return arr.reverse()
+}
+
+function fromString(str: string): Bits {
+    return [...str].map(b => Number(b)).reverse()
+}
+
+function fromInt(num: bigint, length: number, signed: boolean = false): Bits {
+    let [lb, ub] = signed ? [-(2**(length - 1)), 2**(length - 1) - 1] : [0, 2**(length) - 1]
+    if (num < lb || num > ub) throw Error(`${num} out of range for ${signed?"":"un"}signed ${length} bits.`)
+
+    let bits = Array(length)
+    for (let i = 0; i < length; i++) {
+        bits[i] = Number(num & 0x1n) // Least Significant Bit 0
+        num = num >> 1n
+    }
+    return bits
+}
+
 export namespace Bits {
-
-    function fromArray(arr: Bit[]): Bits {
-        return arr.reverse()
-    }
-
-    function fromString(str: string): Bits {
-        return [...str].map(b => Number(b)).reverse()
-    }
-
-    function fromInt(num: bigint, length: number, signed: boolean = false): Bits {
-        let [lb, ub] = signed ? [-(2**(length - 1)), 2**(length - 1) - 1] : [0, 2**(length) - 1]
-        if (num < lb || num > ub) throw Error(`${num} out of range for ${signed?"":"un"}signed ${length} bits.`)
-
-        let bits = Array(length)
-        for (let i = 0; i < length; i++) {
-            bits[i] = Number(num & 0x1n) // Least Significant Bit 0
-            num = num >> 1n
-        }
-        return bits
-    }
-
-    /**
-     * Make Bits from an array of 0 and 1s.
-     * The array should be given in MSB 0 order, i.e. most significant bit first.
-     * Eg. `Bits.from([1, 0, 1, 0])` represents 10
-     * @param arr The array to convert
-     */
-    export function from(arr: Bit[]): Bits
-
-    /**
-     * Make Bits from an string of 0 and 1s.
-     * The string should be given in MSB 0 order, i.e. most significant bit first.
-     * Eg. `Bits.from("1010")` represents 10
-     * @param arr The array to convert
-     */
-    export function from(are: string): Bits
-
-    /**
-     * Converts a bigint to an array of bits
-     * @param num The bigint to convert into bits. Should be positive.
-     * @param length The number of bits in the array.
-     * @param signed Whether the bits should be signed or not. Defaults to false.
-     */
-    export function from(num: bigint, length: number, signed?: boolean): Bits
-
-    export function from(src: Bit[]|string|bigint, length?: number, signed?: boolean): Bits {
-        if (typeof src == "object") {
-            if (length != undefined || signed != undefined) throw Error("Invalid arguments to Bits.from")
-            return fromArray(src)
-        } else if (typeof src == "string") {
-            return fromString(src)
-        } else { // bigint
-            if (length == undefined) throw Error("Invalid arguments to Bits.from")
-            return fromInt(src, length, signed)
-        }
-    }
-
     /**
      * Converts a Bits to a unsigned bigint
      * @param bits The bits to convert to an int

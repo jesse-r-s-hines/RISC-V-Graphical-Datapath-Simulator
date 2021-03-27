@@ -1,5 +1,5 @@
 /**
- * Represents memory.
+ * Represents memory. This will be used to represent the state in the data and instruction memories.
  * Uses a map so that you can emulate the full address space but only allocate the memory actually needed. 
  * (Essentially emulating a makeshift form of virtual memory)
  * 
