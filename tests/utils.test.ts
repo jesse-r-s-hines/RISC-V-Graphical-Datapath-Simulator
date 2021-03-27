@@ -18,32 +18,46 @@ describe("Bits", () => {
         expect(ba).to.eql([])
     });
 
+    it('From string', () => {
+        let ba = Bits.from("1010")
+        expect(ba).to.eql([0, 1, 0, 1])
+
+        ba = Bits.from("1000")
+        expect(ba).to.eql([0, 0, 0, 1])
+
+        ba = Bits.from("0")
+        expect(ba).to.eql([0])
+
+        ba = Bits.from("")
+        expect(ba).to.eql([])
+    });
+
     it('From Int Unsigned', () => {
         let ba = Bits.from(0n, 5)
-        expect(ba).to.eql(Bits.from([0, 0, 0, 0, 0]))
+        expect(ba).to.eql(Bits.from("00000"))
 
         ba = Bits.from(1n, 5)
-        expect(ba).to.eql(Bits.from([0, 0, 0, 0, 1]))
+        expect(ba).to.eql(Bits.from("00001"))
 
         ba = Bits.from(6n, 3)
-        expect(ba).to.eql(Bits.from([1, 1, 0]))
+        expect(ba).to.eql(Bits.from("110"))
 
         ba = Bits.from(7n, 3, false)
-        expect(ba).to.eql(Bits.from([1, 1, 1]))
+        expect(ba).to.eql(Bits.from("111"))
     });
 
     it('From Int Signed', () => {
         let ba = Bits.from(0n, 5, true)
-        expect(ba).to.eql(Bits.from([0, 0, 0, 0, 0]))
+        expect(ba).to.eql(Bits.from("00000"))
 
         ba = Bits.from(-1n, 5, true)
-        expect(ba).to.eql(Bits.from([1, 1, 1, 1, 1]))
+        expect(ba).to.eql(Bits.from("11111"))
 
         ba = Bits.from(-6n, 4, true)
-        expect(ba).to.eql(Bits.from([1, 0, 1, 0]))
+        expect(ba).to.eql(Bits.from("1010"))
 
         ba = Bits.from(-7n, 4, true)
-        expect(ba).to.eql(Bits.from([1, 0, 0, 1]))
+        expect(ba).to.eql(Bits.from("1001"))
     });
 
     it('From Int Errors', () => {
@@ -105,32 +119,43 @@ describe("Bits", () => {
         expect(Bits.toInt(ba, true)).to.equal(-7n)
     });
 
+    it('To Nuumber', () => {
+        let ba = Bits.from(0n, 5, true)
+        expect(Bits.toNumber(ba)).to.equal(0)
+
+        ba = Bits.from(5n, 5)
+        expect(Bits.toNumber(ba)).to.equal(5)
+
+        ba = Bits.from(-1n, 5, true)
+        expect(Bits.toNumber(ba, true)).to.equal(-1)
+    });
+
     it("Extended", () => {
         let ba = Bits.from(0n, 3)
-        expect(Bits.extended(ba, 5)).to.eql(Bits.from([0, 0, 0, 0, 0]))
+        expect(Bits.extended(ba, 5)).to.eql(Bits.from("00000"))
 
         ba = Bits.from([0, 1, 0, 1])
-        expect(Bits.extended(ba, 6, false)).to.eql(Bits.from([0, 0, 0, 1, 0, 1]))
+        expect(Bits.extended(ba, 6, false)).to.eql(Bits.from("000101"))
 
         ba = Bits.from([1, 0, 1])
-        expect(Bits.extended(ba, 5)).to.eql(Bits.from([0, 0, 1, 0, 1]))
+        expect(Bits.extended(ba, 5)).to.eql(Bits.from("00101"))
 
         ba = Bits.from([1, 0, 1])
-        expect(Bits.extended(ba, 3)).to.eql(Bits.from([1, 0, 1]))
+        expect(Bits.extended(ba, 3)).to.eql(Bits.from("101"))
     })
 
     it("Sign Extend", () => {
         let ba = Bits.from(0n, 3)
-        expect(Bits.extended(ba, 5, true)).to.eql(Bits.from([0, 0, 0, 0, 0]))
+        expect(Bits.extended(ba, 5, true)).to.eql(Bits.from("00000"))
 
         ba = Bits.from([0, 1, 0, 1])
-        expect(Bits.extended(ba, 6, true)).to.eql(Bits.from([0, 0, 0, 1, 0, 1]))
+        expect(Bits.extended(ba, 6, true)).to.eql(Bits.from("000101"))
 
         ba = Bits.from([1, 0, 1])
-        expect(Bits.extended(ba, 5, true)).to.eql(Bits.from([1, 1, 1, 0, 1]))
+        expect(Bits.extended(ba, 5, true)).to.eql(Bits.from("11101"))
 
         ba = Bits.from([1, 0, 1])
-        expect(Bits.extended(ba, 3, true)).to.eql(Bits.from([1, 0, 1]))
+        expect(Bits.extended(ba, 3, true)).to.eql(Bits.from("101"))
     })
 })
 
@@ -143,17 +168,17 @@ describe("Truth Table", () => {
             [["10", "X"], 0b11n],
         ])
 
-        expect(table.match([0b00n, 0b0n])).to.equal(0b00n)
-        expect(table.match([0b01n, 0b0n])).to.equal(0b00n)
+        expect(table.match([Bits.from("00"), Bits.from("0")])).to.equal(0b00n)
+        expect(table.match([Bits.from("01"), Bits.from("0")])).to.equal(0b00n)
 
-        expect(table.match([0b00n, 0b1n])).to.equal(0b01n)
+        expect(table.match([Bits.from("00"), Bits.from("1")])).to.equal(0b01n)
 
-        expect(table.match([0b01n, 0b1n])).to.equal(0b10n)
+        expect(table.match([Bits.from("01"), Bits.from("1")])).to.equal(0b10n)
 
-        expect(table.match([0b10n, 0b0n])).to.equal(0b11n)
-        expect(table.match([0b10n, 0b1n])).to.equal(0b11n)
+        expect(table.match([Bits.from("10"), Bits.from("0")])).to.equal(0b11n)
+        expect(table.match([Bits.from("10"), Bits.from("1")])).to.equal(0b11n)
 
-        expect(() => table.match([0b11n, 0b0n])).to.throw("No match for inputs")
-        expect(() => table.match([0b11n, 0b1n])).to.throw("No match for inputs")
+        expect(() => table.match([Bits.from("11"), Bits.from("0")])).to.throw("No match for inputs")
+        expect(() => table.match([Bits.from("11"), Bits.from("1")])).to.throw("No match for inputs")
     });
 })

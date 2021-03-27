@@ -1,14 +1,21 @@
+/** Represents a bit as either a boolean or a 0|1 value. */
+export type Bit = number|boolean
+
 /**
  * Represents an array of bits as a number[] containing 0s and 1s.
  * Note that the most significant bit is actually at the end of the array. i.e. the arrays are stored backwards.
  * This matches how RISC-V numbers their instructions and integers in "Least Significant Bit 0" order.
  */
-export type Bits = number[]
+export type Bits = Bit[]
 
 export namespace Bits {
 
-    function fromArray(arr: number[]): Bits {
+    function fromArray(arr: Bit[]): Bits {
         return arr.reverse()
+    }
+
+    function fromString(str: string): Bits {
+        return [...str].map(b => Number(b)).reverse()
     }
 
     function fromInt(num: bigint, length: number, signed: boolean = false): Bits {
@@ -26,24 +33,34 @@ export namespace Bits {
     /**
      * Make Bits from an array of 0 and 1s.
      * The array should be given in MSB 0 order, i.e. most significant bit first.
-     * Eg. `Bits([1, 0, 1, 0])` represents 10
+     * Eg. `Bits.from([1, 0, 1, 0])` represents 10
      * @param arr The array to convert
      */
-    export function from(arr: number[]): Bits
+    export function from(arr: Bit[]): Bits
 
     /**
-     * Converts a number to an array of bits
-     * @param num The number to convert into bits. Should be positive.
+     * Make Bits from an string of 0 and 1s.
+     * The string should be given in MSB 0 order, i.e. most significant bit first.
+     * Eg. `Bits.from("1010")` represents 10
+     * @param arr The array to convert
+     */
+    export function from(are: string): Bits
+
+    /**
+     * Converts a bigint to an array of bits
+     * @param num The bigint to convert into bits. Should be positive.
      * @param length The number of bits in the array.
      * @param signed Whether the bits should be signed or not. Defaults to false.
      */
     export function from(num: bigint, length: number, signed?: boolean): Bits
 
-    export function from(src: bigint|number[], length?: number, signed?: boolean): Bits {
+    export function from(src: Bit[]|string|bigint, length?: number, signed?: boolean): Bits {
         if (typeof src == "object") {
             if (length != undefined || signed != undefined) throw Error("Invalid arguments to Bits.from")
             return fromArray(src)
-        } else {
+        } else if (typeof src == "string") {
+            return fromString(src)
+        } else { // bigint
             if (length == undefined) throw Error("Invalid arguments to Bits.from")
             return fromInt(src, length, signed)
         }
@@ -71,6 +88,15 @@ export namespace Bits {
     }
 
     /**
+     * Converts a bits to a number. Note that if the bits is too large precision will be lost. 
+     * @param bits The bits to convert to an number
+     * @param signed Whether the bits should be interpreted signed or not. Defaults to false.
+     */
+    export function toNumber(bits: Bits, signed: boolean = false): number {
+        return Number(Bits.toInt(bits, signed))
+    }
+
+    /**
      * Extends a Bits to the given size.
      * @param size the size to extend to
      * @param signed if True, will sign extend
@@ -82,13 +108,13 @@ export namespace Bits {
     }
 
     /** Converts a bits to a Most Significant Bit 0 order */
-    export function msb0(bits: Bits): number[] {
+    export function msb0(bits: Bits): Bit[] {
         return bits.reverse()
     }
 }
 
 /** Represents optional bits. I.e. some bits can be null or "don't cares" */
-export type BitDontCares = (number|null)[]
+export type BitDontCares = (Bit|null)[]
 export class TruthTable<T> {
     // TODO Error Checking
     private table: [BitDontCares[], T][]
@@ -123,11 +149,9 @@ export class TruthTable<T> {
     /**
      * Return the proper output for the given inputs to the truth table.
      */
-    match(inputs: bigint[]): T {
-        let inputsB = inputs.map((x, i) => Bits.from(x, this.inputLengths[i]))
-
+    match(inputs: Bits[]): T {
         for (let [rowInputs, rowOutputs] of this.table) {
-            if (rowInputs.every( (expected, i) => TruthTable.matchInput(inputsB[i], expected) )) {
+            if (rowInputs.every( (expected, i) => TruthTable.matchInput(inputs[i], expected) )) {
                 return rowOutputs
             }
         }
