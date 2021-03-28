@@ -2,10 +2,10 @@
   "name": "risc-v-simulator",
   "version": "1.0.0",
   "description": "A graphical datapath simulator for the 64 bit RISC-V architecture",
-  "main": "index.js",
   "scripts": {
     "build": "webpack",
-    "test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha -r ts-node/register 'tests/**/*.ts'"
+    "watch": "webpack --watch",
+    "test": "mocha -r ts-node/register 'tests/**/*.ts'"
   },
   "author": "",
   "license": "ISC",

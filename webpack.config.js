@@ -21,4 +21,7 @@ module.exports = {
     filename: 'risc-v-simulator.js',
     path: path.resolve(__dirname, 'dist'),
   },
+  optimization: {
+    minimize: false // VSCode debugger has trouble if you minify, even with the source map.
+},
 };
