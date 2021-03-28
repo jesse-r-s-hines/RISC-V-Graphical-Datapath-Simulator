@@ -1,16 +1,12 @@
-// import {Simulator} from "./simulator"
+import {Simulator} from "./simulator"
 
-console.log("Hello World")
-
-// let REGS = {
-//     5: 5n,   6: 6n,  7: 7n,
-//    28: 28n, 29:29n, 30: 30n, 31: 31n,
-// }
-
-// let sim = new Simulator([
-//     0x007302b3n, // add x5, x6, x7
-// ], REGS)
-
-// console.log(sim.regFile.registers[5])
-// sim.run()
-// console.log(sim.regFile.registers[5])
+let sim = new Simulator([
+    0x01c28c63n, // beq x5, x28, 24 # +6 instructions, true
+    0x005003b3n, // add x7, zero, x5
+    0x005003b3n, // add x7, zero, x5
+    0x005003b3n, // add x7, zero, x5
+    0x005003b3n, // add x7, zero, x5
+    0x005003b3n, // add x7, zero, x5
+    0x00500333n, // add x6, zero, x5
+], {})
+sim.run()
