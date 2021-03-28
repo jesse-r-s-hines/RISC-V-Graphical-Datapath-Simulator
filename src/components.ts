@@ -7,11 +7,9 @@ export class PC {
     // output
     public out: Bits = []; // 32 bits
     // state
-    public data: bigint; // 32 bits
+    public data: bigint = 0n; // 32 bits
 
     constructor() {
-        // this.data = 0x0000_0000_0040_0000n
-        this.data = 0x0n
     }
 
     tick() {
@@ -149,8 +147,10 @@ export class RegisterFile {
 
     tick() {
         if (this.regWrite) { // edge-triggered write
-            let i = 
-            this.registers[Bits.toNumber(this.writeReg)] = Bits.toInt(this.writeData, true)
+            let writeReg = Bits.toNumber(this.writeReg)
+            if (writeReg != 0) { // Ignore writes to zero reg
+                this.registers[writeReg] = Bits.toInt(this.writeData, true)
+            }
         }
 
         this.readData1 = Bits(this.registers[Bits.toNumber(this.readReg1)], 32, true)
