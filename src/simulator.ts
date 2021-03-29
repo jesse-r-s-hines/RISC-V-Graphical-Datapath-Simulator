@@ -36,13 +36,18 @@ export class Simulator {
         this.memOrAluMux = new Comp.Mux2to1()
 
         // These values need to be initialized since they are set until the end of the tick
-        this.pc.in = Bits(0x0n, 32)
+        this.pc.in = Bits(0x0001_0000n, 32)
         this.regFile.regWrite = 0
 
+        // initialize code memory
         for (let [i, instr] of code.entries()) {
             this.instrMem.data.storeWord(this.pc.data + 4n * BigInt(i), instr)
         }
 
+        // Initialize registers sp and gp
+        regs = Object.assign({2: 0xbffffff0n, 3: 0x10008000n}, regs)
+        
+        // initialize registers
         for (let reg in regs) {
             this.regFile.registers[reg] = regs[reg]
         }
