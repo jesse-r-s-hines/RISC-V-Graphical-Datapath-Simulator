@@ -35,13 +35,11 @@ export class Simulator {
         this.aluInputMux = new Comp.Mux2to1()
         this.memOrAluMux = new Comp.Mux2to1()
 
-        // These values need to be initialized since they are set until the end of the tick
-        this.pc.in = Bits(0x0001_0000n, 32)
-        this.regFile.regWrite = 0
+        let text_start = 0x0001_0000n
 
         // initialize code memory
         for (let [i, instr] of code.entries()) {
-            this.instrMem.data.storeWord(this.pc.data + 4n * BigInt(i), instr)
+            this.instrMem.data.storeWord(text_start + 4n * BigInt(i), instr)
         }
 
         // Initialize registers sp and gp
@@ -51,6 +49,10 @@ export class Simulator {
         for (let reg in regs) {
             this.regFile.registers[reg] = regs[reg]
         }
+
+        // These values need to be initialized since they are set until the end of the tick
+        this.pc.in = Bits(text_start, 32)
+        this.regFile.regWrite = 0
     }
 
     tick() {
