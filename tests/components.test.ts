@@ -25,6 +25,12 @@ describe("Components", () => {
         expect(imm.immediate.length).to.equal(32)
         expect(Bits.toInt(imm.immediate, true)).to.equal(20n)
 
+        // bne t0, t1, 0xBFC # + 5 instruction
+        imm.instruction = Bits(0b0011111_11100_00101_000_11101_1100011n, 32)
+        imm.tick()
+        expect(Bits.toInt(imm.immediate, true)).to.equal(0xBFCn)
+
+        // TODO
         // auipc t0, 12345
         // imm.instruction = Bits(0b00010010001101000101_00101_0010111n, 32)
         // imm.tick()
