@@ -71,6 +71,8 @@ describe("Bits", () => {
     it('msb0', () => {
         let ba = Bits(10n, 4)
         expect(Bits.msb0(ba)).to.eql([1, 0, 1, 0])
+        expect(ba).to.eql([0, 1, 0, 1]) // original unchanged
+
     });
 
     it('To Int Unsigned', () => {
@@ -147,6 +149,11 @@ describe("Bits", () => {
         expect(Bits.toString(Bits("000"))).to.eql("000")
 
         expect(Bits.toString(Bits("1011"))).to.eql("1011")
+    })
+
+    it("Equal", () => {
+        expect(Bits.equal(Bits("000"), Bits(0n, 3))).to.be.true
+        expect(Bits.equal(Bits("1010"),"0001")).to.be.false
     })
 })
 

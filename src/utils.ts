@@ -48,7 +48,7 @@ export function Bits(src: Bit[]|string|bigint, length?: number, signed?: boolean
 
 // Private methods to module
 function fromArray(arr: Bit[]): Bits {
-    return arr.reverse()
+    return arr.slice().reverse()
 }
 
 function fromString(str: string): Bits {
@@ -108,11 +108,18 @@ export namespace Bits {
 
     /** Converts a bits to a Most Significant Bit 0 order */
     export function msb0(bits: Bits): Bit[] {
-        return bits.reverse()
+        return bits.slice().reverse()
     }
 
     export function toString(bits: Bits): string {
-        return bits.reverse().join("")
+        return Bits.msb0(bits).join("")
+    }
+
+    /** Return true if the two Bits are identical. You can also compare against a string representation of the Bits */
+    export function equal(a: Bits|string, b: Bits|string) {
+        if (typeof a != "string") a = Bits.toString(a)
+        if (typeof b != "string") b = Bits.toString(b)
+        return a == b
     }
 }
 
