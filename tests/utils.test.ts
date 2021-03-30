@@ -157,6 +157,12 @@ describe("Bits", () => {
         ba = Bits([1, 0, 1])
         expect(Bits.extended(ba, 3, true)).to.eql(Bits("101"))
     })
+
+    it("To String", () => {
+        expect(Bits.toString(Bits("000"))).to.eql("000")
+
+        expect(Bits.toString(Bits("1011"))).to.eql("1011")
+    })
 })
 
 describe("Truth Table", () => {

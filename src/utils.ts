@@ -112,6 +112,10 @@ export namespace Bits {
     export function msb0(bits: Bits): Bit[] {
         return bits.reverse()
     }
+
+    export function toString(bits: Bits): string {
+        return bits.reverse().join("")
+    }
 }
 
 /** Represents optional bits. I.e. some bits can be null or "don't cares" */
@@ -139,6 +143,7 @@ export class TruthTable<T> {
      * Example: matchInputs([1, 0, 0], [1, null, 0]) 
      */
     private static matchInput(input: Bits, expected: BitDontCares): boolean {
+        if (input.length != expected.length) throw Error("Size mismatch in TruthTable")
         for (let i = 0; i < input.length; i++) {
             if (expected[i] != null && expected[i] != input[i]) {
                 return false
@@ -156,6 +161,6 @@ export class TruthTable<T> {
                 return rowOutputs
             }
         }
-        throw Error(`No match for inputs [${inputs}] in truth table.`)
+        throw Error(`No match for inputs [${inputs.map(b => `"${Bits.toString(b)}"`).join(", ")}] in truth table.`)
     }
 }
