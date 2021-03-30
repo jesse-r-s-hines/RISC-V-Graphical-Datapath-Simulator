@@ -123,6 +123,13 @@ export namespace Bits {
     }
 }
 
+/** Interprets the number as a 32 bit two's complement integer */
+export function twos_complement(num: bigint): bigint {
+    // ~num + 1 doesn't work because of how Javscript does ~
+    if (num >= (1n << 31n)) num -= (1n << 32n) // interpret as two's complement
+    return num
+}
+
 /** Represents optional bits. I.e. some bits can be null or "don't cares" */
 export type BitDontCares = (Bit|null)[]
 export class TruthTable<T> {

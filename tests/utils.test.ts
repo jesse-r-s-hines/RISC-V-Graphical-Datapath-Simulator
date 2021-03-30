@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { Bits, TruthTable } from '../src/utils';
+import { Bits, TruthTable, twos_complement } from '../src/utils';
 
 describe("Bits", () => {
     it('From array', () => {
@@ -178,5 +178,19 @@ describe("Truth Table", () => {
 
         expect(() => table.match([Bits("11"), Bits("0")])).to.throw("No match for inputs")
         expect(() => table.match([Bits("11"), Bits("1")])).to.throw("No match for inputs")
+    });
+})
+
+describe("Other", () => {
+    it('twos_complement', () => {
+        expect(twos_complement(0n)).to.equal(0n)
+        expect(twos_complement(10n)).to.equal(10n)
+        expect(twos_complement(2147483647n)).to.equal(2147483647n)
+        expect(twos_complement(-2147483648n)).to.equal(-2147483648n)
+
+        expect(twos_complement(0n)).to.equal(0n)
+        expect(twos_complement(10n)).to.equal(10n)
+        expect(twos_complement(0x8000_0000n)).to.equal(-2147483648n)
+        expect(twos_complement(0xFFFF_FFFFn)).to.equal(-1n)
     });
 })
