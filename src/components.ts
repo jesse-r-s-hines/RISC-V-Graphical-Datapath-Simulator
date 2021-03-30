@@ -34,6 +34,7 @@ export class Control {
     private static table = new TruthTable<[Bit, Bit, Bit, Bit, Bit, Bit, Bits]>([
         //  opcode   | aluSrc | memToReg | regWrite | memRead | memWrite | branch |  aluOp |
         [["0110011"], [  0,        0,         1,         0,        0,        0,   Bits("10")]], // R-format
+        [["0010011"], [  1,        0,         1,         0,        0,        0,   Bits("11")]], // I-format
         [["0000011"], [  1,        1,         1,         1,        0,        0,   Bits("00")]], // ld
         [["0100011"], [  1,        0,         0,         0,        1,        0,   Bits("00")]], // st
         [["1100011"], [  0,        0,         0,         0,        0,        1,   Bits("01")]], // beq
@@ -46,7 +47,7 @@ export class Control {
 
 export class ALUControl {
     // inputs
-    // tells us if op is (00) add for load/store, (01) subtract for beq, (10) determined by funct7 and funct3
+    // tells us if op is (00) load/store, (01) branch, (10) R-type, (11) I-type
     public aluOp: Bits = [] // 7 bits
     public funct7: Bits = [] // 7 bits
     public funct3: Bits = [] // 3 bits
@@ -55,14 +56,16 @@ export class ALUControl {
     public aluControl: Bits = [] // 4 bits
 
     private static table = new TruthTable([
-        // ALUOp | funct7  | funct3 |   ALUControl  // instr  -> op
+        // ALUOp | funct7  | funct3 |   ALUControl    // instr  -> op
         [[ "00",  "XXXXXXX", "XXX"  ], Bits("0010")], // memory -> add
         [[ "01",  "XXXXXXX", "XXX"  ], Bits("0110")], // branch -> sub
         [[ "10",  "0000000", "000"  ], Bits("0010")], // add    -> add
         [[ "10",  "0100000", "000"  ], Bits("0110")], // sub    -> sub
         [[ "10",  "0000000", "111"  ], Bits("0000")], // and    -> AND
         [[ "10",  "0000000", "110"  ], Bits("0001")], // or     -> OR
-        // TODO do I need a catch all?
+        [[ "11",  "XXXXXXX", "000"  ], Bits("0010")], // addi   -> add
+        [[ "11",  "XXXXXXX", "111"  ], Bits("0000")], // andi   -> AND
+        [[ "11",  "XXXXXXX", "110"  ], Bits("0001")], // ori    -> OR
     ])
 
     tick() {
@@ -85,6 +88,7 @@ export class ALU {
         [["0001"], (a, b) => a | b], // OR
         [["0010"], (a, b) => a + b], // add
         [["0110"], (a, b) => a - b], // subtract
+        [["0111"], (a, b) => BigInt(a < b)], // set on less than
     ])
 
     tick() {

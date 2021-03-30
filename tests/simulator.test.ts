@@ -25,17 +25,17 @@ describe("Arithmetic", () => {
         sim_expect(code, {5: 5n, 6: 6n, 7: 7n}, {5: 13n})
     })
     
-    // it('addi', () => {
-    //     let code = [
-    //         0x00630293n, // addi x5, x6, 6
-    //     ];
-    //     sim_expect(code, {6: 2n}, {5: 8n})
+    it('addi', () => {
+        let code = [
+            0x00630293n, // addi x5, x6, 6
+        ];
+        sim_expect(code, {6: 2n}, {5: 8n})
 
-    //     code = [
-    //         0xffa30293n, // addi x5, x6, -6
-    //     ];
-    //     sim_expect(code, {6: 2n}, {5: -4n})
-    // })
+        code = [
+            0xffa30293n, // addi x5, x6, -6
+        ];
+        sim_expect(code, {6: 2n}, {5: -4n})
+    })
     
     it('sub', () => {
         let code = [
@@ -51,17 +51,17 @@ describe("Arithmetic", () => {
         sim_expect(code, {5: 5n, 6: 6n, 28: 12n}, {5: 4n})
     })
     
-    // it('andi', () => {
-    //     let code = [
-    //         0xfff2f393n, // andi x7, x5, -1
-    //     ];
-    //     sim_expect(code, {5: 5n}, {7: 5n})
+    it('andi', () => {
+        let code = [
+            0xfff2f393n, // andi x7, x5, -1
+        ];
+        sim_expect(code, {5: 5n}, {7: 5n})
 
-    //     code = [
-    //         0xff92f393n, // andi x7, x5, -7
-    //     ];
-    //     sim_expect(code, {5: 1n}, {7: 1n})
-    // })
+        code = [
+            0xff92f393n, // andi x7, x5, -7
+        ];
+        sim_expect(code, {5: 1n}, {7: 1n})
+    })
     
     it('or', () => {
         let code = [
@@ -70,12 +70,12 @@ describe("Arithmetic", () => {
         sim_expect(code, {5: 5n, 6: 6n, 7: 7n}, {5: 7n})
     })
     
-    // it('ori', () => {
-    //     let code = [
-    //         0x00736293n, // ori x5, x6, 7
-    //     ];
-    //     sim_expect(code, {5: 5n, 6: 6n}, {5: 7n})
-    // })
+    it('ori', () => {
+        let code = [
+            0x00736293n, // ori x5, x6, 7
+        ];
+        sim_expect(code, {5: 5n, 6: 6n}, {5: 7n})
+    })
     
     // it('xor', () => {
     //     let code = [
@@ -208,23 +208,23 @@ describe("Arithmetic", () => {
 })
 
 describe("Branch", () => {
-    // it('beq', () => {
-    //     let code = [
-    //         0x01c28463n, // beq x5, x28, 8 # +2 instructions, true
-    //         0x00100393n, // addi x7, zero, 1
-    //         0x00100313n, // addi x6, zero, 1
-    //     ];
-    //     sim_expect(code, {5: 1n, 28: 1n}, {6: 1n, 7: 0n})
+    it('beq', () => {
+        let code = [
+            0x01c28463n, // beq x5, x28, 8 # +2 instructions, true
+            0x00100393n, // addi x7, zero, 1
+            0x00100313n, // addi x6, zero, 1
+        ];
+        sim_expect(code, {5: 1n, 28: 1n}, {6: 1n, 7: 0n})
 
-    //     code = [
-    //         0x01c28863n, // beq x5, x28, 16 # +4 instructions, false
-    //         0x00000013n, // addi zero, zero, 0
-    //         0x00000013n, // addi zero, zero, 0
-    //         0x00100393n, // addi x7, zero, 1
-    //         0x00100313n, // addi x6, zero, 1
-    //     ];
-    //     sim_expect(code, {5: 1n, 28: 2n}, {6: 1n, 7: 1n})
-    // })
+        code = [
+            0x01c28863n, // beq x5, x28, 16 # +4 instructions, false
+            0x00000013n, // addi zero, zero, 0
+            0x00000013n, // addi zero, zero, 0
+            0x00100393n, // addi x7, zero, 1
+            0x00100313n, // addi x6, zero, 1
+        ];
+        sim_expect(code, {5: 1n, 28: 2n}, {6: 1n, 7: 1n})
+    })
     
     // it('bge', () => {
     //     let code = [
