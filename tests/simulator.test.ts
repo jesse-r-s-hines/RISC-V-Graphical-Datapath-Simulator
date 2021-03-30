@@ -233,8 +233,22 @@ describe("Branch", () => {
     //         0x00100313n, // addi x6, zero, 1
     //     ];
     //     sim_expect(code, {5: 0n, 28: -1n}, {6: 1n, 7: 0n})
+    //
+    //     code = [
+    //         0x01c2d463n, // bge x5, x28, 8 # +2 instructions, true
+    //         0x00100393n, // addi x7, zero, 1
+    //         0x00100313n, // addi x6, zero, 1
+    //     ];
+    //     sim_expect(code, {5: -1n, 28: -1n}, {6: 1n, 7: 0n})
+    //
+    //     code = [
+    //         0x01c2d463n, // bge x5, x28, 8 # +2 instructions, false
+    //         0x00100393n, // addi x7, zero, 1
+    //         0x00100313n, // addi x6, zero, 1
+    //     ];
+    //     sim_expect(code, {5: -1n, 28: 0n}, {6: 1n, 7: 1n})
     // })
-    
+
     // it('bgeu', () => {
     //     let code = [
     //         0x01c2f463n, // bgeu x5, x28, 8 # +2 instructions, false
@@ -251,6 +265,20 @@ describe("Branch", () => {
     //         0x00100313n, // addi x6, zero, 1
     //     ];
     //     sim_expect(code, {5: -2n, 28: 0n}, {6: 1n, 7: 0n})
+    //
+    //     code = [
+    //         0x01c2c463n, // blt x5, x28, 8 # +2 instructions, false
+    //         0x00100393n, // addi x7, zero, 1
+    //         0x00100313n, // addi x6, zero, 1
+    //     ];
+    //     sim_expect(code, {5: -100n, 28: -100n}, {6: 1n, 7: 1n})
+    //
+    //     code = [
+    //         0x01c2c463n, // blt x5, x28, 8 # +2 instructions, true
+    //         0x00100393n, // addi x7, zero, 1
+    //         0x00100313n, // addi x6, zero, 1
+    //     ];
+    //     sim_expect(code, {5: 100n, 28: 101n}, {6: 1n, 7: 0n})
     // })
     
     // it('bltu', () => {
