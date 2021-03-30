@@ -60,14 +60,18 @@ export class ALUControl {
         [[ "00",  "XXXXXXX", "XXX"  ], Bits("0010")], // memory -> add
         [[ "01",  "XXXXXXX", "XXX"  ], Bits("0110")], // branch -> sub
         [[ "10",  "0000000", "000"  ], Bits("0010")], // add    -> add
+        [[ "11",  "XXXXXXX", "000"  ], Bits("0010")], // addi   -> add
         [[ "10",  "0100000", "000"  ], Bits("0110")], // sub    -> sub
         [[ "10",  "0000000", "111"  ], Bits("0000")], // and    -> AND
-        [[ "10",  "0000000", "110"  ], Bits("0001")], // or     -> OR
-        [[ "10",  "0000000", "100"  ], Bits("1100")], // xor    -> XOR
-        [[ "11",  "XXXXXXX", "000"  ], Bits("0010")], // addi   -> add
         [[ "11",  "XXXXXXX", "111"  ], Bits("0000")], // andi   -> AND
+        [[ "10",  "0000000", "110"  ], Bits("0001")], // or     -> OR
         [[ "11",  "XXXXXXX", "110"  ], Bits("0001")], // ori    -> OR
+        [[ "10",  "0000000", "100"  ], Bits("1100")], // xor    -> XOR
         [[ "11",  "XXXXXXX", "100"  ], Bits("1100")], // xori   -> XOR
+        [[ "10",  "0000000", "010"  ], Bits("0111")], // slt    -> slt
+        [[ "11",  "XXXXXXX", "010"  ], Bits("0111")], // slti   -> slt
+        [[ "10",  "0000000", "011"  ], Bits("1111")], // sltu   -> sltu
+        [[ "11",  "XXXXXXX", "011"  ], Bits("1111")], // sltiu  -> sltu
     ])
 
     tick() {
@@ -90,13 +94,16 @@ export class ALU {
         [["0001"], (a, b) => a | b], // OR
         [["0010"], (a, b) => a + b], // add
         [["0110"], (a, b) => a - b], // subtract
-        [["0111"], (a, b) => BigInt(a < b)], // set on less than
+        [["X111"], (a, b) => BigInt(a < b)], // set on less than (unsigned)
         [["1100"], (a, b) => a ^ b],
     ])
 
     tick() {
+        let signed = Bits.equal(this.aluControl, "1111") ? false : true // sltu is unsigned
+        let [a, b] = [Bits.toInt(this.in1, signed), Bits.toInt(this.in2, signed)]
+
         let op = ALU.table.match([this.aluControl])
-        let resultInt = op(Bits.toInt(this.in1, true), Bits.toInt(this.in2, true))
+        let resultInt = op(a, b)
 
         this.result = Bits(resultInt, 32, true)
         this.zero = (resultInt == 0n)

@@ -87,7 +87,12 @@ describe("Arithmetic", () => {
         let code = [
             0x007362b3n, // or x5, x6, x7
         ];
-        test_code(code, {5: 5n, 6: 6n, 7: 7n}, {5: 7n})
+        test_code(code, {6: 6n, 7: 7n}, {5: 7n})
+
+        code = [
+            0x007362b3n, // or x5, x6, x7
+        ];
+        test_code(code, {6: -1n, 7: 6n}, {5: -1n})
     })
     
     it('ori', () => {
@@ -102,6 +107,11 @@ describe("Arithmetic", () => {
             0x0062c2b3n, // xor x5, x5, x6
         ];
         test_code(code, {5: 5n, 6: 6n}, {5: 3n})
+
+        code = [
+            0x0062c2b3n, // xor x5, x5, x6
+        ];
+        test_code(code, {5: -5n, 6: 6n}, {5: -3n})
     })
     
     it('xori', () => {
@@ -183,41 +193,41 @@ describe("Arithmetic", () => {
     //     test_code(code, {6: -8n}, {5: 0x3FFF_FFFEn})
     // })
     
-    // it('slt', () => {
-    //     let code = [
-    //         0x007322b3n, // slt x5, x6, x7
-    //     ];
-    //     test_code(code, {6: 6n, 7: 7n}, {5: 1n})
+    it('slt', () => {
+        let code = [
+            0x007322b3n, // slt x5, x6, x7
+        ];
+        test_code(code, {6: 6n, 7: 7n}, {5: 1n})
 
-    //     code = [
-    //         0x0063a2b3n, // slt x5, x7, x6
-    //     ];
-    //     test_code(code, {6: -1n, 7: 1n}, {5: 0n})
-    // })
+        code = [
+            0x0063a2b3n, // slt x5, x7, x6
+        ];
+        test_code(code, {6: -1n, 7: 1n}, {5: 0n})
+    })
     
-    // it('slti', () => {
-    //     let code = [
-    //         0x00732293n, // slti x5, x6, 7
-    //     ];
-    //     test_code(code, {6: 6n, 7: 7n}, {5: 1n})
-    // })
+    it('slti', () => {
+        let code = [
+            0x00732293n, // slti x5, x6, 7
+        ];
+        test_code(code, {6: 6n, 7: 7n}, {5: 1n})
+    })
     
-    // it('sltu', () => {
-    //     let code = [
-    //         0x0063b2b3n, // sltu x5, x7, x6 # -1 will be max unsigned
-    //     ];
-    //     test_code(code, {6: -1n, 7: 1n}, {5: 1n})
+    it('sltu', () => {
+        let code = [
+            0x0063b2b3n, // sltu x5, x7, x6 # -1 will be max unsigned
+        ];
+        test_code(code, {6: -1n, 7: 1n}, {5: 1n})
 
-    //     code = [
-    //         0x007332b3n, // sltu x5, x6, x7
-    //     ];
-    //     test_code(code, {6: 6n, 7: 7n}, {5: 1n})
+        code = [
+            0x007332b3n, // sltu x5, x6, x7
+        ];
+        test_code(code, {6: 6n, 7: 7n}, {5: 1n})
 
-    //     code = [
-    //         0x007332b3n, // sltu x5, x6, x7 # -1 will be max unsigned
-    //     ];
-    //     test_code(code, {6: -1n, 7: 1n}, {5: 0n})
-    // })
+        code = [
+            0x007332b3n, // sltu x5, x6, x7 # -1 will be max unsigned
+        ];
+        test_code(code, {6: -1n, 7: 1n}, {5: 0n})
+    })
     
     // it('lui', () => {
     //     let code = [
