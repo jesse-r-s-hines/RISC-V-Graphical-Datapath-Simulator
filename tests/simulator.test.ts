@@ -121,77 +121,77 @@ describe("Arithmetic", () => {
         test_code(code, {6: 5n}, {6: 3n})
     })
     
-    // it('sll', () => {
-    //     let code = [
-    //         0x007312b3n, // sll x5, x6, x7
-    //     ];
-    //     test_code(code, {6: 1n, 7: 3n}, {5: 8n})
+    it('sll', () => {
+        let code = [
+            0x007312b3n, // sll x5, x6, x7
+        ];
+        test_code(code, {6: 1n, 7: 3n}, {5: 8n})
 
-    //     code = [
-    //         0x007312b3n, // sll x5, x6, x7 # Only uses lower 5 bits of reg.
-    //     ];
-    //     test_code(code, {6: 1n, 7: -7n}, {5: 0x2000000n})
+        code = [
+            0x007312b3n, // sll x5, x6, x7 # Only uses lower 5 bits of reg.
+        ];
+        test_code(code, {6: 1n, 7: -7n}, {5: 0x2000000n})
 
-    //     code = [
-    //         0x007312b3n, // sll x5, x6, x7 # Shifts off extra bits
-    //     ];
-    //     test_code(code, {6: 0xFFFF_FFFFn, 7: 2}, {5: 0xFFFF_FFFCn})
-    // })
+        code = [
+            0x007312b3n, // sll x5, x6, x7 # Shifts off extra bits
+        ];
+        test_code(code, {6: 0xFFFF_FFFFn, 7: 2n}, {5: 0xFFFF_FFFCn})
+    })
     
-    // it('slli', () => {
-    //     let code = [
-    //         0x00331313n, // slli x6, x6, 3
-    //     ];
-    //     test_code(code, {6: 2n}, {6: 16n})
-    // })
+    it('slli', () => {
+        let code = [
+            0x00331313n, // slli x6, x6, 3
+        ];
+        test_code(code, {6: 2n}, {6: 16n})
+    })
     
-    // it('sra', () => {
-    //     let code = [
-    //         0x407352b3n, // sra x5, x6, x7
-    //     ];
-    //     test_code(code, {6: 8n, 7: 2n}, {5: 2n})
+    it('sra', () => {
+        let code = [
+            0x407352b3n, // sra x5, x6, x7
+        ];
+        test_code(code, {6: 8n, 7: 2n}, {5: 2n})
 
-    //     code = [
-    //         0x407352b3n, // sra x5, x6, x7
-    //     ];
-    //     test_code(code, {6: -8n, 7: 2n}, {5: -2n})
-    // })
+        code = [
+            0x407352b3n, // sra x5, x6, x7
+        ];
+        test_code(code, {6: -8n, 7: 2n}, {5: -2n})
+    })
     
-    // it('srai', () => {
-    //     let code = [
-    //         0x40235293n, // srai x5, x6, 2
-    //     ];
-    //     test_code(code, {6: 8n}, {5: 2n})
+    it('srai', () => {
+        let code = [
+            0x40235293n, // srai x5, x6, 2
+        ];
+        test_code(code, {6: 8n}, {5: 2n})
 
-    //     code = [
-    //         0x40235293n, // srai x5, x6, 2
-    //     ];
-    //     test_code(code, {6: -8n}, {5: -2n})
-    // })
+        code = [
+            0x40235293n, // srai x5, x6, 2
+        ];
+        test_code(code, {6: -8n}, {5: -2n})
+    })
     
-    // it('srl', () => {
-    //     let code = [
-    //         0x007352b3n, // srl x5, x6, x7
-    //     ];
-    //     test_code(code, {6: 8n, 7: 2n}, {5: 2n})
+    it('srl', () => {
+        let code = [
+            0x007352b3n, // srl x5, x6, x7
+        ];
+        test_code(code, {6: 8n, 7: 2n}, {5: 2n})
 
-    //     code = [
-    //         0x007352b3n, // srl x5, x6, x7
-    //     ];
-    //     test_code(code, {6: -8n, 7: 2n}, {5: 0x3FFF_FFFEn})
-    // })
+        code = [
+            0x007352b3n, // srl x5, x6, x7
+        ];
+        test_code(code, {6: -8n, 7: 2n}, {5: 0x3FFF_FFFEn})
+    })
     
-    // it('srli', () => {
-    //     let code = [
-    //         0x00235293n, // srli x5, x6, 2
-    //     ];
-    //     test_code(code, {6: 8n}, {5: 2n})
+    it('srli', () => {
+        let code = [
+            0x00235293n, // srli x5, x6, 2
+        ];
+        test_code(code, {6: 8n}, {5: 2n})
 
-    //     code = [
-    //         0x00235293n, // srli x5, x6, 2
-    //     ];
-    //     test_code(code, {6: -8n}, {5: 0x3FFF_FFFEn})
-    // })
+        code = [
+            0x00235293n, // srli x5, x6, 2
+        ];
+        test_code(code, {6: -8n}, {5: 0x3FFF_FFFEn})
+    })
     
     it('slt', () => {
         let code = [

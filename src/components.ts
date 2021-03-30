@@ -72,6 +72,9 @@ export class ALUControl {
         [[ "11",  "XXXXXXX", "010"  ], Bits("0111")], // slti   -> slt
         [[ "10",  "0000000", "011"  ], Bits("1111")], // sltu   -> sltu
         [[ "11",  "XXXXXXX", "011"  ], Bits("1111")], // sltiu  -> sltu
+        [[ "1X",  "0000000", "001"  ], Bits("1000")], // sll(i) -> sll
+        [[ "1X",  "0000000", "101"  ], Bits("1001")], // srl(i) -> srl
+        [[ "1X",  "0100000", "101"  ], Bits("1011")], // sra(i) -> sra
     ])
 
     tick() {
@@ -89,6 +92,14 @@ export class ALU {
     public result: Bits = [] // 32 bits
     public zero: Bit = 0
 
+    // whether to interpret operands as signed or unsigned
+    private static table_signed = new TruthTable([
+        // (bigint doesn't have >>>, but if we interpret as unsigned it will work)
+        [["1001"], false], // shift right logical 
+        [["1111"], false], // set on less than unsigned
+        [["XXXX"], true],
+    ])
+
     private static table = new TruthTable<(a: bigint, b: bigint) => bigint>([
         [["0000"], (a, b) => a & b], // AND
         [["0001"], (a, b) => a | b], // OR
@@ -96,16 +107,18 @@ export class ALU {
         [["0110"], (a, b) => a - b], // subtract
         [["X111"], (a, b) => BigInt(a < b)], // set on less than (unsigned)
         [["1100"], (a, b) => a ^ b],
+        [["1000"], (a, b) => a << (b & 0x1Fn)], // shift left logical
+        [["10X1"], (a, b) => a >> (b & 0x1Fn)], // shift right logical/arithmetic
     ])
 
     tick() {
-        let signed = Bits.equal(this.aluControl, "1111") ? false : true // sltu is unsigned
+        let signed = ALU.table_signed.match([this.aluControl])
         let [a, b] = [Bits.toInt(this.in1, signed), Bits.toInt(this.in2, signed)]
 
         let op = ALU.table.match([this.aluControl])
         let resultInt = op(a, b)
 
-        this.result = Bits(resultInt, 32, true)
+        this.result = Bits(resultInt, 32, signed)
         this.zero = (resultInt == 0n)
     }
 }
