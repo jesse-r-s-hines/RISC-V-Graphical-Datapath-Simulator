@@ -173,7 +173,7 @@ export class InstructionMemory {
     }
 
     tick() {
-        this.instruction = Bits(this.data.loadWord(Bits.toInt(this.address)), 32, true)
+        this.instruction = Bits(this.data.loadWord(Bits.toInt(this.address)), 32)
     }
 }
 
