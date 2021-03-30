@@ -29,15 +29,16 @@ export class Control {
     public memRead: Bit = 0
     public memWrite: Bit = 0
     public branch: Bit = 0
-    public aluOp: Bits = [] // 2 bits
+    public aluOp: Bits = [] // 3 bits
 
     private static table = new TruthTable<[Bit, Bit, Bit, Bit, Bit, Bit, Bits]>([
         //  opcode   | aluSrc | memToReg | regWrite | memRead | memWrite | branch |  aluOp |
-        [["0110011"], [  0,        0,         1,         0,        0,        0,   Bits("10")]], // R-format
-        [["0010011"], [  1,        0,         1,         0,        0,        0,   Bits("11")]], // I-format
-        [["0000011"], [  1,        1,         1,         1,        0,        0,   Bits("00")]], // ld
-        [["0100011"], [  1,        0,         0,         0,        1,        0,   Bits("00")]], // st
-        [["1100011"], [  0,        0,         0,         0,        0,        1,   Bits("01")]], // beq
+        [["0110011"], [  0,        0,         1,         0,        0,        0,   Bits("010")]], // R-format
+        [["0010011"], [  1,        0,         1,         0,        0,        0,   Bits("011")]], // I-format
+        [["0000011"], [  1,        1,         1,         1,        0,        0,   Bits("000")]], // ld
+        [["0100011"], [  1,        0,         0,         0,        1,        0,   Bits("000")]], // st
+        [["1100011"], [  0,        0,         0,         0,        0,        1,   Bits("001")]], // beq
+        [["0110111"], [  1,        0,         1,         0,        0,        0,   Bits("100")]], // lui
     ])
 
     public tick() {
@@ -47,8 +48,8 @@ export class Control {
 
 export class ALUControl {
     // inputs
-    // tells us if op is (00) load/store, (01) branch, (10) R-type, (11) I-type
-    public aluOp: Bits = [] // 7 bits
+    // tells us if op is (000) load/store, (001) branch, (010) R-type, (011) I-type, (100) lui
+    public aluOp: Bits = [] // 3 bits
     public funct7: Bits = [] // 7 bits
     public funct3: Bits = [] // 3 bits
 
@@ -56,25 +57,26 @@ export class ALUControl {
     public aluControl: Bits = [] // 4 bits
 
     private static table = new TruthTable([
-        // ALUOp | funct7  | funct3 |   ALUControl    // instr  -> op
-        [[ "00",  "XXXXXXX", "XXX"  ], Bits("0010")], // memory -> add
-        [[ "01",  "XXXXXXX", "XXX"  ], Bits("0110")], // branch -> sub
-        [[ "10",  "0000000", "000"  ], Bits("0010")], // add    -> add
-        [[ "11",  "XXXXXXX", "000"  ], Bits("0010")], // addi   -> add
-        [[ "10",  "0100000", "000"  ], Bits("0110")], // sub    -> sub
-        [[ "10",  "0000000", "111"  ], Bits("0000")], // and    -> AND
-        [[ "11",  "XXXXXXX", "111"  ], Bits("0000")], // andi   -> AND
-        [[ "10",  "0000000", "110"  ], Bits("0001")], // or     -> OR
-        [[ "11",  "XXXXXXX", "110"  ], Bits("0001")], // ori    -> OR
-        [[ "10",  "0000000", "100"  ], Bits("1100")], // xor    -> XOR
-        [[ "11",  "XXXXXXX", "100"  ], Bits("1100")], // xori   -> XOR
-        [[ "10",  "0000000", "010"  ], Bits("0111")], // slt    -> slt
-        [[ "11",  "XXXXXXX", "010"  ], Bits("0111")], // slti   -> slt
-        [[ "10",  "0000000", "011"  ], Bits("1111")], // sltu   -> sltu
-        [[ "11",  "XXXXXXX", "011"  ], Bits("1111")], // sltiu  -> sltu
-        [[ "1X",  "0000000", "001"  ], Bits("1000")], // sll(i) -> sll
-        [[ "1X",  "0000000", "101"  ], Bits("1001")], // srl(i) -> srl
-        [[ "1X",  "0100000", "101"  ], Bits("1011")], // sra(i) -> sra
+        // ALUOp |  funct7  | funct3 |   ALUControl    // instr  -> op
+        [[ "000",  "XXXXXXX", "XXX"  ], Bits("0010")], // memory -> add
+        [[ "001",  "XXXXXXX", "XXX"  ], Bits("0110")], // branch -> sub
+        [[ "010",  "0000000", "000"  ], Bits("0010")], // add    -> add
+        [[ "011",  "XXXXXXX", "000"  ], Bits("0010")], // addi   -> add
+        [[ "010",  "0100000", "000"  ], Bits("0110")], // sub    -> sub
+        [[ "010",  "0000000", "111"  ], Bits("0000")], // and    -> AND
+        [[ "011",  "XXXXXXX", "111"  ], Bits("0000")], // andi   -> AND
+        [[ "010",  "0000000", "110"  ], Bits("0001")], // or     -> OR
+        [[ "011",  "XXXXXXX", "110"  ], Bits("0001")], // ori    -> OR
+        [[ "010",  "0000000", "100"  ], Bits("1100")], // xor    -> XOR
+        [[ "011",  "XXXXXXX", "100"  ], Bits("1100")], // xori   -> XOR
+        [[ "010",  "0000000", "010"  ], Bits("0111")], // slt    -> slt
+        [[ "011",  "XXXXXXX", "010"  ], Bits("0111")], // slti   -> slt
+        [[ "010",  "0000000", "011"  ], Bits("1111")], // sltu   -> sltu
+        [[ "011",  "XXXXXXX", "011"  ], Bits("1111")], // sltiu  -> sltu
+        [[ "01X",  "0000000", "001"  ], Bits("1000")], // sll(i) -> sll
+        [[ "01X",  "0000000", "101"  ], Bits("1001")], // srl(i) -> srl
+        [[ "01X",  "0100000", "101"  ], Bits("1011")], // sra(i) -> sra
+        [[ "100",  "XXXXXXX", "XXX"  ], Bits("1101")], // lui    -> lui
     ])
 
     tick() {
@@ -106,9 +108,10 @@ export class ALU {
         [["0010"], (a, b) => a + b], // add
         [["0110"], (a, b) => a - b], // subtract
         [["X111"], (a, b) => BigInt(a < b)], // set on less than (unsigned)
-        [["1100"], (a, b) => a ^ b],
         [["1000"], (a, b) => a << (b & 0x1Fn)], // shift left logical
         [["10X1"], (a, b) => a >> (b & 0x1Fn)], // shift right logical/arithmetic
+        [["1100"], (a, b) => a ^ b], // xor
+        [["1101"], (a, b) => (b << 12n)], // lui
     ])
 
     tick() {

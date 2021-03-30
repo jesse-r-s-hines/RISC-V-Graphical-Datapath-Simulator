@@ -229,17 +229,17 @@ describe("Arithmetic", () => {
         test_code(code, {6: -1n, 7: 1n}, {5: 0n})
     })
     
-    // it('lui', () => {
-    //     let code = [
-    //         0x186a0e37n, // lui x28, 100000
-    //     ];
-    //     test_code(code, {}, {28: 0x186A0_000n})
+    it('lui', () => {
+        let code = [
+            0x186a0e37n, // lui x28, 100000
+        ];
+        test_code(code, {}, {28: 0x186A0_000n})
 
-    //     code = [
-    //         0xfffffe37n, // lui x28, -1
-    //     ];
-    //     test_code(code, {}, {28: 0xFFFFF_000n})
-    // })
+        code = [
+            0xfffffe37n, // lui x28, -1
+        ];
+        test_code(code, {}, {28: 0xFFFFF_000n})
+    })
 })
 
 describe("Branch", () => {
