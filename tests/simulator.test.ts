@@ -97,19 +97,19 @@ describe("Arithmetic", () => {
         test_code(code, {5: 5n, 6: 6n}, {5: 7n})
     })
     
-    // it('xor', () => {
-    //     let code = [
-    //         0x0062c2b3n, // xor x5, x5, x6
-    //     ];
-    //     test_code(code, {5: 5n, 6: 6n}, {5: 3n})
-    // })
+    it('xor', () => {
+        let code = [
+            0x0062c2b3n, // xor x5, x5, x6
+        ];
+        test_code(code, {5: 5n, 6: 6n}, {5: 3n})
+    })
     
-    // it('xori', () => {
-    //     let code = [
-    //         0x00634313n, // xori x6, x6, 6
-    //     ];
-    //     test_code(code, {6: 5n}, {6: 3n})
-    // })
+    it('xori', () => {
+        let code = [
+            0x00634313n, // xori x6, x6, 6
+        ];
+        test_code(code, {6: 5n}, {6: 3n})
+    })
     
     // it('sll', () => {
     //     let code = [

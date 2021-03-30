@@ -63,9 +63,11 @@ export class ALUControl {
         [[ "10",  "0100000", "000"  ], Bits("0110")], // sub    -> sub
         [[ "10",  "0000000", "111"  ], Bits("0000")], // and    -> AND
         [[ "10",  "0000000", "110"  ], Bits("0001")], // or     -> OR
+        [[ "10",  "0000000", "100"  ], Bits("1100")], // xor    -> XOR
         [[ "11",  "XXXXXXX", "000"  ], Bits("0010")], // addi   -> add
         [[ "11",  "XXXXXXX", "111"  ], Bits("0000")], // andi   -> AND
         [[ "11",  "XXXXXXX", "110"  ], Bits("0001")], // ori    -> OR
+        [[ "11",  "XXXXXXX", "100"  ], Bits("1100")], // xori   -> XOR
     ])
 
     tick() {
@@ -89,6 +91,7 @@ export class ALU {
         [["0010"], (a, b) => a + b], // add
         [["0110"], (a, b) => a - b], // subtract
         [["0111"], (a, b) => BigInt(a < b)], // set on less than
+        [["1100"], (a, b) => a ^ b],
     ])
 
     tick() {
