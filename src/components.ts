@@ -130,25 +130,34 @@ export class ImmGen {
     // outputs
     public immediate: Bits = []// 32 bits
 
+    private static table = new TruthTable<(i: Bits) => Bits>([
+        [["1100011"], (i) => // SB-type -> imm[12|10:5] | rs2 | rs1 | funct3 | imm[4:1|11]
+            [0, ...i.slice(8, 12), ...i.slice(25,31), i[7], i[32]] // backwards LSB 0
+        ], 
+        [["0100011"], (i) => // S-type -> imm[11:5] | rs2 | rs1 | funct3 | imm[4:0]
+            [...i.slice(7, 12), ...i.slice(25, 32)] // LSB 0
+        ],
+        [["0X10111"], (i) => // U-type -> imm[31:12] | rd | opcode
+            i.slice(12, 32)
+        ],
+        [["1101111"], (i) => // UJ-type -> imm[20|10:1|11|19:12] | rd | opcode
+            [0, ...i.slice(21,31), i[20], ...i.slice(12, 20), i[31]] // backwards LSB 0
+        ],
+        [["1100111"], (i) => // I-type (JALR) -> imm[11:0] | rs1 | funct3 | rd
+            i.slice(20, 32)
+        ],
+        [["00X0011"], (i) => // I-type -> imm[11:0] | rs1 | funct3 | rd
+            i.slice(20, 32)
+        ],
+        [["0110011"], (i) => // R-type -> no immediate
+            Bits("0")
+        ],
+    ])
+
     tick() {
-        let instr = this.instruction
-        let opcode = instr.slice(0, 7)
-        let imm: Bits
-
-        // There are 5 possible immediate formats. Only using 3 currently
-        // opcode[6] is 0 for data transfer instructions and 1 for conditional branches
-        // opcode[5] is 0 for load instructions and 1 for store
-        if (opcode[6]) { // branch, SB format
-            // imm[12|10:5] | rs2 | rs1 | funct3 | imm[4:1|11]
-            imm = [0, ...instr.slice(8, 12), ...instr.slice(25,31), instr[7], instr[32]] // backwards LSB 0
-        } else if (opcode[5]) { // store, S format
-            // imm[11:5] | rs2 | rs1 | funct3 | imm[4:0]
-            imm = [...instr.slice(7, 12), ...instr.slice(25, 32)] // LSB 0
-        } else { // load, I format
-            // imm[11:0] | rs1 | funct3 | rd
-            imm = instr.slice(20, 32)
-        }
-
+        let opcode = this.instruction.slice(0, 7)
+        let fun = ImmGen.table.match([opcode])
+        let imm = fun(this.instruction)
         this.immediate = Bits.extended(imm, 32, true)
     }
 }

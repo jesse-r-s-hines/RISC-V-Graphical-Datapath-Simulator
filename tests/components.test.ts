@@ -16,31 +16,39 @@ describe("Components", () => {
         // sw t0, 1003(t0)
         imm.instruction = Bits(0b0011111_00101_00101_010_01011_0100011n, 32)
         imm.tick()
-        expect(imm.immediate.length).to.equal(32)
         expect(Bits.toInt(imm.immediate, true)).to.equal(1003n)
 
         // bne t0, t1, 20 # + 5 instruction
         imm.instruction = Bits(0b0000000_00110_00101_001_10100_1100011n, 32)
         imm.tick()
-        expect(imm.immediate.length).to.equal(32)
         expect(Bits.toInt(imm.immediate, true)).to.equal(20n)
 
-        // bne t0, t1, 0xBFC # + 5 instruction
+        // bne t0, t1, 0xBFC # + 5 instructions
         imm.instruction = Bits(0b0011111_11100_00101_000_11101_1100011n, 32)
         imm.tick()
         expect(Bits.toInt(imm.immediate, true)).to.equal(0xBFCn)
 
-        // TODO
-        // auipc t0, 12345
-        // imm.instruction = Bits(0b00010010001101000101_00101_0010111n, 32)
-        // imm.tick()
-        // expect(imm.immediate.length).to.equal(32)
-        // expect(Bits.toInt(imm.immediate, true)).to.equal(12345n)
+        // lui x28, 100000
+        imm.instruction = Bits(0b00011000011010100000_11100_0110111n, 32)
+        imm.tick()
+        expect(Bits.toInt(imm.immediate, true)).to.equal(100000n)
 
-        // jal t0, main
-        // imm.instruction = Bits(0b11111110110111111111_00101_1101111n, 32)
-        // imm.tick()
-        // expect(imm.immediate.length).to.equal(32)
-        // expect(Bits.toInt(imm.immediate, true)).to.equal(-16n)
+        // auipc t0, 12345
+        imm.instruction = Bits(0b00000011000000111001_00101_0010111n, 32)
+        imm.tick()
+        expect(Bits.toInt(imm.immediate, true)).to.equal(12345n)
+
+        // jal t0, 0x87654
+        imm.instruction = Bits(0b01100101010010000111_00101_1101111n, 32)
+        imm.tick()
+        expect(imm.immediate.length).to.equal(32)
+        expect(Bits.toInt(imm.immediate, true)).to.equal(0x87654n)
+
+
+        // or x5, x6, x7
+        imm.instruction = Bits(0b0000000_00111_00110_110_00101_0110011n, 32)
+        imm.tick()
+        expect(Bits.toInt(imm.immediate, true)).to.equal(0x0n)
+
     });
 })
