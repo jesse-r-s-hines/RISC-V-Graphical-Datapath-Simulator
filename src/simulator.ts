@@ -1,4 +1,4 @@
-import {Bit, Bits} from "./utils"
+import {Bit, Bits, twos_complement} from "./utils"
 import * as Comp from "./components"
 import {Memory} from "./memory"
 
@@ -47,7 +47,7 @@ export class Simulator {
         
         // initialize registers
         for (let reg in regs) {
-            this.regFile.registers[reg] = regs[reg]
+            this.regFile.registers[reg] = twos_complement(regs[reg])
         }
 
         // These values need to be initialized since they are set until the end of the tick

@@ -1,12 +1,12 @@
 import { expect } from "chai";
 import {Simulator} from "../src/simulator";
-import {Bits} from "../src/utils";
+import {Bits, twos_complement} from "../src/utils";
 
 function test_code(code: bigint[], regs: Record<number, bigint> = {}, expected: Record<number, bigint> = {}) {
     let sim = new Simulator(code, regs)
     sim.run()
     for (let reg in expected) {
-        expect(sim.regFile.registers[reg], `register x${reg}`).to.equal(expected[reg])
+        expect(sim.regFile.registers[reg], `register x${reg}`).to.equal(twos_complement(expected[reg]))
     }
 }
 
@@ -22,8 +22,8 @@ function test_branch(branch: bigint, regs: Record<number, bigint> = {}, taken: b
 
 describe("Misc", () => {
     it('sp and gp initialization', () => {
-        test_code([], {}, {2: 0xbffffff0n, 3: 0x10008000n})
-        test_code([], {3: 42n}, {2: 0xbffffff0n, 3: 42n})
+        test_code([], {}, {2: 0xbfff_fff0n, 3: 0x1000_8000n})
+        test_code([], {3: 42n}, {2: 0xbfff_fff0n, 3: 42n})
     })
 })
 
