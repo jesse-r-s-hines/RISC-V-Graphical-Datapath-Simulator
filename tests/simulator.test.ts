@@ -32,7 +32,12 @@ describe("Arithmetic", () => {
         let code = [
             0x007302b3n, // add x5, x6, x7
         ];
-        test_code(code, {5: 5n, 6: 6n, 7: 7n}, {5: 13n})
+        test_code(code, {6: 6n, 7: 7n}, {5: 13n})
+
+        code = [
+            0x007302b3n, // add x5, x6, x7 # overflow
+        ];
+        test_code(code, {6: 2147483647n, 7: 1n}, {5: -2147483648n})
     })
     
     it('addi', () => {
@@ -51,7 +56,12 @@ describe("Arithmetic", () => {
         let code = [
             0x407302b3n, // sub x5, x6, x7
         ];
-        test_code(code, {5: 5n, 6: 6n, 7: 7n}, {5: -1n})
+        test_code(code, {6: 6n, 7: 7n}, {5: -1n})
+
+        code = [
+            0x407302b3n, // sub x5, x6, x7 # underflow
+        ];
+        test_code(code, {6: -2147483648n, 7: 1n}, {5: 2147483647n})
     })
     
     it('and', () => {
@@ -111,6 +121,11 @@ describe("Arithmetic", () => {
     //         0x007312b3n, // sll x5, x6, x7 # Only uses lower 5 bits of reg.
     //     ];
     //     test_code(code, {6: 1n, 7: -7n}, {5: 0x2000000n})
+
+    //     code = [
+    //         0x007312b3n, // sll x5, x6, x7 # Shifts off extra bits
+    //     ];
+    //     test_code(code, {6: 0xFFFF_FFFFn, 7: 2}, {5: 0xFFFF_FFFCn})
     // })
     
     // it('slli', () => {

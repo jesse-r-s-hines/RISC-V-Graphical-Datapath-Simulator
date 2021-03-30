@@ -60,21 +60,6 @@ describe("Bits", () => {
         expect(ba).to.eql(Bits("1001"))
     });
 
-    it('From Int Errors', () => {
-        expect(() => Bits(0n, 8, false)).to.not.throw()
-        expect(() => Bits(255n, 8, false)).to.not.throw()
-
-        expect(() => Bits(256n, 8, false)).to.throw("256 out of range for unsigned 8 bits")
-        expect(() => Bits(-1n, 8, false)).to.throw()
-
-        expect(() => Bits(0n, 8, true)).to.not.throw()
-        expect(() => Bits(-32768n, 16, true)).to.not.throw()
-        expect(() => Bits(32767n, 16, true)).to.not.throw()
-
-        expect(() => Bits(-32769n, 16, true)).to.throw()
-        expect(() => Bits(32768n, 16, true)).to.throw()
-    });
-
     it('Large Ints', () => {
         let ba = Bits(123456789012345n, 64)
         expect(Bits.toInt(ba)).to.equal(123456789012345n)

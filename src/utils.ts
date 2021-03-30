@@ -26,7 +26,8 @@ export function Bits(arr: Bit[]): Bits
 export function Bits(are: string): Bits
 
 /**
- * Converts a bigint to an array of bits
+ * Converts a bigint to an array of bits.
+ * If the bigint doesn't fit in length bits it will discard the extra bits.
  * @param num The bigint to convert into bits. Should be positive.
  * @param length The number of bits in the array.
  * @param signed Whether the bits should be signed or not. Defaults to false.
@@ -55,9 +56,6 @@ function fromString(str: string): Bits {
 }
 
 function fromInt(num: bigint, length: number, signed: boolean = false): Bits {
-    let [lb, ub] = signed ? [-(2**(length - 1)), 2**(length - 1) - 1] : [0, 2**(length) - 1]
-    if (num < lb || num > ub) throw Error(`${num} out of range for ${signed?"":"un"}signed ${length} bits.`)
-
     let bits = Array(length)
     for (let i = 0; i < length; i++) {
         bits[i] = Number(num & 0x1n) // Least Significant Bit 0
@@ -68,7 +66,7 @@ function fromInt(num: bigint, length: number, signed: boolean = false): Bits {
 
 export namespace Bits {
     /**
-     * Converts a Bits to a unsigned bigint
+     * Converts a Bits to a bigint
      * @param bits The bits to convert to an int
      * @param signed Whether the bits should be interpreted signed or not. Defaults to false.
      */
