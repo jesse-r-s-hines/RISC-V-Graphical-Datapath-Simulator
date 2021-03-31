@@ -257,42 +257,42 @@ describe("Branch", () => {
         test_branch(code2, {5: 1n, 28: 1n}, true)
     })
     
-    // it('bge', () => {
-    //     let code = 0x01c2d463n // bge x5, x28, 8 # +2 instructions
-    //     test_branch(code, {5: 0n, 28: -1n}, true)
+    it('bge', () => {
+        let code = 0x01c2d463n // bge x5, x28, 8 # +2 instructions
+        test_branch(code, {5: 0n, 28: -1n}, true)
     
-    //     code = 0x01c2d463n, // bge x5, x28, 8 # +2 instructions
-    //     test_branch(code, {5: -1n, 28: -1n}, true)
+        code = 0x01c2d463n, // bge x5, x28, 8 # +2 instructions
+        test_branch(code, {5: -1n, 28: -1n}, true)
     
-    //     code = 0x01c2d463n, // bge x5, x28, 8 # +2 instructions
-    //     test_branch(code, {5: -1n, 28: 0n}, false)
-    // })
+        code = 0x01c2d463n, // bge x5, x28, 8 # +2 instructions
+        test_branch(code, {5: -1n, 28: 0n}, false)
+    })
     
-    // it('bgeu', () => {
-    //     let code = 0x01c2f463n // bgeu x5, x28, 8 # +2 instructions
-    //     test_branch(code, {5: 0n, 28: -1n}, false)
-    // })
+    it('bgeu', () => {
+        let code = 0x01c2f463n // bgeu x5, x28, 8 # +2 instructions
+        test_branch(code, {5: 0n, 28: -1n}, false)
+    })
     
-    // it('blt', () => {
-    //     let code = 0x01c2c463n // blt x5, x28, 8 # +2 instructions
-    //     test_branch(code, {5: -2n, 28: 0n}, true)
+    it('blt', () => {
+        let code = 0x01c2c463n // blt x5, x28, 8 # +2 instructions
+        test_branch(code, {5: -2n, 28: 0n}, true)
     
-    //     code = 0x01c2c463n, // blt x5, x28, 8 # +2 instructions, false
-    //     test_branch(code, {5: -100n, 28: -100n}, false)
+        code = 0x01c2c463n, // blt x5, x28, 8 # +2 instructions, false
+        test_branch(code, {5: -100n, 28: -100n}, false)
     
-    //     code = 0x01c2c463n, // blt x5, x28, 8 # +2 instructions, true
-    //     test_branch(code, {5: 100n, 28: 101n}, true)
-    // })
+        code = 0x01c2c463n, // blt x5, x28, 8 # +2 instructions, true
+        test_branch(code, {5: 100n, 28: 101n}, true)
+    })
     
-    // it('bltu', () => {
-    //     let code = 0x01c2e463n // bltu x5, x28, 8 # +2 instructions
-    //     test_branch(code, {5: -0n, 28: 0n}, false)
-    // })
+    it('bltu', () => {
+        let code = 0x01c2e463n // bltu x5, x28, 8 # +2 instructions
+        test_branch(code, {5: -0n, 28: 0n}, false)
+    })
     
-    // it('bne', () => {
-    //     let code = 0x01c29463n // bne x5, x28, 8 # +2 instructions
-    //     test_branch(code, {5: 1n, 28: 3n}, true)
-    // })
+    it('bne', () => {
+        let code = 0x01c29463n // bne x5, x28, 8 # +2 instructions
+        test_branch(code, {5: 1n, 28: 3n}, true)
+    })
     
     // it('jal', () => {
     //     let code = [
