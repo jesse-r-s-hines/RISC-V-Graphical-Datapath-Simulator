@@ -1,4 +1,4 @@
-import {Bit, Bits, twos_complement} from "./utils"
+import {Bit, Bits, b, twos_complement} from "./utils"
 import * as Comp from "./components"
 import {Memory} from "./memory"
 
@@ -102,12 +102,12 @@ export class Simulator {
         this.dataMem.memWrite = this.control.memWrite
         this.dataMem.tick()
 
-        this.pcAdd4.aluControl = Bits("0010") // add
+        this.pcAdd4.aluControl = b`0010` // add
         this.pcAdd4.in1 = this.pc.out
         this.pcAdd4.in2 = Bits(4n, 32)
         this.pcAdd4.tick()
 
-        this.branchAdder.aluControl = Bits("0010") // add
+        this.branchAdder.aluControl = b`0010` // add
         this.branchAdder.in1 = this.pc.out
         this.branchAdder.in2 = this.immGen.immediate
         this.branchAdder.tick()

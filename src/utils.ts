@@ -1,7 +1,6 @@
 /** Represents a bit as either a boolean or a 0|1 value. */
 export type Bit = number|boolean
 
-
 /**
  * Represents an array of bits as a number[] containing 0s and 1s.
  * Note that the most significant bit is actually at the end of the array. i.e. the arrays are stored backwards.
@@ -23,7 +22,7 @@ export function Bits(arr: Bit[]): Bits
  * Eg. `Bits.from("1010")` represents 10
  * @param arr The array to convert
  */
-export function Bits(are: string): Bits
+export function Bits(arr: string): Bits
 
 /**
  * Converts a bigint to an array of bits.
@@ -46,7 +45,12 @@ export function Bits(src: Bit[]|string|bigint, length?: number, signed?: boolean
     }
 }
 
-// Private methods to module
+/** A Template tag which will take a string and return a Bits. */
+export function b(strings: TemplateStringsArray) {
+    return Bits(strings[0])
+}
+
+// Private methods to create Bits
 function fromArray(arr: Bit[]): Bits {
     return arr.slice().reverse()
 }

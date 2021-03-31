@@ -1,5 +1,5 @@
 import {Memory} from "./memory"
-import {Bit, Bits, TruthTable} from "./utils"
+import {Bit, Bits, b, TruthTable} from "./utils"
 
 export class PC {
     // inputs
@@ -36,13 +36,13 @@ export class Control {
 
     private static table = new TruthTable<[Bit, Bits, Bit, Bit, Bit, Bits]>([
         //  opcode   | aluSrc | writeSrc | regWrite | memRead | memWrite |  aluOp |
-        [["0110011"], [  0,    Bits("00"),    1,         0,        0,  Bits("010")]], // R-format
-        [["0010011"], [  1,    Bits("00"),    1,         0,        0,  Bits("011")]], // I-format
-        [["0000011"], [  1,    Bits("01"),    1,         1,        0,  Bits("000")]], // ld
-        [["0100011"], [  1,    Bits("00"),    0,         0,        1,  Bits("000")]], // st
-        [["1100011"], [  0,    Bits("00"),    0,         0,        0,  Bits("001")]], // branch
-        [["1101111"], [  0,    Bits("10"),    1,         0,        0,  Bits("000")]], // jal (Don't care aluOp)
-        [["0110111"], [  1,    Bits("00"),    1,         0,        0,  Bits("100")]], // lui
+        [["0110011"], [  0,      b`00`,    1,         0,        0,         b`010`]], // R-format
+        [["0010011"], [  1,      b`00`,    1,         0,        0,         b`011`]], // I-format
+        [["0000011"], [  1,      b`01`,    1,         1,        0,         b`000`]], // ld
+        [["0100011"], [  1,      b`00`,    0,         0,        1,         b`000`]], // st
+        [["1100011"], [  0,      b`00`,    0,         0,        0,         b`001`]], // branch
+        [["1101111"], [  0,      b`10`,    1,         0,        0,         b`000`]], // jal (Don't care aluOp)
+        [["0110111"], [  1,      b`00`,    1,         0,        0,         b`100`]], // lui
     ])
 
     private static branch_table = new TruthTable<[Bit, Bit, Bit]>([
@@ -72,30 +72,30 @@ export class ALUControl {
     public aluControl: Bits = [] // 4 bits
 
     private static table = new TruthTable([
-        // ALUOp |  funct7  | funct3 |   ALUControl    // instr  -> op
-        [[ "000",  "XXXXXXX", "XXX"  ], Bits("0010")], // memory -> add
+        // ALUOp |  funct7  | funct3 |   ALUControl // instr  -> op
+        [[ "000",  "XXXXXXX", "XXX"  ],   b`0010`], // memory -> add
 
-        [[ "001",  "XXXXXXX", "00X"  ], Bits("0110")], // beq/bne   -> sub
-        [[ "001",  "XXXXXXX", "10X"  ], Bits("0111")], // blt/bge   -> slt
-        [[ "001",  "XXXXXXX", "11X"  ], Bits("1111")], // bltu/bgeu -> sltu
+        [[ "001",  "XXXXXXX", "00X"  ],   b`0110`], // beq/bne   -> sub
+        [[ "001",  "XXXXXXX", "10X"  ],   b`0111`], // blt/bge   -> slt
+        [[ "001",  "XXXXXXX", "11X"  ],   b`1111`], // bltu/bgeu -> sltu
 
-        [[ "010",  "0000000", "000"  ], Bits("0010")], // add    -> add
-        [[ "011",  "XXXXXXX", "000"  ], Bits("0010")], // addi   -> add
-        [[ "010",  "0100000", "000"  ], Bits("0110")], // sub    -> sub
-        [[ "010",  "0000000", "111"  ], Bits("0000")], // and    -> AND
-        [[ "011",  "XXXXXXX", "111"  ], Bits("0000")], // andi   -> AND
-        [[ "010",  "0000000", "110"  ], Bits("0001")], // or     -> OR
-        [[ "011",  "XXXXXXX", "110"  ], Bits("0001")], // ori    -> OR
-        [[ "010",  "0000000", "100"  ], Bits("1100")], // xor    -> XOR
-        [[ "011",  "XXXXXXX", "100"  ], Bits("1100")], // xori   -> XOR
-        [[ "010",  "0000000", "010"  ], Bits("0111")], // slt    -> slt
-        [[ "011",  "XXXXXXX", "010"  ], Bits("0111")], // slti   -> slt
-        [[ "010",  "0000000", "011"  ], Bits("1111")], // sltu   -> sltu
-        [[ "011",  "XXXXXXX", "011"  ], Bits("1111")], // sltiu  -> sltu
-        [[ "01X",  "0000000", "001"  ], Bits("1000")], // sll(i) -> sll
-        [[ "01X",  "0000000", "101"  ], Bits("1001")], // srl(i) -> srl
-        [[ "01X",  "0100000", "101"  ], Bits("1011")], // sra(i) -> sra
-        [[ "100",  "XXXXXXX", "XXX"  ], Bits("1101")], // lui    -> lui
+        [[ "010",  "0000000", "000"  ],   b`0010`], // add    -> add
+        [[ "011",  "XXXXXXX", "000"  ],   b`0010`], // addi   -> add
+        [[ "010",  "0100000", "000"  ],   b`0110`], // sub    -> sub
+        [[ "010",  "0000000", "111"  ],   b`0000`], // and    -> AND
+        [[ "011",  "XXXXXXX", "111"  ],   b`0000`], // andi   -> AND
+        [[ "010",  "0000000", "110"  ],   b`0001`], // or     -> OR
+        [[ "011",  "XXXXXXX", "110"  ],   b`0001`], // ori    -> OR
+        [[ "010",  "0000000", "100"  ],   b`1100`], // xor    -> XOR
+        [[ "011",  "XXXXXXX", "100"  ],   b`1100`], // xori   -> XOR
+        [[ "010",  "0000000", "010"  ],   b`0111`], // slt    -> slt
+        [[ "011",  "XXXXXXX", "010"  ],   b`0111`], // slti   -> slt
+        [[ "010",  "0000000", "011"  ],   b`1111`], // sltu   -> sltu
+        [[ "011",  "XXXXXXX", "011"  ],   b`1111`], // sltiu  -> sltu
+        [[ "01X",  "0000000", "001"  ],   b`1000`], // sll(i) -> sll
+        [[ "01X",  "0000000", "101"  ],   b`1001`], // srl(i) -> srl
+        [[ "01X",  "0100000", "101"  ],   b`1011`], // sra(i) -> sra
+        [[ "100",  "XXXXXXX", "XXX"  ],   b`1101`], // lui    -> lui
     ])
 
     tick() {
@@ -122,15 +122,15 @@ export class ALU {
     ])
 
     private static table = new TruthTable<(a: bigint, b: bigint) => bigint>([
-        [["0000"], (a, b) => a & b], // AND
-        [["0001"], (a, b) => a | b], // OR
-        [["0010"], (a, b) => a + b], // add
-        [["0110"], (a, b) => a - b], // subtract
-        [["X111"], (a, b) => BigInt(a < b)], // set on less than (unsigned)
+        [["0000"], (a, b) => a & b           ], // AND
+        [["0001"], (a, b) => a | b           ], // OR
+        [["0010"], (a, b) => a + b           ], // add
+        [["0110"], (a, b) => a - b           ], // subtract
+        [["X111"], (a, b) => BigInt(a < b)   ], // set on less than (unsigned)
         [["1000"], (a, b) => a << (b & 0x1Fn)], // shift left logical
         [["10X1"], (a, b) => a >> (b & 0x1Fn)], // shift right logical/arithmetic
-        [["1100"], (a, b) => a ^ b], // xor
-        [["1101"], (a, b) => (b << 12n)], // lui
+        [["1100"], (a, b) => a ^ b           ], // xor
+        [["1101"], (a, b) => (b << 12n)      ], // lui
     ])
 
     tick() {
@@ -172,7 +172,7 @@ export class ImmGen {
             i.slice(20, 32)
         ],
         [["0110011"], (i) => // R-type -> no immediate
-            Bits("0")
+            b`0`
         ],
     ])
 
