@@ -19,7 +19,7 @@ export class Simulator {
 
     public pcMux: Comp.Mux
     public aluInputMux: Comp.Mux
-    public memOrAluMux: Comp.Mux
+    public writeSrcMux: Comp.Mux
 
     constructor(code: bigint[], regs: Record<number, bigint> = {}) {
         this.pc = new Comp.PC()
@@ -37,7 +37,7 @@ export class Simulator {
         
         this.pcMux = new Comp.Mux(2)
         this.aluInputMux = new Comp.Mux(2)
-        this.memOrAluMux = new Comp.Mux(2)
+        this.writeSrcMux = new Comp.Mux(3)
 
         let text_start = 0x0001_0000n
 
@@ -102,11 +102,6 @@ export class Simulator {
         this.dataMem.memWrite = this.control.memWrite
         this.dataMem.tick()
 
-        this.memOrAluMux.in[0] = this.alu.result
-        this.memOrAluMux.in[1] = this.dataMem.readData
-        this.memOrAluMux.select = [this.control.memToReg]
-        this.memOrAluMux.tick()
-
         this.pcAdd4.aluControl = Bits("0010") // add
         this.pcAdd4.in1 = this.pc.out
         this.pcAdd4.in2 = Bits(4n, 32)
@@ -119,6 +114,7 @@ export class Simulator {
 
         this.jumpControl.branchZero = this.control.branchZero
         this.jumpControl.branchNotZero = this.control.branchNotZero
+        this.jumpControl.jump = this.control.jump
         this.jumpControl.zero = this.alu.zero
         this.jumpControl.tick()
 
@@ -127,10 +123,16 @@ export class Simulator {
         this.pcMux.select = [this.jumpControl.takeBranch]
         this.pcMux.tick()
 
+        this.writeSrcMux.in[0] = this.alu.result
+        this.writeSrcMux.in[1] = this.dataMem.readData
+        this.writeSrcMux.in[2] = this.pcAdd4.result
+        this.writeSrcMux.select = this.control.writeSrc
+        this.writeSrcMux.tick()
+
         // The backwards wires
         this.pc.in = this.pcMux.out
         this.regFile.regWrite = this.control.regWrite
-        this.regFile.writeData = this.memOrAluMux.out
+        this.regFile.writeData = this.writeSrcMux.out
         this.regFile.writeReg = instr.slice(7, 12)
 
         return true

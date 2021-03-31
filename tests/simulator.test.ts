@@ -294,14 +294,14 @@ describe("Branch", () => {
         test_branch(code, {5: 1n, 28: 3n}, true)
     })
     
-    // it('jal', () => {
-    //     let code = [
-    //         0x008002efn, // jal x5, 8 # +2 instructions
-    //         0x00100393n, // addi x7, zero, 1
-    //         0x00100313n, // addi x6, zero, 1
-    //     ];
-    //     test_code(code, {}, {5: 0x0001_0004n, 6: 1n, 7: 0n})
-    // })
+    it('jal', () => {
+        let code = [
+            0x008002efn, // jal x5, 8 # +2 instructions
+            0x00100393n, // addi x7, zero, 1
+            0x00100313n, // addi x6, zero, 1
+        ];
+        test_code(code, {}, {5: 0x0001_0004n, 6: 1n, 7: 0n})
+    })
     
     // it('jalr', () => {
     //     let code = [

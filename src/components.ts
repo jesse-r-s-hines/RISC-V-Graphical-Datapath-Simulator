@@ -25,36 +25,39 @@ export class Control {
 
     // outputs
     public aluSrc: Bit = 0
-    public memToReg: Bit = 0
+    public writeSrc: Bits = [] // 2 bits
     public regWrite: Bit = 0
     public memRead: Bit = 0
     public memWrite: Bit = 0
     public branchZero: Bit = 0
     public branchNotZero: Bit = 0
+    public jump: Bit =  0
     public aluOp: Bits = [] // 3 bits
 
-    private static table = new TruthTable<[Bit, Bit, Bit, Bit, Bit, Bits]>([
-        //  opcode   | aluSrc | memToReg | regWrite | memRead | memWrite |  aluOp |
-        [["0110011"], [  0,        0,         1,         0,        0,    Bits("010")]], // R-format
-        [["0010011"], [  1,        0,         1,         0,        0,    Bits("011")]], // I-format
-        [["0000011"], [  1,        1,         1,         1,        0,    Bits("000")]], // ld
-        [["0100011"], [  1,        0,         0,         0,        1,    Bits("000")]], // st
-        [["1100011"], [  0,        0,         0,         0,        0,    Bits("001")]], // branch
-        [["0110111"], [  1,        0,         1,         0,        0,    Bits("100")]], // lui
+    private static table = new TruthTable<[Bit, Bits, Bit, Bit, Bit, Bits]>([
+        //  opcode   | aluSrc | writeSrc | regWrite | memRead | memWrite |  aluOp |
+        [["0110011"], [  0,    Bits("00"),    1,         0,        0,  Bits("010")]], // R-format
+        [["0010011"], [  1,    Bits("00"),    1,         0,        0,  Bits("011")]], // I-format
+        [["0000011"], [  1,    Bits("01"),    1,         1,        0,  Bits("000")]], // ld
+        [["0100011"], [  1,    Bits("00"),    0,         0,        1,  Bits("000")]], // st
+        [["1100011"], [  0,    Bits("00"),    0,         0,        0,  Bits("001")]], // branch
+        [["1101111"], [  0,    Bits("10"),    1,         0,        0,  Bits("000")]], // jal (Don't care aluOp)
+        [["0110111"], [  1,    Bits("00"),    1,         0,        0,  Bits("100")]], // lui
     ])
 
-    private static branch_table = new TruthTable<[Bit, Bit]>([
-        // opcode  | funct3 | branchZero | branchNotZero |
-        [["1100011", "000"], [     1,           0,  ]], // beq
-        [["1100011", "1X1"], [     1,           0,  ]], // bge, bgeu
-        [["1100011", "001"], [     0,           1,  ]], // bne
-        [["1100011", "1X0"], [     0,           1,  ]], // blt, bltu
-        [["XXXXXXX", "XXX"], [     0,           0,  ]], // not a branch
+    private static branch_table = new TruthTable<[Bit, Bit, Bit]>([
+        // opcode  | funct3 | branchZero | branchNotZero | jump
+        [["1100011", "000"], [     1,           0,          0]], // beq
+        [["1100011", "1X1"], [     1,           0,          0]], // bge, bgeu
+        [["1100011", "001"], [     0,           1,          0]], // bne
+        [["1100011", "1X0"], [     0,           1,          0]], // blt, bltu
+        [["1101111", "XXX"], [     0,           0,          1]], // jump
+        [["XXXXXXX", "XXX"], [     0,           0,          0]], // not a branch
     ])
 
     public tick() {
-        [this.aluSrc, this.memToReg, this.regWrite, this.memRead, this.memWrite, this.aluOp] = Control.table.match(this.opCode);
-        [this.branchZero, this.branchNotZero] = Control.branch_table.match(this.opCode, this.funct3)
+        [this.aluSrc, this.writeSrc, this.regWrite, this.memRead, this.memWrite, this.aluOp] = Control.table.match(this.opCode);
+        [this.branchZero, this.branchNotZero, this.jump] = Control.branch_table.match(this.opCode, this.funct3)
     }
 }
 
@@ -265,13 +268,14 @@ export class JumpControl {
     // inputs
     public branchZero: Bit = 0
     public branchNotZero: Bit = 0
+    public jump: Bit = 0
     public zero: Bit = 0
 
     // outputs
     public takeBranch: Bit = 0
 
     tick() {
-        this.takeBranch = +((this.branchZero && this.zero) || (this.branchNotZero && !this.zero))
+        this.takeBranch = +(this.jump || (this.branchZero && this.zero) || (this.branchNotZero && !this.zero))
     }
 }
 
