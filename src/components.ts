@@ -271,20 +271,44 @@ export class JumpControl {
     public takeBranch: Bit = 0
 
     tick() {
-        this.takeBranch = Number((this.branchZero && this.zero) || (this.branchNotZero && !this.zero))
+        this.takeBranch = +((this.branchZero && this.zero) || (this.branchNotZero && !this.zero))
     }
 }
 
-export class AndGate {
+export class And {
     // input
-    public in1: Bit = 0
-    public in2: Bit = 0
+    public in: Bit[] = []
 
     // output
     public out: Bit = 0
 
     tick() {
-        this.out = this.in1 && this.in2
+        this.out = +this.in.every(x => x)
+    }
+}
+
+
+export class Or {
+    // input
+    public in: Bit[] = []
+
+    // output
+    public out: Bit = 0
+
+    tick() {
+        this.out = +this.in.some(x => x)
+    }
+}
+
+export class Not {
+    // input
+    public in: Bit = 0
+
+    // output
+    public out: Bit = 0
+
+    tick() {
+        this.out = +!this.in
     }
 }
 
