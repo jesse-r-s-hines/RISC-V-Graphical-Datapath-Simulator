@@ -53,8 +53,8 @@ export class Control {
     ])
 
     public tick() {
-        [this.aluSrc, this.memToReg, this.regWrite, this.memRead, this.memWrite, this.aluOp] = Control.table.match([this.opCode]);
-        [this.branchZero, this.branchNotZero] = Control.branch_table.match([this.opCode, this.funct3])
+        [this.aluSrc, this.memToReg, this.regWrite, this.memRead, this.memWrite, this.aluOp] = Control.table.match(this.opCode);
+        [this.branchZero, this.branchNotZero] = Control.branch_table.match(this.opCode, this.funct3)
     }
 }
 
@@ -96,7 +96,7 @@ export class ALUControl {
     ])
 
     tick() {
-        this.aluControl = ALUControl.table.match([this.aluOp, this.funct7, this.funct3])
+        this.aluControl = ALUControl.table.match(this.aluOp, this.funct7, this.funct3)
     }
 }
 
@@ -131,10 +131,10 @@ export class ALU {
     ])
 
     tick() {
-        let signed = ALU.table_signed.match([this.aluControl])
+        let signed = ALU.table_signed.match(this.aluControl)
         let [a, b] = [Bits.toInt(this.in1, signed), Bits.toInt(this.in2, signed)]
 
-        let op = ALU.table.match([this.aluControl])
+        let op = ALU.table.match(this.aluControl)
         let resultInt = op(a, b)
 
         this.result = Bits(resultInt, 32, signed)
@@ -175,7 +175,7 @@ export class ImmGen {
 
     tick() {
         let opcode = this.instruction.slice(0, 7)
-        let fun = ImmGen.table.match([opcode])
+        let fun = ImmGen.table.match(opcode)
         let imm = fun(this.instruction)
         this.immediate = Bits.extended(imm, 32, true)
     }

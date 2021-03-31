@@ -166,18 +166,18 @@ describe("Truth Table", () => {
             [["10", "X"], 0b11n],
         ])
 
-        expect(table.match([Bits("00"), Bits("0")])).to.equal(0b00n)
-        expect(table.match([Bits("01"), Bits("0")])).to.equal(0b00n)
+        expect(table.match(Bits("00"), Bits("0"))).to.equal(0b00n)
+        expect(table.match(Bits("01"), Bits("0"))).to.equal(0b00n)
 
-        expect(table.match([Bits("00"), Bits("1")])).to.equal(0b01n)
+        expect(table.match(Bits("00"), Bits("1"))).to.equal(0b01n)
 
-        expect(table.match([Bits("01"), Bits("1")])).to.equal(0b10n)
+        expect(table.match(Bits("01"), Bits("1"))).to.equal(0b10n)
 
-        expect(table.match([Bits("10"), Bits("0")])).to.equal(0b11n)
-        expect(table.match([Bits("10"), Bits("1")])).to.equal(0b11n)
+        expect(table.match(Bits("10"), Bits("0"))).to.equal(0b11n)
+        expect(table.match(Bits("10"), Bits("1"))).to.equal(0b11n)
 
-        expect(() => table.match([Bits("11"), Bits("0")])).to.throw("No match for inputs")
-        expect(() => table.match([Bits("11"), Bits("1")])).to.throw("No match for inputs")
+        expect(() => table.match(Bits("11"), Bits("0"))).to.throw("No match for inputs")
+        expect(() => table.match(Bits("11"), Bits("1"))).to.throw("No match for inputs")
     });
 })
 

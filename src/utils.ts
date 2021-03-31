@@ -167,7 +167,7 @@ export class TruthTable<T> {
     /**
      * Return the proper output for the given inputs to the truth table.
      */
-    match(inputs: Bits[]): T {
+    match(...inputs: Bits[]): T {
         for (let [rowInputs, rowOutputs] of this.table) {
             if (rowInputs.every( (expected, i) => TruthTable.matchInput(inputs[i], expected) )) {
                 return rowOutputs
