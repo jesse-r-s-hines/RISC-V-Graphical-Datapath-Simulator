@@ -134,8 +134,6 @@ export class Simulator {
         this.regFile.regWrite = this.control.regWrite
         this.regFile.writeData = this.writeSrcMux.out
         this.regFile.writeReg = instr.slice(7, 12)
-
-        return true
     }
 
     /** Runs the simulator until the end of the code. */

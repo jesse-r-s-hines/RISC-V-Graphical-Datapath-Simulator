@@ -255,11 +255,11 @@ export class DataMemory {
     tick() {
         if (this.memRead && this.memWrite) throw Error("Only memRead or memWrite allowed")
 
+        this.readData = Bits(0n, 32) // Not required but will make visualization clearer
         if (this.memRead) {
             this.readData = Bits(this.data.loadWord(Bits.toInt(this.address)), 32, true)
         } else if (this.memWrite) {
             this.data.storeWord(Bits.toInt(this.address), Bits.toInt(this.writeData, true))
-            this.readData = Bits(0n, 32) // Not required but will make visualization clearer
         }
     }
 }
