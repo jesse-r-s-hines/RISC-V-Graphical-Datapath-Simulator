@@ -15,9 +15,9 @@ export class Simulator {
     public pcAdd4: Comp.ALU
     public branchAdder: Comp.ALU
     public branchAnd: Comp.AndGate
-    public pcMux: Comp.Mux2to1
-    public aluInputMux: Comp.Mux2to1
-    public memOrAluMux: Comp.Mux2to1
+    public pcMux: Comp.Mux
+    public aluInputMux: Comp.Mux
+    public memOrAluMux: Comp.Mux
 
     constructor(code: bigint[], regs: Record<number, bigint> = {}) {
         this.pc = new Comp.PC()
@@ -31,9 +31,9 @@ export class Simulator {
         this.pcAdd4 = new Comp.ALU()
         this.branchAdder = new Comp.ALU()
         this.branchAnd = new Comp.AndGate()
-        this.pcMux = new Comp.Mux2to1()
-        this.aluInputMux = new Comp.Mux2to1()
-        this.memOrAluMux = new Comp.Mux2to1()
+        this.pcMux = new Comp.Mux(2)
+        this.aluInputMux = new Comp.Mux(2)
+        this.memOrAluMux = new Comp.Mux(2)
 
         let text_start = 0x0001_0000n
 
@@ -81,9 +81,9 @@ export class Simulator {
         this.aluControl.funct7 = instr.slice(25, 32)
         this.aluControl.tick()
 
-        this.aluInputMux.in0 = this.regFile.readData2
-        this.aluInputMux.in1 = this.immGen.immediate
-        this.aluInputMux.select = this.control.aluSrc 
+        this.aluInputMux.in[0] = this.regFile.readData2
+        this.aluInputMux.in[1] = this.immGen.immediate
+        this.aluInputMux.select = [this.control.aluSrc] 
         this.aluInputMux.tick()
 
         this.alu.in1 = this.regFile.readData1
@@ -97,9 +97,9 @@ export class Simulator {
         this.dataMem.memWrite = this.control.memWrite
         this.dataMem.tick()
 
-        this.memOrAluMux.in0 = this.alu.result
-        this.memOrAluMux.in1 = this.dataMem.readData
-        this.memOrAluMux.select = this.control.memToReg
+        this.memOrAluMux.in[0] = this.alu.result
+        this.memOrAluMux.in[1] = this.dataMem.readData
+        this.memOrAluMux.select = [this.control.memToReg]
         this.memOrAluMux.tick()
 
         this.pcAdd4.aluControl = Bits("0010") // add
@@ -116,9 +116,9 @@ export class Simulator {
         this.branchAnd.in2 = this.alu.zero
         this.branchAnd.tick()
 
-        this.pcMux.in0 = this.pcAdd4.result
-        this.pcMux.in1 = this.branchAdder.result
-        this.pcMux.select = this.branchAnd.out
+        this.pcMux.in[0] = this.pcAdd4.result
+        this.pcMux.in[1] = this.branchAdder.result
+        this.pcMux.select = [this.branchAnd.out]
         this.pcMux.tick()
 
         // The backwards wires

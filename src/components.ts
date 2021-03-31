@@ -258,16 +258,22 @@ export class AndGate {
     }
 }
 
-/** Select between 2 32 bit inputs, in1 on 0, in2 on 1. */
-export class Mux2to1 {
+/** Select between inputs */
+export class Mux {
     // inputs
-    public in0: Bits = []
-    public in1: Bits = []
-    public select: Bit = 0
+    public in: Bits[] = []
+    public select: Bit[] = []
+
     // outputs
     public out: Bits = []
 
+    readonly size;
+
+    constructor(size: number) {
+        this.size = size
+    }
+
     tick() {
-        this.out = this.select ? this.in1 : this.in0
+        this.out = this.in[Bits.toNumber(this.select)]
     }
 }
