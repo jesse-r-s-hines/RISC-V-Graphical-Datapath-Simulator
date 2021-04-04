@@ -28,6 +28,13 @@ describe("Misc", () => {
 })
 
 describe("Arithmetic", () => {
+    it("Can't write zero", () => {
+        let code = [
+            0x00600013n, // addi x0, x0, 6
+        ];
+        test_code(code, {}, {0: 0n})
+    })
+
     it('add', () => {
         let code = [
             0x007302b3n, // add x5, x6, x7
