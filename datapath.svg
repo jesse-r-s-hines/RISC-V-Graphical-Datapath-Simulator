@@ -620,19 +620,6 @@
          style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.625;stroke-linejoin:round;stroke-opacity:1"
          id="path887-5" />
     </marker>
-    <filter
-       inkscape:collect="always"
-       style="color-interpolation-filters:sRGB"
-       id="filter4201"
-       x="-9.7750905e-06"
-       width="1.0000196"
-       y="-1.2065005e-05"
-       height="1.0000241">
-      <feGaussianBlur
-         inkscape:collect="always"
-         stdDeviation="0.00027038148"
-         id="feGaussianBlur4203" />
-    </filter>
     <rect
        x="1.5386788"
        y="235.58601"
@@ -2109,21 +2096,6 @@
     </marker>
     <marker
        style="overflow:visible"
-       id="DotM-12-5"
-       refX="0"
-       refY="0"
-       orient="auto"
-       inkscape:stockid="DotM"
-       inkscape:isstock="true"
-       inkscape:collect="always">
-      <path
-         transform="matrix(0.4,0,0,0.4,2.96,0.4)"
-         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1"
-         d="m -2.5,-1 c 0,2.76 -2.24,5 -5,5 -2.76,0 -5,-2.24 -5,-5 0,-2.76 2.24,-5 5,-5 2.76,0 5,2.24 5,5 z"
-         id="path924-8-4" />
-    </marker>
-    <marker
-       style="overflow:visible"
        id="Arrow2Mend-93-0"
        refX="0"
        refY="0"
@@ -2266,9 +2238,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="11.200571"
-     inkscape:cx="852.78702"
-     inkscape:cy="808.04523"
+     inkscape:zoom="1.0255231"
+     inkscape:cx="636.0784"
+     inkscape:cy="863.20205"
      inkscape:document-units="mm"
      inkscape:current-layer="layer2"
      inkscape:document-rotation="0"
@@ -2294,12 +2266,7 @@
      inkscape:groupmode="layer"
      id="layer2"
      inkscape:label="Diagram"
-     style="display:inline;filter:url(#filter4201)">
-    <path
-       style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#DotM-12-5);marker-end:url(#Arrow2Mend-93-0);filter:url(#filter4201)"
-       d="M 93.148869,220.21886 H 160.74423"
-       id="path858-02-9"
-       sodipodi:nodetypes="cc" />
+     style="display:inline;mix-blend-mode:normal">
     <path
        style="display:inline;opacity:1;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.396875;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        d="m 218.79669,190.71299 v -16.20845 l 4.40802,-4.9891 -4.52005,-5.20652 v -15.33668 l 29.33739,10.73483 v 19.42767 c 0,0 -25.38371,9.35858 -29.22231,11.5748"
@@ -2579,7 +2546,7 @@
        sodipodi:nodetypes="cc" />
     <path
        style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#DotM-12);marker-end:url(#Arrow2Mend-93)"
-       d="m 88.160385,220.76706 67.595365,0"
+       d="M 88.160385,220.76706 H 155.75575"
        id="path858-02"
        sodipodi:nodetypes="cc" />
     <path
@@ -2589,9 +2556,17 @@
        sodipodi:nodetypes="cccc" />
     <path
        style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#DotM-12-7-1);marker-end:url(#Arrow2Mend-93-5-8)"
-       d="m 88.16038,248.28375 110.13031,0 0.0305,-16.60493 8.57097,0.003"
+       d="m 88.16038,248.28375 h 110.13031 l 0.0305,-16.60493 8.57097,0.003"
        id="path858-02-8-3"
        sodipodi:nodetypes="cccc" />
+    <path
+       style="display:inline;fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;filter:url(#filter8818)"
+       d="m 144.86243,218.46067 4.21678,4.21677"
+       id="path9380" />
+    <path
+       style="display:inline;fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;filter:url(#filter8818)"
+       d="m 181.90402,218.46067 4.21678,4.21677"
+       id="path9380-6" />
   </g>
   <g
      inkscape:groupmode="layer"
@@ -2963,14 +2938,6 @@
        transform="translate(142.59168,-22.623123)"><tspan
          x="39.334276"
          y="239.64357"><tspan>64</tspan></tspan></text>
-    <path
-       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 144.86243,218.46067 4.21678,4.21677"
-       id="path9380" />
-    <path
-       style="display:inline;fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;filter:url(#filter8818)"
-       d="m 181.90402,218.46067 4.21678,4.21677"
-       id="path9380-6" />
     <text
        xml:space="preserve"
        id="text4185-6-9-7-02-4-9-4"
