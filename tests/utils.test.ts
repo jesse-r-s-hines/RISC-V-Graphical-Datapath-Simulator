@@ -31,6 +31,9 @@ describe("Bits", () => {
         ba = Bits("")
         expect(ba).to.eql([])
 
+        ba = Bits("11 0_0")
+        expect(ba).to.eql([0, 0, 1, 1])
+
         expect(b`100`).to.eql([0, 0, 1])
     });
 

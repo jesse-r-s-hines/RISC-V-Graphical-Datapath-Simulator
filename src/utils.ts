@@ -17,12 +17,12 @@ export type Bits = Bit[]
 export function Bits(arr: Bit[]): Bits
 
 /**
- * Make Bits from an string of 0 and 1s.
+ * Make Bits from an string of 0 and 1s. Will ignore _ and spaces in the string (so you can use them as spacers)
  * The string should be given in MSB 0 order, i.e. most significant bit first.
  * Eg. `Bits.from("1010")` represents 10
  * @param arr The array to convert
  */
-export function Bits(arr: string): Bits
+export function Bits(str: string): Bits
 
 /**
  * Converts a bigint to an array of bits.
@@ -55,7 +55,8 @@ function fromArray(arr: Bit[]): Bits {
 }
 
 function fromString(str: string): Bits {
-    return [...str].map(b => Number(b)).reverse()
+    let bitString = [...str].filter( b => !("_ ".includes(b)) )
+    return bitString.map(b => Number(b)).reverse()
 }
 
 function fromInt(num: bigint, length: number, signed: boolean = false): Bits {
