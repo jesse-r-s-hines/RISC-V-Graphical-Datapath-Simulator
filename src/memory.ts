@@ -20,7 +20,7 @@ export class Memory {
     /** Takes a start and a size and loads the consecutive bytes as a positive integer */
     private loadSlice(start: bigint, size: number): bigint {
         let sizeB = BigInt(size) // Convert to bigint so we can add it to bigints
-        if (start < 0n || (start + sizeB) >= this.size) throw Error(`Memory index ${start} out of range for ${size} bytes.`)
+        if (start < 0n || (start + sizeB) >= this.size) throw Error(`Memory address ${start} out of range for ${size} bytes.`)
 
         let val = 0n
         for (let i = sizeB - 1n; i >= 0; i--) { // Backwards because little-endian
@@ -33,7 +33,7 @@ export class Memory {
     /** Takes a start and a size and stores number accross the bytes */
     private storeSlice(start: bigint, size: number, val: bigint) {
         let sizeB = BigInt(size) // Convert to bigint so we can add it to bigints
-        if (start < 0n || (start + sizeB) >= this.size) throw Error(`Memory index ${start} out of range for ${size} bytes.`)
+        if (start < 0n || (start + sizeB) >= this.size) throw Error(`Memory address ${start} out of range for ${size} bytes.`)
         if (val < 0n || val >= 2n ** (8n * sizeB))
             throw Error(`${val} is invalid. Expected a positive integer that fits in ${size} bytes.`)
         
@@ -44,24 +44,24 @@ export class Memory {
     }
 
     /** Returns a single byte from the memory as an unsigned int. */
-    loadByte(index: bigint): bigint  { return this.loadSlice(index, 1) }
+    loadByte(addr: bigint): bigint  { return this.loadSlice(addr, 1) }
     /** Stores a single unsigned int as a byte */
-    storeByte(index: bigint, val: bigint) { this.storeSlice(index, 1, val) }
+    storeByte(addr: bigint, val: bigint) { this.storeSlice(addr, 1, val) }
 
     /** Returns a single half word from the memory as an unsigned int. */
-    loadHalfWord(index: bigint): bigint  { return this.loadSlice(index, 2) }
+    loadHalfWord(addr: bigint): bigint  { return this.loadSlice(addr, 2) }
     /** Stores a single unsigned int as a half word */
-    storeHalfWord(index: bigint, val: bigint) { this.storeSlice(index, 2, val) }
+    storeHalfWord(addr: bigint, val: bigint) { this.storeSlice(addr, 2, val) }
 
     /** Returns a single word from the memory as an unsigned int. */
-    loadWord(index: bigint): bigint  { return this.loadSlice(index, 4) }
+    loadWord(addr: bigint): bigint  { return this.loadSlice(addr, 4) }
     /** Stores a single unsigned int as a word */
-    storeWord(index: bigint, val: bigint) { this.storeSlice(index, 4, val) }
+    storeWord(addr: bigint, val: bigint) { this.storeSlice(addr, 4, val) }
 
     /** Returns a single double word from the memory as an unsigned int. */
-    loadDoubleWord(index: bigint): bigint  { return this.loadSlice(index, 8) }
+    loadDoubleWord(addr: bigint): bigint  { return this.loadSlice(addr, 8) }
     /** Stores a single unsigned int as a double word */
-    storeDoubleWord(index: bigint, val: bigint) { this.storeSlice(index, 8, val) }
+    storeDoubleWord(addr: bigint, val: bigint) { this.storeSlice(addr, 8, val) }
 
     /**
      * Returns the content of memory as string.
@@ -71,12 +71,12 @@ export class Memory {
     toString(wordSize = 8, hex = true) {
         let addrShift = BigInt(Math.ceil(Math.log2(wordSize)))
         let addrSize = (this.size - 1n).toString(16).length
-        let indexes = Array.from(this.data.keys())
-        indexes.sort((a, b) => (a < b) ? -1 : ((a > b) ? 1 : 0)) // have to specify sort func for BigInts
+        let addresses = Array.from(this.data.keys())
+        addresses.sort((a, b) => (a < b) ? -1 : ((a > b) ? 1 : 0)) // have to specify sort func for BigInts
 
         let rows = []
         let prevWord = undefined
-        for (let i of indexes) {
+        for (let i of addresses) {
             let wordI = (i >> addrShift) << addrShift // erase bottom bits
             if (wordI != prevWord) {
                 let val = this.loadSlice(i, wordSize)
