@@ -1,6 +1,6 @@
 import { expect } from "chai";
-import {Simulator} from "../src/simulator";
-import {Bits, twos_complement} from "../src/utils";
+import { Simulator } from "../src/simulator";
+import { Bits, twos_complement } from "../src/utils";
 
 function test_code(code: bigint[], regs: Record<number, bigint> = {}, expected: Record<number, bigint> = {}) {
     let sim = new Simulator(code, regs)

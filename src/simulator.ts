@@ -1,6 +1,5 @@
-import {Bit, Bits, b, twos_complement} from "./utils"
+import { Bit, Bits, b, twos_complement } from "./utils"
 import * as Comp from "./components"
-import {Memory} from "./memory"
 
 export class Simulator {
     // components
