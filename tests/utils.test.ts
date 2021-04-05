@@ -62,6 +62,19 @@ describe("Bits", () => {
         expect(ba).to.eql(b`1001`)
     });
 
+    it('Errors', () => {
+        expect(() => Bits(-9n, 4, true)).to.throw("invalid")
+        expect(() => Bits(-8n, 4, true)).to.not.throw()
+        expect(() => Bits(0n, 4, true)).to.not.throw()
+        expect(() => Bits(7n, 4, true)).to.not.throw()
+        expect(() => Bits(8n, 4, true)).to.throw("invalid")
+
+        expect(() => Bits(-1n, 4,)).to.throw("invalid")
+        expect(() => Bits(0n, 4,)).to.not.throw()
+        expect(() => Bits(15n, 4,)).to.not.throw()
+        expect(() => Bits(16n, 4,)).to.throw("invalid")
+    });
+
     it('Large Ints', () => {
         let ba = Bits(123456789012345n, 64)
         expect(Bits.toInt(ba)).to.equal(123456789012345n)

@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import * as Comps from '../src/components';
-import {Bits} from '../src/utils';
+import {Bits, b} from '../src/utils';
 
 
 describe("Components", () => {
@@ -50,5 +50,39 @@ describe("Components", () => {
         imm.tick()
         expect(Bits.toInt(imm.immediate, true)).to.equal(0x0n)
 
+    });
+
+    it('ALU', () => {
+        let alu = new Comps.ALU()
+        let minInt = Bits(-(2n**31n), 32, true)
+        let maxInt = Bits(2n**31n - 1n, 32, true)
+
+        alu.in1 = minInt
+        alu.in2 = maxInt
+        alu.aluControl = b`0110` // SUB
+        alu.tick()
+
+        expect(alu.result.length).to.equal(32)
+        expect(Bits.toInt(alu.result)).to.equal(1n) // underflow
+        expect(alu.zero).to.equal(0)
+
+
+        alu.in1 = minInt
+        alu.in2 = minInt
+        alu.aluControl = b`0010` // ADD
+        alu.tick()
+
+        expect(alu.result.length).to.equal(32)
+        expect(Bits.toInt(alu.result)).to.equal(0n) // underflow
+        expect(alu.zero).to.equal(1)
+
+        alu.in1 = minInt
+        alu.in2 = minInt
+        alu.aluControl = b`0110` // SUB
+        alu.tick()
+
+        expect(alu.result.length).to.equal(32)
+        expect(Bits.toInt(alu.result)).to.equal(0n)
+        expect(alu.zero).to.equal(1)
     });
 })

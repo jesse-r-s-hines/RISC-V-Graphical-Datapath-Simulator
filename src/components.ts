@@ -140,8 +140,8 @@ export class ALU {
         let op = ALU.table.match(this.aluControl)
         let resultInt = op(a, b)
 
-        this.result = Bits(resultInt, 32, signed)
-        this.zero = (resultInt == 0n)
+        this.result = Bits(resultInt, 33, signed).slice(0, 32) // give room for overflow, then discard extra.
+        this.zero = Number(Bits.toInt(this.result) == 0n)
     }
 }
 

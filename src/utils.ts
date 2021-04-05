@@ -26,8 +26,7 @@ export function Bits(arr: string): Bits
 
 /**
  * Converts a bigint to an array of bits.
- * If the bigint doesn't fit in length bits it will discard the extra bits.
- * @param num The bigint to convert into bits. Should be positive.
+ * @param num The bigint to convert into bits.
  * @param length The number of bits in the array.
  * @param signed Whether the bits should be signed or not. Defaults to false.
  */
@@ -60,6 +59,10 @@ function fromString(str: string): Bits {
 }
 
 function fromInt(num: bigint, length: number, signed: boolean = false): Bits {
+    let len =  BigInt(length)
+    let [a, b] = signed ? [-(2n**(len-1n)), 2n**(len-1n) - 1n] : [0, 2n**len - 1n]
+    if (num < a || num > b) throw Error(`${num} is invalid. Expected a ${signed ? "" : "un"}signed integer that fits in ${length} bits.`)
+
     let bits = Array(length)
     for (let i = 0; i < length; i++) {
         bits[i] = Number(num & 0x1n) // Least Significant Bit 0
