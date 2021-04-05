@@ -347,40 +347,52 @@ describe("Branch", () => {
 })
 
 describe("Memory", () => {
-    // it('sb/lb', () => {
-    //     let code = [
-    //         0x3e518423n, // sb x5, 1000(gp)
-    //         0x3e818383n, // lb x7, 1000(gp)
-    //     ];
-    //     test_code(code, {5: 1n}, {7: 1n})
+    it('sb/lb', () => {
+        let code = [
+            0x3e518423n, // sb x5, 1000(gp)
+            0x3e818383n, // lb x7, 1000(gp)
+        ];
+        test_code(code, {5: 1n}, {7: 1n})
 
-    //     code = [
-    //         0x0051a023n, // sw x5, 0(gp)
-    //         0x00118383n, // lb x7, 1(gp)
-    //     ];
-    //     test_code(code, {5: 0x01_23_45_67n}, {7: 0x45n})
+        code = [
+            0x0051a023n, // sw x5, 0(gp)
+            0x00118383n, // lb x7, 1(gp)
+        ];
+        test_code(code, {5: 0x01_23_45_67n}, {7: 0x45n})
     
-    //     code = [
-    //         0x00518023n, // sb x5, 0(gp)
-    //         0x0001c383n, // lbu x7, 0(gp)
-    //     ];
-    //     test_code(code, {5: -1n}, {7: 0x00_00_00_FFn})
-    // })
+        code = [
+            0x00518023n, // sb x5, 0(gp)
+            0x0001c383n, // lbu x7, 0(gp)
+        ];
+        test_code(code, {5: -1n}, {7: 0x00_00_00_FFn})
+
+        code = [
+            0x00518023n, // sb x5, 0(gp)
+            0x0001c383n, // lw x7, 0(gp)
+        ];
+        test_code(code, {5: 0x00_00_FF_FFn}, {7: 0x00_00_00_FFn})
+    })
     
-    // it('sh/lh', () => {
-    //     let code = [
-    //         0x3e519423n, // sh x5, 1000(gp)
-    //         0x3e819303n, // lh x6, 1000(gp)
-    //         0x3e81a383n, // lw x7, 1000(gp)
-    //     ];
-    //     test_code(code, {5: -10n}, {6: -10n, 7: 0x0000_FFF6n})
+    it('sh/lh', () => {
+        let code = [
+            0x3e519423n, // sh x5, 1000(gp)
+            0x3e819303n, // lh x6, 1000(gp)
+            0x3e81a383n, // lw x7, 1000(gp)
+        ];
+        test_code(code, {5: -10n}, {6: -10n, 7: 0x0000_FFF6n})
     
-    //     code = [
-    //         0x00519023n, // sh x5, 0(gp)
-    //         0x0001d383n, // lhu x7, 0(gp)
-    //     ];
-    //     test_code(code, {5: -1n, 6: 1000n}, {7: 0x00_00_FF_FFn})
-    // })
+        code = [
+            0x00519023n, // sh x5, 0(gp)
+            0x0001d383n, // lhu x7, 0(gp)
+        ];
+        test_code(code, {5: -1n}, {7: 0x00_00_FF_FFn})
+
+        code = [
+            0x00519023n, // sh x5, 0(gp)
+            0x0001d383n, // lw x7, 0(gp)
+        ];
+        test_code(code, {5: 0x00_FF_12_23n}, {7: 0x00_00_12_23n})
+    })
     
     it('sw/lw', () => {
         let code = [
@@ -388,5 +400,11 @@ describe("Memory", () => {
             0x3eb1a383n, // lw x7, 1003(gp)
         ];
         test_code(code, {5: 20n, 6: 5n}, {7: 20n})
+
+        code = [
+            0x3e51a5a3n, // sw x5, 1003(gp)
+            0x3eb1a383n, // lw x7, 1003(gp)
+        ];
+        test_code(code, {5: -20n, 6: 5n}, {7: -20n})
     })
 })

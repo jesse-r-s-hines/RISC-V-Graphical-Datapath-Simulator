@@ -235,6 +235,34 @@ export class InstructionMemory {
     }
 }
 
+/**
+ * Chooses between signed/unsigned and byte/half-word/word
+ * This component won't be rendered to keep the animation simpler.
+ * Doesn't worry about whether we are actually using memory this cycle, since memRead/memWrite will be off
+ * anyways.
+ */
+export class MemoryControl {
+    // inputs
+    public funct3: Bits = [] // 3 bits
+
+    // outputs
+    public size: Bits = [] // 2 bits
+    public signed: Bit = 0
+
+    private static table = new TruthTable<[Bits, Bit]>([
+        [["000"], [b`00`, 1]], // lb/sb
+        [["001"], [b`01`, 1]], // lh/sh
+        [["010"], [b`10`, 1]], // lw/sw
+        [["100"], [b`00`, 0]], // lbu
+        [["101"], [b`01`, 0]], // lhu
+        [["XXX"], [b`00`, 0]], // don't care
+    ])
+
+    tick() {
+        [this.size, this.signed] = MemoryControl.table.match(this.funct3)
+    }
+}
+
 export class DataMemory {
     // inputs
     public memRead: Bit = 0
@@ -242,11 +270,19 @@ export class DataMemory {
     public address: Bits = [] // 32 bits
     public writeData: Bits = [] // 32 bits
 
+    public size: Bits = [] // 2 bits (byte/half-word/word)
+    public signed: Bit = 0 // 1 bit (whether to sign extend the output from memory)
+
     // outputs
     public readData: Bits = [] // 32 bits
 
     // state
     public data: Memory;
+    private static table = new TruthTable<[number, (addr: bigint) => bigint, (addr: bigint, val: bigint) => void]>([
+        [["00"], [8,  Memory.prototype.loadByte,     Memory.prototype.storeByte]],
+        [["01"], [16, Memory.prototype.loadHalfWord, Memory.prototype.storeHalfWord]],
+        [["10"], [32, Memory.prototype.loadWord,     Memory.prototype.storeWord]],
+    ])
 
     constructor() {
         this.data = new Memory(2n**32n)
@@ -254,12 +290,16 @@ export class DataMemory {
 
     tick() {
         if (this.memRead && this.memWrite) throw Error("Only memRead or memWrite allowed")
-
+        let [bits, loadFunc, storeFunc] = DataMemory.table.match(this.size)
+ 
         this.readData = Bits(0n, 32) // Not required but will make visualization clearer
         if (this.memRead) {
-            this.readData = Bits(this.data.loadWord(Bits.toInt(this.address)), 32, true)
+            let dataInt = loadFunc.call(this.data, Bits.toInt(this.address))
+            let dataBits = Bits(dataInt, bits) // memory returns an unsigned int.
+            this.readData = Bits.extended(dataBits, 32, Boolean(this.signed)) // sign extend to 32 bits if signed
         } else if (this.memWrite) {
-            this.data.storeWord(Bits.toInt(this.address), Bits.toInt(this.writeData, true))
+            let data = this.writeData.slice(0, bits)
+            storeFunc.call(this.data, Bits.toInt(this.address), Bits.toInt(data)) // always store as unsigned
         }
     }
 }
