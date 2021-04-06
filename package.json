@@ -24,7 +24,9 @@
     "webpack-cli": "^4.6.0"
   },
   "dependencies": {
+    "@types/codemirror": "^0.0.108",
     "bootstrap": "^5.0.0-beta3",
+    "codemirror": "^5.60.0",
     "jquery": "^3.6.0",
     "ts-dedent": "^2.0.0"
   }

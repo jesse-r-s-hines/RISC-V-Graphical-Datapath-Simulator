@@ -2,8 +2,9 @@
 <html>
     <head>
         <title>RISC-V Simulator</title>
-        <!-- <link rel="stylesheet" href="./css/site.css"/> -->
         <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="./node_modules/codemirror/lib/codemirror.css"/>
+        <link rel="stylesheet" href="./css/site.css"/>
       
         <!-- We don't need to include JQuery here, but doing so lets me use JQuery in the console. -->
         <script src="./node_modules/jquery/dist/jquery.min.js"></script>
@@ -11,7 +12,7 @@
     </head>
     <body>
         <div class="container-fluid p-2" style="height: 100vh;">
-            <div class="d-flex flex-row" style="height: 100%">
+            <div class="d-flex flex-row h-100">
                 <div id="datapath" class="flex-grow-1"> <!-- We'll load the SVG inline here. --> </div>
                 <div class="d-flex flex-column">
                     <div class="card flex-grow-1">
@@ -35,14 +36,14 @@
                                 </button>
                             </li>
                         </ul>
-                        <div class="tab-content p-3" id="editors">
-                            <div class="tab-pane fade show active" id="instrMem-editor" role="tabpanel" aria-labelledby="instrMem-tab">
-                                Instruction Memory
+                        <div id="editors" class="tab-content p-1 h-100">
+                            <div id="instrMem-editor" class="tab-pane fade show active h-100" role="tabpanel" aria-labelledby="instrMem-tab">
+                                <textarea placeholder="Paste machine code here..."></textarea>
                             </div>
-                            <div class="tab-pane fade" id="dataMem-editor" role="tabpanel" aria-labelledby="dataMem-tab">
+                            <div id="dataMem-editor" class="tab-pane fade h-100" role="tabpanel" aria-labelledby="dataMem-tab">
                                 Data Memory
                             </div>
-                            <div class="tab-pane fade" id="regFile-editor" role="tabpanel" aria-labelledby="regFile-tab">
+                            <div id="regFile-editor" class="tab-pane fade h-100" role="tabpanel" aria-labelledby="regFile-tab">
                                 Register File
                             </div>
                         </div>

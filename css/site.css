@@ -1,0 +1,9 @@
+.CodeMirror {
+    height: 100%;
+    width: 100%;
+}
+
+.CodeMirror pre.CodeMirror-placeholder {
+    color: #999;
+}
+
