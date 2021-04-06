@@ -1,5 +1,6 @@
 import $ from "jquery";
 import {Simulator} from "./simulator"
+import "bootstrap";
 
 // let sim = new Simulator([
 //     0x005003b3n, // add x7, zero, x5

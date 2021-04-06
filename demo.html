@@ -1,15 +1,57 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>RISC-V Simulator</title>
-  </head>
-  <body>
-    <!-- We don't need to include JQuery here, but doing so lets me use JQuery in the console. -->
-    <script src="./node_modules/jquery/dist/jquery.min.js"></script>
-    <script type="module" src="./dist/risc-v-simulator.js"></script>
-
-    <div id="datapath">
-      <!-- We'll load the SVG inline here. -->
-    </div>
-  </body>
+    <head>
+        <title>RISC-V Simulator</title>
+        <!-- <link rel="stylesheet" href="./css/site.css"/> -->
+        <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css"/>
+      
+        <!-- We don't need to include JQuery here, but doing so lets me use JQuery in the console. -->
+        <script src="./node_modules/jquery/dist/jquery.min.js"></script>
+        <script type="module" src="./dist/risc-v-simulator.js"></script>
+    </head>
+    <body>
+        <div class="container-fluid p-2" style="height: 100vh;">
+            <div class="d-flex flex-row" style="height: 100%">
+                <div id="datapath" class="flex-grow-1"> <!-- We'll load the SVG inline here. --> </div>
+                <div class="d-flex flex-column">
+                    <div class="card flex-grow-1">
+                        <ul class="nav nav-tabs" id="editor-tabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="instrMem-tab" data-bs-toggle="tab" data-bs-target="#instrMem-editor"
+                                        type="button" role="tab" aria-controls="instrMem-editor" aria-selected="true">
+                                    Instruction Memory
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="dataMem-tab" data-bs-toggle="tab" data-bs-target="#dataMem-editor"
+                                        type="button" role="tab" aria-controls="dataMem-editor" aria-selected="false">
+                                    Data Memory
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="regFile-tab" data-bs-toggle="tab" data-bs-target="#regFile-editor"
+                                    type="button" role="tab" aria-controls="regFile-editor" aria-selected="false">
+                                    Register File
+                                </button>
+                            </li>
+                        </ul>
+                        <div class="tab-content p-3" id="editors">
+                            <div class="tab-pane fade show active" id="instrMem-editor" role="tabpanel" aria-labelledby="instrMem-tab">
+                                Instruction Memory
+                            </div>
+                            <div class="tab-pane fade" id="dataMem-editor" role="tabpanel" aria-labelledby="dataMem-tab">
+                                Data Memory
+                            </div>
+                            <div class="tab-pane fade" id="regFile-editor" role="tabpanel" aria-labelledby="regFile-tab">
+                                Register File
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card"><div class="card-body">
+                        Controls...
+                    </div></div>
+                </div>
+            </div>
+        </div>
+    </body>
 </html>
