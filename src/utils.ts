@@ -131,10 +131,16 @@ export namespace Bits {
     }
 }
 
-/** Interprets the number as a 32 bit two's complement integer */
-export function twos_complement(num: bigint): bigint {
+/** Converts an unsigned 32 bit int to a signed one. */
+export function from_twos_complement(num: bigint): bigint {
     // ~num + 1 doesn't work because of how Javscript does ~
     if (num >= (1n << 31n)) num -= (1n << 32n) // interpret as two's complement
+    return num
+}
+
+/** Converts an signed 32 bit int to an unsigned one. */
+export function to_twos_complement(num: bigint): bigint {
+    if (num < 0) num += (1n << 32n)
     return num
 }
 

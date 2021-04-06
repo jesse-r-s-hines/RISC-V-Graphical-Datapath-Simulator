@@ -1,12 +1,12 @@
 import { expect } from "chai";
 import { Simulator } from "../src/simulator";
-import { Bits, twos_complement } from "../src/utils";
+import { Bits, from_twos_complement } from "../src/utils";
 
 function test_code(code: bigint[], regs: Record<number, bigint> = {}, expected: Record<number, bigint> = {}) {
     let sim = new Simulator(code, regs)
     sim.run()
     for (let reg in expected) {
-        expect(sim.regFile.registers[reg], `register x${reg}`).to.equal(twos_complement(expected[reg]))
+        expect(sim.regFile.registers[reg], `register x${reg}`).to.equal(from_twos_complement(expected[reg]))
     }
 }
 
