@@ -1,6 +1,7 @@
 import { expect } from "chai";
 import { Simulator } from "../src/simulator";
-import { Bits, from_twos_complement } from "../src/utils";
+import { Bits, from_twos_complement, to_twos_complement } from "../src/utils";
+import * as fs from "fs";
 
 function test_code(code: bigint[], regs: Record<number, bigint> = {}, expected: Record<number, bigint> = {}) {
     let sim = new Simulator(code, regs)
@@ -406,5 +407,46 @@ describe("Memory", () => {
             0x3eb1a383n, // lw x7, 1003(gp)
         ];
         test_code(code, {5: -20n, 6: 5n}, {7: -20n})
+    })
+})
+
+describe("Bubble Sort", () => {
+    let dump = fs.readFileSync('./tests/assembly/bubbleSortDump.txt', 'utf8')
+    let code = dump.split("\n").filter(s => s).map((s) => BigInt(`0x${s}`))
+    let base = 0x1000_8000n // gp
+
+    it("Basic", () => {
+        let array = [3n, 2n, 1n, 0n, -1n, -2n, -3n].map(to_twos_complement)
+        let size = BigInt(array.length)
+
+        let sim = new Simulator(code, {10: base, 11: size}) // a0, a1
+
+        for (let i = 0n; i < size; i++) sim.dataMem.data.storeWord(base + i * 4n, array[Number(i)])
+        sim.run()
+        array = []
+        for (let i = 0n; i < size; i++) array.push( from_twos_complement(sim.dataMem.data.loadWord(base + i*4n)) )
+
+        expect(array).to.eql([-3n, -2n, -1n, 0n, 1n, 2n, 3n]);
+    })
+
+    it("Random", () => {
+        let array: bigint[] = []
+        for (let i = 0n; i < 10n; i++)
+            array.push( to_twos_complement(BigInt(Math.floor(Math.random() * (2**32-1)))) )
+        let size = BigInt(array.length)
+
+        let sim = new Simulator(code, {10: base, 11: size}) // a0, a1
+
+        for (let i = 0n; i < size; i++) sim.dataMem.data.storeWord(base + i * 4n, array[Number(i)])
+
+        sim.run()
+
+        array = []
+        for (let i = 0n; i < size; i++)
+            array.push( from_twos_complement(sim.dataMem.data.loadWord(base + i*4n)) )
+
+        for (let i = 1; i < size; i++) {
+            expect(array[0] <= array[1], `${array[0]} < ${array[1]}`).to.be.true
+        }
     })
 })
