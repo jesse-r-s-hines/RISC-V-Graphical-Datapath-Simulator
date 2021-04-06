@@ -7,9 +7,9 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="304.28555mm"
-   height="251.59039mm"
-   viewBox="0 0 304.28556 251.5904"
+   width="301.04828mm"
+   height="241.06598mm"
+   viewBox="0 0 301.04829 241.06599"
    version="1.1"
    id="svg8"
    inkscape:version="1.0.2 (1.0.2+r75+1)"
@@ -1665,18 +1665,23 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2.051046"
-     inkscape:cx="961.75675"
-     inkscape:cy="538.4399"
+     inkscape:zoom="0.72515427"
+     inkscape:cx="688.55909"
+     inkscape:cy="621.45615"
      inkscape:document-units="mm"
-     inkscape:current-layer="writeSrcMux"
+     inkscape:current-layer="layer2"
      inkscape:document-rotation="0"
      showgrid="false"
      inkscape:window-width="1920"
      inkscape:window-height="1011"
      inkscape:window-x="1920"
      inkscape:window-y="0"
-     inkscape:window-maximized="1" />
+     inkscape:window-maximized="1"
+     lock-margins="true"
+     fit-margin-top="5"
+     fit-margin-left="5"
+     fit-margin-right="5"
+     fit-margin-bottom="5" />
   <metadata
      id="metadata5">
     <rdf:RDF>
@@ -1685,7 +1690,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -1694,7 +1699,7 @@
      id="layer2"
      inkscape:label="Diagram"
      style="display:inline;mix-blend-mode:normal"
-     transform="translate(-19.795962,-9.2557264)">
+     transform="translate(-21.938088,-15.384832)">
     <g
        id="regFile-readData2">
       <path
@@ -1738,7 +1743,7 @@
     </g>
     <path
        style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow2Mend-62)"
-       d="m 313.51193,174.2694 4.19024,-0.0115 0.0341,80.64695 -182.13141,-0.0904 -0.081,-61.79565 8.32154,-0.01"
+       d="m 313.51193,174.2694 4.19024,-0.0115 0.0341,76.94279 -181.07308,-0.0904 -0.081,-58.09149 7.26321,-0.01"
        id="writeSrcMux-out"
        sodipodi:nodetypes="cccccc" />
     <path
@@ -1771,7 +1776,7 @@
        sodipodi:nodetypes="cc" />
     <path
        style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow2Mend-58-5-9)"
-       d="m 276.60023,46.015427 5.75341,-0.0039 0.0637,-30.168031 -255.229028,0.09475 0.116355,134.544984 4.131409,-0.0153"
+       d="m 276.60023,46.015427 5.75341,-0.0039 0.0637,-25.376602 -255.229028,0.09475 0.116355,129.753555 4.131409,-0.0153"
        id="pcMux-out"
        sodipodi:nodetypes="cccccc" />
     <path
@@ -2011,11 +2016,12 @@
       </g>
     </g>
     <g
-       id="immGen">
+       id="immGen"
+       transform="translate(0,-2.1166667)">
       <ellipse
          style="opacity:1;fill:none;stroke:#000000;stroke-width:0.264999;stroke-miterlimit:4;stroke-dasharray:none"
          id="immGen-outline"
-         ry="15.324066"
+         ry="13.284794"
          rx="10.047919"
          cy="220.72597"
          cx="166.53268" />
@@ -2708,7 +2714,7 @@
        id="control-aluOp">
       <path
          style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-         d="m 153.00794,114.48666 40.18063,0.0374 v 93.308 l 24.33259,0.004 0.0219,4.74427"
+         d="m 153.00794,114.48666 40.18063,0.0374 v 94.36633 l 24.33259,0.004 0.0219,3.68594"
          id="path858-5-2-54-2"
          sodipodi:nodetypes="ccccc" />
       <g
@@ -2779,7 +2785,7 @@
        id="control-memRead">
       <path
          style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-         d="m 152.97598,101.3769 73.22761,0 v 2.27759 l 56.98964,0 0.072,55.31303"
+         d="m 152.97598,101.3769 h 73.22761 v 2.27759 h 56.98964 l 0.072,55.31303"
          id="path858-5-2-54-6"
          sodipodi:nodetypes="ccccc" />
       <g
@@ -2945,7 +2951,7 @@
        id="instrMem-instruction">
       <path
          style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-         d="m 88.213811,102.00958 -0.184946,118.7541 0.13152,27.63062"
+         d="m 88.213811,102.00958 -0.184946,118.7541 0.13152,24.45562"
          id="path858-8"
          sodipodi:nodetypes="ccc" />
       <path
@@ -2955,16 +2961,16 @@
          sodipodi:nodetypes="cc" />
       <path
          style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#DotM-12);marker-end:url(#Arrow2Mend-93)"
-         d="M 88.160385,220.76706 H 155.75575"
+         d="M 88.160385,218.65039 H 155.75575"
          id="path858-02"
          sodipodi:nodetypes="cc" />
       <path
          style="display:inline;fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;filter:url(#filter8818)"
-         d="m 144.86243,218.46067 4.21678,4.21677"
+         d="m 144.86243,216.34399 4.21678,4.21677"
          id="path9380" />
       <g
          aria-label="Instruction [31-0]"
-         transform="translate(85.603787,-21.757134)"
+         transform="translate(85.603787,-23.873802)"
          id="text4185-6-9-7-02"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:end;white-space:pre;shape-inside:url(#rect4187-2-5-2-9);display:inline;opacity:0.999;mix-blend-mode:normal;fill:#000000;fill-opacity:1;stroke:none;filter:url(#filter1159-4-94-2-9)">
         <path
@@ -3021,7 +3027,7 @@
       </g>
       <g
          aria-label="32"
-         transform="translate(105.0632,-22.971018)"
+         transform="translate(105.0632,-25.087686)"
          id="text4185-6-9-7-02-4"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:end;white-space:pre;shape-inside:url(#rect4187-2-5-2-9-3);display:inline;opacity:0.999;mix-blend-mode:normal;fill:#000000;fill-opacity:1;stroke:none;filter:url(#filter1159-4-94-2-9-8)">
         <path
@@ -3036,7 +3042,7 @@
        id="immGen-immediate">
       <path
          style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow2Mend-50)"
-         d="m 176.66329,220.76371 h 19.70893 l -0.0564,-149.058573 26.29189,-0.004"
+         d="m 176.66329,218.64704 h 19.70893 l -0.0564,-146.941903 26.29189,-0.004"
          id="path858-4"
          sodipodi:nodetypes="cccc" />
       <path
@@ -3048,11 +3054,11 @@
          inkscape:transform-center-y="-7.6574092" />
       <path
          style="display:inline;fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;filter:url(#filter8818)"
-         d="m 181.90402,218.46067 4.21678,4.21677"
+         d="m 181.90402,216.34399 4.21678,4.21677"
          id="path9380-6" />
       <g
          aria-label="64"
-         transform="translate(142.59168,-22.623123)"
+         transform="translate(142.59168,-24.739791)"
          id="text4185-6-9-7-02-4-9"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:end;white-space:pre;shape-inside:url(#rect4187-2-5-2-9-3-0);display:inline;opacity:0.999;mix-blend-mode:normal;fill:#000000;fill-opacity:1;stroke:none;filter:url(#filter1159-4-94-2-9-8-9)">
         <path
@@ -3338,7 +3344,7 @@
          sodipodi:nodetypes="cc" />
       <path
          style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#DotM-12-7);marker-end:url(#Arrow2Mend-93-5)"
-         d="m 88.160382,238.2779 h 96.407508 l -0.0249,-12.52905 22.22678,-0.0255"
+         d="m 88.160382,235.1029 h 96.407508 l -0.0249,-11.47072 22.49912,-0.0255"
          id="path858-02-8"
          sodipodi:nodetypes="cccc" />
       <g
@@ -3423,7 +3429,7 @@
       </g>
       <g
          aria-label="Instruction [14-12]"
-         transform="translate(88.340481,-4.357315)"
+         transform="translate(88.340481,-7.5323152)"
          id="text4185-6-9-7-0-2-0"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:end;white-space:pre;shape-inside:url(#rect4187-2-5-2-3-7-2);display:inline;opacity:0.991;mix-blend-mode:normal;fill:#000000;fill-opacity:1;stroke:none;filter:url(#filter1159-4-94-2-6-2-5)"
          inkscape:transform-center-x="0.78304228"
@@ -3503,10 +3509,11 @@
       </g>
     </g>
     <g
-       id="instrMem-instruction-funct7">
+       id="instrMem-instruction-funct7"
+       transform="translate(0,-3.1750001)">
       <path
          style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#DotM-12-7-1);marker-end:url(#Arrow2Mend-93-5-8)"
-         d="m 88.16038,248.2839 110.13031,-1.5e-4 0.0305,-16.60493 8.57097,0.003"
+         d="m 88.16038,248.2839 110.13031,-1.5e-4 0.0305,-13.9591 8.52321,0.003"
          id="path858-02-8-3"
          sodipodi:nodetypes="cccc" />
       <g
