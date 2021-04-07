@@ -45,7 +45,7 @@ $(function() {
         "s8",   "s9", "s10", "s11", "t3", "t4", "t5", "t6",
     ]
     for (let [i, reg] of registers.entries()) {
-        $("#regFile-editor").append(`
+        $("#regFile-editor .registers").append(`
             <div class="input-group" style="font-family: monospace;">
                 <span class="input-group-text" style="width: 7em">${reg} (x${i})</span>
                 <input type="text" class="register-input form-control">
