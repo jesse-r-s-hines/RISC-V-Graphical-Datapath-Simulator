@@ -311,31 +311,31 @@ describe("Branch", () => {
         test_code(code, {}, {5: 0x0001_0004n, 6: 1n, 7: 0n})
     })
     
-    // it('jalr', () => {
-    //     let code = [
-    //         0x00000013n, // addi zero, zero, 0
-    //         0x000e02e7n, // jalr x5, 0(x28) # instruction 3
-    //         0x00100393n, // addi x7, zero, 1
-    //         0x00100313n, // addi x6, zero, 1
-    //     ];
-    //     test_code(code, {28: 0x0001_000Cn}, {5: 0x0001_0008n, 6: 1n, 7: 0n})
+    it('jalr', () => {
+        let code = [
+            0x00000013n, // addi zero, zero, 0
+            0x000e02e7n, // jalr x5, 0(x28) # instruction 3
+            0x00100393n, // addi x7, zero, 1
+            0x00100313n, // addi x6, zero, 1
+        ];
+        test_code(code, {28: 0x0001_000Cn}, {5: 0x0001_0008n, 6: 1n, 7: 0n})
 
-    //     code = [
-    //         0x008e02e7n, // jalr x5, 8(x28) # instructions 2 + 1
-    //         0x00000013n, // addi zero, zero, 0
-    //         0x00100393n, // addi x7, zero, 1
-    //         0x00100313n, // addi x6, zero, 1
-    //     ];
-    //     test_code(code, {28: 0x0001_0004n}, {5: 0x0001_0004n, 6: 1n, 7: 0n})
+        code = [
+            0x008e02e7n, // jalr x5, 8(x28) # instructions 2 + 1
+            0x00000013n, // addi zero, zero, 0
+            0x00100393n, // addi x7, zero, 1
+            0x00100313n, // addi x6, zero, 1
+        ];
+        test_code(code, {28: 0x0001_0004n}, {5: 0x0001_0004n, 6: 1n, 7: 0n})
 
-    //     code = [
-    //         0x008e02e7n, // jalr x5, 9(x28) # instructions 2 + 1 misaligned. JALR should clear least significant bit.
-    //         0x00000013n, // addi zero, zero, 0
-    //         0x00100393n, // addi x7, zero, 1
-    //         0x00100313n, // addi x6, zero, 1
-    //     ];
-    //     test_code(code, {28: 0x0001_0004n}, {5: 0x0001_0004n, 6: 1n, 7: 0n})
-    // })
+        code = [
+            0x008e02e7n, // jalr x5, 9(x28) # instructions 2 + 1 misaligned. JALR should clear least significant bit.
+            0x00000013n, // addi zero, zero, 0
+            0x00100393n, // addi x7, zero, 1
+            0x00100313n, // addi x6, zero, 1
+        ];
+        test_code(code, {28: 0x0001_0004n}, {5: 0x0001_0004n, 6: 1n, 7: 0n})
+    })
     
     // it('auipc', () => {
     //     let code = [

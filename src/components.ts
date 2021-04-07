@@ -32,32 +32,34 @@ export class Control {
     public branchZero: Bit = 0
     public branchNotZero: Bit = 0
     public jump: Bit =  0
+    public jalr: Bit =  0
     public aluOp: Bits = [] // 3 bits
 
     private static table = new TruthTable<[Bit, Bits, Bit, Bit, Bit, Bits]>([
         //  opcode   | aluSrc | writeSrc | regWrite | memRead | memWrite |  aluOp |
-        [["0110011"], [  0,      b`00`,    1,         0,        0,         b`010`]], // R-format
-        [["0010011"], [  1,      b`00`,    1,         0,        0,         b`011`]], // I-format
-        [["0000011"], [  1,      b`01`,    1,         1,        0,         b`000`]], // ld
-        [["0100011"], [  1,      b`00`,    0,         0,        1,         b`000`]], // st
-        [["1100011"], [  0,      b`00`,    0,         0,        0,         b`001`]], // branch
-        [["1101111"], [  0,      b`10`,    1,         0,        0,         b`000`]], // jal (Don't care aluOp)
-        [["0110111"], [  1,      b`00`,    1,         0,        0,         b`100`]], // lui
+        [["0110011"], [  0,      b`00`,       1,         0,        0,      b`010`]], // R-format
+        [["0010011"], [  1,      b`00`,       1,         0,        0,      b`011`]], // I-format
+        [["0000011"], [  1,      b`01`,       1,         1,        0,      b`000`]], // ld
+        [["0100011"], [  1,      b`00`,       0,         0,        1,      b`000`]], // st
+        [["1100011"], [  0,      b`00`,       0,         0,        0,      b`001`]], // branch
+        [["110X111"], [  0,      b`10`,       1,         0,        0,      b`000`]], // jal/jalr (Don't care aluOp)
+        [["0110111"], [  1,      b`00`,       1,         0,        0,      b`100`]], // lui
     ])
 
-    private static branch_table = new TruthTable<[Bit, Bit, Bit]>([
-        // opcode  | funct3 | branchZero | branchNotZero | jump
-        [["1100011", "000"], [     1,           0,          0]], // beq
-        [["1100011", "1X1"], [     1,           0,          0]], // bge, bgeu
-        [["1100011", "001"], [     0,           1,          0]], // bne
-        [["1100011", "1X0"], [     0,           1,          0]], // blt, bltu
-        [["1101111", "XXX"], [     0,           0,          1]], // jump
-        [["XXXXXXX", "XXX"], [     0,           0,          0]], // not a branch
+    private static branch_table = new TruthTable([
+        // opcode  | funct3 | branchZero | branchNotZero | jump | jalr
+        [["1100011", "000"], [     1,           0,          0,     0]], // beq
+        [["1100011", "1X1"], [     1,           0,          0,     0]], // bge, bgeu
+        [["1100011", "001"], [     0,           1,          0,     0]], // bne
+        [["1100011", "1X0"], [     0,           1,          0,     0]], // blt, bltu
+        [["1101111", "XXX"], [     0,           0,          1,     0]], // jal
+        [["1100111", "000"], [     0,           0,          1,     1]], // jalr
+        [["XXXXXXX", "XXX"], [     0,           0,          0,     0]], // not a branch
     ])
 
     public tick() {
         [this.aluSrc, this.writeSrc, this.regWrite, this.memRead, this.memWrite, this.aluOp] = Control.table.match(this.opCode);
-        [this.branchZero, this.branchNotZero, this.jump] = Control.branch_table.match(this.opCode, this.funct3)
+        [this.branchZero, this.branchNotZero, this.jump, this.jalr] = Control.branch_table.match(this.opCode, this.funct3)
     }
 }
 

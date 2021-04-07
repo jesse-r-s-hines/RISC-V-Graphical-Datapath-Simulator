@@ -14,6 +14,7 @@ export class Simulator {
     public alu: Comp.ALU
     
     public pcAdd4: Comp.ALU
+    public jalrMux: Comp.Mux
     public branchAdder: Comp.ALU
     public jumpControl: Comp.JumpControl
 
@@ -33,6 +34,7 @@ export class Simulator {
         this.alu = new Comp.ALU()
     
         this.pcAdd4 = new Comp.ALU()
+        this.jalrMux = new Comp.Mux(2)
         this.branchAdder = new Comp.ALU()
         this.jumpControl = new Comp.JumpControl()
         
@@ -113,8 +115,13 @@ export class Simulator {
         this.pcAdd4.in2 = Bits(4n, 32)
         this.pcAdd4.tick()
 
+        this.jalrMux.in[0] = this.pc.out
+        this.jalrMux.in[1] = this.regFile.readData1
+        this.jalrMux.select = [this.control.jalr]
+        this.jalrMux.tick()
+
         this.branchAdder.aluControl = b`0010` // add
-        this.branchAdder.in1 = this.pc.out
+        this.branchAdder.in1 = this.jalrMux.out
         this.branchAdder.in2 = this.immGen.immediate
         this.branchAdder.tick()
 

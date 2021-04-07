@@ -5,11 +5,20 @@ array: .word 4, 3, 2, 1, 0, -1, -2, -3, -4
 
 .text
 main:
-    la a0, array
-    # mv a0, gp
+    # la a0, array
     # li a1, 100
-    # jal ra, sort 
-    # jal quit
+    jal ra, sort
+
+    j quit
+
+swap:
+    slli t1, a1, 2 # reg t1 = k * 4
+    add t1, a0, t1 # reg t1 = v + (k * 4)
+    lw t0, 0(t1) # reg t0 (temp) = v[k]
+    lw t2, 4(t1) # reg t2 = v[k + 1]
+    sw t2, 0(t1) # v[k] = reg t2
+    sw t0, 4(t1) # v[k + 1] = reg t0 (temp)
+    jalr x0, 0(ra) # return to calling routine
 
 # paramaters: a0: address of array, a1: length of array
 sort:
@@ -36,14 +45,10 @@ sort:
             lw t1, 0(t0) # t1 = v[j]
             lw t2, 4(t0) # t2 = v[j + 1]
             ble t1, t2, exit2 # go to exit2 if t1 < t2
-           
-            slli t1, s4, 2 # reg t1 = k * 4
-            add t1, s5, t1 # reg t1 = v + (k * 4)
-            lw t0, 0(t1) # reg t0 (temp) = v[k]
-            lw t2, 4(t1) # reg t2 = v[k + 1]
-            sw t2, 0(t1) # v[k] = reg t2
-            sw t0, 4(t1) # v[k + 1] = reg t0 (temp)
-            
+
+            mv a0, s5 # first swap parameter is v
+            mv a1, s4 # second swap parameter is j
+            jal ra, swap # call swap
         addi s4, s4, -1 # j -= 1
         j for2tst # go to for2tst
         exit2:
@@ -59,10 +64,8 @@ sort:
     lw ra, 16(sp) # restore return address
     addi sp, sp, 20 # restore stack pointer
 
-    # jalr x0, 0(ra) # procedure return.
-    jal quit # We don't have jalr so lets jump to the end manually.
+    jalr x0, 0(ra) # procedure return.
 
 quit:
-    # # ends the program with status code 0
-    # li a0, 10
+    # li a0, 10 # ends the program with status code 0
     # ecall
