@@ -308,7 +308,7 @@ describe("Branch", () => {
             0x00100393n, // addi x7, zero, 1
             0x00100313n, // addi x6, zero, 1
         ];
-        test_code(code, {}, {5: 0x0001_0004n, 6: 1n, 7: 0n})
+        test_code(code, {}, {5: 0x0000_0004n, 6: 1n, 7: 0n})
     })
     
     it('jalr', () => {
@@ -318,7 +318,7 @@ describe("Branch", () => {
             0x00100393n, // addi x7, zero, 1
             0x00100313n, // addi x6, zero, 1
         ];
-        test_code(code, {28: 0x0001_000Cn}, {5: 0x0001_0008n, 6: 1n, 7: 0n})
+        test_code(code, {28: 0x0000_000Cn}, {5: 0x0000_0008n, 6: 1n, 7: 0n})
 
         code = [
             0x008e02e7n, // jalr x5, 8(x28) # instructions 2 + 1
@@ -326,7 +326,7 @@ describe("Branch", () => {
             0x00100393n, // addi x7, zero, 1
             0x00100313n, // addi x6, zero, 1
         ];
-        test_code(code, {28: 0x0001_0004n}, {5: 0x0001_0004n, 6: 1n, 7: 0n})
+        test_code(code, {28: 0x0000_0004n}, {5: 0x0000_0004n, 6: 1n, 7: 0n})
 
         code = [
             0x008e02e7n, // jalr x5, 9(x28) # instructions 2 + 1 misaligned. JALR should clear least significant bit.
@@ -334,7 +334,7 @@ describe("Branch", () => {
             0x00100393n, // addi x7, zero, 1
             0x00100313n, // addi x6, zero, 1
         ];
-        test_code(code, {28: 0x0001_0004n}, {5: 0x0001_0004n, 6: 1n, 7: 0n})
+        test_code(code, {28: 0x0000_0004n}, {5: 0x0000_0004n, 6: 1n, 7: 0n})
     })
     
     // it('auipc', () => {

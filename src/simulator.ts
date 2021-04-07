@@ -42,7 +42,7 @@ export class Simulator {
         this.aluInputMux = new Comp.Mux(2)
         this.writeSrcMux = new Comp.Mux(3)
 
-        let text_start = 0x0001_0000n
+        let text_start = 0x0000_0000n // typically this would be 0x0001_0000 but lets use zero for simplicity.
 
         // initialize code memory
         for (let [i, instr] of code.entries()) {
