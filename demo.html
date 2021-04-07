@@ -13,36 +13,33 @@
         <div class="container-fluid d-flex flex-row p-2" style="height: 100vh;">
             <div id="datapath" class="flex-grow-1"> <!-- We'll load the SVG inline here. --> </div>
             <div class="d-flex flex-column">
-                <div class="card flex-grow-1">
-                    <ul class="nav nav-tabs" id="editor-tabs" role="tablist">
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link active" id="instrMem-tab" data-bs-toggle="tab" data-bs-target="#instrMem-editor"
-                                    type="button" role="tab" aria-controls="instrMem-editor" aria-selected="true">
-                                Instruction Memory
-                            </button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="dataMem-tab" data-bs-toggle="tab" data-bs-target="#dataMem-editor"
-                                    type="button" role="tab" aria-controls="dataMem-editor" aria-selected="false">
-                                Data Memory
-                            </button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="regFile-tab" data-bs-toggle="tab" data-bs-target="#regFile-editor"
-                                type="button" role="tab" aria-controls="regFile-editor" aria-selected="false">
-                                Register File
-                            </button>
-                        </li>
-                    </ul>
-
-                    <div id="editors" class="tab-content p-1 h-100">
+                <ul class="nav nav-tabs" id="editor-tabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="instrMem-tab" data-bs-toggle="tab" data-bs-target="#instrMem-editor"
+                                type="button" role="tab" aria-controls="instrMem-editor" aria-selected="true">
+                            Instruction Memory
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="dataMem-tab" data-bs-toggle="tab" data-bs-target="#dataMem-editor"
+                                type="button" role="tab" aria-controls="dataMem-editor" aria-selected="false">
+                            Data Memory
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="regFile-tab" data-bs-toggle="tab" data-bs-target="#regFile-editor"
+                            type="button" role="tab" aria-controls="regFile-editor" aria-selected="false">
+                            Register File
+                        </button>
+                    </li>
+                </ul>
+                <div class="card flex-grow-1 d-flex flex-column h-100 overflow-auto">
+                    <div id="editors" class="tab-content p-1 flex-grow-1">
                         <div id="instrMem-editor" class="tab-pane fade show active h-100" role="tabpanel" aria-labelledby="instrMem-tab">
                             <textarea placeholder="Paste machine code here..."></textarea>
                         </div>
                         <div id="dataMem-editor" class="tab-pane fade h-100" role="tabpanel" aria-labelledby="dataMem-tab">
                             <div class="d-flex flex-column h-100">
-                                <div class="flex-grow-1"> <textarea placeholder="Paste initial memory here..."></textarea> </div>
-
                                 <div class="d-flex flex-row">
                                     <select id="dataMem-radix" class="form-select m-2">
                                         <option value="hex" selected>Hex</option>
@@ -56,10 +53,23 @@
                                         <option value="3" selected>Word</option>
                                     </select>
                                 </div>
+                                <div class="flex-grow-1"> <textarea placeholder="Paste initial memory here..."></textarea> </div>
                             </div>
                         </div>
                         <div id="regFile-editor" class="tab-pane fade h-100" role="tabpanel" aria-labelledby="regFile-tab">
-                            Register File
+                            <div class="d-flex flex-row">
+                                <select id="dataMem-radix" class="form-select m-2">
+                                    <option value="hex" selected>Hex</option>
+                                    <option value="decimal">Decimal</option>
+                                    <option value="unsigned">Unsigned</option>
+                                </select>
+
+                                <select id="dataMem-word-size" class="form-select m-2">
+                                    <option value="1">Byte</option>
+                                    <option value="2">Half-Word</option>
+                                    <option value="3" selected>Word</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>
