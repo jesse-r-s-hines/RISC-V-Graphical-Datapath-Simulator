@@ -280,10 +280,10 @@ export class DataMemory {
 
     // state
     public data: Memory;
-    private static table = new TruthTable<[number, (addr: bigint) => bigint, (addr: bigint, val: bigint) => void]>([
-        [["00"], [8,  Memory.prototype.loadByte,     Memory.prototype.storeByte]],
-        [["01"], [16, Memory.prototype.loadHalfWord, Memory.prototype.storeHalfWord]],
-        [["10"], [32, Memory.prototype.loadWord,     Memory.prototype.storeWord]],
+    private static table = new TruthTable<number>([
+        [["00"], 1], // byte
+        [["01"], 2], // half-word
+        [["10"], 4], // word
     ])
 
     constructor() {
@@ -292,16 +292,16 @@ export class DataMemory {
 
     tick() {
         if (this.memRead && this.memWrite) throw Error("Only memRead or memWrite allowed")
-        let [bits, loadFunc, storeFunc] = DataMemory.table.match(this.size)
+        let bytes = DataMemory.table.match(this.size)
  
         this.readData = Bits(0n, 32) // Not required but will make visualization clearer
         if (this.memRead) {
-            let dataInt = loadFunc.call(this.data, Bits.toInt(this.address))
-            let dataBits = Bits(dataInt, bits) // memory returns an unsigned int.
+            let dataInt = this.data.load(Bits.toInt(this.address), bytes)
+            let dataBits = Bits(dataInt, bytes * 8) // memory returns an unsigned int.
             this.readData = Bits.extended(dataBits, 32, Boolean(this.signed)) // sign extend to 32 bits if signed
         } else if (this.memWrite) {
-            let data = this.writeData.slice(0, bits)
-            storeFunc.call(this.data, Bits.toInt(this.address), Bits.toInt(data)) // always store as unsigned
+            let data = this.writeData.slice(0, bytes * 8)
+            this.data.store(Bits.toInt(this.address), bytes, Bits.toInt(data)) // always store as unsigned
         }
     }
 }
