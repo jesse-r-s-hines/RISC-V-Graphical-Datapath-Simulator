@@ -49,6 +49,23 @@ describe("Memory", () => {
         mem.storeByte(4n, 0x00n)
         expect(mem.loadDoubleWord(0n)).to.equal(0x01_23_45_00_89_AB_CD_EFn)
     });
+
+    it('Test Load/Store slice', () => {
+        let mem = new Memory(2n**32n)
+    
+        mem.store(0n, 8, 0x01_23_45_67_89_AB_CD_EFn)
+    
+        let bytes = [0xEFn, 0xCDn, 0xABn, 0x89n, 0x67n, 0x45n, 0x23n, 0x01n] // backwards
+        for (let [i, byte] of bytes.entries()) {
+          expect(mem.load(BigInt(i), 1)).to.equal(byte)
+        }
+    
+        expect(mem.load(2n, 4)).to.equal(0x45_67_89_ABn)
+        expect(mem.load(6n, 2)).to.equal(0x01_23n)
+    
+        mem.store(4n, 1, 0x00n)
+        expect(mem.load(0n, 8)).to.equal(0x01_23_45_00_89_AB_CD_EFn)
+    });
     
     it('Test Out Of Bounds', () => {
         let mem = new Memory(2n**16n)

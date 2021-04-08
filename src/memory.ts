@@ -17,51 +17,57 @@ export class Memory {
         this.data = new Map() // map of bytes to values
     }
 
-    /** Takes a start and a size and loads the consecutive bytes as a positive integer */
-    private loadSlice(start: bigint, size: number): bigint {
-        let sizeB = BigInt(size) // Convert to bigint so we can add it to bigints
-        if (start < 0n || (start + sizeB) >= this.size) throw Error(`Memory address ${start} out of range for ${size} bytes.`)
+    /**
+     * Loads the given number of bytes at addr as a single number.
+     * Returns a positive bigint, and treats the memory as little-endian.
+     */
+    public load(addr: bigint, bytes: number): bigint {
+        let bytesB = BigInt(bytes) // Convert to bigint so we can add it to bigints
+        if (addr < 0n || (addr + bytesB) >= this.size) throw Error(`Memory address ${addr} out of range for ${bytes} bytes.`)
 
         let val = 0n
-        for (let i = sizeB - 1n; i >= 0; i--) { // Backwards because little-endian
-            let byte = this.data.get(start + i) ?? 0n
+        for (let i = bytesB - 1n; i >= 0; i--) { // Backwards because little-endian
+            let byte = this.data.get(addr + i) ?? 0n
             val = (val << 8n) | byte
         }
         return val
     }
 
-    /** Takes a start and a size and stores number accross the bytes */
-    private storeSlice(start: bigint, size: number, val: bigint) {
-        let sizeB = BigInt(size) // Convert to bigint so we can add it to bigints
-        if (start < 0n || (start + sizeB) >= this.size) throw Error(`Memory address ${start} out of range for ${size} bytes.`)
-        if (val < 0n || val >= 2n ** (8n * sizeB))
-            throw Error(`${val} is invalid. Expected a positive integer that fits in ${size} bytes.`)
+    /**
+     * Stores a number accross the given number of bytes.
+     * Treats the memory as little-endian.
+     */
+    public store(addr: bigint, bytes: number, val: bigint) {
+        let bytesB = BigInt(bytes) // Convert to bigint so we can add it to bigints
+        if (addr < 0n || (addr + bytesB) >= this.size) throw Error(`Memory address ${addr} out of range for ${bytes} bytes.`)
+        if (val < 0n || val >= 2n ** (8n * bytesB))
+            throw Error(`${val} is invalid. Expected a positive integer that fits in ${bytes} bytes.`)
         
-        for (let i = 0n; i < sizeB; i++) {
-            this.data.set(start + i, val & 0xFFn)
+        for (let i = 0n; i < bytesB; i++) {
+            this.data.set(addr + i, val & 0xFFn)
             val = val >> 8n
         }
     }
 
     /** Returns a single byte from the memory as an unsigned int. */
-    loadByte(addr: bigint): bigint  { return this.loadSlice(addr, 1) }
+    loadByte(addr: bigint): bigint  { return this.load(addr, 1) }
     /** Stores a single unsigned int as a byte */
-    storeByte(addr: bigint, val: bigint) { this.storeSlice(addr, 1, val) }
+    storeByte(addr: bigint, val: bigint) { this.store(addr, 1, val) }
 
     /** Returns a single half word from the memory as an unsigned int. */
-    loadHalfWord(addr: bigint): bigint  { return this.loadSlice(addr, 2) }
+    loadHalfWord(addr: bigint): bigint  { return this.load(addr, 2) }
     /** Stores a single unsigned int as a half word */
-    storeHalfWord(addr: bigint, val: bigint) { this.storeSlice(addr, 2, val) }
+    storeHalfWord(addr: bigint, val: bigint) { this.store(addr, 2, val) }
 
     /** Returns a single word from the memory as an unsigned int. */
-    loadWord(addr: bigint): bigint  { return this.loadSlice(addr, 4) }
+    loadWord(addr: bigint): bigint  { return this.load(addr, 4) }
     /** Stores a single unsigned int as a word */
-    storeWord(addr: bigint, val: bigint) { this.storeSlice(addr, 4, val) }
+    storeWord(addr: bigint, val: bigint) { this.store(addr, 4, val) }
 
     /** Returns a single double word from the memory as an unsigned int. */
-    loadDoubleWord(addr: bigint): bigint  { return this.loadSlice(addr, 8) }
+    loadDoubleWord(addr: bigint): bigint  { return this.load(addr, 8) }
     /** Stores a single unsigned int as a double word */
-    storeDoubleWord(addr: bigint, val: bigint) { this.storeSlice(addr, 8, val) }
+    storeDoubleWord(addr: bigint, val: bigint) { this.store(addr, 8, val) }
 
     /**
      * Returns the content of memory as string.
@@ -79,7 +85,7 @@ export class Memory {
         for (let i of addresses) {
             let wordI = (i >> addrShift) << addrShift // erase bottom bits
             if (wordI != prevWord) {
-                let val = this.loadSlice(i, wordSize)
+                let val = this.load(i, wordSize)
                 let valStr = hex ? `0x${val.toString(16).padStart(wordSize*2, "0")}` : val.toString()
                 rows.push(`0x${i.toString(16).padStart(addrSize, "0")}: ${valStr}`)
                 prevWord = wordI
