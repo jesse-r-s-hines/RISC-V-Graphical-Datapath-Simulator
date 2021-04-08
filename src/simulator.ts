@@ -78,6 +78,14 @@ export class Simulator {
         }
     }
 
+    /**
+     * Returns true the next instruction isn't 0x0000_0000.
+     * We are just stopping the program when it runs off the end.
+     */
+    canContinue(): boolean {
+        return this.instrMem.data.loadWord(Bits.toInt(this.pc.in)) != 0n
+    }
+
     tick() {
         // this.pc.in is set at the end.
         // tick() will set it to the value set during the previous tick.
@@ -168,7 +176,7 @@ export class Simulator {
     /** Runs the simulator until the end of the code. */
     run() {
         // 0000000 is not a valid opcode, so we can just quit when we hit all 0s.
-        while (this.instrMem.data.loadWord(Bits.toInt(this.pc.in)) != 0n) {
+        while (this.canContinue()) {
             this.tick()
         }
         // Make the pc and regFile update for the final tick.
