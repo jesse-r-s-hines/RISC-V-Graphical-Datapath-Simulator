@@ -36,21 +36,21 @@
                 </ul>
                 <div id="editors" class="tab-content card p-1 flex-grow-1" style="min-height: 0;">
                     <div id="instrMem-editor" class="tab-pane fade show active h-100" role="tabpanel" aria-labelledby="instrMem-tab">
-                        <textarea placeholder="Paste machine code here..."></textarea>
+                        <textarea placeholder="Paste machine code (in hex) here..."></textarea>
                     </div>
                     <div id="dataMem-editor" class="tab-pane fade h-100" role="tabpanel" aria-labelledby="dataMem-tab">
                         <div class="d-flex flex-column h-100">
                             <div class="d-flex flex-row">
                                 <select id="dataMem-radix" class="form-select m-1">
-                                    <option value="hex" selected>Hex</option>
-                                    <option value="decimal">Decimal</option>
-                                    <option value="unsigned">Unsigned</option>
+                                    <option value="16" selected>Hex</option>
+                                    <option value="10">Signed Decimal</option>
+                                    <option value="unsigned">Unsigned Decimal</option>
                                 </select>
 
                                 <select id="dataMem-word-size" class="form-select m-1">
                                     <option value="1">Byte</option>
                                     <option value="2">Half-Word</option>
-                                    <option value="3" selected>Word</option>
+                                    <option value="4" selected>Word</option>
                                 </select>
                             </div>
                             <div class="flex-grow-1 overflow-auto">
@@ -61,16 +61,10 @@
                     <div id="regFile-editor" class="tab-pane fade h-100" role="tabpanel" aria-labelledby="regFile-tab" style="min-height: 0;">
                         <div class="d-flex flex-column h-100">
                             <div class="d-flex flex-row">
-                                <select id="dataMem-radix" class="form-select m-1">
-                                    <option value="hex" selected>Hex</option>
-                                    <option value="decimal">Decimal</option>
-                                    <option value="unsigned">Unsigned</option>
-                                </select>
-
-                                <select id="dataMem-word-size" class="form-select m-1">
-                                    <option value="1">Byte</option>
-                                    <option value="2">Half-Word</option>
-                                    <option value="3" selected>Word</option>
+                                <select id="regFile-radix" class="form-select m-1">
+                                    <option value="16" selected>Hex</option>
+                                    <option value="10">Signed Decimal</option>
+                                    <option value="unsigned">Unsigned Decimal</option>
                                 </select>
                             </div>
                             <div class="registers overflow-auto"></div>
@@ -78,7 +72,9 @@
                     </div>
                 </div>
                 <div class="card"><div class="card-body">
-                    Controls...
+                    <button id="run-simulation" class="btn btn-sm mx-1" title="Run Simulation">
+                        <i class='fas fa-play text-success'></i>
+                    </button>
                 </div></div>
             </div>
         </div>
