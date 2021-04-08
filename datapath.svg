@@ -1746,9 +1746,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.025523"
-     inkscape:cx="591.3419"
-     inkscape:cy="343.86224"
+     inkscape:zoom="8.204184"
+     inkscape:cx="66.237647"
+     inkscape:cy="60.330939"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
@@ -1772,7 +1772,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -1803,11 +1803,13 @@
     <g
        id="regFile-readData2">
       <path
+         class="wire"
          style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-mid:url(#marker3018);marker-end:url(#Arrow2Mend-6)"
          d="m 187.84045,175.89659 h 2.89427 11.61879"
          id="path858-0"
          sodipodi:nodetypes="ccc" />
       <path
+         class="wire"
          style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow2Mend-5)"
          d="m 190.74127,175.87226 -0.0962,26.5129 66.72759,0.063"
          id="path858-1"
@@ -1816,23 +1818,27 @@
     <g
        id="regFile-readData1">
       <path
+         class="wire"
          style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#DotM-2-6);marker-end:url(#Arrow2Mend-4-9)"
          d="M 179.21627,139.3383 V 42.105248 l 5.49415,0"
          id="path858-5-8"
          sodipodi:nodetypes="ccc"
          transform="translate(21.938088,15.384832)" />
       <path
+         class="wire"
          style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow2Mend-58)"
          d="m 187.71802,154.70484 h 30.05189"
          id="path-1-1-1"
          sodipodi:nodetypes="cc" />
     </g>
     <path
+       class="wire"
        style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow2Mend-58-7)"
        d="m 211.76796,183.02494 h 6.05025"
        id="aluInputMux-out"
        sodipodi:nodetypes="cc" />
     <path
+       class="wire"
        style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow2Mend-3)"
        d="m 295.04127,174.32608 h 9.08309"
        id="dataMem-readData"
@@ -1840,60 +1846,65 @@
     <g
        id="alu-result">
       <path
+         class="wire"
          style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#DotM-1);marker-end:url(#Arrow2Mend-03)"
          d="m 251.59501,174.3459 0.0462,43.54757 47.25869,0.006 0.0907,-26.888 5.1411,0.0129"
          id="path858-03"
          sodipodi:nodetypes="ccccc" />
       <path
+         class="wire"
          style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow2Mend-3-6)"
          d="m 248.01275,174.3459 h 9.47992"
          id="path858-56-0"
          sodipodi:nodetypes="cc" />
     </g>
     <path
+       class="wire"
        style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow2Mend-62)"
        d="m 313.51193,174.2694 4.19024,-0.0115 0.0341,76.94279 -181.07308,-0.0904 -0.081,-58.09149 7.26321,-0.01"
        id="writeSrcMux-out"
        sodipodi:nodetypes="cccccc" />
-    <path
-       style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow2Mend-4-6-2)"
-       d="m 57.933121,59.617366 h 7.778304"
-       id="literal-4"
-       sodipodi:nodetypes="cc" />
     <g
        id="pc-out">
       <path
+         class="wire"
          style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow2Mend-2)"
          d="m 42.703199,150.28892 h 7.489645"
          id="path858-9"
          sodipodi:nodetypes="cc" />
       <path
+         class="wire"
          style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#DotM-2-96);marker-end:url(#Arrow2Mend-4-2)"
          d="M 45.122311,150.27454 44.965672,33.60793 65.653924,33.599536"
          id="path858-5-6"
          sodipodi:nodetypes="ccc" />
       <path
+         class="wire"
          style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#DotM-91);marker-end:url(#Arrow2Mend-9)"
          d="m 45.064165,79.8562 h 79.204275 l 0.0741,-38.249722 82.46379,0.02767"
          id="path858-7"
          sodipodi:nodetypes="cccc" />
     </g>
     <path
+       class="wire"
        style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow2Mend-58-5)"
        d="m 252.87626,58.631799 h 14.27395"
        id="branchAdder-result"
        sodipodi:nodetypes="cc" />
     <path
+       class="wire"
        style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow2Mend-58-5-9)"
        d="m 276.60023,46.015427 5.75341,-0.0039 0.0637,-25.376602 -255.229028,0.09475 0.116355,129.753555 4.131409,-0.0153"
        id="pcMux-out"
        sodipodi:nodetypes="cccccc" />
     <path
+       class="wire"
        style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        d="m 227.91226,227.6353 4.84571,-0.008 0.0311,-42.70653"
        id="aluControl-aluControl"
        sodipodi:nodetypes="ccc" />
     <path
+       class="wire"
        style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        d="m 269.00306,87.634053 3.52046,-0.0125 -0.17269,-24.302319"
        id="jumpControl-takeBranch"
@@ -1901,17 +1912,20 @@
     <g
        id="pcAdd4-result">
       <path
+         class="wire"
          style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow2Mend-9-7)"
          d="m 84.367352,47.050264 27.803568,0.0431 0.0667,-12.293925 154.75835,0.04801"
          id="path858-7-4"
          sodipodi:nodetypes="cccc" />
       <path
+         class="wire"
          style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#DotM-5);marker-end:url(#Arrow2Mend-08)"
          d="m 236.58678,34.879058 -0.0235,-7.391794 59.92239,-0.01491 0.22006,130.443946 7.42599,-0.0161"
          id="path858-06"
          sodipodi:nodetypes="ccccc" />
     </g>
     <path
+       class="wire"
        style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        d="m 260.53969,100.28086 v 13.00304 h -7.44107 v 49.744 H 247.998"
        id="alu-zero"
@@ -2371,6 +2385,7 @@
     <g
        id="instrMem-instruction-rd">
       <path
+         class="wire"
          style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#DotM);marker-end:url(#Arrow2Mend)"
          d="M 88.160385,178.19143 H 143.89028"
          id="path858"
@@ -2453,6 +2468,7 @@
     <g
        id="instrMem-instruction-rs2">
       <path
+         class="wire"
          style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#DotM-2);marker-end:url(#Arrow2Mend-4)"
          d="M 88.160385,160.19965 H 143.89027"
          id="path858-5"
@@ -2541,6 +2557,7 @@
     <g
        id="instrMem-instruction-rs1">
       <path
+         class="wire"
          style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#DotM-2-9);marker-end:url(#Arrow2Mend-4-6)"
          d="M 88.160381,147.31059 H 143.89027"
          id="path858-5-2"
@@ -2630,6 +2647,7 @@
        id="instrMem-instruction-opcode"
        transform="translate(0,-4.7625002)">
       <path
+         class="wire"
          style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#marker1917);marker-end:url(#Arrow2Mend-4-6-5-5)"
          d="M 88.160384,102.20098 H 132.10207"
          id="path858-5-2-9-8"
@@ -2710,6 +2728,7 @@
     <g
        id="control-regWrite">
       <path
+         class="wire"
          style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          d="m 146.65642,133.8609 h 19.04228 l -0.0203,5.35498"
          id="path858-5-2-54"
@@ -2750,6 +2769,7 @@
     <g
        id="control-aluSrc">
       <path
+         class="wire"
          style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          d="m 150.18579,127.1319 h 57.13999 l 0.0566,43.94272"
          id="path858-5-2-54-8"
@@ -2784,6 +2804,7 @@
     <g
        id="control-memWrite">
       <path
+         class="wire"
          style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          d="m 151.84829,120.4109 118.34958,0.0187 -0.11615,38.40013"
          id="path858-5-2-54-1"
@@ -2824,6 +2845,7 @@
     <g
        id="control-aluOp">
       <path
+         class="wire"
          style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          d="m 152.73602,114.48666 40.45255,0.0374 v 94.36633 l 24.33259,0.004 0.0219,3.68594"
          id="path858-5-2-54-2"
@@ -2855,6 +2877,7 @@
     <g
        id="control-writeSrc">
       <path
+         class="wire"
          style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          d="m 153.29785,108.0889 h 155.95219 l -0.0963,45.0246"
          id="path858-5-2-54-3"
@@ -2895,6 +2918,7 @@
     <g
        id="control-memRead">
       <path
+         class="wire"
          style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          d="m 153.21708,101.3769 h 72.98651 v 2.27759 h 56.98964 l 0.072,55.31303"
          id="path858-5-2-54-6"
@@ -2932,6 +2956,7 @@
     <g
        id="control-branchZero">
       <path
+         class="wire"
          style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          d="M 152.76061,94.988898 H 253.61846"
          id="path858-5-2-54-80"
@@ -2978,6 +3003,7 @@
     <g
        id="control-branchNotZero">
       <path
+         class="wire"
          style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          d="M 151.74519,88.638898 H 251.9313"
          id="path858-5-2-54-80-2"
@@ -3033,6 +3059,7 @@
     <g
        id="control-jump">
       <path
+         class="wire"
          style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          d="m 150.1212,82.288898 102.55319,0"
          id="path858-5-2-54-80-2-1"
@@ -3061,21 +3088,25 @@
     <g
        id="instrMem-instruction">
       <path
+         class="wire"
          style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          d="m 88.160384,97.43848 -0.131519,123.3252 0.13152,24.45562"
          id="path858-8"
          sodipodi:nodetypes="ccc" />
       <path
+         class="wire"
          style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker1798)"
          d="m 82.827687,168.80939 h 5.406968"
          id="path858-5-2-5"
          sodipodi:nodetypes="cc" />
       <path
+         class="wire"
          style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#DotM-12);marker-end:url(#Arrow2Mend-93)"
          d="M 88.160385,218.65039 H 155.75575"
          id="path858-02"
          sodipodi:nodetypes="cc" />
       <path
+         class="wire"
          style="display:inline;fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;filter:url(#filter8818)"
          d="m 144.86243,216.34399 4.21678,4.21677"
          id="path9380" />
@@ -3152,11 +3183,13 @@
     <g
        id="immGen-immediate">
       <path
+         class="wire"
          style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow2Mend-50)"
          d="m 176.66329,218.64704 h 19.70893 l -0.0564,-146.941903 26.29189,-0.004"
          id="path858-4"
          sodipodi:nodetypes="cccc" />
       <path
+         class="wire"
          style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#marker5217);marker-end:url(#Arrow2Mend-58-7-0)"
          d="m 196.36687,192.04947 h 5.90464"
          id="path858-84-4-2"
@@ -3181,13 +3214,22 @@
       </g>
     </g>
     <g
-       aria-label="4"
-       transform="translate(10.410648,-178.22467)"
-       id="text4185-6-9-7-02-4-9-4"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:end;white-space:pre;shape-inside:url(#rect4187-2-5-2-9-3-0-2);display:inline;opacity:0.999;mix-blend-mode:normal;fill:#000000;fill-opacity:1;stroke:none;filter:url(#filter1159-4-94-2-9-8-9-5)">
+       id="literal4">
       <path
-         d="m 43.985326,236.6944 -1.142049,1.78473 h 1.142049 z m -0.118683,-0.39412 h 0.568785 v 2.17885 h 0.476973 v 0.3762 h -0.476973 v 0.78824 h -0.450102 v -0.78824 H 42.47603 v -0.43666 z"
-         id="path3174" />
+         class="wire"
+         style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow2Mend-4-6-2)"
+         d="m 57.933121,59.617366 h 7.778304"
+         id="path-12468056"
+         sodipodi:nodetypes="cc" />
+      <g
+         aria-label="4"
+         transform="translate(10.410648,-178.22467)"
+         id="text4185-6-9-7-02-4-9-4"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:end;white-space:pre;shape-inside:url(#rect4187-2-5-2-9-3-0-2);display:inline;opacity:0.999;mix-blend-mode:normal;fill:#000000;fill-opacity:1;stroke:none;filter:url(#filter1159-4-94-2-9-8-9-5)">
+        <path
+           d="m 43.985326,236.6944 -1.142049,1.78473 h 1.142049 z m -0.118683,-0.39412 h 0.568785 v 2.17885 h 0.476973 v 0.3762 h -0.476973 v 0.78824 h -0.450102 v -0.78824 H 42.47603 v -0.43666 z"
+           id="path3174" />
+      </g>
     </g>
     <g
        id="alu">
@@ -3449,11 +3491,13 @@
     <g
        id="instrMem-instruction-funct3">
       <path
+         class="wire"
          style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#DotM-2-9-26);marker-end:url(#Arrow2Mend-4-6-5)"
          d="M 88.160384,112.25521 H 132.10208"
          id="path858-5-2-9"
          sodipodi:nodetypes="cc" />
       <path
+         class="wire"
          style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#DotM-12-7);marker-end:url(#Arrow2Mend-93-5)"
          d="m 88.160382,235.1029 h 96.407508 l -0.0249,-11.47072 22.49912,-0.0255"
          id="path858-02-8"
@@ -3623,6 +3667,7 @@
        id="instrMem-instruction-funct7"
        transform="translate(0,-3.1750001)">
       <path
+         class="wire"
          style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#DotM-12-7-1);marker-end:url(#Arrow2Mend-93-5-8)"
          d="m 88.16038,248.2839 110.13031,-1.5e-4 0.0305,-13.9591 8.52321,0.003"
          id="path858-02-8-3"
@@ -4233,6 +4278,7 @@
     <g
        id="control-jalr">
       <path
+         class="wire"
          style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          d="m 146.15663,75.243473 h 37.83249 l 0,-8.68968 27.20023,1.71e-4 0,-4.276761"
          id="path858-5-2-54-80-2-1-4"
