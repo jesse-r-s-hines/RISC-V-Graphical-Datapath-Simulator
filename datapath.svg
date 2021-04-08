@@ -1746,9 +1746,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.36257713"
-     inkscape:cx="639.31497"
-     inkscape:cy="472.18313"
+     inkscape:zoom="0.72515426"
+     inkscape:cx="-113.77595"
+     inkscape:cy="450.7577"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
@@ -1781,7 +1781,7 @@
      id="layer1"
      inkscape:label="Background">
     <rect
-       style="display:inline;mix-blend-mode:normal;fill:#fffffd;fill-opacity:1;stroke:#000000;stroke-width:0.265;stroke-miterlimit:4;stroke-dasharray:0, 2.915;stroke-dashoffset:2.65"
+       style="display:inline;mix-blend-mode:normal;fill:#fffffd;fill-opacity:1;stroke:#000000;stroke-width:0.265;stroke-miterlimit:4;stroke-dasharray:0, 2.91500000000000004;stroke-dashoffset:2.65"
        id="rect1943"
        width="301.04828"
        height="241.06598"
@@ -1928,7 +1928,7 @@
     <g
        id="instrMem">
       <rect
-         style="display:inline;opacity:1;fill:none;stroke:#000000;stroke-width:0.264999"
+         style="display:inline;opacity:1;fill:#fffffd;stroke:#000000;stroke-width:0.264999;fill-opacity:1"
          id="rect1057"
          width="31.876415"
          height="45.628403"
@@ -2137,7 +2137,7 @@
        id="immGen"
        transform="translate(0,-2.1166667)">
       <ellipse
-         style="opacity:1;fill:none;stroke:#000000;stroke-width:0.264999;stroke-miterlimit:4;stroke-dasharray:none"
+         style="opacity:1;fill:#fffffd;stroke:#000000;stroke-width:0.264999;stroke-miterlimit:4;stroke-dasharray:none;fill-opacity:1"
          id="immGen-outline"
          ry="13.284794"
          rx="10.047919"
@@ -2177,7 +2177,7 @@
     <g
        id="pc">
       <rect
-         style="opacity:1;fill:none;stroke:#000000;stroke-width:0.265;stroke-miterlimit:4;stroke-dasharray:none"
+         style="opacity:1;fill:#fffffd;stroke:#000000;stroke-width:0.265;stroke-miterlimit:4;stroke-dasharray:none;fill-opacity:1"
          id="pc-outline"
          width="10.318446"
          height="33.092224"
@@ -2201,7 +2201,7 @@
     <g
        id="aluControl">
       <ellipse
-         style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.265;stroke-miterlimit:4;stroke-dasharray:none"
+         style="display:inline;mix-blend-mode:normal;fill:#fffffd;stroke:#000000;stroke-width:0.265;stroke-miterlimit:4;stroke-dasharray:none;fill-opacity:1"
          id="aluControl-outline"
          cx="217.58656"
          cy="227.62946"
@@ -2258,7 +2258,7 @@
        id="control"
        transform="translate(0,-3.7815028)">
       <ellipse
-         style="opacity:1;fill:none;stroke:#000000;stroke-width:0.264999"
+         style="opacity:1;fill:#fffffd;stroke:#000000;stroke-width:0.264999;fill-opacity:1"
          id="control-outline"
          cx="142.9176"
          cy="108.63802"
@@ -2295,7 +2295,7 @@
     <g
        id="pcAdd4">
       <path
-         style="display:inline;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.396875;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         style="display:inline;fill:#fffffd;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.396875;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          d="M 66.686825,67.53388 V 51.32543 l 4.40802,-4.9891 -4.52005,-5.20652 V 25.79313 l 17.695722,10.73483 v 19.42767 c 0,0 -13.745092,9.36203 -17.583692,11.57825"
          id="pcAdd4-outline"
          sodipodi:nodetypes="cccccccc" />
@@ -2320,7 +2320,7 @@
     <g
        id="jumpControl">
       <ellipse
-         style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.265;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none"
+         style="display:inline;mix-blend-mode:normal;fill:#fffffd;stroke:#000000;stroke-width:0.265;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;fill-opacity:1"
          id="jumpControl-outline"
          ry="12.757064"
          rx="8.504261"
@@ -3229,7 +3229,7 @@
     <g
        id="alu">
       <path
-         style="display:inline;opacity:1;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.396875;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         style="display:inline;opacity:1;fill:#fffffd;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.396875;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          d="m 218.79669,190.71299 v -16.20845 l 4.40802,-4.9891 -4.52005,-5.20652 v -15.33668 l 29.33739,10.73483 v 19.42767 c 0,0 -25.38371,9.35858 -29.22231,11.5748"
          id="alu-outline"
          sodipodi:nodetypes="cccccccc" />
@@ -3303,7 +3303,7 @@
     <g
        id="branchAdder">
       <path
-         style="display:inline;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.396875;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         style="display:inline;fill:#fffffd;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.396875;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          d="m 223.54534,80.256108 v -16.20845 l 4.40802,-4.9891 -4.52005,-5.20652 v -15.33668 l 29.33739,10.73483 v 19.42767 c 0,0 -25.38371,9.35858 -29.22231,11.5748"
          id="branchAdder-outline"
          sodipodi:nodetypes="cccccccc" />
@@ -3343,7 +3343,7 @@
     <g
        id="writeSrcMux">
       <rect
-         style="display:inline;fill:none;stroke:#000000;stroke-width:0.264999"
+         style="display:inline;fill:#fffffd;stroke:#000000;stroke-width:0.264999;fill-opacity:1"
          id="writeSrcMux-outline"
          width="8.561676"
          height="42.103325"
@@ -3396,7 +3396,7 @@
     <g
        id="aluInputMux">
       <rect
-         style="display:inline;fill:none;stroke:#000000;stroke-width:0.264999"
+         style="display:inline;fill:#fffffd;stroke:#000000;stroke-width:0.264999;fill-opacity:1"
          id="aluInputMux-outline"
          width="8.5159845"
          height="25.584352"
@@ -3442,7 +3442,7 @@
     <g
        id="pcMux">
       <rect
-         style="fill:none;stroke:#000000;stroke-width:0.264999"
+         style="fill:#fffffd;stroke:#000000;stroke-width:0.264999;fill-opacity:1"
          id="pcMux-outline"
          width="8.7676888"
          height="33.285988"
@@ -3733,7 +3733,7 @@
     <g
        id="dataMem">
       <rect
-         style="opacity:1;fill:none;stroke:#000000;stroke-width:0.264999"
+         style="opacity:1;fill:#fffffd;stroke:#000000;stroke-width:0.264999;fill-opacity:1"
          id="dataMem-outline"
          width="36.561493"
          height="54.354294"
@@ -3910,7 +3910,7 @@
     <g
        id="regFile">
       <rect
-         style="display:inline;opacity:1;fill:none;stroke:#000000;stroke-width:0.264999"
+         style="display:inline;opacity:1;fill:#fffffd;stroke:#000000;stroke-width:0.264999;fill-opacity:1"
          id="rect1052"
          width="43.035778"
          height="60.931778"
@@ -4227,7 +4227,7 @@
        style="display:inline;mix-blend-mode:normal"
        transform="translate(5.3203081,-134.48122)">
       <rect
-         style="display:inline;fill:none;stroke:#000000;stroke-width:0.264999"
+         style="display:inline;fill:#fffffd;stroke:#000000;stroke-width:0.264999;fill-opacity:1"
          id="jalrMux-outline"
          width="8.5159845"
          height="25.584352"
