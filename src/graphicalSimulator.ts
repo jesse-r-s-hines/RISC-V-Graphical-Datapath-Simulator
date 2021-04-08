@@ -1,4 +1,5 @@
 import {Simulator} from "./simulator";
+import {Bits} from "./utils"
 import CodeMirror from "codemirror";
 import "codemirror/addon/display/placeholder"
 import datapath from "../datapath.svg" // import the string of the optimized svg
@@ -11,12 +12,12 @@ type CodeMirror = CodeMirror.Editor
  * Handles the GUI
  */
 export class GraphicalSimulator {
-    svg: HTMLElement
-    instrMemEditor: CodeMirror
-    dataMemEditor: CodeMirror
-    regEditor: HTMLElement
+    private svg: HTMLElement
+    private instrMemEditor: CodeMirror
+    private dataMemEditor: CodeMirror
+    private regEditor: HTMLElement
 
-    sim: Simulator
+    private sim: Simulator
 
     constructor() {
         // Load the SVG
@@ -56,13 +57,6 @@ export class GraphicalSimulator {
         $("#step-simulation").on("click", (event) => this.step())
 
         this.sim = new Simulator()
-
-
-        tippy('#instrMem', {
-            content: 'Tooltip',
-            followCursor: true,
-            plugins: [followCursor],
-        });
     }
 
     private hexLine(num: number, inc: number, start: number = 0): string {
@@ -102,6 +96,60 @@ export class GraphicalSimulator {
         console.log("Starting Simulation")
     }
 
+    private static datpathElements: Record<string, (sim: Simulator) => string> = {
+        // Components
+        "pc":          (sim) => "Program Counter",
+        "instrMem":    (sim) => "Instruction Memory",
+        "control":     (sim) => "Control",
+        "regFile":     (sim) => "Register FIle",
+        "immGen":      (sim) => "Immediate Generator",
+        "aluControl":  (sim) => "ALU Control",
+        "aluInputMux": (sim) => "ALU Input Mux",
+        "alu":         (sim) => "ALU",
+        "dataMem":     (sim) => "Data Memory",
+        "pcAdd4":      (sim) => "PC + 4",
+        "jalrMux":     (sim) => "Jalr Mux",
+        "branchAdder": (sim) => "Branch Address Adder",
+        "jumpControl": (sim) => "Jump Control",
+        "pcMux":       (sim) => "PC Write Mux",
+        "writeSrcMux": (sim) => "Write Source Mux",
+
+        // Wires
+        "pc-out":                      (sim) => Bits.toString(sim.pc.out),
+        "instrMem-instruction":        (sim) => Bits.toString(sim.instrMem.instruction),
+        "instrMem-instruction-opcode": (sim) => Bits.toString(sim.instrMem.instruction.slice(0, 7)),
+        "instrMem-instruction-rd":     (sim) => Bits.toString(sim.instrMem.instruction.slice(7, 12)),
+        "instrMem-instruction-funct3": (sim) => Bits.toString(sim.instrMem.instruction.slice(12, 15)),
+        "instrMem-instruction-rs1":    (sim) => Bits.toString(sim.instrMem.instruction.slice(15, 20)),
+        "instrMem-instruction-rs2":    (sim) => Bits.toString(sim.instrMem.instruction.slice(20, 25)),
+        "instrMem-instruction-funct7": (sim) => Bits.toString(sim.instrMem.instruction.slice(25, 32)),
+        "control-regWrite":            (sim) => sim.control.regWrite.toString(),
+        "control-aluSrc":              (sim) => sim.control.aluSrc.toString(),
+        "control-memWrite":            (sim) => sim.control.memWrite.toString(),
+        "control-aluOp":               (sim) => Bits.toString(sim.control.aluOp),
+        "control-writeSrc":            (sim) => Bits.toString(sim.control.writeSrc),
+        "control-memRead":             (sim) => sim.control.memRead.toString(),
+        "control-branchZero":          (sim) => sim.control.branchZero.toString(),
+        "control-branchNotZero":       (sim) => sim.control.branchNotZero.toString(),
+        "control-jump":                (sim) => sim.control.jump.toString(),
+        "control-jalr":                (sim) => sim.control.jalr.toString(),
+        "immGen-immediate":            (sim) => Bits.toString(sim.immGen.immediate),
+        "regFile-readData1":           (sim) => Bits.toString(sim.regFile.readData1),
+        "regFile-readData2":           (sim) => Bits.toString(sim.regFile.readData2),
+        "aluControl-aluControl":       (sim) => Bits.toString(sim.aluControl.aluControl),
+        "aluInputMux-out":             (sim) => Bits.toString(sim.aluInputMux.out),
+        "alu-result":                  (sim) => Bits.toString(sim.alu.result),
+        "alu-zero":                    (sim) => sim.alu.zero.toString(),
+        "literalFour":                 (sim) => "4",
+        "pcAdd4-result":               (sim) => Bits.toString(sim.pcAdd4.result),
+        "branchAdder-result":          (sim) => Bits.toString(sim.branchAdder.result),
+        "jumpControl-takeBranch":      (sim) => sim.jumpControl.takeBranch.toString(),
+        "dataMem-readData":            (sim) => Bits.toString(sim.dataMem.readData),
+        "pcMux-out":                   (sim) => Bits.toString(sim.pcMux.out),
+        "writeSrcMux-out":             (sim) => Bits.toString(sim.writeSrcMux.out),
+        "jalrMux-out":                 (sim) => Bits.toString(sim.jalrMux.out),
+    } 
+
     private step() {
         if (this.sim.canContinue()) { // TODO grey out buttons when done.
             console.log("Stepping Simulation")
@@ -119,6 +167,18 @@ export class GraphicalSimulator {
             let regInputs = $(this.regEditor).find(".registers .register-input").get()
             for (let [i, reg] of this.sim.regFile.registers.entries()) {
                 $(regInputs[i]).val(`0x${reg.toString(16).padStart(8, "0")}`)
+            }
+
+            // update svg
+            for (let id in GraphicalSimulator.datpathElements) {
+                if (!$(`#${id}`).length) throw Error(`${id} doesn't exist`)
+                let func = GraphicalSimulator.datpathElements[id]
+    
+                tippy(`#${id}`, {
+                    content: func(this.sim),
+                    followCursor: true,
+                    plugins: [followCursor],
+                });
             }
         }
     }
