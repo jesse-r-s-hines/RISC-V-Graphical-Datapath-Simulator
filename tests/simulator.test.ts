@@ -26,6 +26,12 @@ describe("Misc", () => {
         test_code([], {}, {2: 0xbfff_fff0n, 3: 0x1000_8000n})
         test_code([], {3: 42n}, {2: 0xbfff_fff0n, 3: 42n})
     })
+
+    it('Empty', () => {
+        let sim = new Simulator([])
+        expect( () => sim.run() ).does.not.throw()
+
+    })
 })
 
 describe("Arithmetic", () => {
