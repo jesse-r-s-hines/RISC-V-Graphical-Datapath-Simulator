@@ -1,6 +1,7 @@
 import {Simulator} from "./simulator";
 import CodeMirror from "codemirror";
 import "codemirror/addon/display/placeholder"
+import datapath from "../datapath.svg" // import the string of the optimized svg
 
 type CodeMirror = CodeMirror.Editor
 
@@ -19,7 +20,7 @@ export class GraphicalSimulator {
     constructor() {
         // Load the SVG
         this.svg = $("#datapath")[0]
-        $(this.svg).load("./dist/datapath.svg")
+        $(this.svg).html(datapath)
 
         // Set up the Instruction Memory Tab
         this.instrMemEditor = CodeMirror.fromTextArea($("#instrMem-editor textarea")[0] as HTMLTextAreaElement, {

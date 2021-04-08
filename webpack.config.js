@@ -1,5 +1,6 @@
 // see https://webpack.js.org/guides/typescript/
 const path = require('path');
+const { optimize } = require('svgo');
 
 module.exports = {
   entry: './src/index.ts',
@@ -12,6 +13,20 @@ module.exports = {
         use: 'ts-loader',
         exclude: /node_modules/,
       },
+      {
+        test: /\.svg/,
+        type: 'asset/inline',
+        generator: {
+          dataUrl: content => {
+            content = content.toString();
+            return optimize(content, {
+              plugins: [
+                "convertStyleToAttrs",
+              ],
+            }).data;
+          }
+        }
+      }
     ],
   },
   resolve: {
