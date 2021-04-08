@@ -20,6 +20,8 @@ export class Memory {
     /**
      * Loads the given number of bytes at addr as a single number.
      * Returns a positive bigint, and treats the memory as little-endian.
+     * @param addr Address to load from
+     * @param bytes the number of bytes to load (ie. 1, 2, 4, 8 for byte/half-word/word/double-word)
      */
     public load(addr: bigint, bytes: number): bigint {
         let bytesB = BigInt(bytes) // Convert to bigint so we can add it to bigints
@@ -36,6 +38,9 @@ export class Memory {
     /**
      * Stores a number accross the given number of bytes.
      * Treats the memory as little-endian.
+     * @param addr Address to store to
+     * @param bytes the number of bytes to store as (ie. 1, 2, 4, 8 for byte/half-word/word/double-word)
+     * @param val the number to store
      */
     public store(addr: bigint, bytes: number, val: bigint) {
         let bytesB = BigInt(bytes) // Convert to bigint so we can add it to bigints
@@ -68,6 +73,33 @@ export class Memory {
     loadDoubleWord(addr: bigint): bigint  { return this.load(addr, 8) }
     /** Stores a single unsigned int as a double word */
     storeDoubleWord(addr: bigint, val: bigint) { this.store(addr, 8, val) }
+
+
+
+    /**
+     * Loads a bigint[] from memory.
+     * @param addr Address the array starts
+     * @param elemBytes The number of bytes each element takes
+     * @param size The number of elements in the array to load
+     */
+    loadArray(addr: bigint, elemBytes: number, size: number): bigint[] {
+        let arr: bigint[] = Array(size)
+        for (let i = 0; i < size; i++)
+            arr[i] = this.load(addr + BigInt(elemBytes * i), elemBytes)
+        return arr
+    }
+    
+    /**
+     * Takes a bigint[] and stores it in the memory.
+     * @param addr Address to start the array
+     * @param elemBytes The number of bytes each element should take
+     * @param arr The array to store
+     */
+    storeArray(addr: bigint, elemBytes: number, arr: bigint[]) {
+        for (let [i, val] of arr.entries())
+            this.store(addr + BigInt(elemBytes * i), elemBytes, val)
+    }
+
 
     /**
      * Returns the content of memory as string.

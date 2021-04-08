@@ -96,6 +96,23 @@ describe("Memory", () => {
         expect(() => mem.storeWord(0n, 2n**32n)).to.throw("invalid")
         expect(() => mem.storeWord(0n, 2n**32n - 1n)).not.to.throw()
     });
+
+    it("Test store/load array", () => {
+        let mem = new Memory(2n**16n)
+
+        let arr = [0x0011_2233_4455_6677n, 0x8899_AABB_CCDD_EEFFn]
+
+        mem.storeArray(100n, 8, arr)
+        expect(mem.loadArray(100n, 8, 2)).to.eql(arr)
+        expect(mem.loadArray(100n, 8, 1)).to.eql([0x0011_2233_4455_6677n])
+        expect(mem.loadArray(100n, 1, 16)).to.eql([
+            0x77n, 0x66n, 0x55n, 0x44n, 0x33n, 0x22n, 0x11n, 0x00n, 0xFFn, 0xEEn, 0xDDn, 0xCCn, 0xBBn, 0xAAn, 0x99n, 0x88n, 
+        ])
+        expect(mem.loadArray(105n, 1, 5)).to.eql([0x22n, 0x11n, 0x00n, 0xFFn, 0xEEn])
+
+        expect(mem.loadArray(100n, 8, 0)).to.eql([])
+        expect(() => mem.storeArray(100n, 8, [])).to.not.throw()
+    })
     
     it('Test toString', () => {
         let mem = new Memory(2n**32n)
