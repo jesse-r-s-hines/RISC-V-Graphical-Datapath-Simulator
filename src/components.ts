@@ -199,7 +199,7 @@ export class RegisterFile {
     public readData2: Bits = [] // 32 bits
 
     // state
-    public registers: bigint[];
+    public registers: bigint[]; // stored as unsigned ints
 
     constructor() {
         this.registers = Array(32).fill(0n)
@@ -209,12 +209,12 @@ export class RegisterFile {
         if (this.regWrite) { // edge-triggered write
             let writeReg = Bits.toNumber(this.writeReg)
             if (writeReg != 0) { // Ignore writes to zero reg
-                this.registers[writeReg] = Bits.toInt(this.writeData, true)
+                this.registers[writeReg] = Bits.toInt(this.writeData)
             }
         }
 
-        this.readData1 = Bits(this.registers[Bits.toNumber(this.readReg1)], 32, true)
-        this.readData2 = Bits(this.registers[Bits.toNumber(this.readReg2)], 32, true)
+        this.readData1 = Bits(this.registers[Bits.toNumber(this.readReg1)], 32)
+        this.readData2 = Bits(this.registers[Bits.toNumber(this.readReg2)], 32)
     }
 }
 

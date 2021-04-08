@@ -7,7 +7,7 @@ function test_code(code: bigint[], regs: Record<number, bigint> = {}, expected: 
     let sim = new Simulator(code, regs)
     sim.run()
     for (let reg in expected) {
-        expect(sim.regFile.registers[reg], `register x${reg}`).to.equal(from_twos_complement(expected[reg]))
+        expect(sim.regFile.registers[reg], `register x${reg}`).to.equal(to_twos_complement(expected[reg]))
     }
 }
 
