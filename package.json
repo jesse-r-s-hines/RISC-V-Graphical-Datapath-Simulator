@@ -24,6 +24,7 @@
     "webpack-cli": "^4.6.0"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.15.3",
     "@types/codemirror": "^0.0.108",
     "bootstrap": "^5.0.0-beta3",
     "codemirror": "^5.60.0",
