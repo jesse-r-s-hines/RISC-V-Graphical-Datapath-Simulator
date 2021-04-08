@@ -4,6 +4,7 @@ import { Bits, from_twos_complement, to_twos_complement } from "../src/utils";
 import * as fs from "fs";
 
 function test_code(code: bigint[], regs: Record<number, bigint> = {}, expected: Record<number, bigint> = {}) {
+    for (let reg in regs) regs[reg] = to_twos_complement(regs[reg])
     let sim = new Simulator(code, regs)
     sim.run()
     for (let reg in expected) {
@@ -28,7 +29,7 @@ describe("Misc", () => {
     })
 
     it('Empty', () => {
-        let sim = new Simulator([])
+        let sim = new Simulator()
         expect( () => sim.run() ).does.not.throw()
 
     })

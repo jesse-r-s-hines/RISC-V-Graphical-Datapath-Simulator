@@ -9,6 +9,7 @@ export class Simulator {
         "a6",   "a7", "s2",  "s3",  "s4", "s5", "s6", "s7",
         "s8",   "s9", "s10", "s11", "t3", "t4", "t5", "t6",
     ]
+    public static readonly text_start = 0x0000_0000n // typically this would be 0x0001_0000 but lets use zero for simplicity.
 
     // components
     public pc: Comp.PC
@@ -30,7 +31,7 @@ export class Simulator {
     public aluInputMux: Comp.Mux
     public writeSrcMux: Comp.Mux
 
-    constructor(code: bigint[], regs: Record<number, bigint> = {}) {
+    constructor(code: bigint[] = [], regs: Record<number, bigint> = {}) {
         this.pc = new Comp.PC()
         this.instrMem = new Comp.InstructionMemory()
         this.memControl = new Comp.MemoryControl()
@@ -50,22 +51,31 @@ export class Simulator {
         this.aluInputMux = new Comp.Mux(2)
         this.writeSrcMux = new Comp.Mux(3)
 
-        let text_start = 0x0000_0000n // typically this would be 0x0001_0000 but lets use zero for simplicity.
+        this.pc.data = Simulator.text_start
+        this.setRegisters({2: 0xbffffff0n, 3: 0x10008000n}) // sp and gp
 
-        // initialize code memory
-        this.instrMem.data.storeArray(text_start, 4, code)
-
-        // Initialize registers sp and gp
-        regs = Object.assign({2: 0xbffffff0n, 3: 0x10008000n}, regs)
-        
-        // initialize registers
-        for (let reg in regs) {
-            this.regFile.registers[reg] = to_twos_complement(regs[reg])
-        }
+        this.setCode(code) // initialize code memory
+        this.setRegisters(regs) // set custom registers
 
         // These values need to be initialized since they are set until the end of the tick
-        this.pc.in = Bits(text_start, 32)
+        this.pc.in = Bits(Simulator.text_start, 32)
         this.regFile.regWrite = 0
+    }
+
+    /** Initialize instruction memory */
+    setCode(code: bigint[]) {
+        this.instrMem.data.storeArray(Simulator.text_start, 4, code)
+    }
+
+    /**
+     * Sets the registers. Takes a map of register number to register value.
+     * Register values should be positive.
+     */
+    setRegisters(regs: Record<number, bigint>) {
+        for (let reg in regs) {
+            if (regs[reg] < 0) throw Error("setRegisters() expects unsigned integers.")
+            this.regFile.registers[reg] = regs[reg]
+        }
     }
 
     tick() {
