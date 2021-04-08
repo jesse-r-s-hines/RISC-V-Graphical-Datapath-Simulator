@@ -2,6 +2,7 @@ import {Simulator} from "./simulator";
 import CodeMirror from "codemirror";
 import "codemirror/addon/display/placeholder"
 import datapath from "../datapath.svg" // import the string of the optimized svg
+import tippy, {followCursor} from 'tippy.js';
 
 type CodeMirror = CodeMirror.Editor
 
@@ -55,6 +56,13 @@ export class GraphicalSimulator {
         $("#step-simulation").on("click", (event) => this.step())
 
         this.sim = new Simulator()
+
+
+        tippy('#instrMem', {
+            content: 'Tooltip',
+            followCursor: true,
+            plugins: [followCursor],
+        });
     }
 
     private hexLine(num: number, inc: number, start: number = 0): string {
