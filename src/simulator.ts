@@ -2,13 +2,6 @@ import { Bit, Bits, b, to_twos_complement } from "./utils"
 import * as Comp from "./components"
 
 export class Simulator {
-    // static fields
-    public static readonly regNames = [
-        "zero", "ra", "sp",  "gp",  "tp", "t0", "t1", "t2",
-        "s0",   "s1", "a0",  "a1",  "a2", "a3", "a4", "a5",
-        "a6",   "a7", "s2",  "s3",  "s4", "s5", "s6", "s7",
-        "s8",   "s9", "s10", "s11", "t3", "t4", "t5", "t6",
-    ]
     public static readonly text_start = 0x0000_0000n // typically this would be 0x0001_0000 but lets use zero for simplicity.
 
     // components

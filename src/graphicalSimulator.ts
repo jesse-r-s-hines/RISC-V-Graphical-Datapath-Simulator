@@ -19,6 +19,13 @@ export class GraphicalSimulator {
 
     private sim: Simulator
 
+    public static readonly regNames = [
+        "zero", "ra", "sp",  "gp",  "tp", "t0", "t1", "t2",
+        "s0",   "s1", "a0",  "a1",  "a2", "a3", "a4", "a5",
+        "a6",   "a7", "s2",  "s3",  "s4", "s5", "s6", "s7",
+        "s8",   "s9", "s10", "s11", "t3", "t4", "t5", "t6",
+    ]
+
     constructor() {
         // Load the SVG
         this.svg = $("#datapath")[0]
@@ -38,7 +45,7 @@ export class GraphicalSimulator {
 
         // set up the register file tab
         this.regEditor = $("#regFile-editor")[0]
-        for (let [i, name] of Simulator.regNames.entries()) {
+        for (let [i, name] of GraphicalSimulator.regNames.entries()) {
             $(this.regEditor).find(".registers").append(`
                 <div class="input-group" style="font-family: monospace;">
                     <span class="input-group-text" style="width: 7em">${name} (x${i})</span>
