@@ -14,6 +14,8 @@ export class GraphicalSimulator {
     dataMemEditor: CodeMirror
     regEditor: HTMLElement
 
+    sim: Simulator
+
     constructor() {
         // Load the SVG
         this.svg = $("#datapath")[0]
@@ -37,7 +39,7 @@ export class GraphicalSimulator {
             $(this.regEditor).find(".registers").append(`
                 <div class="input-group" style="font-family: monospace;">
                     <span class="input-group-text" style="width: 7em">${name} (x${i})</span>
-                    <input type="text" class="register-input form-control">
+                    <input type="text" name="registers[${i}]" class="register-input form-control">
                 </div>
             `)
         }
@@ -49,6 +51,9 @@ export class GraphicalSimulator {
         })
 
         $("#run-simulation").on("click", (event) => this.start())
+        $("#step-simulation").on("click", (event) => this.step())
+
+        this.sim = new Simulator()
     }
 
     private hexLine(num: number, inc: number, start: number = 0): string {
@@ -62,6 +67,13 @@ export class GraphicalSimulator {
     }
 
     private start() {
+        // Disable editors
+        this.instrMemEditor.setOption("readOnly", true)
+        this.dataMemEditor.setOption("readOnly", true)
+        $(".editors input").prop("disabled", true)
+        $(".editors select").prop("disabled", true)
+
+        // Start the simulator
         let code = this.instrMemEditor.getValue().trim().split("\n")
                                       .map(s => this.bigintFromStr(s, 16));
 
@@ -74,16 +86,31 @@ export class GraphicalSimulator {
             if (s) regs[i] = this.bigintFromStr(s as string, 16)
         }
 
-        console.log(code)
-        console.log(mem)
-        console.log(regs)
-        let sim = new Simulator(code, regs)
-        sim.dataMem.data.storeArray(0n, 4, mem)
+        this.sim.setCode(code)
+        this.sim.setRegisters(regs)
+        this.sim.dataMem.data.storeArray(0n, 4, mem)
 
-        sim.run()
-
-        console.log(sim.dataMem.data.toString(4, true))
-        console.log(sim.regFile.registers)
+        console.log("Starting Simulation")
     }
 
+    private step() {
+        if (this.sim.canContinue()) { // TODO grey out buttons when done.
+            console.log("Stepping Simulation")
+
+            let line = Number((this.sim.pc.data - Simulator.text_start) / 4n)
+            this.instrMemEditor.removeLineClass(line, "wrap", "current-instruction")
+
+            this.sim.tick()
+
+            line = Number((this.sim.pc.data - Simulator.text_start) / 4n)
+            this.instrMemEditor.addLineClass(line, "wrap", "current-instruction")
+
+            this.dataMemEditor.setValue(this.sim.dataMem.data.toString(4, true))
+
+            let regInputs = $(this.regEditor).find(".registers .register-input").get()
+            for (let [i, reg] of this.sim.regFile.registers.entries()) {
+                $(regInputs[i]).val(`0x${reg.toString(16).padStart(8, "0")}`)
+            }
+        }
+    }
 }
