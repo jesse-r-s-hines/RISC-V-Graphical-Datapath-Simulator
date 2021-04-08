@@ -1,4 +1,4 @@
-import {GraphicalSimulator} from "./graphicalSimulator";
+import {VisualSim} from "./visualSim";
 import "bootstrap";
 // for some reason importing jquery causes problems. jQuery seems to be getting loaded twice. 
 // @types/jquery assumes you have jquery in global scope so I'm just using a script tag to include jquery.
@@ -6,7 +6,7 @@ import "bootstrap";
 
 
 $(function() {
-   let sim = new GraphicalSimulator()
+   let sim = new VisualSim()
 })
 
 

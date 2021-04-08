@@ -11,7 +11,7 @@ type CodeMirror = CodeMirror.Editor
 /**
  * Handles the GUI
  */
-export class GraphicalSimulator {
+export class VisualSim {
     private svg: HTMLElement
     private instrMemEditor: CodeMirror
     private dataMemEditor: CodeMirror
@@ -45,7 +45,7 @@ export class GraphicalSimulator {
 
         // set up the register file tab
         this.regEditor = $("#regFile-editor")[0]
-        for (let [i, name] of GraphicalSimulator.regNames.entries()) {
+        for (let [i, name] of VisualSim.regNames.entries()) {
             $(this.regEditor).find(".registers").append(`
                 <div class="input-group" style="font-family: monospace;">
                     <span class="input-group-text" style="width: 7em">${name} (x${i})</span>
@@ -177,9 +177,9 @@ export class GraphicalSimulator {
             }
 
             // update svg
-            for (let id in GraphicalSimulator.datpathElements) {
+            for (let id in VisualSim.datpathElements) {
                 if (!$(`#${id}`).length) throw Error(`${id} doesn't exist`)
-                let func = GraphicalSimulator.datpathElements[id]
+                let func = VisualSim.datpathElements[id]
     
                 tippy(`#${id}`, {
                     content: func(this.sim),
