@@ -5,7 +5,8 @@
   "scripts": {
     "build": "webpack",
     "watch": "webpack --watch",
-    "test": "mocha -r ts-node/register 'tests/**/*.ts'"
+    "test": "mocha -r ts-node/register 'tests/**/*.ts'",
+    "optimize-svg": "scour -i datapath.svg -o dist/datapath.svg --disable-group-collapsing --protect-ids-noninkscape --enable-id-stripping --enable-viewboxing"
   },
   "author": "",
   "license": "ISC",

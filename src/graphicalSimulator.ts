@@ -19,7 +19,7 @@ export class GraphicalSimulator {
     constructor() {
         // Load the SVG
         this.svg = $("#datapath")[0]
-        $(this.svg).load("./datapath.svg")
+        $(this.svg).load("./dist/datapath.svg")
 
         // Set up the Instruction Memory Tab
         this.instrMemEditor = CodeMirror.fromTextArea($("#instrMem-editor textarea")[0] as HTMLTextAreaElement, {
