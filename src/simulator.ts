@@ -45,9 +45,7 @@ export class Simulator {
         let text_start = 0x0000_0000n // typically this would be 0x0001_0000 but lets use zero for simplicity.
 
         // initialize code memory
-        for (let [i, instr] of code.entries()) {
-            this.instrMem.data.storeWord(text_start + 4n * BigInt(i), instr)
-        }
+        this.instrMem.data.storeArray(text_start, 4, code)
 
         // Initialize registers sp and gp
         regs = Object.assign({2: 0xbffffff0n, 3: 0x10008000n}, regs)

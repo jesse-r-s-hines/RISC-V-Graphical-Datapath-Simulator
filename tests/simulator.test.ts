@@ -426,32 +426,28 @@ describe("Bubble Sort", () => {
         let size = BigInt(array.length)
 
         let sim = new Simulator(code, {10: base, 11: size}) // a0, a1
+        sim.dataMem.data.storeArray(base, 4, array)
 
-        for (let i = 0n; i < size; i++) sim.dataMem.data.storeWord(base + i * 4n, array[Number(i)])
         sim.run()
-        array = []
-        for (let i = 0n; i < size; i++) array.push( from_twos_complement(sim.dataMem.data.loadWord(base + i*4n)) )
+
+        array = sim.dataMem.data.loadArray(base, 4, array.length).map(from_twos_complement)
 
         expect(array).to.eql([-3n, -2n, -1n, 0n, 1n, 2n, 3n]);
     })
 
     it("Random", () => {
         let array: bigint[] = []
-        for (let i = 0n; i < 10n; i++)
-            array.push( to_twos_complement(BigInt(Math.floor(Math.random() * (2**32-1)))) )
-        let size = BigInt(array.length)
+        for (let i = 0n; i < 10n; i++) array.push( to_twos_complement(BigInt(Math.floor(Math.random() * (2**32-1)))) )
 
-        let sim = new Simulator(code, {10: base, 11: size}) // a0, a1
+        let sim = new Simulator(code, {10: base, 11: 10n}) // a0, a1
 
-        for (let i = 0n; i < size; i++) sim.dataMem.data.storeWord(base + i * 4n, array[Number(i)])
+        sim.dataMem.data.storeArray(base, 4, array)
 
         sim.run()
 
-        array = []
-        for (let i = 0n; i < size; i++)
-            array.push( from_twos_complement(sim.dataMem.data.loadWord(base + i*4n)) )
+        array = sim.dataMem.data.loadArray(base, 4, 10).map(from_twos_complement)
 
-        for (let i = 1; i < size; i++) {
+        for (let i = 1; i < 10; i++) {
             expect(array[0] <= array[1], `${array[0]} < ${array[1]}`).to.be.true
         }
     })

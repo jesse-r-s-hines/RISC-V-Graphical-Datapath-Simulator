@@ -77,7 +77,7 @@ export class Memory {
 
 
     /**
-     * Loads a bigint[] from memory.
+     * Loads an arary from memory as an array of positive integers
      * @param addr Address the array starts
      * @param elemBytes The number of bytes each element takes
      * @param size The number of elements in the array to load
@@ -93,7 +93,7 @@ export class Memory {
      * Takes a bigint[] and stores it in the memory.
      * @param addr Address to start the array
      * @param elemBytes The number of bytes each element should take
-     * @param arr The array to store
+     * @param arr The array to store. Should contain positive integers.
      */
     storeArray(addr: bigint, elemBytes: number, arr: bigint[]) {
         for (let [i, val] of arr.entries())
