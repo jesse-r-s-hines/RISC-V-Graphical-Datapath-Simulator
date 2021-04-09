@@ -237,6 +237,30 @@ export class InstructionMemory {
     }
 }
 
+/** Splits the instruction into named logical sections. */
+export class InstructionSplitter {
+    // inputs
+    public instruction: Bits = [] // 32 bits
+
+    // outputs
+    public opCode: Bits = [] // 7 bits
+    public rd: Bits = [] // 5 bits
+    public funct3: Bits = [] // 3 bits
+    public rs1: Bits = [] // 5 bits
+    public rs2: Bits = [] // 5 bits
+    public funct7: Bits = [] // 7 bits
+
+    tick() {
+        this.opCode = this.instruction.slice(0, 7)
+        this.rd = this.instruction.slice(7, 12)
+        this.funct3 = this.instruction.slice(12, 15)
+        this.rs1 = this.instruction.slice(15, 20)
+        this.rs2 = this.instruction.slice(20, 25)
+        this.funct7 = this.instruction.slice(25, 32)
+    }
+
+}
+
 /**
  * Chooses between signed/unsigned and byte/half-word/word
  * This component won't be rendered to keep the animation simpler.

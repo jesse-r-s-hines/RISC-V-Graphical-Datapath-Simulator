@@ -7,6 +7,7 @@ export class Simulator {
     // components
     public pc: Comp.PC
     public instrMem: Comp.InstructionMemory
+    public instrSplit: Comp.InstructionSplitter
     public memControl: Comp.MemoryControl // We don't render this to keep things simple
     public dataMem: Comp.DataMemory
     public regFile: Comp.RegisterFile
@@ -27,6 +28,7 @@ export class Simulator {
     constructor(code: bigint[] = [], regs: Record<number, bigint> = {}) {
         this.pc = new Comp.PC()
         this.instrMem = new Comp.InstructionMemory()
+        this.instrSplit = new Comp.InstructionSplitter()
         this.memControl = new Comp.MemoryControl()
         this.dataMem = new Comp.DataMemory()
         this.regFile = new Comp.RegisterFile()
@@ -86,24 +88,26 @@ export class Simulator {
 
         this.instrMem.address = this.pc.out
         this.instrMem.tick()
-        let instr = this.instrMem.instruction
 
-        this.control.opCode = instr.slice(0, 7)
-        this.control.funct3 = instr.slice(12, 15)
+        this.instrSplit.instruction = this.instrMem.instruction
+        this.instrSplit.tick()
+
+        this.control.opCode = this.instrSplit.opCode
+        this.control.funct3 = this.instrSplit.funct3
         this.control.tick()
 
-        this.regFile.readReg1 = instr.slice(15, 20)
-        this.regFile.readReg2 = instr.slice(20, 25)
+        this.regFile.readReg1 = this.instrSplit.rs1
+        this.regFile.readReg2 = this.instrSplit.rs2
         // regWrite, writeReg, and writeData are set at the end.
         // tick() will write data from the previous tick.
         this.regFile.tick()
 
-        this.immGen.instruction = instr
+        this.immGen.instruction = this.instrMem.instruction
         this.immGen.tick()
 
         this.aluControl.aluOp = this.control.aluOp
-        this.aluControl.funct3 = instr.slice(12, 15)
-        this.aluControl.funct7 = instr.slice(25, 32)
+        this.aluControl.funct3 = this.instrSplit.funct3
+        this.aluControl.funct7 = this.instrSplit.funct7
         this.aluControl.tick()
 
         this.aluInputMux.in[0] = this.regFile.readData2
@@ -116,7 +120,7 @@ export class Simulator {
         this.alu.aluControl = this.aluControl.aluControl
         this.alu.tick()
 
-        this.memControl.funct3 = instr.slice(12, 15)
+        this.memControl.funct3 = this.instrSplit.funct3
         this.memControl.tick()
 
         this.dataMem.address = this.alu.result
@@ -163,7 +167,7 @@ export class Simulator {
         this.pc.in = this.pcMux.out
         this.regFile.regWrite = this.control.regWrite
         this.regFile.writeData = this.writeSrcMux.out
-        this.regFile.writeReg = instr.slice(7, 12)
+        this.regFile.writeReg = this.instrSplit.rd
     }
 
     /** Runs the simulator until the end of the code. */
