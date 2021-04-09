@@ -4,6 +4,7 @@ import CodeMirror from "codemirror";
 import "codemirror/addon/display/placeholder"
 import datapath from "../datapath.svg" // import the string of the optimized svg
 import tippy, {followCursor} from 'tippy.js';
+import toastr from "toastr";
 
 type CodeMirror = CodeMirror.Editor
 
@@ -246,31 +247,59 @@ export class VisualSim {
         return BigInt(parseInt(str, 16)) // TODO make this work with different radix
     }
 
+    /** Load code/memory/registers and start the simulation */
     private start() {
-        // Disable editors
-        this.instrMemEditor.setOption("readOnly", true)
-        this.dataMemEditor.setOption("readOnly", true)
-        $(".editors input").prop("disabled", true)
-        $(".editors select").prop("disabled", true)
-
         // Start the simulator
-        let code = this.instrMemEditor.getValue().trim().split("\n")
-                                      .map(s => this.bigintFromStr(s, 16));
-
-        let mem = this.dataMemEditor.getValue().trim().split("\n")
-                                    .map(s => BigInt(parseInt(s, 16)));
-
-        let regStrs = $(this.regEditor).find(".register-input").get().map(i => $(i).val())
-        let regs: Record<number, bigint> = {}
-        for (let [i, s] of regStrs.entries()) {
-            if (s) regs[i] = this.bigintFromStr(s as string, 16)
+        // Get memory, instructions, registers
+        let codeStr = this.instrMemEditor.getValue().trim()
+        if (codeStr == "") {
+            toastr.error("Please enter some code to run.")
+            return false
+        }
+        try { // TODO make it check size?
+            var code = codeStr.split("\n").map(s => this.bigintFromStr(s, 16))
+        } catch (e) {
+            toastr.error("Couldn't parse code.")
+            return false
         }
 
+        let memStr = this.dataMemEditor.getValue().trim()
+        try {
+            // split("") == [""] for some reason
+            var mem = memStr.split("\n").filter(s => s).map(s => BigInt(parseInt(s, 16)));
+        } catch (e) {
+            toastr.error("Couldn't parse data memory.")
+            return false
+        }
+
+        let regStrs = $(this.regEditor).find(".register-input").get().map(i => $(i).val())
+        try {
+            var regs: Record<number, bigint> = {}
+            for (let [i, s] of regStrs.entries()) {
+                if (s) regs[i] = this.bigintFromStr(s as string, 16)
+            }
+        } catch (e) {
+            toastr.error("Couldn't parse registers.")
+            return false
+        }
+
+        // We've got all the data so we can start the simulator
         this.sim.setCode(code)
         this.sim.setRegisters(regs)
         this.sim.dataMem.data.storeArray(0n, 4, mem)
 
-        console.log("Starting Simulation")
+        // Disable editors
+        this.setEditorsDisabled(true)
+
+        return true
+    }
+
+    /** Disable/Enable the editors */
+    private setEditorsDisabled(disabled: boolean) {
+        this.instrMemEditor.setOption("readOnly", disabled)
+        this.dataMemEditor.setOption("readOnly", disabled)
+        $(".editors input").prop("disabled", disabled)
+        $(".editors select").prop("disabled", disabled)
     }
 
     private step() {

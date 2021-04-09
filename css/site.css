@@ -17,6 +17,9 @@
     height: 100%;
 }
 
+#toast-container > div {
+  opacity: 0.90;
+}
 /* #datapath .wire {
     stroke: blue;
 } */
