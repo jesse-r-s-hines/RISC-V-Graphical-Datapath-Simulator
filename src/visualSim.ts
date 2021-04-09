@@ -7,40 +7,44 @@ import tippy, {followCursor} from 'tippy.js';
 import toastr from "toastr";
 
 type CodeMirror = CodeMirror.Editor
+type Radix = "hex" | "bin" | "signed" | "unsigned"
 
 // Some utility methods
 
 /**
  * Takes a string an converts into into a positive bigint with the given radix. Throw exception if fails.
- * @param radix on of "hex", "signed", "unsigned"
- * @param bytes the number of bytes the output will be
+ * @param bits the number of bits the output will be
  */
-function parseInt(str: string, radix: string, bytes: number): bigint {
+function parseInt(str: string, radix: Radix, bits: number): bigint {
     try {
         if (radix == "hex") {
-            var num =  BigInt("0x" + str.replace(/^0x/i, ""))
-        } else if (radix = "signed") {
-            var num =  to_twos_complement(BigInt(str), bytes)
+            var num = BigInt("0x" + str.replace(/^0x/i, ""))
+        } else if (radix == "bin") {
+            var num = BigInt("0b" + str.replace(/^0b/i, ""))
+        } else if (radix == "signed") {
+            var num =  to_twos_complement(BigInt(str), bits)
         } else { // (radix == "unsigned")
             var num =  BigInt(str)
         }
-        if (num < 0n || num >= 2n ** (8n * BigInt(bytes))) throw Error() // just trigger catch.
+        if (num < 0n || num >= 2n ** BigInt(bits)) throw Error() // just trigger catch.
     } catch { // Int to big or parsing failed
-        throw Error(`"${str}" is invalid. Expected a ${bytes} byte ${radix} integer.`)
+        throw Error(`"${str}" is invalid. Expected a ${bits} bit ${radix} integer.`)
     }
     return num
 }
 
 /**
- * Outputs a string from an positive bigint with the radix.
- * @param radix on of "hex", "signed", "unsigned"
- * @param bytes the number of bytes the output will be
+ * Outputs a string from an positive bigint or Bits with the radix.
+ * @param bits the number of bits the output will be
  */
- function intToStr(num: bigint, radix: string, bytes: number): string {
+ function intToStr(num: bigint|Bits, radix: string, bits: number = 32): string {
+    if (typeof num == "object") num = Bits.toInt(num)
     if (radix == "hex") {
-        return "0x" + num.toString(16).padStart(bytes * 2, "0")
+        return "0x" + num.toString(16).padStart(Math.ceil(bits / 4), "0")
+    } else if (radix == "bin") {
+        return num.toString(2).padStart(bits, "0")
     } else if (radix == "signed") {
-        return from_twos_complement(num, bytes).toString()
+        return from_twos_complement(num, bits).toString()
     } else { // (radix == "unsigned")
         return num.toString()
     }
@@ -49,7 +53,7 @@ function parseInt(str: string, radix: string, bytes: number): bigint {
 /** Converts a line number into a hex address. */
 function hexLine(num: number, inc: number, start: bigint = 0n): string {
     let numB = start + BigInt((num - 1) * inc)
-    return intToStr(numB, "hex", 4)
+    return intToStr(numB, "hex")
 }
 
 interface DataPathElem {
@@ -301,7 +305,7 @@ export class VisualSim {
                 <div class="input-group" style="font-family: monospace;">
                     <span class="input-group-text" style="width: 7em">${name} (x${i})</span>
                     <input type="text" name="registers[${i}]" class="register-input form-control"
-                           placeholder=${intToStr(this.sim.regFile.registers[i], "hex", 4)}>
+                           placeholder=${intToStr(this.sim.regFile.registers[i], "hex", 32)}>
                 </div>
             `)
         }
@@ -345,7 +349,7 @@ export class VisualSim {
             return false
         }
         try {
-            var code = codeStr.split("\n").map(s => parseInt(s, "hex", 4))
+            var code = codeStr.split("\n").map(s => parseInt(s, "hex", 32))
         } catch (e) {
             this.error(`Couldn't parse code: ${e.message}`)
             return false
@@ -354,7 +358,7 @@ export class VisualSim {
         let memStr = this.dataMemEditor.getValue().trim()
         try {
             // split("") equals [""] for some reason
-            var mem = memStr.split("\n").filter(s => s).map(s => parseInt(s, "hex", 4));
+            var mem = memStr.split("\n").filter(s => s).map(s => parseInt(s, "hex", 32));
         } catch (e) {
             this.error(`Couldn't parse data memory: ${e.message}`)
             return false
@@ -364,7 +368,7 @@ export class VisualSim {
         try {
             var regs: Record<number, bigint> = {}
             for (let [i, s] of regStrs.entries()) {
-                if (s) regs[i] = parseInt(s as string, "hex", 4)
+                if (s) regs[i] = parseInt(s as string, "hex", 32)
             }
         } catch (e) {
             this.error(`Couldn't parse registers: ${e.message}`)
@@ -406,7 +410,7 @@ export class VisualSim {
 
             let regInputs = $(this.regEditor).find(".registers .register-input").get()
             for (let [i, reg] of this.sim.regFile.registers.entries()) {
-                $(regInputs[i]).val(`${intToStr(reg, "hex", 4)}`)
+                $(regInputs[i]).val(`${intToStr(reg, "hex", 32)}`)
             }
 
             // update svg
