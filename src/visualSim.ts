@@ -202,7 +202,7 @@ export class VisualSim {
         },
         "instrMem-instruction-opcode": {
             description: "The opcode of the instruction.",
-            value: (sim) => `${intToStr(sim.instrSplit.opCode, "bin", 7)} (${VisualSim.opCodeNames.match(sim.instrSplit.opCode)})`,
+            value: (sim) => `${Bits.toString(sim.instrSplit.opCode)} (${VisualSim.opCodeNames.match(sim.instrSplit.opCode)})`,
         },
         "instrMem-instruction-rd": {
             description: "The register to write.",
@@ -210,7 +210,7 @@ export class VisualSim {
         },
         "instrMem-instruction-funct3": {
             description: "More bits to determine the instruction.",
-            value: (sim) => `${intToStr(sim.instrSplit.funct3, "bin", 3)}`, // TODO show what type of instruction?
+            value: (sim) => `${Bits.toString(sim.instrSplit.funct3)}`, // TODO show what type of instruction?
         },
         "instrMem-instruction-rs1": {
             description: "The first register to read.",
@@ -222,7 +222,7 @@ export class VisualSim {
         },
         "instrMem-instruction-funct7": {
             description: "More bits to determine the instruction.",
-            value: (sim) => `${intToStr(sim.instrSplit.funct7, "bin", 7)}`,
+            value: (sim) => `${Bits.toString(sim.instrSplit.funct7)}`,
         },
         "control-regWrite": {
             description: "Whether to write the register file.",
@@ -240,12 +240,12 @@ export class VisualSim {
         },
         "control-aluOp": {
             description: "What type of instruction this is. ALU Control will determine the exact ALU operation to use.",
-            value: (sim) => `${intToStr(sim.control.aluOp, "bin", 3)} (${VisualSim.aluOpNames.match(sim.control.aluOp)})`,
+            value: (sim) => `${Bits.toString(sim.control.aluOp)} (${VisualSim.aluOpNames.match(sim.control.aluOp)})`,
         },
         "control-writeSrc": {
             description: "What to write to the register file.",
             hideDescriptionWhenRunning: true,
-            value: (sim) => `${intToStr(sim.control.writeSrc, "bin", 2)} (write ${VisualSim.writeSrcNames.match(sim.control.writeSrc)} to register)`,
+            value: (sim) => `${Bits.toString(sim.control.writeSrc)} (write ${VisualSim.writeSrcNames.match(sim.control.writeSrc)} to register)`,
         },
         "control-memRead": {
             description: "Whether to read from memory.",
@@ -282,7 +282,7 @@ export class VisualSim {
         },
         "aluControl-aluControl": {
             description: "What operation for the ALU to preform.",
-            value: (sim) => `${intToStr(sim.aluControl.aluControl, "bin", 4)} (${VisualSim.aluControlNames.match(sim.aluControl.aluControl)})`,
+            value: (sim) => `${Bits.toString(sim.aluControl.aluControl)} (${VisualSim.aluControlNames.match(sim.aluControl.aluControl)})`,
         },
         "aluInputMux-out": {
             value: (sim) => intToAll(sim.aluInputMux.out),
