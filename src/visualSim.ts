@@ -8,6 +8,50 @@ import toastr from "toastr";
 
 type CodeMirror = CodeMirror.Editor
 
+// Some utility methods
+
+/**
+ * Takes a string an converts into into a positive bigint with the given radix. Throw exception if fails.
+ * @param radix on of "hex", "signed", "unsigned"
+ * @param bytes the number of bytes the output will be
+ */
+function parseInt(str: string, radix: string, bytes: number): bigint {
+    try {
+        if (radix == "hex") {
+            var num =  BigInt("0x" + str.replace(/^0x/i, ""))
+        } else if (radix = "signed") {
+            var num =  to_twos_complement(BigInt(str), bytes)
+        } else { // (radix == "unsigned")
+            var num =  BigInt(str)
+        }
+        if (num < 0n || num >= 2n ** (8n * BigInt(bytes))) throw Error() // just trigger catch.
+    } catch { // Int to big or parsing failed
+        throw Error(`"${str}" is invalid. Expected a ${bytes} byte ${radix} integer.`)
+    }
+    return num
+}
+
+/**
+ * Outputs a string from an positive bigint with the radix.
+ * @param radix on of "hex", "signed", "unsigned"
+ * @param bytes the number of bytes the output will be
+ */
+ function intToStr(num: bigint, radix: string, bytes: number): string {
+    if (radix == "hex") {
+        return "0x" + num.toString(16).padStart(bytes * 2, "0")
+    } else if (radix == "signed") {
+        return from_twos_complement(num, bytes).toString()
+    } else { // (radix == "unsigned")
+        return num.toString()
+    }
+}
+
+/** Converts a line number into a hex address. */
+function hexLine(num: number, inc: number, start: bigint = 0n): string {
+    let numB = start + BigInt((num - 1) * inc)
+    return intToStr(numB, "hex", 4)
+}
+
 interface DataPathElem {
     // description?: string,
     // label?: (sim: Simulator) => string,
@@ -32,8 +76,6 @@ export class VisualSim {
         "a6",   "a7", "s2",  "s3",  "s4", "s5", "s6", "s7",
         "s8",   "s9", "s10", "s11", "t3", "t4", "t5", "t6",
     ]
-
-    // tooltip, label, 
 
     private static datpathElements: Record<string, DataPathElem> = {
         // Components
@@ -195,13 +237,13 @@ export class VisualSim {
         // Set up the Instruction Memory Tab
         this.instrMemEditor = CodeMirror.fromTextArea($("#instrMem-editor textarea")[0] as HTMLTextAreaElement, {
             lineNumbers: true,
-            lineNumberFormatter: (l) => this.hexLine(l, 4),
+            lineNumberFormatter: (l) => hexLine(l, 4, Simulator.text_start),
         });
 
         // Set up the Data Memory Tab
         this.dataMemEditor = CodeMirror.fromTextArea($("#dataMem-editor textarea")[0] as HTMLTextAreaElement, {
             lineNumbers: true,
-            lineNumberFormatter: (l) => this.hexLine(l, 4),
+            lineNumberFormatter: (l) => hexLine(l, 4),
         });
 
         // set up the register file tab
@@ -211,7 +253,7 @@ export class VisualSim {
                 <div class="input-group" style="font-family: monospace;">
                     <span class="input-group-text" style="width: 7em">${name} (x${i})</span>
                     <input type="text" name="registers[${i}]" class="register-input form-control"
-                           placeholder=${this.intToStr(this.sim.regFile.registers[i], "hex", 4)}>
+                           placeholder=${intToStr(this.sim.regFile.registers[i], "hex", 4)}>
                 </div>
             `)
         }
@@ -238,47 +280,6 @@ export class VisualSim {
         }
     }
 
-    private hexLine(num: number, inc: number, start: number = 0): string {
-        num = (start + num - 1) * inc
-        return "0x" + num.toString(16).padStart(8, "0")
-    }
-
-    /**
-     * Takes a string an converts into into a positive bigint with the given radix. Throw exception if fails.
-     * @param radix on of "hex", "signed", "unsigned"
-     * @param bytes the number of bytes the output will be
-     */
-    private parseInt(str: string, radix: string, bytes: number): bigint {
-        try {
-            if (radix == "hex") {
-                var num =  BigInt("0x" + str.replace(/^0x/i, ""))
-            } else if (radix = "signed") {
-                var num =  to_twos_complement(BigInt(str), bytes)
-            } else { // (radix == "unsigned")
-                var num =  BigInt(str)
-            }
-            if (num < 0n || num >= 2n ** (8n * BigInt(bytes))) throw Error() // just trigger catch.
-        } catch { // Int to big or parsing failed
-            throw Error(`"${str}" is invalid. Expected a ${bytes} byte ${radix} integer.`)
-        }
-        return num
-    }
-
-    /**
-     * Outputs a string from an positive bigint with the radix
-     * @param radix on of "hex", "signed", "unsigned"
-     * @param bytes the number of bytes the output will be
-     */
-    private intToStr(num: bigint, radix: string, bytes: number): string {
-        if (radix == "hex") {
-            return "0x" + num.toString(16).padStart(bytes * 2, "0")
-        } else if (radix == "signed") {
-            return from_twos_complement(num, bytes).toString()
-        } else { // (radix == "unsigned")
-            return num.toString()
-        }
-    }
-
     /** Show an error popup */
     private error(message: string) {
         toastr.error(message)
@@ -294,7 +295,7 @@ export class VisualSim {
             return false
         }
         try {
-            var code = codeStr.split("\n").map(s => this.parseInt(s, "hex", 4))
+            var code = codeStr.split("\n").map(s => parseInt(s, "hex", 4))
         } catch (e) {
             this.error(`Couldn't parse code: ${e.message}`)
             return false
@@ -303,7 +304,7 @@ export class VisualSim {
         let memStr = this.dataMemEditor.getValue().trim()
         try {
             // split("") equals [""] for some reason
-            var mem = memStr.split("\n").filter(s => s).map(s => this.parseInt(s, "hex", 4));
+            var mem = memStr.split("\n").filter(s => s).map(s => parseInt(s, "hex", 4));
         } catch (e) {
             this.error(`Couldn't parse data memory: ${e.message}`)
             return false
@@ -313,7 +314,7 @@ export class VisualSim {
         try {
             var regs: Record<number, bigint> = {}
             for (let [i, s] of regStrs.entries()) {
-                if (s) regs[i] = this.parseInt(s as string, "hex", 4)
+                if (s) regs[i] = parseInt(s as string, "hex", 4)
             }
         } catch (e) {
             this.error(`Couldn't parse registers: ${e.message}`)
@@ -355,7 +356,7 @@ export class VisualSim {
 
             let regInputs = $(this.regEditor).find(".registers .register-input").get()
             for (let [i, reg] of this.sim.regFile.registers.entries()) {
-                $(regInputs[i]).val(`${this.intToStr(reg, "hex", 4)}`)
+                $(regInputs[i]).val(`${intToStr(reg, "hex", 4)}`)
             }
 
             // update svg
