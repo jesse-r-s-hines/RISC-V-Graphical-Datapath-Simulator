@@ -12,7 +12,16 @@
 }
 
 #toast-container > div {
-    opacity: 0.90;
+    opacity: 90%;
+}
+
+.tippy-box {
+    text-align: center;
+    opacity: 95%;
+}
+
+.tippy-box hr {
+    margin: 5px 0px;
 }
 
 #datapath svg {

@@ -1,5 +1,5 @@
 import {Simulator} from "./simulator";
-import {Bits, from_twos_complement, to_twos_complement} from "./utils"
+import {Bits, TruthTable, from_twos_complement, to_twos_complement} from "./utils"
 import CodeMirror from "codemirror";
 import "codemirror/addon/display/placeholder"
 import datapath from "../datapath.svg" // import the string of the optimized svg
@@ -50,6 +50,13 @@ function parseInt(str: string, radix: Radix, bits: number): bigint {
     }
 }
 
+/** Returns html showing num as hex, signed, and unsigned */
+function intToAll(num: bigint|Bits, bits: number = 32): string {
+    let radices = [["Hex", "hex"], ["Unsigned", "unsigned"], ["Signed", "signed"]]
+    let lines = radices.map(([l, r]) => `${l}: ${intToStr(num, r, bits)}`)
+    return lines.join("<br/>")
+}
+
 /** Converts a line number into a hex address. */
 function hexLine(num: number, inc: number, start: bigint = 0n): string {
     let numB = start + BigInt((num - 1) * inc)
@@ -80,202 +87,228 @@ export class VisualSim {
         "a6",   "a7", "s2",  "s3",  "s4", "s5", "s6", "s7",
         "s8",   "s9", "s10", "s11", "t3", "t4", "t5", "t6",
     ]
+        
+    private static readonly opCodeNames = new TruthTable([
+        [["0110011"], "R-format"],
+        [["0010011"], "I-format"],
+        [["0000011"], "ld"],
+        [["0100011"], "st"],
+        [["1100011"], "branch"],
+        [["1100111"], "jalr"],
+        [["1101111"], "jal"],
+        [["0110111"], "lui"],
+    ])
+
+    private static readonly aluOpNames = new TruthTable([
+        [["000"], "load/store"],
+        [["001"], "branch"],
+        [["010"], "R-type"],
+        [["011"], "I-type"],
+        [["100"], "LUI"],
+    ])
+
+    private static readonly aluControlNames = new TruthTable([
+        [["0000"], "AND"],
+        [["0001"], "OR"],
+        [["0010"], "Add"],
+        [["0110"], "Sub"],
+        [["0111"], "Set on less than"],
+        [["1111"], "Set on less than unsigned."],
+        [["1000"], "Shift left logical"],
+        [["1001"], "Shift right logical"],
+        [["1011"], "Shift right arithmetic"],
+        [["1100"], "XOR"],
+        [["1101"], "Load upper immediate"],
+    ])
+
+    private static readonly aluSummaries = new TruthTable<(a: Bits, b: Bits) => string>([
+        [["0000"], (a, b) => `${intToStr(a, "hex")} AND ${intToStr(b, "hex")}`],
+        [["0001"], (a, b) => `${intToStr(a, "hex")} OR ${intToStr(b, "hex")}`],
+        [["0010"], (a, b) => `${intToStr(a, "signed")} + ${intToStr(b, "signed")}`],
+        [["0110"], (a, b) => `${intToStr(a, "signed")} - ${intToStr(b, "signed")}`],
+        [["0111"], (a, b) => `${intToStr(a, "signed")} < ${intToStr(b, "signed")}`],
+        [["1111"], (a, b) => `${intToStr(a, "unsigned")} < ${intToStr(b, "unsigned")}`],
+        [["1000"], (a, b) => `${intToStr(a, "hex")} << ${intToStr(b, "unsigned")}`],
+        [["1001"], (a, b) => `${intToStr(a, "hex")} >>> ${intToStr(b, "unsigned")}`],
+        [["1011"], (a, b) => `${intToStr(a, "hex")} >> ${intToStr(b, "unsigned")}`],
+        [["1100"], (a, b) => `${intToStr(a, "hex")} XOR ${intToStr(b, "hex")}`],
+        [["1101"], (a, b) => `LUI ${intToStr(a, "hex")}`],
+    ])
+
+    private static readonly writeSrcNames = new TruthTable([
+        [["00"], "ALU result"],
+        [["01"], "Memory result"],
+        [["10"], "PC + 4"],
+    ])
 
     private static datpathElements: Record<string, DataPathElem> = {
         // Components
         "pc": {
             description: "The program counter stores the address of the current instruction.",
-            value: (sim) => `Current Instruction: ${intToStr(sim.pc.data, "hex", 4)}`,
+            value: (sim) => `Current Instruction: ${intToStr(sim.pc.data, "hex")}`,
         },
         "instrMem": {
-            description: "",
-            value: (sim) => "Instruction Memory",
+            description: "Stores the program.",
         },
         "control": {
-            description: "",
-            value: (sim) => "Control",
+            description: "Tells the rest of the processor what to do.",
         },
         "regFile": {
-            description: "",
-            value: (sim) => "Register File",
+            description: "Stores the 32 registers.",
         },
         "immGen": {
-            description: "",
-            value: (sim) => "Immediate Generator",
+            description: "Extracts the sign-extended immediate from the instruction.",
         },
         "aluControl": {
-            description: "",
-            value: (sim) => "ALU Control",
+            description: "Tells the ALU which operation to preform.",
         },
         "aluInputMux": {
-            description: "",
-            value: (sim) => "ALU Input Mux",
+            description: "Switches between source register 2 or the immediate value.",
         },
         "alu": {
-            description: "",
-            value: (sim) => "ALU",
+            description: "Does arithmetic on two values.",
+            value: (sim) => VisualSim.aluSummaries.match(sim.alu.aluControl)(sim.alu.in1, sim.alu.in2),
         },
         "dataMem": {
-            description: "",
-            value: (sim) => "Data Memory",
+            description: "Stores the data the program is working with.",
         },
         "pcAdd4": {
-            description: "",
-            value: (sim) => "PC + 4",
+            description: "Increment PC to the next instruction.",
         },
         "jalrMux": {
-            description: "",
-            value: (sim) => "Jalr Mux",
+            description: "Switch between PC or source register 1. JALR sets the PC to a register + an immediate.",
         },
         "branchAdder": {
-            description: "",
-            value: (sim) => "Branch Address Adder",
+            description: "Calculate the target address of a branch or jump.",
         },
         "jumpControl": {
-            description: "",
-            value: (sim) => "Jump Control",
+            description: "Determine whether a branch should be taken or not.",
         },
         "pcMux": {
-            description: "",
-            value: (sim) => "PC Write Mux",
+            description: "Switch between PC + 4 or the branch target.",
         },
         "writeSrcMux": {
-            description: "",
-            value: (sim) => "Write Source Mux",
+            description: "Switch between ALU result, memory read data, or PC + 4.",
         },
 
         // Wires
         "pc-out": {
-            description: "",
-            value: (sim) => Bits.toString(sim.pc.out),
+            value: (sim) => intToStr(sim.pc.out, "hex"),
         },
         "instrMem-instruction": {
-            description: "",
-            value: (sim) => Bits.toString(sim.instrMem.instruction),
+            value: (sim) => intToStr(sim.instrMem.instruction, "hex"),
         },
         "instrMem-instruction-opcode": {
-            description: "",
-            value: (sim) => Bits.toString(sim.instrMem.instruction.slice(0, 7)),
+            description: "The opcode of the instruction.",
+            value: (sim) => `${intToStr(sim.instrSplit.opCode, "bin", 7)} (${VisualSim.opCodeNames.match(sim.instrSplit.opCode)})`,
         },
         "instrMem-instruction-rd": {
-            description: "",
-            value: (sim) => Bits.toString(sim.instrMem.instruction.slice(7, 12)),
+            description: "The register to write.",
+            value: (sim) => `${intToStr(sim.instrSplit.rd, "unsigned", 5)} (${VisualSim.regNames[Bits.toNumber(sim.instrSplit.rd)]})`,
         },
         "instrMem-instruction-funct3": {
-            description: "",
-            value: (sim) => Bits.toString(sim.instrMem.instruction.slice(12, 15)),
+            description: "More bits to determine the instruction.",
+            value: (sim) => `${intToStr(sim.instrSplit.funct3, "bin", 3)}`, // TODO show what type of instruction?
         },
         "instrMem-instruction-rs1": {
-            description: "",
-            value: (sim) => Bits.toString(sim.instrMem.instruction.slice(15, 20)),
+            description: "The first register to read.",
+            value: (sim) => `${intToStr(sim.instrSplit.rs1, "unsigned", 5)} (${VisualSim.regNames[Bits.toNumber(sim.instrSplit.rs1)]})`,
         },
         "instrMem-instruction-rs2": {
-            description: "",
-            value: (sim) => Bits.toString(sim.instrMem.instruction.slice(20, 25)),
+            description: "The second register to read.",
+            value: (sim) => `${intToStr(sim.instrSplit.rs2, "unsigned", 5)} (${VisualSim.regNames[Bits.toNumber(sim.instrSplit.rs2)]})`,
         },
         "instrMem-instruction-funct7": {
-            description: "",
-            value: (sim) => Bits.toString(sim.instrMem.instruction.slice(25, 32)),
+            description: "More bits to determine the instruction.",
+            value: (sim) => `${intToStr(sim.instrSplit.funct7, "bin", 7)}`,
         },
         "control-regWrite": {
-            description: "",
-            value: (sim) => sim.control.regWrite.toString(),
+            description: "Whether to write the register file.",
+            value: (sim) => `${sim.control.regWrite} (${sim.control.regWrite ? "write" : "don't write"})`,
         },
         "control-aluSrc": {
-            description: "",
-            value: (sim) => sim.control.aluSrc.toString(),
+            description: "Whether to use source register 2 or the immediate.",
+            value: (sim) => `${sim.control.aluSrc} (${sim.control.aluSrc ? "immediate" : "register"})`,
         },
         "control-memWrite": {
-            description: "",
-            value: (sim) => sim.control.memWrite.toString(),
+            description: "Whether to write memory.",
+            value: (sim) => `${sim.control.memWrite} (${sim.control.memWrite ? "write" : "don't write"})`,
         },
         "control-aluOp": {
-            description: "",
-            value: (sim) => Bits.toString(sim.control.aluOp),
+            description: "What type of instruction this is. ALU Control will determine the exact ALU operation to use.",
+            value: (sim) => `${intToStr(sim.control.aluOp, "bin", 3)} (${VisualSim.aluOpNames.match(sim.control.aluOp)})`,
         },
         "control-writeSrc": {
-            description: "",
-            value: (sim) => Bits.toString(sim.control.writeSrc),
+            description: "What to write to the register file.",
+            value: (sim) => `${intToStr(sim.control.writeSrc, "bin", 2)} (${VisualSim.writeSrcNames.match(sim.control.writeSrc)})`,
         },
         "control-memRead": {
-            description: "",
-            value: (sim) => sim.control.memRead.toString(),
+            description: "Whether to read from memory.",
+            value: (sim) => `${sim.control.memRead} (${sim.control.memRead ? "read" : "don't read"})`,
         },
         "control-branchZero": {
-            description: "",
-            value: (sim) => sim.control.branchZero.toString(),
+            description: "Whether to branch when ALU result is zero.",
+            value: (sim) => `${sim.control.branchZero} (${sim.control.branchZero ? "branch on zero" : "don't branch on zero"})`,
         },
         "control-branchNotZero": {
-            description: "",
-            value: (sim) => sim.control.branchNotZero.toString(),
+            description: "Whether to branch when ALU result is not zero.",
+            value: (sim) => `${sim.control.branchNotZero} (${sim.control.branchNotZero ? "branch on not zero" : "don't branch on not zero"})`,
         },
         "control-jump": {
-            description: "",
-            value: (sim) => sim.control.jump.toString(),
+            description: "Unconditionally jump.",
+            value: (sim) => `${sim.control.jump} (${sim.control.jump ? "jump" : "don't jump"})`,
         },
         "control-jalr": {
-            description: "",
-            value: (sim) => sim.control.jalr.toString(),
+            description: "Jump to a register + immediate.",
+            value: (sim) => `${sim.control.jalr} (${sim.control.jalr ? "jump register" : "don't jump register"})`,
         },
         "immGen-immediate": {
-            description: "",
-            value: (sim) => Bits.toString(sim.immGen.immediate),
+            value: (sim) => intToAll(sim.immGen.immediate),
         },
         "regFile-readData1": {
-            description: "",
-            value: (sim) => Bits.toString(sim.regFile.readData1),
+            value: (sim) => intToAll(sim.regFile.readData1),
         },
         "regFile-readData2": {
-            description: "",
-            value: (sim) => Bits.toString(sim.regFile.readData2),
+            value: (sim) => intToAll(sim.regFile.readData2),
         },
         "aluControl-aluControl": {
-            description: "",
-            value: (sim) => Bits.toString(sim.aluControl.aluControl),
+            description: "What operation for the ALU to preform.",
+            value: (sim) => `${intToStr(sim.aluControl.aluControl, "bin", 4)} (${VisualSim.aluControlNames.match(sim.aluControl.aluControl)})`,
         },
         "aluInputMux-out": {
-            description: "",
-            value: (sim) => Bits.toString(sim.aluInputMux.out),
+            value: (sim) => intToAll(sim.aluInputMux.out),
         },
         "alu-result": {
-            description: "",
-            value: (sim) => Bits.toString(sim.alu.result),
+            value: (sim) => intToAll(sim.alu.result),
         },
         "alu-zero": {
-            description: "",
-            value: (sim) => sim.alu.zero.toString(),
+            description: "Whether the ALU result was zero.",
+            value: (sim) => `${sim.alu.zero} (${sim.alu.zero ? "zero" : "not zero"})`,
         },
         "literalFour": {
-            description: "",
             value: (sim) => "4",
         },
         "pcAdd4-result": {
-            description: "",
-            value: (sim) => Bits.toString(sim.pcAdd4.result),
+            value: (sim) => intToStr(sim.pcAdd4.result, "hex"),
         },
         "branchAdder-result": {
-            description: "",
-            value: (sim) => Bits.toString(sim.branchAdder.result),
+            value: (sim) => intToStr(sim.branchAdder.result, "hex"),
         },
         "jumpControl-takeBranch": {
-            description: "",
-            value: (sim) => sim.jumpControl.takeBranch.toString(),
+            description: "Whether to take the branch or not.",
+            value: (sim) => `${sim.jumpControl.takeBranch} (${sim.jumpControl.takeBranch ? "take branch" : "don't take branch"})`,
         },
         "dataMem-readData": {
-            description: "",
-            value: (sim) => Bits.toString(sim.dataMem.readData),
+            value: (sim) => intToAll(sim.dataMem.readData),
         },
         "pcMux-out": {
-            description: "",
-            value: (sim) => Bits.toString(sim.pcMux.out),
+            value: (sim) => intToStr(sim.pcMux.out, "hex"),
         },
         "writeSrcMux-out": {
-            description: "",
-            value: (sim) => Bits.toString(sim.writeSrcMux.out),
+            value: (sim) => intToAll(sim.writeSrcMux.out),
         },
         "jalrMux-out": {
-            description: "",
-            value: (sim) => Bits.toString(sim.jalrMux.out),
+            value: (sim) => intToStr(sim.jalrMux.out, "hex"),
         },
     } 
 
@@ -421,7 +454,7 @@ export class VisualSim {
                 if (elem.description || elem.value) {
                     let tooltip = ($(`#${id}`)[0] as any)._tippy as any
                     let value = elem.value ? elem.value(this.sim) : undefined
-                    let content = [elem.description, value].filter(s => s).join("<br/><br/>")
+                    let content = [elem.description, value].filter(s => s).join("<hr/>")
                     tooltip.setContent(content)
                 }
             }
