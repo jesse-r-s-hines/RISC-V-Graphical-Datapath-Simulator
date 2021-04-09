@@ -8,8 +8,9 @@ import toastr from "toastr";
 toastr.options = {
    positionClass: "toast-top-left",
    closeButton: true,
-   timeOut: 0, // stay
-   extendedTimeOut: 0, // stay,
+   timeOut: 8000, // stay
+   // timeOut: 0, // stay
+   // extendedTimeOut: 0, // stay,
    preventDuplicates: true,
 }
 
