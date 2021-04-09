@@ -65,6 +65,7 @@ function hexLine(num: number, inc: number, start: bigint = 0n): string {
 
 interface DataPathElem {
     description?: string,
+    hideDescriptionWhenRunning?: boolean
     // label?: (sim: Simulator) => string,
     value?: (sim: Simulator) => string
     // onclick?: () => void,
@@ -80,6 +81,7 @@ export class VisualSim {
     private regEditor: HTMLElement
 
     private sim: Simulator
+    private running: boolean = false
 
     public static readonly regNames = [
         "zero", "ra", "sp",  "gp",  "tp", "t0", "t1", "t2",
@@ -137,11 +139,11 @@ export class VisualSim {
 
     private static readonly writeSrcNames = new TruthTable([
         [["00"], "ALU result"],
-        [["01"], "Memory result"],
+        [["01"], "memory result"],
         [["10"], "PC + 4"],
     ])
 
-    private static datpathElements: Record<string, DataPathElem> = {
+    private static readonly datpathElements: Record<string, DataPathElem> = {
         // Components
         "pc": {
             description: "The program counter stores the address of the current instruction.",
@@ -224,15 +226,17 @@ export class VisualSim {
         },
         "control-regWrite": {
             description: "Whether to write the register file.",
-            value: (sim) => `${sim.control.regWrite} (${sim.control.regWrite ? "write" : "don't write"})`,
+            hideDescriptionWhenRunning: true,
+            value: (sim) => `${sim.control.regWrite} (${sim.control.regWrite ? "write register file" : "don't write register file"})`,
         },
         "control-aluSrc": {
             description: "Whether to use source register 2 or the immediate.",
-            value: (sim) => `${sim.control.aluSrc} (${sim.control.aluSrc ? "immediate" : "register"})`,
+            value: (sim) => `${sim.control.aluSrc} (${sim.control.aluSrc ? "use immediate" : "use register"})`,
         },
         "control-memWrite": {
             description: "Whether to write memory.",
-            value: (sim) => `${sim.control.memWrite} (${sim.control.memWrite ? "write" : "don't write"})`,
+            hideDescriptionWhenRunning: true,
+            value: (sim) => `${sim.control.memWrite} (${sim.control.memWrite ? "write memory" : "don't write memory"})`,
         },
         "control-aluOp": {
             description: "What type of instruction this is. ALU Control will determine the exact ALU operation to use.",
@@ -240,27 +244,32 @@ export class VisualSim {
         },
         "control-writeSrc": {
             description: "What to write to the register file.",
-            value: (sim) => `${intToStr(sim.control.writeSrc, "bin", 2)} (${VisualSim.writeSrcNames.match(sim.control.writeSrc)})`,
+            hideDescriptionWhenRunning: true,
+            value: (sim) => `${intToStr(sim.control.writeSrc, "bin", 2)} (write ${VisualSim.writeSrcNames.match(sim.control.writeSrc)} to register)`,
         },
         "control-memRead": {
             description: "Whether to read from memory.",
-            value: (sim) => `${sim.control.memRead} (${sim.control.memRead ? "read" : "don't read"})`,
+            hideDescriptionWhenRunning: true,
+            value: (sim) => `${sim.control.memRead} (${sim.control.memRead ? "read memory" : "don't read memory"})`,
         },
         "control-branchZero": {
             description: "Whether to branch when ALU result is zero.",
+            hideDescriptionWhenRunning: true,
             value: (sim) => `${sim.control.branchZero} (${sim.control.branchZero ? "branch on zero" : "don't branch on zero"})`,
         },
         "control-branchNotZero": {
             description: "Whether to branch when ALU result is not zero.",
+            hideDescriptionWhenRunning: true,
             value: (sim) => `${sim.control.branchNotZero} (${sim.control.branchNotZero ? "branch on not zero" : "don't branch on not zero"})`,
         },
         "control-jump": {
             description: "Unconditionally jump.",
-            value: (sim) => `${sim.control.jump} (${sim.control.jump ? "jump" : "don't jump"})`,
+            hideDescriptionWhenRunning: true,
+            value: (sim) => `${sim.control.jump} (${sim.control.jump ? "do jump" : "don't jump"})`,
         },
         "control-jalr": {
             description: "Jump to a register + immediate.",
-            value: (sim) => `${sim.control.jalr} (${sim.control.jalr ? "jump register" : "don't jump register"})`,
+            value: (sim) => `${sim.control.jalr} (${sim.control.jalr ? "do jump register" : "don't jump register"})`,
         },
         "immGen-immediate": {
             value: (sim) => intToAll(sim.immGen.immediate),
@@ -283,7 +292,8 @@ export class VisualSim {
         },
         "alu-zero": {
             description: "Whether the ALU result was zero.",
-            value: (sim) => `${sim.alu.zero} (${sim.alu.zero ? "zero" : "not zero"})`,
+            hideDescriptionWhenRunning: true,
+            value: (sim) => `${sim.alu.zero} (ALU result was ${sim.alu.zero ? "zero" : "not zero"})`,
         },
         "literalFour": {
             value: (sim) => "4",
@@ -296,6 +306,7 @@ export class VisualSim {
         },
         "jumpControl-takeBranch": {
             description: "Whether to take the branch or not.",
+            hideDescriptionWhenRunning: true,
             value: (sim) => `${sim.jumpControl.takeBranch} (${sim.jumpControl.takeBranch ? "take branch" : "don't take branch"})`,
         },
         "dataMem-readData": {
@@ -417,6 +428,7 @@ export class VisualSim {
         // Disable editors
         this.setEditorsDisabled(true)
 
+        this.running = true
         return true
     }
 
@@ -455,9 +467,16 @@ export class VisualSim {
                 if (elem.description || elem.value) {
                     let tooltip = ($(`#${id}`)[0] as any)._tippy as Tippy
                     let value = elem.value ? elem.value(this.sim) : undefined
-                    let content = [elem.description, value].filter(s => s).join("<hr/>")
-                    tooltip.enable()
+                    let description = (this.running && elem.hideDescriptionWhenRunning) ? undefined : elem.description
+                    let content = [description, value].filter(s => s).join("<hr/>")
                     tooltip.setContent(content)
+
+                    if (content) {
+                        tooltip.enable()
+                    } else {
+                        tooltip.hide();
+                        tooltip.disable()
+                    }
                 }
             }
         }
