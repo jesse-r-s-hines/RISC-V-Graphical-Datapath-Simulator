@@ -1747,10 +1747,10 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.72515426"
-     inkscape:cx="-113.77595"
-     inkscape:cy="450.7577"
+     inkscape:cx="432.86072"
+     inkscape:cy="338.93281"
      inkscape:document-units="mm"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="layer2"
      inkscape:document-rotation="0"
      showgrid="false"
      inkscape:window-width="1920"
@@ -2143,7 +2143,8 @@
          ry="13.284794"
          rx="10.047919"
          cy="220.72597"
-         cx="166.53268" />
+         cx="166.53268"
+         id="ellipse342" />
       <g
          aria-label="Imm Gen"
          transform="translate(158.06098,-19.806477)"
@@ -2183,7 +2184,8 @@
          width="10.318446"
          height="33.092224"
          x="32.264957"
-         y="133.76566" />
+         y="133.76566"
+         id="rect352" />
       <g
          aria-label="PC"
          transform="translate(30.203057,-88.371322)"
@@ -2207,7 +2209,8 @@
          cx="217.58656"
          cy="227.62946"
          rx="10.193884"
-         ry="15.043646" />
+         ry="15.043646"
+         id="ellipse358" />
       <g
          aria-label="ALU Control"
          transform="translate(205.28214,-13.847006)"
@@ -2264,7 +2267,8 @@
          cx="142.9176"
          cy="108.63802"
          ry="31.200548"
-         rx="10.362817" />
+         rx="10.362817"
+         id="ellipse372" />
       <g
          aria-label="Control"
          transform="translate(130.83841,-129.53812)"
@@ -2299,7 +2303,8 @@
          style="display:inline;fill:#fffffd;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.396875;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          d="M 66.686825,67.53388 V 51.32543 l 4.40802,-4.9891 -4.52005,-5.20652 V 25.79313 l 17.695722,10.73483 v 19.42767 c 0,0 -13.745092,9.36203 -17.583692,11.57825"
          class="outline"
-         sodipodi:nodetypes="cccccccc" />
+         sodipodi:nodetypes="cccccccc"
+         id="path383" />
       <g
          aria-label="Add"
          transform="translate(70.378427,-191.66431)"
@@ -2326,7 +2331,8 @@
          ry="12.757064"
          rx="8.504261"
          cy="87.395134"
-         cx="260.45642" />
+         cx="260.45642"
+         id="ellipse390" />
       <g
          aria-label="Jump Control"
          transform="translate(248.26051,-153.61689)"
@@ -3233,7 +3239,8 @@
          style="display:inline;opacity:1;fill:#fffffd;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.396875;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          d="m 218.79669,190.71299 v -16.20845 l 4.40802,-4.9891 -4.52005,-5.20652 v -15.33668 l 29.33739,10.73483 v 19.42767 c 0,0 -25.38371,9.35858 -29.22231,11.5748"
          class="outline"
-         sodipodi:nodetypes="cccccccc" />
+         sodipodi:nodetypes="cccccccc"
+         id="path619" />
       <g
          aria-label="ALU"
          transform="translate(219.81141,-68.525)"
@@ -3307,7 +3314,8 @@
          style="display:inline;fill:#fffffd;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.396875;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          d="m 223.54534,80.256108 v -16.20845 l 4.40802,-4.9891 -4.52005,-5.20652 v -15.33668 l 29.33739,10.73483 v 19.42767 c 0,0 -25.38371,9.35858 -29.22231,11.5748"
          class="outline"
-         sodipodi:nodetypes="cccccccc" />
+         sodipodi:nodetypes="cccccccc"
+         id="path641" />
       <g
          aria-label="Add"
          transform="translate(227.02688,-179.08691)"
@@ -3350,7 +3358,8 @@
          height="42.103325"
          x="304.87491"
          y="153.13293"
-         ry="5.6197147" />
+         ry="5.6197147"
+         id="rect652" />
       <g
          aria-label="1"
          transform="translate(263.90706,-64.699633)"
@@ -3403,7 +3412,8 @@
          height="25.584352"
          x="203.1171"
          y="171.18341"
-         ry="5.6197147" />
+         ry="5.6197147"
+         id="rect665" />
       <g
          aria-label="M u x"
          transform="translate(203.30487,-57.185604)"
@@ -3449,7 +3459,8 @@
          height="33.285988"
          x="267.95102"
          y="30.021545"
-         ry="5.6197147" />
+         ry="5.6197147"
+         id="rect676" />
       <g
          aria-label="M u x"
          transform="translate(268.15341,-194.91124)"
@@ -3739,7 +3750,8 @@
          width="36.561493"
          height="54.354294"
          x="258.3382"
-         y="158.96535" />
+         y="158.96535"
+         id="rect749" />
       <g
          aria-label="Data Memory"
          transform="translate(268.52685,-40.85754)"
@@ -4234,7 +4246,8 @@
          height="25.584352"
          x="202.17375"
          y="171.18341"
-         ry="5.6197147" />
+         ry="5.6197147"
+         id="rect891" />
       <g
          aria-label="M u x"
          transform="translate(202.24653,-57.185604)"
@@ -4306,6 +4319,7 @@
        d="m 194.00002,34.249106 h 2.30147 v -2.616741 h 4.25699"
        id="jalrMux-out"
        sodipodi:nodetypes="cccc"
-       transform="translate(21.938088,15.384832)" />
+       transform="translate(21.938088,15.384832)"
+       class="wire" />
   </g>
 </svg>
