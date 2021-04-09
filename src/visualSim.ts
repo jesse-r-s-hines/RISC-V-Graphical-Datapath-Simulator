@@ -53,9 +53,9 @@ function hexLine(num: number, inc: number, start: bigint = 0n): string {
 }
 
 interface DataPathElem {
-    // description?: string,
+    description?: string,
     // label?: (sim: Simulator) => string,
-    tooltip?: (sim: Simulator) => string
+    value?: (sim: Simulator) => string
     // onclick?: () => void,
 }
 
@@ -80,150 +80,198 @@ export class VisualSim {
     private static datpathElements: Record<string, DataPathElem> = {
         // Components
         "pc": {
-            tooltip: (sim) => "Program Counter",
+            description: "The program counter stores the address of the current instruction.",
+            value: (sim) => `Current Instruction: ${intToStr(sim.pc.data, "hex", 4)}`,
         },
         "instrMem": {
-            tooltip: (sim) => "Instruction Memory",
+            description: "",
+            value: (sim) => "Instruction Memory",
         },
         "control": {
-            tooltip: (sim) => "Control",
+            description: "",
+            value: (sim) => "Control",
         },
         "regFile": {
-            tooltip: (sim) => "Register File",
+            description: "",
+            value: (sim) => "Register File",
         },
         "immGen": {
-            tooltip: (sim) => "Immediate Generator",
+            description: "",
+            value: (sim) => "Immediate Generator",
         },
         "aluControl": {
-            tooltip: (sim) => "ALU Control",
+            description: "",
+            value: (sim) => "ALU Control",
         },
         "aluInputMux": {
-            tooltip: (sim) => "ALU Input Mux",
+            description: "",
+            value: (sim) => "ALU Input Mux",
         },
         "alu": {
-            tooltip: (sim) => "ALU",
+            description: "",
+            value: (sim) => "ALU",
         },
         "dataMem": {
-            tooltip: (sim) => "Data Memory",
+            description: "",
+            value: (sim) => "Data Memory",
         },
         "pcAdd4": {
-            tooltip: (sim) => "PC + 4",
+            description: "",
+            value: (sim) => "PC + 4",
         },
         "jalrMux": {
-            tooltip: (sim) => "Jalr Mux",
+            description: "",
+            value: (sim) => "Jalr Mux",
         },
         "branchAdder": {
-            tooltip: (sim) => "Branch Address Adder",
+            description: "",
+            value: (sim) => "Branch Address Adder",
         },
         "jumpControl": {
-            tooltip: (sim) => "Jump Control",
+            description: "",
+            value: (sim) => "Jump Control",
         },
         "pcMux": {
-            tooltip: (sim) => "PC Write Mux",
+            description: "",
+            value: (sim) => "PC Write Mux",
         },
         "writeSrcMux": {
-            tooltip: (sim) => "Write Source Mux",
+            description: "",
+            value: (sim) => "Write Source Mux",
         },
 
         // Wires
         "pc-out": {
-            tooltip: (sim) => Bits.toString(sim.pc.out),
+            description: "",
+            value: (sim) => Bits.toString(sim.pc.out),
         },
         "instrMem-instruction": {
-            tooltip: (sim) => Bits.toString(sim.instrMem.instruction),
+            description: "",
+            value: (sim) => Bits.toString(sim.instrMem.instruction),
         },
         "instrMem-instruction-opcode": {
-            tooltip: (sim) => Bits.toString(sim.instrMem.instruction.slice(0, 7)),
+            description: "",
+            value: (sim) => Bits.toString(sim.instrMem.instruction.slice(0, 7)),
         },
         "instrMem-instruction-rd": {
-            tooltip: (sim) => Bits.toString(sim.instrMem.instruction.slice(7, 12)),
+            description: "",
+            value: (sim) => Bits.toString(sim.instrMem.instruction.slice(7, 12)),
         },
         "instrMem-instruction-funct3": {
-            tooltip: (sim) => Bits.toString(sim.instrMem.instruction.slice(12, 15)),
+            description: "",
+            value: (sim) => Bits.toString(sim.instrMem.instruction.slice(12, 15)),
         },
         "instrMem-instruction-rs1": {
-            tooltip: (sim) => Bits.toString(sim.instrMem.instruction.slice(15, 20)),
+            description: "",
+            value: (sim) => Bits.toString(sim.instrMem.instruction.slice(15, 20)),
         },
         "instrMem-instruction-rs2": {
-            tooltip: (sim) => Bits.toString(sim.instrMem.instruction.slice(20, 25)),
+            description: "",
+            value: (sim) => Bits.toString(sim.instrMem.instruction.slice(20, 25)),
         },
         "instrMem-instruction-funct7": {
-            tooltip: (sim) => Bits.toString(sim.instrMem.instruction.slice(25, 32)),
+            description: "",
+            value: (sim) => Bits.toString(sim.instrMem.instruction.slice(25, 32)),
         },
         "control-regWrite": {
-            tooltip: (sim) => sim.control.regWrite.toString(),
+            description: "",
+            value: (sim) => sim.control.regWrite.toString(),
         },
         "control-aluSrc": {
-            tooltip: (sim) => sim.control.aluSrc.toString(),
+            description: "",
+            value: (sim) => sim.control.aluSrc.toString(),
         },
         "control-memWrite": {
-            tooltip: (sim) => sim.control.memWrite.toString(),
+            description: "",
+            value: (sim) => sim.control.memWrite.toString(),
         },
         "control-aluOp": {
-            tooltip: (sim) => Bits.toString(sim.control.aluOp),
+            description: "",
+            value: (sim) => Bits.toString(sim.control.aluOp),
         },
         "control-writeSrc": {
-            tooltip: (sim) => Bits.toString(sim.control.writeSrc),
+            description: "",
+            value: (sim) => Bits.toString(sim.control.writeSrc),
         },
         "control-memRead": {
-            tooltip: (sim) => sim.control.memRead.toString(),
+            description: "",
+            value: (sim) => sim.control.memRead.toString(),
         },
         "control-branchZero": {
-            tooltip: (sim) => sim.control.branchZero.toString(),
+            description: "",
+            value: (sim) => sim.control.branchZero.toString(),
         },
         "control-branchNotZero": {
-            tooltip: (sim) => sim.control.branchNotZero.toString(),
+            description: "",
+            value: (sim) => sim.control.branchNotZero.toString(),
         },
         "control-jump": {
-            tooltip: (sim) => sim.control.jump.toString(),
+            description: "",
+            value: (sim) => sim.control.jump.toString(),
         },
         "control-jalr": {
-            tooltip: (sim) => sim.control.jalr.toString(),
+            description: "",
+            value: (sim) => sim.control.jalr.toString(),
         },
         "immGen-immediate": {
-            tooltip: (sim) => Bits.toString(sim.immGen.immediate),
+            description: "",
+            value: (sim) => Bits.toString(sim.immGen.immediate),
         },
         "regFile-readData1": {
-            tooltip: (sim) => Bits.toString(sim.regFile.readData1),
+            description: "",
+            value: (sim) => Bits.toString(sim.regFile.readData1),
         },
         "regFile-readData2": {
-            tooltip: (sim) => Bits.toString(sim.regFile.readData2),
+            description: "",
+            value: (sim) => Bits.toString(sim.regFile.readData2),
         },
         "aluControl-aluControl": {
-            tooltip: (sim) => Bits.toString(sim.aluControl.aluControl),
+            description: "",
+            value: (sim) => Bits.toString(sim.aluControl.aluControl),
         },
         "aluInputMux-out": {
-            tooltip: (sim) => Bits.toString(sim.aluInputMux.out),
+            description: "",
+            value: (sim) => Bits.toString(sim.aluInputMux.out),
         },
         "alu-result": {
-            tooltip: (sim) => Bits.toString(sim.alu.result),
+            description: "",
+            value: (sim) => Bits.toString(sim.alu.result),
         },
         "alu-zero": {
-            tooltip: (sim) => sim.alu.zero.toString(),
+            description: "",
+            value: (sim) => sim.alu.zero.toString(),
         },
         "literalFour": {
-            tooltip: (sim) => "4",
+            description: "",
+            value: (sim) => "4",
         },
         "pcAdd4-result": {
-            tooltip: (sim) => Bits.toString(sim.pcAdd4.result),
+            description: "",
+            value: (sim) => Bits.toString(sim.pcAdd4.result),
         },
         "branchAdder-result": {
-            tooltip: (sim) => Bits.toString(sim.branchAdder.result),
+            description: "",
+            value: (sim) => Bits.toString(sim.branchAdder.result),
         },
         "jumpControl-takeBranch": {
-            tooltip: (sim) => sim.jumpControl.takeBranch.toString(),
+            description: "",
+            value: (sim) => sim.jumpControl.takeBranch.toString(),
         },
         "dataMem-readData": {
-            tooltip: (sim) => Bits.toString(sim.dataMem.readData),
+            description: "",
+            value: (sim) => Bits.toString(sim.dataMem.readData),
         },
         "pcMux-out": {
-            tooltip: (sim) => Bits.toString(sim.pcMux.out),
+            description: "",
+            value: (sim) => Bits.toString(sim.pcMux.out),
         },
         "writeSrcMux-out": {
-            tooltip: (sim) => Bits.toString(sim.writeSrcMux.out),
+            description: "",
+            value: (sim) => Bits.toString(sim.writeSrcMux.out),
         },
         "jalrMux-out": {
-            tooltip: (sim) => Bits.toString(sim.jalrMux.out),
+            description: "",
+            value: (sim) => Bits.toString(sim.jalrMux.out),
         },
     } 
 
@@ -270,10 +318,12 @@ export class VisualSim {
         // Setup datapath elements
         for (let id in VisualSim.datpathElements) {
             let elem = VisualSim.datpathElements[id]
-            if (elem.tooltip != undefined) {
+            if (elem.description || elem.value) {
                 tippy(`#${id}`, {
-                    content: "", // no content yet
+                    content: elem.description ?? "",
                     followCursor: true,
+                    allowHTML: true,
+                    maxWidth: "20em",
                     plugins: [followCursor],
                 });
             }
@@ -364,8 +414,11 @@ export class VisualSim {
                 let elem = VisualSim.datpathElements[id];
                 if (!$(`#${id}`).length) throw Error(`${id} doesn't exist`);
                 
-                if (elem.tooltip != undefined) {
-                    ($(`#${id}`)[0] as any)._tippy.setContent(elem.tooltip(this.sim))
+                if (elem.description || elem.value) {
+                    let tooltip = ($(`#${id}`)[0] as any)._tippy as any
+                    let value = elem.value ? elem.value(this.sim) : undefined
+                    let content = [elem.description, value].filter(s => s).join("<br/><br/>")
+                    tooltip.setContent(content)
                 }
             }
         }
