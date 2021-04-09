@@ -207,6 +207,8 @@ describe("Other", () => {
         expect(from_twos_complement(-2147483648n)).to.equal(-2147483648n)
         expect(from_twos_complement(0x8000_0000n)).to.equal(-2147483648n)
         expect(from_twos_complement(0xFFFF_FFFFn)).to.equal(-1n)
+
+        expect(from_twos_complement(0x8000n, 2)).to.equal(-32768n)
     });
 
     it('to_twos_complement', () => {
@@ -217,5 +219,10 @@ describe("Other", () => {
         expect(to_twos_complement(-2147483648n)).to.equal(2147483648n)
         expect(to_twos_complement(0x8000_0000n)).to.equal(2147483648n)
         expect(to_twos_complement(0xFFFF_FFFFn)).to.equal(4294967295n)
+        expect(to_twos_complement(-3n)).to.equal(0xFFFF_FFFDn)
+
+        expect(to_twos_complement(-1n, 1)).to.equal(0xFFn)
+        expect(to_twos_complement(0xFFn, 1)).to.equal(255n)
     });
+
 })

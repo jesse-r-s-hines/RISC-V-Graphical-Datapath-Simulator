@@ -131,16 +131,24 @@ export namespace Bits {
     }
 }
 
-/** Converts an unsigned 32 bit int to a signed one. */
-export function from_twos_complement(num: bigint): bigint {
+/**
+ * Converts an unsigned int to a signed one.
+ * @param bytes The number of bytes the int should be. Default 4.
+ */
+export function from_twos_complement(num: bigint, bytes: number = 4): bigint {
     // ~num + 1 doesn't work because of how Javscript does ~
-    if (num >= (1n << 31n)) num -= (1n << 32n) // interpret as two's complement
+    let bits = BigInt(bytes * 8)
+    if (num >= (1n << (bits - 1n))) num -= (1n << bits) // interpret as two's complement
     return num
 }
 
-/** Converts an signed 32 bit int to an unsigned one. */
-export function to_twos_complement(num: bigint): bigint {
-    if (num < 0) num += (1n << 32n)
+/**
+ * Converts an signed int to an unsigned one.
+ * @param bytes The number of bytes the int should be. Default 4.
+ */
+export function to_twos_complement(num: bigint, bytes: number = 4): bigint {
+    let bits = BigInt(bytes * 8)
+    if (num < 0) num += (1n << bits)
     return num
 }
 

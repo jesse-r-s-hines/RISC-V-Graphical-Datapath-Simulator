@@ -423,7 +423,7 @@ describe("Bubble Sort", () => {
     let base = 0x1000_8000n // gp
 
     it("Basic", () => {
-        let array = [3n, 2n, 1n, 0n, -1n, -2n, -3n].map(to_twos_complement)
+        let array = [3n, 2n, 1n, 0n, -1n, -2n, -3n].map(e => to_twos_complement(e))
         let size = BigInt(array.length)
 
         let sim = new Simulator(code, {10: base, 11: size}) // a0, a1
@@ -431,7 +431,7 @@ describe("Bubble Sort", () => {
 
         sim.run()
 
-        array = sim.dataMem.data.loadArray(base, 4, array.length).map(from_twos_complement)
+        array = sim.dataMem.data.loadArray(base, 4, array.length).map(e => from_twos_complement(e))
 
         expect(array).to.eql([-3n, -2n, -1n, 0n, 1n, 2n, 3n]);
     })
@@ -446,7 +446,7 @@ describe("Bubble Sort", () => {
 
         sim.run()
 
-        array = sim.dataMem.data.loadArray(base, 4, 10).map(from_twos_complement)
+        array = sim.dataMem.data.loadArray(base, 4, 10).map(e => from_twos_complement(e))
 
         for (let i = 1; i < 10; i++) {
             expect(array[0] <= array[1], `${array[0]} < ${array[1]}`).to.be.true
