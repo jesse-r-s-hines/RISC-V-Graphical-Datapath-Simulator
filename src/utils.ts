@@ -83,7 +83,6 @@ export namespace Bits {
 
         if (negative) bits = bits.map(b => +!b) // two's complement, +1 later
 
-        // TODO signed?
         let num = 0n
         for (let i = bits.length - 1; i >= 0; i--) { // Stored backwards, 0 is the index of the LAST bit in binary representation
             num = num << 1n
@@ -156,11 +155,9 @@ export type BitDontCares = (Bit|null)[]
 export class TruthTable<T> {
     // TODO Error Checking
     private table: [BitDontCares[], T][]
-    private inputLengths: number[]
 
     constructor(table: [string[], T][]) {
         this.table = []
-        this.inputLengths = table[0][0].map(s => s.length)
 
         for (let [rowInput, rowOutput] of table) {
             // Convert to boolean[] with nulls for X
