@@ -3,7 +3,7 @@ import {Bits, TruthTable, from_twos_complement, to_twos_complement} from "./util
 import CodeMirror from "codemirror";
 import "codemirror/addon/display/placeholder"
 import datapath from "../datapath.svg" // import the string of the optimized svg
-import tippy, {followCursor} from 'tippy.js';
+import tippy, {followCursor, Instance as Tippy} from 'tippy.js';
 import toastr from "toastr";
 
 type CodeMirror = CodeMirror.Editor
@@ -356,13 +356,14 @@ export class VisualSim {
         for (let id in VisualSim.datpathElements) {
             let elem = VisualSim.datpathElements[id]
             if (elem.description || elem.value) {
-                tippy(`#${id}`, {
+                let tip = tippy(`#datapath #${id}`, {
                     content: elem.description ?? "",
                     followCursor: true,
                     allowHTML: true,
                     maxWidth: "20em",
                     plugins: [followCursor],
-                });
+                })[0];
+                if (elem.description == undefined) tip.disable()
             }
         }
     }
@@ -452,9 +453,10 @@ export class VisualSim {
                 if (!$(`#${id}`).length) throw Error(`${id} doesn't exist`);
                 
                 if (elem.description || elem.value) {
-                    let tooltip = ($(`#${id}`)[0] as any)._tippy as any
+                    let tooltip = ($(`#${id}`)[0] as any)._tippy as Tippy
                     let value = elem.value ? elem.value(this.sim) : undefined
                     let content = [elem.description, value].filter(s => s).join("<hr/>")
+                    tooltip.enable()
                     tooltip.setContent(content)
                 }
             }
