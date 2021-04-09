@@ -186,6 +186,8 @@ export class VisualSim {
     } 
 
     constructor() {
+        this.sim = new Simulator()
+
         // Load the SVG
         this.svg = $("#datapath")[0]
         $(this.svg).html(datapath)
@@ -208,7 +210,8 @@ export class VisualSim {
             $(this.regEditor).find(".registers").append(`
                 <div class="input-group" style="font-family: monospace;">
                     <span class="input-group-text" style="width: 7em">${name} (x${i})</span>
-                    <input type="text" name="registers[${i}]" class="register-input form-control">
+                    <input type="text" name="registers[${i}]" class="register-input form-control"
+                           placeholder=${this.bigintToStr(this.sim.regFile.registers[i], 16)}>
                 </div>
             `)
         }
@@ -221,8 +224,6 @@ export class VisualSim {
 
         $("#run-simulation").on("click", (event) => this.start())
         $("#step-simulation").on("click", (event) => this.step())
-
-        this.sim = new Simulator()
 
         // Setup datapath elements
         for (let id in VisualSim.datpathElements) {
@@ -245,6 +246,11 @@ export class VisualSim {
     /** Takes a string an converts into into a bigint with the given radix */
     private bigintFromStr(str: string, radix: number): bigint {
         return BigInt(parseInt(str, 16)) // TODO make this work with different radix
+    }
+
+    /** Outputs a string from a bigint with the radix */
+    private bigintToStr(num: bigint, radix: number): string {
+        return "0x" + num.toString(16).padStart(8, "0")
     }
 
     /** Load code/memory/registers and start the simulation */
@@ -318,7 +324,7 @@ export class VisualSim {
 
             let regInputs = $(this.regEditor).find(".registers .register-input").get()
             for (let [i, reg] of this.sim.regFile.registers.entries()) {
-                $(regInputs[i]).val(`0x${reg.toString(16).padStart(8, "0")}`)
+                $(regInputs[i]).val(`${this.bigintToStr(reg, 16)}`)
             }
 
             // update svg
