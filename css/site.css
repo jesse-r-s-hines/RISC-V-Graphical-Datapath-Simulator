@@ -24,6 +24,8 @@
     margin: 5px 0px;
 }
 
+
+/** SVG Styling */
 #datapath svg {
     width: 100%;
     height: 100%;
@@ -35,6 +37,28 @@
     outline: none;
 }
 
-/* #datapath .wire {
+/** Highlight powered wires. */
+.powered .wire, .powered.wire {
     stroke: blue;
-} */
+    marker-start: url(#Juntion-powered);
+}
+
+#datapath marker.powered * {
+    stroke: blue;
+    fill: blue;
+}
+
+/** 
+ * You can't make markers inherit the color of their line. SVG 2 has a way, but it doesn't seem to be supported.
+ * See https://www.w3.org/TR/SVG2/painting.html#RenderingMarkers
+ * So we have to make 2 versions of the marker and switch between them.
+ * Inkscape also tends to duplicate the markers, so we had to remove the duplicates in the SVG file to make this easier.
+ */
+.powered .wire[marker-start], .powered.wire[marker-start] { marker-start: url(#Juntion-powered); }
+.powered .wire[marker-mid], .powered.wire[marker-mid] { marker-mid: url(#Juntion-powered); }
+.powered .wire[marker-end], .powered.wire[marker-end] { marker-end: url(#Arrow-powered); }
+
+#datapath marker.powered path {
+    stroke: blue;
+    fill: blue;
+}
