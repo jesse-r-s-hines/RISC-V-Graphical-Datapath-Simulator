@@ -74,13 +74,10 @@ export class Simulator {
     }
 
     /**
-     * Returns true the next instruction isn't 0x0000_0000.
-     * We are just stopping the program when it runs off the end.
+     * Steps the simulation one clock tick. Returns false is the simulation has reached the
+     * end of the program, true otherwise. The "end of the program" is the first 0x00000000
+     * instruction. (0x00000000 is not a valid RISC-V instruction.)
      */
-    canContinue(): boolean {
-        return this.instrMem.data.loadWord(Bits.toInt(this.pc.in)) != 0n
-    }
-
     tick() {
         // this.pc.in is set at the end.
         // tick() will set it to the value set during the previous tick.
@@ -88,6 +85,11 @@ export class Simulator {
 
         this.instrMem.address = this.pc.out
         this.instrMem.tick()
+
+        if (Bits.toInt(this.instrMem.instruction) == 0n) { // hit the end of the code
+            this.regFile.tick() // Write anything from last tick
+            return false
+        }
 
         this.instrSplit.instruction = this.instrMem.instruction
         this.instrSplit.tick()
@@ -168,16 +170,12 @@ export class Simulator {
         this.regFile.regWrite = this.control.regWrite
         this.regFile.writeData = this.writeSrcMux.out
         this.regFile.writeReg = this.instrSplit.rd
+
+        return true
     }
 
     /** Runs the simulator until the end of the code. */
     run() {
-        // 0000000 is not a valid opcode, so we can just quit when we hit all 0s.
-        while (this.canContinue()) {
-            this.tick()
-        }
-        // Make the pc and regFile update for the final tick.
-        this.pc.tick()
-        this.regFile.tick()
+        while (this.tick()) {}
     }
 }
