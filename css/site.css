@@ -24,6 +24,37 @@
     margin: 5px 0px;
 }
 
+/* table.table-fit {
+    width: auto !important;
+    table-layout: auto !important;
+}
+table.table-fit thead th, table.table-fit tfoot th {
+    width: auto !important;
+}
+table.table-fit tbody td, table.table-fit tfoot td {
+    width: auto !important;
+} */
+
+/** But an input in a table cell. */
+.table-input input {
+    padding: 0px;
+    border:none;
+    outline: none;
+    background-color: transparent;
+    margin: 0;
+    padding: 0;
+}
+
+.table-input td:focus-within {
+    outline: inset 2px #86b7fe;
+    outline-offset: -2px;
+}
+
+.table-input td:nth-child(1) {
+    text-align: right;
+    white-space: nowrap;
+}
+
 
 /** SVG Styling */
 #datapath svg {

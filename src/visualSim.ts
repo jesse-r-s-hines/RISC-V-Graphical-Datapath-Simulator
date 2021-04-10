@@ -379,12 +379,13 @@ export class VisualSim {
         // set up the register file tab
         this.regEditor = $("#regFile-editor")[0]
         for (let [i, name] of VisualSim.regNames.entries()) {
-            $(this.regEditor).find(".registers").append(`
-                <div class="input-group" style="font-family: monospace;">
-                    <span class="input-group-text" style="width: 7em">${name} (x${i})</span>
-                    <input type="text" name="registers[${i}]" class="register-input form-control"
-                           placeholder=${intToStr(this.sim.regFile.registers[i], "hex", 32)}>
-                </div>
+            $(this.regEditor).find(".registers tbody").append(`
+                <tr>
+                    <td>${name} (x${i})</td>
+                    <td>
+                        <input type="text" placeholder=${intToStr(this.sim.regFile.registers[i], "hex", 32)}>
+                    </td>
+                </tr>
             `)
         }
 
@@ -470,8 +471,8 @@ export class VisualSim {
     private setEditorsDisabled(disabled: boolean) {
         this.instrMemEditor.setOption("readOnly", disabled)
         this.dataMemEditor.setOption("readOnly", disabled)
-        $(".editors input").prop("disabled", disabled)
-        $(".editors select").prop("disabled", disabled)
+        $("#editors input").prop("disabled", disabled)
+        $("#editors select").prop("disabled", disabled)
     }
 
     private step() {
@@ -488,7 +489,7 @@ export class VisualSim {
 
             this.dataMemEditor.setValue(this.sim.dataMem.data.toString(4, true))
 
-            let regInputs = $(this.regEditor).find(".registers .register-input").get()
+            let regInputs = $(this.regEditor).find(".registers input").get()
             for (let [i, reg] of this.sim.regFile.registers.entries()) {
                 $(regInputs[i]).val(`${intToStr(reg, "hex", 32)}`)
             }
