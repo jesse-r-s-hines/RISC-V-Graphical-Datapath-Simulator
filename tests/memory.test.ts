@@ -113,6 +113,38 @@ describe("Memory", () => {
         expect(mem.loadArray(100n, 8, 0)).to.eql([])
         expect(() => mem.storeArray(100n, 8, [])).to.not.throw()
     })
+
+    it("Dump", () => {
+        let mem = new Memory(2n**16n)
+
+        expect([...mem.dump(8)]).to.eql([[[0x0000n, 0xFFF8n], 0n]])
+
+        mem.storeByte(14n, 1n)
+        expect([...mem.dump(4)]).to.eql([ // expand small groups (<= 4) of missing addresses
+            [0x0000n, 0n], [0x0004n, 0n], [0x0008n, 0n], [0x000Cn, 0x00_01_00_00n],
+            [[0x0010n, 0xFFFCn], 0n],
+        ])
+
+        expect([...mem.dump(2)]).to.eql([
+            [[0x0000n, 0x000Cn], 0n], [0x000En, 0x00_01n],
+            [[0x0010n, 0xFFFEn], 0n],
+        ])
+
+        mem.storeWord(0n, 0x11_22_33_44n)
+        expect([...mem.dump(4)]).to.eql([
+            [0x0000n, 0x11_22_33_44n], [0x0004n, 0n], [0x0008n, 0n], [0x000Cn, 0x00_01_00_00n],
+            [[0x0010n, 0xFFFCn], 0n],
+        ])
+
+        mem.storeHalfWord(0x00FEn, 0x11_22n)
+        expect([...mem.dump(4)]).to.eql([
+            [0x0000n, 0x11_22_33_44n], [0x0004n, 0n], [0x0008n, 0n], [0x000Cn, 0x00_01_00_00n],
+            [[0x0010n, 0x00F8n], 0n],
+            [0x00FCn, 0x11_22_00_00n],
+            [[0x0100n, 0xFFFCn], 0n],
+        ])
+
+    })
     
     it('Test toString', () => {
         let mem = new Memory(2n**32n)

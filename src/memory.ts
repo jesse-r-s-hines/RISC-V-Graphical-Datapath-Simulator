@@ -13,7 +13,7 @@ export class Memory {
     private data: Map<bigint, bigint>; 
 
     constructor(public size: bigint) {
-        this.size = size
+        this.size = size // size should be a power of two
         this.data = new Map() // map of bytes to values
     }
 
@@ -98,6 +98,37 @@ export class Memory {
     storeArray(addr: bigint, elemBytes: number, arr: bigint[]) {
         for (let [i, val] of arr.entries())
             this.store(addr + BigInt(elemBytes * i), elemBytes, val)
+    }
+
+    /**
+     * Returns an iterator over the memory. It returns a sequence of [address, value] tuples, except where
+     * there are large spans of unused memory, then it includes a [[start, end], 0n] tuple where [start, end]
+     * is and incluse range of word-aligned addresses that are unused.
+     * @param wordSize The number of bytes in each entry
+     */
+    *dump(wordSize: number = 8): Generator<[bigint|[bigint, bigint], bigint]> {
+        let addrShift = BigInt(Math.ceil(Math.log2(wordSize)))
+        let gapSize = 4n // number of missing entries before we skip
+        let wordSizeB = BigInt(wordSize)
+
+        let addresses = Array.from(this.data.keys())
+        addresses = addresses.map(a => ((a >> addrShift) << addrShift) ) // word align all entries
+        addresses = [...new Set(addresses)] // remove duplicates
+        addresses.sort((a, b) => (a < b) ? -1 : ((a > b) ? 1 : 0)) // have to specify sort func for BigInts
+        addresses.push(this.size) // Make it add a range at the end.
+
+        let prevAddr: bigint = -wordSizeB
+        for (let addr of addresses) {
+            if ( (addr - prevAddr) / wordSizeB - 1n > gapSize ) { // collapse missing entries
+                yield [[prevAddr + wordSizeB, addr - wordSizeB], 0n]
+            } else if ( (addr - prevAddr) > wordSizeB) { // expand small gap of missing entries
+                for (let addr2 = prevAddr + wordSizeB; addr2 < addr; addr2 += wordSizeB) {
+                    yield [addr2, this.load(addr2, wordSize)]
+                }
+            }
+            if (addr < this.size) yield [addr, this.load(addr, wordSize)]
+            prevAddr = addr;
+        }
     }
 
 
