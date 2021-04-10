@@ -88,66 +88,6 @@ export class VisualSim {
     private sim: Simulator
     private running: boolean = false
 
-    public static readonly regNames = [
-        "zero", "ra", "sp",  "gp",  "tp", "t0", "t1", "t2",
-        "s0",   "s1", "a0",  "a1",  "a2", "a3", "a4", "a5",
-        "a6",   "a7", "s2",  "s3",  "s4", "s5", "s6", "s7",
-        "s8",   "s9", "s10", "s11", "t3", "t4", "t5", "t6",
-    ]
-        
-    private static readonly opCodeNames = new TruthTable([
-        [["0110011"], "R-format"],
-        [["0010011"], "I-format"],
-        [["0000011"], "ld"],
-        [["0100011"], "st"],
-        [["1100011"], "branch"],
-        [["1100111"], "jalr"],
-        [["1101111"], "jal"],
-        [["0110111"], "lui"],
-    ])
-
-    private static readonly aluOpNames = new TruthTable([
-        [["000"], "load/store"],
-        [["001"], "branch"],
-        [["010"], "R-type"],
-        [["011"], "I-type"],
-        [["100"], "LUI"],
-    ])
-
-    private static readonly aluControlNames = new TruthTable([
-        [["0000"], "AND"],
-        [["0001"], "OR"],
-        [["0010"], "Add"],
-        [["0110"], "Sub"],
-        [["0111"], "Set on less than"],
-        [["1111"], "Set on less than unsigned."],
-        [["1000"], "Shift left logical"],
-        [["1001"], "Shift right logical"],
-        [["1011"], "Shift right arithmetic"],
-        [["1100"], "XOR"],
-        [["1101"], "Load upper immediate"],
-    ])
-
-    private static readonly aluSummaries = new TruthTable<(a: Bits, b: Bits) => string>([
-        [["0000"], (a, b) => `${intToStr(a, "hex")} AND ${intToStr(b, "hex")}`],
-        [["0001"], (a, b) => `${intToStr(a, "hex")} OR ${intToStr(b, "hex")}`],
-        [["0010"], (a, b) => `${intToStr(a, "signed")} + ${intToStr(b, "signed")}`],
-        [["0110"], (a, b) => `${intToStr(a, "signed")} - ${intToStr(b, "signed")}`],
-        [["0111"], (a, b) => `${intToStr(a, "signed")} < ${intToStr(b, "signed")}`],
-        [["1111"], (a, b) => `${intToStr(a, "unsigned")} < ${intToStr(b, "unsigned")}`],
-        [["1000"], (a, b) => `${intToStr(a, "hex")} << ${intToStr(b, "unsigned")}`],
-        [["1001"], (a, b) => `${intToStr(a, "hex")} >>> ${intToStr(b, "unsigned")}`],
-        [["1011"], (a, b) => `${intToStr(a, "hex")} >> ${intToStr(b, "unsigned")}`],
-        [["1100"], (a, b) => `${intToStr(a, "hex")} XOR ${intToStr(b, "hex")}`],
-        [["1101"], (a, b) => `LUI ${intToStr(a, "hex")}`],
-    ])
-
-    private static readonly writeSrcNames = new TruthTable([
-        [["00"], "ALU result"],
-        [["01"], "memory result"],
-        [["10"], "PC + 4"],
-    ])
-
     private static readonly datpathElements: Record<string, DataPathElem> = {
         // Components
         "pc": {
@@ -361,6 +301,66 @@ export class VisualSim {
         },
     } 
 
+    public static readonly regNames = [
+        "zero", "ra", "sp",  "gp",  "tp", "t0", "t1", "t2",
+        "s0",   "s1", "a0",  "a1",  "a2", "a3", "a4", "a5",
+        "a6",   "a7", "s2",  "s3",  "s4", "s5", "s6", "s7",
+        "s8",   "s9", "s10", "s11", "t3", "t4", "t5", "t6",
+    ]
+        
+    private static readonly opCodeNames = new TruthTable([
+        [["0110011"], "R-format"],
+        [["0010011"], "I-format"],
+        [["0000011"], "ld"],
+        [["0100011"], "st"],
+        [["1100011"], "branch"],
+        [["1100111"], "jalr"],
+        [["1101111"], "jal"],
+        [["0110111"], "lui"],
+    ])
+
+    private static readonly aluOpNames = new TruthTable([
+        [["000"], "load/store"],
+        [["001"], "branch"],
+        [["010"], "R-type"],
+        [["011"], "I-type"],
+        [["100"], "LUI"],
+    ])
+
+    private static readonly aluControlNames = new TruthTable([
+        [["0000"], "AND"],
+        [["0001"], "OR"],
+        [["0010"], "Add"],
+        [["0110"], "Sub"],
+        [["0111"], "Set on less than"],
+        [["1111"], "Set on less than unsigned."],
+        [["1000"], "Shift left logical"],
+        [["1001"], "Shift right logical"],
+        [["1011"], "Shift right arithmetic"],
+        [["1100"], "XOR"],
+        [["1101"], "Load upper immediate"],
+    ])
+
+    private static readonly aluSummaries = new TruthTable<(a: Bits, b: Bits) => string>([
+        [["0000"], (a, b) => `${intToStr(a, "hex")} AND ${intToStr(b, "hex")}`],
+        [["0001"], (a, b) => `${intToStr(a, "hex")} OR ${intToStr(b, "hex")}`],
+        [["0010"], (a, b) => `${intToStr(a, "signed")} + ${intToStr(b, "signed")}`],
+        [["0110"], (a, b) => `${intToStr(a, "signed")} - ${intToStr(b, "signed")}`],
+        [["0111"], (a, b) => `${intToStr(a, "signed")} < ${intToStr(b, "signed")}`],
+        [["1111"], (a, b) => `${intToStr(a, "unsigned")} < ${intToStr(b, "unsigned")}`],
+        [["1000"], (a, b) => `${intToStr(a, "hex")} << ${intToStr(b, "unsigned")}`],
+        [["1001"], (a, b) => `${intToStr(a, "hex")} >>> ${intToStr(b, "unsigned")}`],
+        [["1011"], (a, b) => `${intToStr(a, "hex")} >> ${intToStr(b, "unsigned")}`],
+        [["1100"], (a, b) => `${intToStr(a, "hex")} XOR ${intToStr(b, "hex")}`],
+        [["1101"], (a, b) => `LUI ${intToStr(a, "hex")}`],
+    ])
+
+    private static readonly writeSrcNames = new TruthTable([
+        [["00"], "ALU result"],
+        [["01"], "memory result"],
+        [["10"], "PC + 4"],
+    ])
+
     constructor() {
         this.sim = new Simulator()
 
@@ -391,14 +391,16 @@ export class VisualSim {
             $(this.regFilePanel).find(".editor tbody").append(`
                 <tr>
                     <td>${name} (x${i})</td>
-                    <td>
-                        <input type="text" placeholder=${intToStr(this.sim.regFile.registers[i], "hex", 32)}>
-                    </td>
+                    <td><input type="text" placeholder=${intToStr(this.sim.regFile.registers[i], "hex", 32)}></td>
                 </tr>
             `)
         }
 
-        // Add events
+        this.setupEvents()
+        this.setupDatapath()
+    }
+
+    private setupEvents() {
         $("#editor-tabs").on("shown.bs.tab", (event) => {
             let tab = $( $(event.target).data("bs-target") ).find(".CodeMirror")[0] as any
             if (tab) tab.CodeMirror.refresh() // We have to refresh the CodeMirror after it is shown
@@ -406,8 +408,9 @@ export class VisualSim {
 
         $("#run-simulation").on("click", (event) => this.start())
         $("#step-simulation").on("click", (event) => this.step())
+    }
 
-        // Setup datapath elements
+    private setupDatapath() {
         for (let id in VisualSim.datpathElements) {
             let elem = VisualSim.datpathElements[id]
             if (elem.description || elem.value) {
@@ -425,7 +428,6 @@ export class VisualSim {
 
     /** Load code/memory/registers and start the simulation */
     private start() {
-        // Start the simulator
         // Get memory, instructions, registers
         let codeStr = this.instrMemEditor.getValue().trim()
         if (codeStr == "") {
@@ -464,8 +466,7 @@ export class VisualSim {
         this.sim.setRegisters(regs)
         this.sim.dataMem.data.storeArray(0n, 4, mem)
 
-        // setup instruction memory view
-        $(this.instrMemPanel).find(".view tbody").empty()
+        // setup Instruction Memory view
         for (let [addr, val] of this.sim.instrMem.data.dump(4)) {
             if (typeof addr == "bigint") {
                 $(this.instrMemPanel).find(".view tbody").append(`
@@ -476,7 +477,9 @@ export class VisualSim {
             }
         }
 
-        // set up reg file view
+        // Data Memory view is recreated every tick.
+
+        // set up Rigester File view
         for (let [i, name] of VisualSim.regNames.entries()) {
             $(this.regFilePanel).find(".view tbody").append(`
                 <tr>
@@ -489,8 +492,8 @@ export class VisualSim {
         // Switch to views
         $(this.editors).find(".editor").hide()
         $(this.editors).find(".view").show()
-
         this.running = true
+
         return true
     }
 
@@ -499,8 +502,11 @@ export class VisualSim {
             this.sim.tick()
 
             // Update Instruction Memory
+            $(this.instrMemPanel).find(".current-instruction").removeClass("current-instruction")
             let line = Number((this.sim.pc.data - Simulator.text_start) / 4n)
-            // TODO highlight current instruction and scroll to current instruction
+            let currentInstr = $(this.instrMemPanel).find(".view tr")[line]
+            currentInstr.classList.add("current-instruction")
+            currentInstr.scrollIntoView({behavior: "smooth", block: "nearest"})
     
             // Update Data Memory
             $(this.dataMemPanel).find(".view tbody").empty()

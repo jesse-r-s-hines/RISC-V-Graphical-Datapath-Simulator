@@ -7,10 +7,6 @@
     color: #999;
 }
 
-.CodeMirror .current-instruction {
-    background-color: yellow
-}
-
 #toast-container > div {
     opacity: 90%;
 }
@@ -34,6 +30,10 @@ table.table-fit thead th, table.table-fit tfoot th {
 table.table-fit tbody td, table.table-fit tfoot td {
     width: auto !important;
 } */
+
+.current-instruction {
+    background-color: yellow
+}
 
 /** But an input in a table cell. */
 .address-table input {
