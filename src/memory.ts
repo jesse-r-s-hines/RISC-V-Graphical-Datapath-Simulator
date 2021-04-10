@@ -138,20 +138,16 @@ export class Memory {
      * @param hex If true each value will be converted to hex. Otherwise it will converted to decimal
      */
     toString(wordSize = 8, hex = true) {
-        let addrShift = BigInt(Math.ceil(Math.log2(wordSize)))
-        let addrSize = (this.size - 1n).toString(16).length
-        let addresses = Array.from(this.data.keys())
-        addresses.sort((a, b) => (a < b) ? -1 : ((a > b) ? 1 : 0)) // have to specify sort func for BigInts
+        let addrSize = (this.size - 1n).toString(16).length // hex chars needed.
+        let addrStr = (addr: bigint) => `0x${addr.toString(16).padStart(addrSize, "0")}`
 
         let rows = []
-        let prevWord = undefined
-        for (let i of addresses) {
-            let wordI = (i >> addrShift) << addrShift // erase bottom bits
-            if (wordI != prevWord) {
-                let val = this.load(i, wordSize)
-                let valStr = hex ? `0x${val.toString(16).padStart(wordSize*2, "0")}` : val.toString()
-                rows.push(`0x${i.toString(16).padStart(addrSize, "0")}: ${valStr}`)
-                prevWord = wordI
+        for (let [addr, val] of this.dump(wordSize)) {
+            let valStr = hex ? `0x${val.toString(16).padStart(wordSize*2, "0")}` : val.toString()
+            if (typeof addr == "bigint") {
+                rows.push(`${addrStr(addr)}: ${valStr}`)
+            } else { // skipped section
+                rows.push(`${addrStr(addr[0])} - ${addrStr(addr[1])}: ${valStr}`)
             }
         }
 
