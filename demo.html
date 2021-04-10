@@ -19,29 +19,34 @@
             <div class="d-flex flex-column">
                 <ul class="nav nav-tabs" id="editor-tabs" role="tablist">
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="instrMem-tab" data-bs-toggle="tab" data-bs-target="#instrMem-editor"
-                                type="button" role="tab" aria-controls="instrMem-editor" aria-selected="true">
+                        <button class="nav-link active" id="instrMem-tab" data-bs-toggle="tab" data-bs-target="#instrMem-panel"
+                                type="button" role="tab" aria-controls="instrMem-panel" aria-selected="true">
                             Instruction Memory
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="dataMem-tab" data-bs-toggle="tab" data-bs-target="#dataMem-editor"
-                                type="button" role="tab" aria-controls="dataMem-editor" aria-selected="false">
+                        <button class="nav-link" id="dataMem-tab" data-bs-toggle="tab" data-bs-target="#dataMem-panel"
+                                type="button" role="tab" aria-controls="dataMem-panel" aria-selected="false">
                             Data Memory
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="regFile-tab" data-bs-toggle="tab" data-bs-target="#regFile-editor"
-                            type="button" role="tab" aria-controls="regFile-editor" aria-selected="false">
+                        <button class="nav-link" id="regFile-tab" data-bs-toggle="tab" data-bs-target="#regFile-panel"
+                            type="button" role="tab" aria-controls="regFile-panel" aria-selected="false">
                             Register File
                         </button>
                     </li>
                 </ul>
                 <div id="editors" class="tab-content card p-1 flex-grow-1" style="min-height: 0;">
-                    <div id="instrMem-editor" class="tab-pane fade show active h-100" role="tabpanel" aria-labelledby="instrMem-tab">
-                        <textarea placeholder="Paste machine code (in hex) here..."></textarea>
+                    <div id="instrMem-panel" class="tab-pane fade show active h-100 overflow-auto" role="tabpanel" aria-labelledby="instrMem-tab">
+                        <div class="editor h-100">
+                            <textarea placeholder="Paste machine code (in hex) here..."></textarea>
+                        </div>
+                        <div class="view h-100" style="display: none">
+                            <table class="table table-striped table-hover table-bordered address-table"><tbody></tbody></table>
+                        </div>
                     </div>
-                    <div id="dataMem-editor" class="tab-pane fade h-100" role="tabpanel" aria-labelledby="dataMem-tab">
+                    <div id="dataMem-panel" class="tab-pane fade h-100" role="tabpanel" aria-labelledby="dataMem-tab">
                         <div class="d-flex flex-column h-100">
                             <div class="d-flex flex-row">
                                 <select id="dataMem-radix" class="form-select m-1">
@@ -57,11 +62,16 @@
                                 </select>
                             </div>
                             <div class="flex-grow-1 overflow-auto">
-                                <textarea placeholder="Paste initial memory here..."></textarea>
+                                <div class="editor h-100">
+                                    <textarea placeholder="Paste initial memory here..."></textarea>
+                                </div>
+                                <div class="view h-100" style="display: none">
+                                    <table class="table table-striped table-hover table-bordered address-table"><tbody></tbody></table>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div id="regFile-editor" class="tab-pane fade h-100" role="tabpanel" aria-labelledby="regFile-tab" style="min-height: 0;">
+                    <div id="regFile-panel" class="tab-pane fade h-100" role="tabpanel" aria-labelledby="regFile-tab" style="min-height: 0;">
                         <div class="d-flex flex-column h-100">
                             <div class="d-flex flex-row">
                                 <select id="regFile-radix" class="form-select m-1">
@@ -70,8 +80,13 @@
                                     <option value="unsigned">Unsigned Decimal</option>
                                 </select>
                             </div>
-                            <div class="registers overflow-auto">
-                                <table class="table table-striped table-hover table-bordered table-input"><tbody></tbody></table>
+                            <div class="overflow-auto">
+                                <div class="editor h-100">
+                                    <table class="table table-striped table-hover table-bordered address-table"><tbody></tbody></table>
+                                </div>
+                                <div class="view h-100" style="display: none">
+                                    <table class="table table-striped table-hover table-bordered address-table"><tbody></tbody></table>
+                                </div>
                             </div>
                         </div>
                     </div>

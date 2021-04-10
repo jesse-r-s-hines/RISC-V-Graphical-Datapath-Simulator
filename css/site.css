@@ -36,7 +36,7 @@ table.table-fit tbody td, table.table-fit tfoot td {
 } */
 
 /** But an input in a table cell. */
-.table-input input {
+.address-table input {
     padding: 0px;
     border:none;
     outline: none;
@@ -45,16 +45,20 @@ table.table-fit tbody td, table.table-fit tfoot td {
     padding: 0;
 }
 
-.table-input td:focus-within {
+.address-table td:focus-within {
     outline: inset 2px #86b7fe;
     outline-offset: -2px;
 }
 
-.table-input td:nth-child(1) {
+.address-table td:nth-child(1) {
     text-align: right;
     white-space: nowrap;
+    width: 1px; /* Force to minimum that doesn't wrap */
 }
 
+.address-table td:nth-child(1)[colspan] {
+    text-align: center;
+}
 
 /** SVG Styling */
 #datapath svg {

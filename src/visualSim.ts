@@ -77,9 +77,13 @@ interface DataPathElem {
  */
 export class VisualSim {
     private svg: HTMLElement
+    private editors: HTMLElement
+    private instrMemPanel: HTMLElement
+    private dataMemPanel: HTMLElement
+    private regFilePanel: HTMLElement
+
     private instrMemEditor: CodeMirror
     private dataMemEditor: CodeMirror
-    private regEditor: HTMLElement
 
     private sim: Simulator
     private running: boolean = false
@@ -360,26 +364,31 @@ export class VisualSim {
     constructor() {
         this.sim = new Simulator()
 
-        // Load the SVG
+        // initialize elements
         this.svg = $("#datapath")[0]
+        this.editors = $("#editors")[0]
+        this.instrMemPanel = $("#instrMem-panel")[0]
+        this.dataMemPanel = $("#dataMem-panel")[0]
+        this.regFilePanel = $("#regFile-panel")[0]
+
+        // Load the SVG
         $(this.svg).html(datapath)
 
         // Set up the Instruction Memory Tab
-        this.instrMemEditor = CodeMirror.fromTextArea($("#instrMem-editor textarea")[0] as HTMLTextAreaElement, {
+        this.instrMemEditor = CodeMirror.fromTextArea($(this.instrMemPanel).find<HTMLTextAreaElement>(".editor textarea")[0], {
             lineNumbers: true,
             lineNumberFormatter: (l) => hexLine(l, 4, Simulator.text_start),
         });
 
         // Set up the Data Memory Tab
-        this.dataMemEditor = CodeMirror.fromTextArea($("#dataMem-editor textarea")[0] as HTMLTextAreaElement, {
+        this.dataMemEditor = CodeMirror.fromTextArea($(this.dataMemPanel).find<HTMLTextAreaElement>(".editor textarea")[0], {
             lineNumbers: true,
             lineNumberFormatter: (l) => hexLine(l, 4),
         });
 
-        // set up the register file tab
-        this.regEditor = $("#regFile-editor")[0]
+        // set up the Register File tab
         for (let [i, name] of VisualSim.regNames.entries()) {
-            $(this.regEditor).find(".registers tbody").append(`
+            $(this.regFilePanel).find(".editor tbody").append(`
                 <tr>
                     <td>${name} (x${i})</td>
                     <td>
@@ -414,24 +423,19 @@ export class VisualSim {
         }
     }
 
-    /** Show an error popup */
-    private error(message: string) {
-        toastr.error(message)
-    }
-
     /** Load code/memory/registers and start the simulation */
     private start() {
         // Start the simulator
         // Get memory, instructions, registers
         let codeStr = this.instrMemEditor.getValue().trim()
         if (codeStr == "") {
-            this.error("Please enter some code to run.")
+            toastr.error("Please enter some code to run.")
             return false
         }
         try {
             var code = codeStr.split("\n").map(s => parseInt(s, "hex", 32))
         } catch (e) {
-            this.error(`Couldn't parse code: ${e.message}`)
+            toastr.error(`Couldn't parse code: ${e.message}`)
             return false
         }
 
@@ -440,18 +444,18 @@ export class VisualSim {
             // split("") equals [""] for some reason
             var mem = memStr.split("\n").filter(s => s).map(s => parseInt(s, "hex", 32));
         } catch (e) {
-            this.error(`Couldn't parse data memory: ${e.message}`)
+            toastr.error(`Couldn't parse data memory: ${e.message}`)
             return false
         }
 
-        let regStrs = $(this.regEditor).find(".register-input").get().map(elem => $(elem).val())
+        let regStrs = $(this.regFilePanel).find(".register-input").get().map(elem => $(elem).val())
         try {
             var regs: Record<number, bigint> = {}
             for (let [i, s] of regStrs.entries()) {
                 if (s) regs[i] = parseInt(s as string, "hex", 32)
             }
         } catch (e) {
-            this.error(`Couldn't parse registers: ${e.message}`)
+            toastr.error(`Couldn't parse registers: ${e.message}`)
             return false
         }
 
@@ -460,36 +464,58 @@ export class VisualSim {
         this.sim.setRegisters(regs)
         this.sim.dataMem.data.storeArray(0n, 4, mem)
 
-        // Disable editors
-        this.setEditorsDisabled(true)
+        // setup instruction memory view
+        $(this.instrMemPanel).find(".view tbody").empty()
+        for (let [addr, val] of this.sim.instrMem.data.dump(4)) {
+            if (typeof addr == "bigint") {
+                $(this.instrMemPanel).find(".view tbody").append(`
+                    <tr> <td>${intToStr(addr, "hex")}</td> <td>${intToStr(val, "hex", 32)}</td> </tr>
+                `)
+            } else {
+                break // End of instruction memory
+            }
+        }
+
+        // set up reg file view
+        for (let [i, name] of VisualSim.regNames.entries()) {
+            $(this.regFilePanel).find(".view tbody").append(`
+                <tr>
+                    <td>${name} (x${i})</td>
+                    <td>${intToStr(this.sim.regFile.registers[i], "hex", 32)}</td>
+                </tr>
+            `)
+        }
+
+        // Switch to views
+        $(this.editors).find(".editor").hide()
+        $(this.editors).find(".view").show()
 
         this.running = true
         return true
     }
 
-    /** Disable/Enable the editors */
-    private setEditorsDisabled(disabled: boolean) {
-        this.instrMemEditor.setOption("readOnly", disabled)
-        this.dataMemEditor.setOption("readOnly", disabled)
-        $("#editors input").prop("disabled", disabled)
-        $("#editors select").prop("disabled", disabled)
-    }
-
     private step() {
         if (this.sim.canContinue()) { // TODO grey out buttons when done.
-            console.log("Stepping Simulation")
-
-            let line = Number((this.sim.pc.data - Simulator.text_start) / 4n)
-            this.instrMemEditor.removeLineClass(line, "wrap", "current-instruction")
-
             this.sim.tick()
 
-            line = Number((this.sim.pc.data - Simulator.text_start) / 4n)
-            this.instrMemEditor.addLineClass(line, "wrap", "current-instruction")
+            // Update Instruction Memory
+            let line = Number((this.sim.pc.data - Simulator.text_start) / 4n)
+            // TODO highlight current instruction and scroll to current instruction
+    
+            // Update Data Memory
+            $(this.dataMemPanel).find(".view tbody").empty()
+            for (let [addr, val] of this.sim.dataMem.data.dump(4)) {
+                let elem: string
+                if (typeof addr == "bigint") {
+                    elem = `<tr> <td>${intToStr(addr, "hex")}</td> <td>${intToStr(val, "hex", 32)}</td> </tr>`
+                } else {
+                    elem = `<tr><td colspan="2">...</td></tr>`
+                }
+                $(this.dataMemPanel).find(".view tbody").append(elem)
+            }
 
-            this.dataMemEditor.setValue(this.sim.dataMem.data.toString(4, true))
-
-            let regInputs = $(this.regEditor).find(".registers input").get()
+            // update registers
+            let regInputs = $(this.regFilePanel).find(".view input").get()
             for (let [i, reg] of this.sim.regFile.registers.entries()) {
                 $(regInputs[i]).val(`${intToStr(reg, "hex", 32)}`)
             }
