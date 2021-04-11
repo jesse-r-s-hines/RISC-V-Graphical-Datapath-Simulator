@@ -13,47 +13,47 @@ type Radix = "hex" | "bin" | "signed" | "unsigned"
 
 /**
  * Takes a string an converts into into a positive bigint with the given radix. Throw exception if fails.
- * @param bits the number of bits the output will be
+ * @param bytes the number of bytes the output will be
  */
-function parseInt(str: string, radix: Radix, bits: number): bigint {
+function parseInt(str: string, radix: Radix, bytes: number): bigint {
     try {
         if (radix == "hex") {
             var num = BigInt("0x" + str.replace(/^0x/i, ""))
         } else if (radix == "bin") {
             var num = BigInt("0b" + str.replace(/^0b/i, ""))
         } else if (radix == "signed") {
-            var num =  to_twos_complement(BigInt(str), bits)
+            var num =  to_twos_complement(BigInt(str), bytes * 8)
         } else { // (radix == "unsigned")
             var num =  BigInt(str)
         }
-        if (num < 0n || num >= 2n ** BigInt(bits)) throw Error() // just trigger catch.
+        if (num < 0n || num >= 2n ** BigInt(bytes * 8)) throw Error() // just trigger catch.
     } catch { // Int to big or parsing failed
-        throw Error(`"${str}" is invalid. Expected a ${bits} bit ${radix} integer.`)
+        throw Error(`"${str}" is invalid. Expected a ${bytes} byte ${radix} integer.`)
     }
     return num
 }
 
 /**
  * Outputs a string from an positive bigint or Bits with the radix.
- * @param bits the number of bits the output will be
+ * @param bytes the number of bytes the output will be
  */
- function intToStr(num: bigint|Bits, radix: string, bits: number = 32): string {
+ function intToStr(num: bigint|Bits, radix: string, bytes: number = 4): string {
     if (typeof num == "object") num = Bits.toInt(num)
     if (radix == "hex") {
-        return "0x" + num.toString(16).padStart(Math.ceil(bits / 4), "0")
+        return "0x" + num.toString(16).padStart(bytes *2, "0")
     } else if (radix == "bin") {
-        return num.toString(2).padStart(bits, "0")
+        return num.toString(2).padStart(bytes * 8, "0")
     } else if (radix == "signed") {
-        return from_twos_complement(num, bits).toString()
+        return from_twos_complement(num, bytes * 8).toString()
     } else { // (radix == "unsigned")
         return num.toString()
     }
 }
 
 /** Returns html showing num as hex, signed, and unsigned */
-function intToAll(num: bigint|Bits, bits: number = 32): string {
+function intToAll(num: bigint|Bits, bytes: number = 4): string {
     let radices = [["Hex", "hex"], ["Unsigned", "unsigned"], ["Signed", "signed"]]
-    let lines = radices.map(([l, r]) => `${l}: ${intToStr(num, r, bits)}`)
+    let lines = radices.map(([l, r]) => `${l}: ${intToStr(num, r, bytes)}`)
     return lines.join("<br/>")
 }
 
@@ -442,7 +442,7 @@ export class VisualSim {
             return false
         }
         try {
-            var code = codeStr.split("\n").map(s => parseInt(s, "hex", 32))
+            var code = codeStr.split("\n").map(s => parseInt(s, "hex", 4))
         } catch (e) {
             toastr.error(`Couldn't parse code: ${e.message}`)
             return false
@@ -460,11 +460,11 @@ export class VisualSim {
         }
 
         let regRadix = this.regFileRadix()
-        let regStrs = $(this.regFilePanel).find(".editor input").get().map(elem => $(elem).val())
+        let regStrs = $(this.regFilePanel).find(".editor input").get().map(elem => $(elem).val() as string)
         try {
             var regs: Record<number, bigint> = {}
             for (let [i, s] of regStrs.entries()) {
-                if (s) regs[i] = parseInt(s as string, regRadix, 32)
+                if (s) regs[i] = parseInt(s, regRadix, 4)
             }
         } catch (e) {
             toastr.error(`Couldn't parse registers: ${e.message}`)
@@ -474,7 +474,7 @@ export class VisualSim {
         // We've got all the data so we can start the simulator
         this.sim.setCode(code)
         this.sim.setRegisters(regs)
-        this.sim.dataMem.data.storeArray(0n, memWordSize / 8, mem)
+        this.sim.dataMem.data.storeArray(0n, memWordSize, mem)
 
         // setup Instruction Memory view
         let instrMemTable = $(this.instrMemPanel).find(".view tbody")
@@ -482,7 +482,7 @@ export class VisualSim {
         for (let [addr, val] of this.sim.instrMem.data.dump(4)) {
             if (typeof addr == "bigint") {
                 instrMemTable.append(`
-                    <tr> <td>${intToStr(addr, "hex")}</td> <td>${intToStr(val, "hex", 32)}</td> </tr>
+                    <tr> <td>${intToStr(addr, "hex")}</td> <td>${intToStr(val, "hex")}</td> </tr>
                 `)
             } else {
                 break // End of instruction memory
@@ -523,12 +523,12 @@ export class VisualSim {
 
         if (this.state == "unstarted") {
             // renumber instruction input to match radix
-            this.dataMemEditor.setOption("lineNumberFormatter", (l) => hexLine(l, memWordSize / 8))
+            this.dataMemEditor.setOption("lineNumberFormatter", (l) => hexLine(l, memWordSize))
 
             // update Register File input placeholders to match radix
             let registerTds = $(this.regFilePanel).find(".editor input").get()
             for (let [i, reg] of this.sim.regFile.registers.entries()) {
-                $(registerTds[i]).prop("placeholder", intToStr(reg, regRadix, 32))
+                $(registerTds[i]).prop("placeholder", intToStr(reg, regRadix))
             }
         } else { // this.state == "running" or this.state == "done"
             // Update Instruction Memory
@@ -542,7 +542,7 @@ export class VisualSim {
 
             // Update Data Memory
             $(this.dataMemPanel).find(".view tbody").empty()
-            for (let [addr, val] of this.sim.dataMem.data.dump(memWordSize / 8)) {
+            for (let [addr, val] of this.sim.dataMem.data.dump(memWordSize)) {
                 let elem: string
                 if (typeof addr == "bigint") {
                     elem = `<tr> <td>${intToStr(addr, "hex")}</td> <td>${intToStr(val, memRadix, memWordSize)}</td> </tr>`
@@ -555,7 +555,7 @@ export class VisualSim {
             // update Register File
             let registerTds = $(this.regFilePanel).find(".view .register-value").get()
             for (let [i, reg] of this.sim.regFile.registers.entries()) {
-                $(registerTds[i]).text(`${intToStr(reg, regRadix, 32)}`)
+                $(registerTds[i]).text(`${intToStr(reg, regRadix)}`)
             }
         }
     }
