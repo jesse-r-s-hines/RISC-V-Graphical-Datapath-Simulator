@@ -421,7 +421,10 @@ export class VisualSim {
             let elem = $(`#${id}`, "#datapath")
             let config = VisualSim.datpathElements[id];
 
+            // Verify the SVG contains the things we expect
             if (!elem.length) throw Error(`${id} doesn't exist`);
+            if (config.active && !elem.hasClass("wire") && !elem.find(".wire"))
+                throw Error(`${id} missing "wire" class elements`);
 
             if (config.description || config.value) {
                 tippy(`#datapath #${id}`, {
@@ -429,7 +432,7 @@ export class VisualSim {
                     allowHTML: true,
                     maxWidth: "20em",
                     plugins: [followCursor],
-                })[0];
+                });
             }
         }
     }
