@@ -13,6 +13,7 @@ type Radix = "hex" | "bin" | "signed" | "unsigned"
 
 /**
  * Takes a string an converts into into a positive bigint with the given radix. Throw exception if fails.
+ * "unsigned" and "signed" will still interpret "0x" and "0b" numbers as hex and binary.
  * @param bytes the number of bytes the output will be
  */
 function parseInt(str: string, radix: Radix, bytes: number): bigint {
@@ -414,6 +415,9 @@ export class VisualSim {
             if (tab) tab.CodeMirror.refresh() // We have to refresh the CodeMirror after it is shown
         })
 
+        // reformat number on input
+        $(this.regFilePanel).on("change", "input", (event) => this.updateEditorsAndViews())
+
         $("#dataMem-radix, #dataMem-word-size, #regFile-radix").on("change", (event) => this.updateEditorsAndViews())
 
         $("#step").on("click", (event) => this.step())
@@ -541,10 +545,19 @@ export class VisualSim {
             // renumber instruction input to match radix
             this.dataMemEditor.setOption("lineNumberFormatter", (l) => hexLine(l, memWordSize))
 
-            // update Register File input placeholders to match radix
+            // update Register File input placeholders and values to match radix
             let registerTds = $(this.regFilePanel).find(".editor input").get()
             for (let [i, reg] of this.sim.regFile.registers.entries()) {
                 $(registerTds[i]).prop("placeholder", intToStr(reg, regRadix))
+                let valStr = $(registerTds[i]).val() as string
+                if (valStr) { // update the current values to match the radix. Clear if invalid.
+                    try {
+                        valStr = intToStr(parseInt(valStr, regRadix, 4), regRadix, 4)
+                    } catch {
+                        valStr = ""
+                    }
+                    $(registerTds[i]).val(valStr)
+                }
             }
         } else { // this.state == "running" or this.state == "done"
             // Update Instruction Memory
