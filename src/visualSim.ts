@@ -396,6 +396,7 @@ export class VisualSim {
                 <tr> <td>${name} (x${i})</td> <td><input type="text"></td> </tr>
             `)
         }
+        $(this.regFilePanel).find(".editor input").eq(0).prop("disabled", true) // disable x0
 
         this.setupEvents()
         this.setupDatapath()
