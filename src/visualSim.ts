@@ -397,8 +397,7 @@ export class VisualSim {
         this.setupEvents()
         this.setupDatapath()
 
-        this.updateControls()
-        this.updateSimulation()
+        this.update()
     }
     
     private dataMemRadix(): Radix { return $("#dataMem-radix").val() as Radix; }
@@ -411,7 +410,7 @@ export class VisualSim {
             if (tab) tab.CodeMirror.refresh() // We have to refresh the CodeMirror after it is shown
         })
 
-        $("#dataMem-radix, #dataMem-word-size, #regFile-radix").on("change", (event) => this.updateSimulation())
+        $("#dataMem-radix, #dataMem-word-size, #regFile-radix").on("change", (event) => this.updateEditorsAndViews())
 
         $("#step").on("click", (event) => this.step())
         $("#restart").on("click", (event) => this.restart())
@@ -475,7 +474,7 @@ export class VisualSim {
         // We've got all the data so we can start the simulator
         this.sim.setCode(code)
         this.sim.setRegisters(regs)
-        this.sim.dataMem.data.storeArray(0n, 4, mem)
+        this.sim.dataMem.data.storeArray(0n, memWordSize / 8, mem)
 
         // setup Instruction Memory view
         let instrMemTable = $(this.instrMemPanel).find(".view tbody")
@@ -516,8 +515,8 @@ export class VisualSim {
         $("#restart").prop("disabled", this.state == "unstarted")
     }
 
-    /** Updates visuals to match simulator state. */
-    private updateSimulation() {
+    /** Update the editor and view panels to match the simulation */
+    private updateEditorsAndViews() {
         let memRadix = this.dataMemRadix()
         let memWordSize = this.dataMemWordSize()
         let regRadix = this.regFileRadix()
@@ -559,8 +558,10 @@ export class VisualSim {
                 $(registerTds[i]).text(`${intToStr(reg, regRadix, 32)}`)
             }
         }
-    
-        // update datapath
+    }
+
+    /** Updates datapath to match simulator state. */
+    private updateDatapath() {
         let running = (this.state == "running")
     
         for (let id in VisualSim.datpathElements) {
@@ -592,6 +593,13 @@ export class VisualSim {
         }
     }
 
+    /** update controls, editors, views, and datapath */
+    private update() {
+        this.updateControls()
+        this.updateEditorsAndViews()
+        this.updateDatapath()
+    }
+
     private step() {
         if (this.state == "unstarted" && this.start()) { // try to start
             this.state = "running" // we will still do the first tick.
@@ -599,10 +607,9 @@ export class VisualSim {
         if (this.state == "running") {
             let canContinue = this.sim.tick() // Do first instruction
             if (!canContinue) this.state = "done"
-            this.updateSimulation()
 
         }
-        this.updateControls()
+        this.update()
     }
 
     private restart() {
@@ -615,7 +622,6 @@ export class VisualSim {
         this.instrMemEditor.refresh()
         this.dataMemEditor.refresh()
 
-        this.updateControls()
-        this.updateSimulation()
+        this.update()
     }
 }
