@@ -384,17 +384,13 @@ export class VisualSim {
 
         // Set up the Data Memory Tab
         this.dataMemEditor = CodeMirror.fromTextArea($(this.dataMemPanel).find<HTMLTextAreaElement>(".editor textarea")[0], {
-            lineNumbers: true,
-            lineNumberFormatter: (l) => hexLine(l, 4),
+            lineNumbers: true, // we'll set lineNumberFormatter in updateSimulation
         });
 
         // set up the Register File tab
         for (let [i, name] of VisualSim.regNames.entries()) {
             $(this.regFilePanel).find(".editor tbody").append(`
-                <tr>
-                    <td>${name} (x${i})</td>
-                    <td><input type="text" placeholder=${intToStr(this.sim.regFile.registers[i], "hex", 32)}></td>
-                </tr>
+                <tr> <td>${name} (x${i})</td> <td><input type="text"></td> </tr>
             `)
         }
 
@@ -404,12 +400,18 @@ export class VisualSim {
         this.updateControls()
         this.updateSimulation()
     }
+    
+    private dataMemRadix(): Radix { return $("#dataMem-radix").val() as Radix; }
+    private dataMemWordSize(): number { return +($("#dataMem-word-size").val() as string); }
+    private regFileRadix(): Radix { return $("#regFile-radix").val() as Radix; }
 
     private setupEvents() {
         $("#editor-tabs").on("shown.bs.tab", (event) => {
             let tab = $( $(event.target).data("bs-target") ).find(".CodeMirror")[0] as any
             if (tab) tab.CodeMirror.refresh() // We have to refresh the CodeMirror after it is shown
         })
+
+        $("#dataMem-radix, #dataMem-word-size, #regFile-radix").on("change", (event) => this.updateSimulation())
 
         $("#step").on("click", (event) => this.step())
         $("#restart").on("click", (event) => this.restart())
@@ -447,20 +449,23 @@ export class VisualSim {
             return false
         }
 
+        let memRadix = this.dataMemRadix()
+        let memWordSize = this.dataMemWordSize()
         let memStr = this.dataMemEditor.getValue().trim()
         try {
             // split("") equals [""] for some reason
-            var mem = memStr.split("\n").filter(s => s).map(s => parseInt(s, "hex", 32));
+            var mem = memStr.split("\n").filter(s => s).map(s => parseInt(s, memRadix, memWordSize));
         } catch (e) {
             toastr.error(`Couldn't parse data memory: ${e.message}`)
             return false
         }
 
+        let regRadix = this.regFileRadix()
         let regStrs = $(this.regFilePanel).find(".editor input").get().map(elem => $(elem).val())
         try {
             var regs: Record<number, bigint> = {}
             for (let [i, s] of regStrs.entries()) {
-                if (s) regs[i] = parseInt(s as string, "hex", 32)
+                if (s) regs[i] = parseInt(s as string, regRadix, 32)
             }
         } catch (e) {
             toastr.error(`Couldn't parse registers: ${e.message}`)
@@ -513,9 +518,20 @@ export class VisualSim {
 
     /** Updates visuals to match simulator state. */
     private updateSimulation() {
-        let running = (this.state == "running")
+        let memRadix = this.dataMemRadix()
+        let memWordSize = this.dataMemWordSize()
+        let regRadix = this.regFileRadix()
 
-        if (this.state != "unstarted") {
+        if (this.state == "unstarted") {
+            // renumber instruction input to match radix
+            this.dataMemEditor.setOption("lineNumberFormatter", (l) => hexLine(l, memWordSize / 8))
+
+            // update Register File input placeholders to match radix
+            let registerTds = $(this.regFilePanel).find(".editor input").get()
+            for (let [i, reg] of this.sim.regFile.registers.entries()) {
+                $(registerTds[i]).prop("placeholder", intToStr(reg, regRadix, 32))
+            }
+        } else { // this.state == "running" or this.state == "done"
             // Update Instruction Memory
             $(this.instrMemPanel).find(".current-instruction").removeClass("current-instruction")
             if (this.state != "done") { // don't show current instruction if we are done.
@@ -527,10 +543,10 @@ export class VisualSim {
 
             // Update Data Memory
             $(this.dataMemPanel).find(".view tbody").empty()
-            for (let [addr, val] of this.sim.dataMem.data.dump(4)) {
+            for (let [addr, val] of this.sim.dataMem.data.dump(memWordSize / 8)) {
                 let elem: string
                 if (typeof addr == "bigint") {
-                    elem = `<tr> <td>${intToStr(addr, "hex")}</td> <td>${intToStr(val, "hex", 32)}</td> </tr>`
+                    elem = `<tr> <td>${intToStr(addr, "hex")}</td> <td>${intToStr(val, memRadix, memWordSize)}</td> </tr>`
                 } else {
                     elem = `<tr><td colspan="2">...</td></tr>`
                 }
@@ -540,11 +556,13 @@ export class VisualSim {
             // update Register File
             let registerTds = $(this.regFilePanel).find(".view .register-value").get()
             for (let [i, reg] of this.sim.regFile.registers.entries()) {
-                $(registerTds[i]).text(`${intToStr(reg, "hex", 32)}`)
+                $(registerTds[i]).text(`${intToStr(reg, regRadix, 32)}`)
             }
         }
-
+    
         // update datapath
+        let running = (this.state == "running")
+    
         for (let id in VisualSim.datpathElements) {
             let elem = $(`#${id}`, "#datapath")
             let config = VisualSim.datpathElements[id];
