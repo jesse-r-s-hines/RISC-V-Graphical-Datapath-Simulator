@@ -66,10 +66,10 @@ function hexLine(num: number, inc: number, start: bigint = 0n): string {
 interface DataPathElem {
     description?: string,
     hideDescriptionWhenRunning?: boolean
-    // label?: (sim: Simulator) => string,
+    // readonly label?: (sim: Simulator) => string,
     value?: (sim: Simulator) => string
     active?: (sim: Simulator) => boolean
-    // onclick?: () => void,
+    onclick?: (visSim: VisualSim) => void,
 }
 
 type State = "unstarted" | "running" | "done"
@@ -98,12 +98,14 @@ export class VisualSim {
         },
         "instrMem": {
             description: "Stores the program.",
+            onclick: (visSim) => $("#instrMem-tab").tab("show")
         },
         "control": {
             description: "Tells the rest of the processor what to do.",
         },
         "regFile": {
             description: "Stores the 32 registers.",
+            onclick: (visSim) => $("#regFile-tab").tab("show")
         },
         "immGen": {
             description: "Extracts the sign-extended immediate from the instruction.",
@@ -120,6 +122,7 @@ export class VisualSim {
         },
         "dataMem": {
             description: "Stores the data the program is working with.",
+            onclick: (visSim) => $("#dataMem-tab").tab("show")
         },
         "pcAdd4": {
             description: "Increment PC to the next instruction.",
@@ -433,6 +436,11 @@ export class VisualSim {
                     maxWidth: "20em",
                     plugins: [followCursor],
                 });
+            }
+
+            if (config.onclick) {
+                let onclick = config.onclick // rescope to capture current value and let typescript know is defined.
+                $(elem).on("click", (event) => onclick(this))
             }
         }
     }
