@@ -72,6 +72,7 @@ export class Simulator {
     setRegisters(regs: Record<number, bigint>) {
         for (let reg in regs) {
             if (regs[reg] < 0) throw Error("setRegisters() expects unsigned integers.")
+            if (reg == "0" && regs[reg] != 0n) throw Error("Can't set zero register.")
             this.regFile.registers[reg] = regs[reg]
         }
     }

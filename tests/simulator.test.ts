@@ -31,7 +31,11 @@ describe("Misc", () => {
     it('Empty', () => {
         let sim = new Simulator()
         expect( () => sim.run() ).does.not.throw()
+    })
 
+    it('Set Zero', () => {
+        let sim = new Simulator()
+        expect( () => sim.setRegisters({0: 10n})).to.throw()
     })
 })
 
