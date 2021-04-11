@@ -64,12 +64,12 @@ function hexLine(num: number, inc: number, start: bigint = 0n): string {
 }
 
 interface DataPathElem {
-    description?: string,
-    hideDescriptionWhenRunning?: boolean
-    // readonly label?: (sim: Simulator) => string,
-    value?: (sim: Simulator) => string
-    active?: (sim: Simulator) => boolean
-    onclick?: (visSim: VisualSim) => void,
+    description?: string, // a description shown in the tooltip.
+    hideDescriptionWhenRunning?: boolean // if the description is redundant when the value is being shown.
+    // label?: (sim: Simulator) => string, // the current value to display in a textbox
+    value?: (sim: Simulator) => string // the current value with explanation shown in the tooltip.
+    active?: (sim: Simulator) => boolean // return true if a wire should be "powered"
+    onclick?: (visSim: VisualSim) => void, // call when an element is clicked
 }
 
 type State = "unstarted" | "running" | "done"
