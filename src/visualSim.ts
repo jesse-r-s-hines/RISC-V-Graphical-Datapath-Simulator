@@ -418,8 +418,12 @@ export class VisualSim {
 
     private setupDatapath() {
         for (let id in VisualSim.datpathElements) {
-            let elem = VisualSim.datpathElements[id]
-            if (elem.description || elem.value) {
+            let elem = $(`#${id}`, "#datapath")
+            let config = VisualSim.datpathElements[id];
+
+            if (!elem.length) throw Error(`${id} doesn't exist`);
+
+            if (config.description || config.value) {
                 tippy(`#datapath #${id}`, {
                     followCursor: true, // or "initial" keep it where you entered
                     allowHTML: true,
@@ -567,9 +571,7 @@ export class VisualSim {
         for (let id in VisualSim.datpathElements) {
             let elem = $(`#${id}`, "#datapath")
             let config = VisualSim.datpathElements[id];
-
-            if (!elem.length) throw Error(`${id} doesn't exist`);
-            
+           
             if (config.description || config.value) {
                 let tooltip = (elem[0] as any)._tippy as Tippy
                 let value = running && config.value ? config.value(this.sim) : undefined
