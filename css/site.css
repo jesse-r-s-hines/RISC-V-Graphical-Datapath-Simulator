@@ -21,7 +21,19 @@
 }
 
 .fas {
-    font-size: 1.5em
+    font-size: 150%
+}
+
+#controls button:hover {
+    transform: scale(1.25); /* if the zoom is too large, it will go outside of the viewport */
+}
+
+#controls button:active {
+    transform: scale(1.5); /* if the zoom is too large, it will go outside of the viewport */
+}
+
+#controls button:focus {
+    box-shadow: none; /* After click it was showing outline until you clicked somewhere else. */
 }
 
 /* table.table-fit {
