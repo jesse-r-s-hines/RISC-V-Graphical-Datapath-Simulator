@@ -4,6 +4,8 @@ import * as Comp from "./components"
 export class Simulator {
     public static readonly text_start = 0x0000_0000n // typically this would be 0x0001_0000 but lets use zero for simplicity.
 
+    public codeLength: number = 0; // The number of instructions in the code
+
     // components
     public pc: Comp.PC
     public instrMem: Comp.InstructionMemory
@@ -59,6 +61,7 @@ export class Simulator {
 
     /** Initialize instruction memory */
     setCode(code: bigint[]) {
+        this.codeLength = code.length
         this.instrMem.data.storeArray(Simulator.text_start, 4, code)
     }
 
@@ -83,13 +86,13 @@ export class Simulator {
         // tick() will set it to the value set during the previous tick.
         this.pc.tick()
 
-        this.instrMem.address = this.pc.out
-        this.instrMem.tick()
-
-        if (Bits.toInt(this.instrMem.instruction) == 0n) { // hit the end of the code
+        if ( (this.pc.data - Simulator.text_start) / 4n >= this.codeLength ) { // hit the end of the code
             this.regFile.tick() // Write anything from last tick
             return false
         }
+
+        this.instrMem.address = this.pc.out
+        this.instrMem.tick()
 
         this.instrSplit.instruction = this.instrMem.instruction
         this.instrSplit.tick()
