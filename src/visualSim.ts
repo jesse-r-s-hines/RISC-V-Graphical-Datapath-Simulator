@@ -72,6 +72,8 @@ interface DataPathElem {
     // onclick?: () => void,
 }
 
+type State = "unstarted" | "running" | "done"
+
 /**
  * Handles the GUI
  */
@@ -86,7 +88,7 @@ export class VisualSim {
     private dataMemEditor: CodeMirror
 
     private sim: Simulator
-    private running: boolean = false
+    private state: State = "unstarted"
 
     private static readonly datpathElements: Record<string, DataPathElem> = {
         // Components
@@ -398,6 +400,9 @@ export class VisualSim {
 
         this.setupEvents()
         this.setupDatapath()
+
+        this.updateControls()
+        this.updateSimulation()
     }
 
     private setupEvents() {
@@ -406,27 +411,28 @@ export class VisualSim {
             if (tab) tab.CodeMirror.refresh() // We have to refresh the CodeMirror after it is shown
         })
 
-        $("#run-simulation").on("click", (event) => this.start())
-        $("#step-simulation").on("click", (event) => this.step())
+        $("#step").on("click", (event) => this.step())
+        $("#restart").on("click", (event) => this.restart())
     }
 
     private setupDatapath() {
         for (let id in VisualSim.datpathElements) {
             let elem = VisualSim.datpathElements[id]
             if (elem.description || elem.value) {
-                let tip = tippy(`#datapath #${id}`, {
-                    content: elem.description ?? "",
+                tippy(`#datapath #${id}`, {
                     followCursor: true,
                     allowHTML: true,
                     maxWidth: "20em",
                     plugins: [followCursor],
                 })[0];
-                if (elem.description == undefined) tip.disable()
             }
         }
     }
 
-    /** Load code/memory/registers and start the simulation */
+    /**
+     * Load code/memory/registers and start the simulation.
+     * Returns true if started successfully, false otherwise.
+     */
     private start() {
         // Get memory, instructions, registers
         let codeStr = this.instrMemEditor.getValue().trim()
@@ -450,7 +456,7 @@ export class VisualSim {
             return false
         }
 
-        let regStrs = $(this.regFilePanel).find(".register-input").get().map(elem => $(elem).val())
+        let regStrs = $(this.regFilePanel).find(".editor input").get().map(elem => $(elem).val())
         try {
             var regs: Record<number, bigint> = {}
             for (let [i, s] of regStrs.entries()) {
@@ -467,9 +473,11 @@ export class VisualSim {
         this.sim.dataMem.data.storeArray(0n, 4, mem)
 
         // setup Instruction Memory view
+        let instrMemTable = $(this.instrMemPanel).find(".view tbody")
+        instrMemTable.empty()
         for (let [addr, val] of this.sim.instrMem.data.dump(4)) {
             if (typeof addr == "bigint") {
-                $(this.instrMemPanel).find(".view tbody").append(`
+                instrMemTable.append(`
                     <tr> <td>${intToStr(addr, "hex")}</td> <td>${intToStr(val, "hex", 32)}</td> </tr>
                 `)
             } else {
@@ -479,35 +487,44 @@ export class VisualSim {
 
         // Data Memory view is recreated every tick.
 
-        // set up Rigester File view
-        for (let [i, name] of VisualSim.regNames.entries()) {
-            $(this.regFilePanel).find(".view tbody").append(`
-                <tr>
-                    <td>${name} (x${i})</td>
-                    <td>${intToStr(this.sim.regFile.registers[i], "hex", 32)}</td>
-                </tr>
-            `)
+        // set up Rigester File view if needed
+        let regFileTable = $(this.regFilePanel).find(".view tbody")
+        if (regFileTable.children().length == 0) {
+            for (let [i, name] of VisualSim.regNames.entries()) {
+                regFileTable.append(`
+                    <tr> <td>${name} (x${i})</td> <td class="register-value"></td> </tr>
+                `)
+            }
         }
 
         // Switch to views
         $(this.editors).find(".editor").hide()
         $(this.editors).find(".view").show()
-        this.running = true
 
         return true
     }
 
-    private step() {
-        if (this.sim.canContinue()) { // TODO grey out buttons when done.
-            this.sim.tick()
+    /** Updates the controls to match simulator state. */
+    private updateControls() {
+        $("#step").prop("disabled", this.state == "done")
+        $("#step").prop("title", `${this.state == "unstarted" ? "Start" : "Step"} Simulation`)
+        $("#restart").prop("disabled", this.state == "unstarted")
+    }
 
+    /** Updates visuals to match simulator state. */
+    private updateSimulation() {
+        let running = (this.state == "running")
+
+        if (this.state != "unstarted") {
             // Update Instruction Memory
             $(this.instrMemPanel).find(".current-instruction").removeClass("current-instruction")
-            let line = Number((this.sim.pc.data - Simulator.text_start) / 4n)
-            let currentInstr = $(this.instrMemPanel).find(".view tr")[line]
-            currentInstr.classList.add("current-instruction")
-            currentInstr.scrollIntoView({behavior: "smooth", block: "nearest"})
-    
+            if (this.state != "done") { // don't show current instruction if we are done.
+                let line = Number((this.sim.pc.data - Simulator.text_start) / 4n)
+                let currentInstr = $(this.instrMemPanel).find(".view tr")[line]
+                currentInstr.classList.add("current-instruction")
+                currentInstr.scrollIntoView({behavior: "smooth", block: "nearest"})
+            }
+
             // Update Data Memory
             $(this.dataMemPanel).find(".view tbody").empty()
             for (let [addr, val] of this.sim.dataMem.data.dump(4)) {
@@ -520,40 +537,67 @@ export class VisualSim {
                 $(this.dataMemPanel).find(".view tbody").append(elem)
             }
 
-            // update registers
-            let regInputs = $(this.regFilePanel).find(".view input").get()
+            // update Register File
+            let registerTds = $(this.regFilePanel).find(".view .register-value").get()
             for (let [i, reg] of this.sim.regFile.registers.entries()) {
-                $(regInputs[i]).val(`${intToStr(reg, "hex", 32)}`)
-            }
-
-            // update svg
-            for (let id in VisualSim.datpathElements) {
-                let elem = $(`#${id}`, "#datapath")
-                let config = VisualSim.datpathElements[id];
-
-                if (!elem.length) throw Error(`${id} doesn't exist`);
-                
-                if (config.description || config.value) {
-                    let tooltip = (elem[0] as any)._tippy as Tippy
-                    let value = config.value ? config.value(this.sim) : undefined
-                    let description = (this.running && config.hideDescriptionWhenRunning) ? undefined : config.description
-                    let content = [description, value].filter(s => s).join("<hr/>")
-                    tooltip.setContent(content)
-
-                    if (content) {
-                        tooltip.enable()
-                    } else {
-                        tooltip.hide();
-                        tooltip.disable()
-                    }
-                }
-
-                if (config.active && config.active(this.sim)) {
-                    elem.addClass("powered")
-                } else {
-                    elem.removeClass("powered")
-                }
+                $(registerTds[i]).text(`${intToStr(reg, "hex", 32)}`)
             }
         }
+
+        // update datapath
+        for (let id in VisualSim.datpathElements) {
+            let elem = $(`#${id}`, "#datapath")
+            let config = VisualSim.datpathElements[id];
+
+            if (!elem.length) throw Error(`${id} doesn't exist`);
+            
+            if (config.description || config.value) {
+                let tooltip = (elem[0] as any)._tippy as Tippy
+                let value = running && config.value ? config.value(this.sim) : undefined
+                let description = (!running || !config.hideDescriptionWhenRunning) ? config.description : undefined
+                let content = [description, value].filter(s => s).join("<hr/>")
+                tooltip.setContent(content)
+
+                if (content) {
+                    tooltip.enable()
+                } else {
+                    tooltip.hide(); // disable will lock the tooltip open if it was open
+                    tooltip.disable()
+                }
+            }
+
+            if (running && config.active && config.active(this.sim)) {
+                elem.addClass("powered")
+            } else {
+                elem.removeClass("powered")
+            }
+        }
+    }
+
+    private step() {
+        if (this.state == "unstarted" && this.start()) { // try to start
+            this.state = "running" // we will still do the first tick.
+        }
+        if (this.state == "running") {
+            let canContinue = this.sim.tick() // Do first instruction
+            if (!canContinue) this.state = "done"
+            this.updateSimulation()
+
+        }
+        this.updateControls()
+    }
+
+    private restart() {
+        this.sim = new Simulator() // reset the simulator
+        this.state = "unstarted"
+
+        // Switch back to editors
+        $(this.editors).find(".view").hide()
+        $(this.editors).find(".editor").show()
+        this.instrMemEditor.refresh()
+        this.dataMemEditor.refresh()
+
+        this.updateControls()
+        this.updateSimulation()
     }
 }

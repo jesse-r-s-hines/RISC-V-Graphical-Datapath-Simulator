@@ -20,6 +20,10 @@
     margin: 5px 0px;
 }
 
+.fas {
+    font-size: 1.5em
+}
+
 /* table.table-fit {
     width: auto !important;
     table-layout: auto !important;
