@@ -24,6 +24,8 @@
     font-size: 1.5em
 }
 
+
+
 /* table.table-fit {
     width: auto !important;
     table-layout: auto !important;
@@ -35,8 +37,18 @@ table.table-fit tbody td, table.table-fit tfoot td {
     width: auto !important;
 } */
 
-.current-instruction {
-    background-color: yellow
+/* .editor, .view {
+
+} */
+
+.address-table {
+    font-family: monospace;
+    font-size: 125%;
+}
+
+.address-table td {
+    padding: 5px; 
+    margin: 0;
 }
 
 /** But an input in a table cell. */
@@ -62,6 +74,10 @@ table.table-fit tbody td, table.table-fit tfoot td {
 
 .address-table td:nth-child(1)[colspan] {
     text-align: center;
+}
+
+.current-instruction {
+    background-color: yellow
 }
 
 /** SVG Styling */

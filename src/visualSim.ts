@@ -420,7 +420,7 @@ export class VisualSim {
             let elem = VisualSim.datpathElements[id]
             if (elem.description || elem.value) {
                 tippy(`#datapath #${id}`, {
-                    followCursor: true,
+                    followCursor: true, // or "initial" keep it where you entered
                     allowHTML: true,
                     maxWidth: "20em",
                     plugins: [followCursor],
