@@ -79,7 +79,6 @@ table.table-fit tbody td, table.table-fit tfoot td {
 /** Highlight powered wires. */
 .powered .wire, .powered.wire {
     stroke: blue;
-    marker-start: url(#Juntion-powered);
 }
 
 #datapath marker.powered * {
@@ -93,8 +92,8 @@ table.table-fit tbody td, table.table-fit tfoot td {
  * So we have to make 2 versions of the marker and switch between them.
  * Inkscape also tends to duplicate the markers, so we had to remove the duplicates in the SVG file to make this easier.
  */
-.powered .wire[marker-start], .powered.wire[marker-start] { marker-start: url(#Juntion-powered); }
-.powered .wire[marker-mid], .powered.wire[marker-mid] { marker-mid: url(#Juntion-powered); }
+.powered .wire[marker-start], .powered.wire[marker-start] { marker-start: url(#Junction-powered); }
+.powered .wire[marker-mid], .powered.wire[marker-mid] { marker-mid: url(#Junction-powered); }
 .powered .wire[marker-end], .powered.wire[marker-end] { marker-end: url(#Arrow-powered); }
 
 /**

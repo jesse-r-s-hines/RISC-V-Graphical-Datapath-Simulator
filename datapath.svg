@@ -1171,9 +1171,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.72515426"
-     inkscape:cx="589.86707"
-     inkscape:cy="463.98106"
+     inkscape:zoom="1.4503085"
+     inkscape:cx="128.82615"
+     inkscape:cy="637.78115"
      inkscape:document-units="mm"
      inkscape:document-rotation="0"
      showgrid="false"
@@ -1188,7 +1188,7 @@
      fit-margin-right="5"
      fit-margin-bottom="5"
      units="mm"
-     inkscape:current-layer="diagram" />
+     inkscape:current-layer="instrMem-instruction" />
   <metadata
      id="metadata5">
     <rdf:RDF>
@@ -1197,7 +1197,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -2519,13 +2519,13 @@
        id="instrMem-instruction">
       <path
          class="wire"
-         style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-         d="m 88.160384,97.43848 -0.131519,123.3252 0.13152,24.45562"
+         style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-mid:url(#Junction)"
+         d="m 88.160384,97.43848 -0.07615,71.40269 c -0.08833,25.45987 -0.06077,50.91874 0.07615,76.37813"
          id="path858-8"
          sodipodi:nodetypes="ccc" />
       <path
          class="wire"
-         style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Junction)"
+         style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          d="m 82.827687,168.80939 h 5.406968"
          id="path858-5-2-5"
          sodipodi:nodetypes="cc" />
