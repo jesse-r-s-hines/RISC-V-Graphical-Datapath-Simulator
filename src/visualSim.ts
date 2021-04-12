@@ -147,48 +147,40 @@ export class VisualSim {
         // Wires
         "pc-out": {
             value: (sim) => intToStr(sim.pc.out, "hex"),
-            active: (sim) => Bits.toInt(sim.pc.out) != 0n,
             label: (sim) => intToStr(sim.pc.out, "hex"),
         },
         "instrMem-instruction": {
             value: (sim) => intToStr(sim.instrMem.instruction, "hex"),
-            active: (sim) => Bits.toInt(sim.instrMem.instruction) != 0n,
             label: (sim) => intToStr(sim.instrMem.instruction, "hex"),
         },
         "instrMem-instruction-opcode": {
             description: "The opcode of the instruction.",
             value: (sim) => `${Bits.toString(sim.instrSplit.opCode)} (${VisualSim.opCodeNames.match(sim.instrSplit.opCode)})`,
-            active: (sim) => Bits.toInt(sim.instrSplit.opCode) != 0n,
             label: (sim) => Bits.toString(sim.instrSplit.opCode),
         },
         "instrMem-instruction-rd": {
             description: "The register to write.",
             value: (sim) => `${intToStr(sim.instrSplit.rd, "unsigned", 5)} (${VisualSim.regNames[Bits.toNumber(sim.instrSplit.rd)]})`,
-            active: (sim) => Bits.toInt(sim.instrSplit.rd) != 0n,
             label: (sim) => intToStr(sim.instrSplit.rd, "unsigned", 5),
         },
         "instrMem-instruction-funct3": {
             description: "More bits to determine the instruction.",
             value: (sim) => `${Bits.toString(sim.instrSplit.funct3)}`, // TODO show what type of instruction?
-            active: (sim) => Bits.toInt(sim.instrSplit.funct3) != 0n,
             label: (sim) => Bits.toString(sim.instrSplit.funct3),
         },
         "instrMem-instruction-rs1": {
             description: "The first register to read.",
             value: (sim) => `${intToStr(sim.instrSplit.rs1, "unsigned", 5)} (${VisualSim.regNames[Bits.toNumber(sim.instrSplit.rs1)]})`,
-            active: (sim) => Bits.toInt(sim.instrSplit.rs1) != 0n,
             label: (sim) => intToStr(sim.instrSplit.rs1, "unsigned", 5),
         },
         "instrMem-instruction-rs2": {
             description: "The second register to read.",
             value: (sim) => `${intToStr(sim.instrSplit.rs2, "unsigned", 5)} (${VisualSim.regNames[Bits.toNumber(sim.instrSplit.rs2)]})`,
-            active: (sim) => Bits.toInt(sim.instrSplit.rs2) != 0n,
             label: (sim) => intToStr(sim.instrSplit.rs2, "unsigned", 5),
         },
         "instrMem-instruction-funct7": {
             description: "More bits to determine the instruction.",
             value: (sim) => `${Bits.toString(sim.instrSplit.funct7)}`,
-            active: (sim) => Bits.toInt(sim.instrSplit.funct7) != 0n,
             label: (sim) => Bits.toString(sim.instrSplit.funct7),
         },
         "control-regWrite": {
@@ -252,32 +244,26 @@ export class VisualSim {
         },
         "immGen-immediate": {
             value: (sim) => intToAll(sim.immGen.immediate),
-            active: (sim) => Bits.toInt(sim.immGen.immediate) != 0n,
             label: (sim) => intToStr(sim.immGen.immediate, "signed"),
         },
         "regFile-readData1": {
             value: (sim) => intToAll(sim.regFile.readData1),
-            active: (sim) => Bits.toInt(sim.regFile.readData1) != 0n,
             label: (sim) => intToStr(sim.regFile.readData1, "signed"),
         },
         "regFile-readData2": {
             value: (sim) => intToAll(sim.regFile.readData2),
-            active: (sim) => Bits.toInt(sim.regFile.readData2) != 0n,
             label: (sim) => intToStr(sim.regFile.readData2, "signed"),
         },
         "aluControl-aluControl": {
             description: "What operation for the ALU to preform.",
             value: (sim) => `${Bits.toString(sim.aluControl.aluControl)} (${VisualSim.aluControlNames.match(sim.aluControl.aluControl)})`,
-            active: (sim) => Bits.toInt(sim.aluControl.aluControl) != 0n,
             label: (sim) => Bits.toString(sim.aluControl.aluControl),
         },
         "aluInputMux-out": {
             value: (sim) => intToAll(sim.aluInputMux.out),
-            active: (sim) => Bits.toInt(sim.aluInputMux.out) != 0n,
         },
         "alu-result": {
             value: (sim) => intToAll(sim.alu.result),
-            active: (sim) => Bits.toInt(sim.alu.result) != 0n,
             label: (sim) => intToStr(sim.alu.result, "signed"),
         },
         "alu-zero": {
@@ -288,16 +274,13 @@ export class VisualSim {
         },
         "literalFour": {
             value: (sim) => "4",
-            active: (sim) => true,
         },
         "pcAdd4-result": {
             value: (sim) => intToStr(sim.pcAdd4.result, "hex"),
-            active: (sim) => Bits.toInt(sim.pcAdd4.result) != 0n,
             label: (sim) => intToStr(sim.pcAdd4.result, "hex"),
         },
         "branchAdder-result": {
             value: (sim) => intToStr(sim.branchAdder.result, "hex"),
-            active: (sim) => Bits.toInt(sim.branchAdder.result) != 0n,
             label: (sim) => intToStr(sim.branchAdder.result, "hex"),
         },
         "jumpControl-takeBranch": {
@@ -312,17 +295,14 @@ export class VisualSim {
         },
         "pcMux-out": {
             value: (sim) => intToStr(sim.pcMux.out, "hex"),
-            active: (sim) => Bits.toInt(sim.pcMux.out) != 0n,
             label: (sim) => intToStr(sim.pcMux.out, "hex"),
         },
         "writeSrcMux-out": {
             value: (sim) => intToAll(sim.writeSrcMux.out),
-            active: (sim) => Bits.toInt(sim.writeSrcMux.out) != 0n,
             label: (sim) => intToStr(sim.writeSrcMux.out, "hex"),
         },
         "jalrMux-out": {
             value: (sim) => intToStr(sim.jalrMux.out, "hex"),
-            active: (sim) => Bits.toInt(sim.jalrMux.out) != 0n,
         },
     } 
 
