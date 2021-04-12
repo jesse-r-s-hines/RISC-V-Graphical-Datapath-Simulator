@@ -36,10 +36,17 @@ function parseInt(str: string, radix: Radix, bits: number): bigint {
 
 /**
  * Outputs a string from an positive bigint or Bits with the radix.
- * @param bits the number of bits the output will be
+ * @param bits the number of bits the output will be. If omitted and you pass a Bits, it 
+ *             will get the size from the bits, otherwise it will default to 32.
  */
- function intToStr(num: bigint|Bits, radix: string, bits: number = 32): string {
-    if (typeof num == "object") num = Bits.toInt(num)
+ function intToStr(num: bigint|Bits, radix: string, bits?: number): string {
+    if (num instanceof Array) {
+        bits = bits ?? num.length
+        num = Bits.toInt(num)
+    } else {
+        bits = bits ?? 32
+    }
+
     if (radix == "hex") {
         return "0x" + num.toString(16).padStart(Math.ceil(bits / 4), "0")
     } else if (radix == "bin") {
@@ -155,8 +162,8 @@ export class VisualSim {
         },
         "instrMem-instruction-opcode": {
             description: "The opcode of the instruction.",
-            value: (sim) => `${Bits.toString(sim.instrSplit.opCode)} (${VisualSim.opCodeNames.match(sim.instrSplit.opCode)})`,
-            label: (sim) => Bits.toString(sim.instrSplit.opCode),
+            value: (sim) => `${intToStr(sim.instrSplit.opCode, "bin")} (${VisualSim.opCodeNames.match(sim.instrSplit.opCode)})`,
+            label: (sim) => intToStr(sim.instrSplit.opCode, "bin"),
         },
         "instrMem-instruction-rd": {
             description: "The register to write.",
@@ -165,8 +172,8 @@ export class VisualSim {
         },
         "instrMem-instruction-funct3": {
             description: "More bits to determine the instruction.",
-            value: (sim) => `${Bits.toString(sim.instrSplit.funct3)}`, // TODO show what type of instruction?
-            label: (sim) => Bits.toString(sim.instrSplit.funct3),
+            value: (sim) => `${intToStr(sim.instrSplit.funct3, "bin")}`, // TODO show what type of instruction?
+            label: (sim) => intToStr(sim.instrSplit.funct3, "bin"),
         },
         "instrMem-instruction-rs1": {
             description: "The first register to read.",
@@ -180,8 +187,8 @@ export class VisualSim {
         },
         "instrMem-instruction-funct7": {
             description: "More bits to determine the instruction.",
-            value: (sim) => `${Bits.toString(sim.instrSplit.funct7)}`,
-            label: (sim) => Bits.toString(sim.instrSplit.funct7),
+            value: (sim) => `${intToStr(sim.instrSplit.funct7, "bin")}`,
+            label: (sim) => intToStr(sim.instrSplit.funct7, "bin"),
         },
         "control-regWrite": {
             description: "Whether to write the register file.",
@@ -202,9 +209,9 @@ export class VisualSim {
         },
         "control-aluOp": {
             description: "What type of instruction this is. ALU Control will determine the exact ALU operation to use.",
-            value: (sim) => `${Bits.toString(sim.control.aluOp)} (${VisualSim.aluOpNames.match(sim.control.aluOp)})`,
+            value: (sim) => `${intToStr(sim.control.aluOp, "bin")} (${VisualSim.aluOpNames.match(sim.control.aluOp)})`,
             active: (sim) => Bits.toInt(sim.control.aluOp) != 0n,
-            label: (sim) => Bits.toString(sim.control.aluOp),
+            label: (sim) => intToStr(sim.control.aluOp, "bin"),
         },
         "control-writeSrc": {
             description: "What to write to the register file.",
@@ -256,8 +263,8 @@ export class VisualSim {
         },
         "aluControl-aluControl": {
             description: "What operation for the ALU to preform.",
-            value: (sim) => `${Bits.toString(sim.aluControl.aluControl)} (${VisualSim.aluControlNames.match(sim.aluControl.aluControl)})`,
-            label: (sim) => Bits.toString(sim.aluControl.aluControl),
+            value: (sim) => `${intToStr(sim.aluControl.aluControl, "bin")} (${VisualSim.aluControlNames.match(sim.aluControl.aluControl)})`,
+            label: (sim) => intToStr(sim.aluControl.aluControl, "bin"),
         },
         "aluInputMux-out": {
             value: (sim) => intToAll(sim.aluInputMux.out),
