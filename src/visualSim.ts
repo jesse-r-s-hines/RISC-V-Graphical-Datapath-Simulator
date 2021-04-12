@@ -13,48 +13,48 @@ type Radix = "hex" | "bin" | "signed" | "unsigned"
 
 /**
  * Takes a string an converts into into a positive bigint with the given radix. Throw exception if fails.
- * "unsigned" and "signed" will still interpret "0x" and "0b" numbers as hex and binary.
- * @param bytes the number of bytes the output will be
+ * Strings with "0x" and "0b" prefixes will be interpreted as hex and binary regardless of radix.
+ * @param bits the number of bits the output will be. 
  */
-function parseInt(str: string, radix: Radix, bytes: number): bigint {
+function parseInt(str: string, radix: Radix, bits: number): bigint {
     try {
         if (radix == "hex") {
-            var num = BigInt("0x" + str.replace(/^0x/i, ""))
+            var num = BigInt( /^0[xb]/.test(str) ? str : `0x${str}` )
         } else if (radix == "bin") {
-            var num = BigInt("0b" + str.replace(/^0b/i, ""))
+            var num = BigInt( /^0[xb]/.test(str) ? str : `0b${str}` )
         } else if (radix == "signed") {
-            var num =  to_twos_complement(BigInt(str), bytes * 8)
+            var num =  to_twos_complement(BigInt(str), bits)
         } else { // (radix == "unsigned")
             var num =  BigInt(str)
         }
-        if (num < 0n || num >= 2n ** BigInt(bytes * 8)) throw Error() // just trigger catch.
+        if (num < 0n || num >= 2n ** BigInt(bits)) throw Error() // just trigger catch.
     } catch { // Int to big or parsing failed
-        throw Error(`"${str}" is invalid. Expected a ${bytes} byte ${radix} integer.`)
+        throw Error(`"${str}" is invalid. Expected a ${bits} bit ${radix} integer.`)
     }
     return num
 }
 
 /**
  * Outputs a string from an positive bigint or Bits with the radix.
- * @param bytes the number of bytes the output will be
+ * @param bits the number of bits the output will be
  */
- function intToStr(num: bigint|Bits, radix: string, bytes: number = 4): string {
+ function intToStr(num: bigint|Bits, radix: string, bits: number = 32): string {
     if (typeof num == "object") num = Bits.toInt(num)
     if (radix == "hex") {
-        return "0x" + num.toString(16).padStart(bytes *2, "0")
+        return "0x" + num.toString(16).padStart(Math.ceil(bits / 4), "0")
     } else if (radix == "bin") {
-        return num.toString(2).padStart(bytes * 8, "0")
+        return "0b" + num.toString(2).padStart(bits, "0")
     } else if (radix == "signed") {
-        return from_twos_complement(num, bytes * 8).toString()
+        return from_twos_complement(num, bits).toString()
     } else { // (radix == "unsigned")
         return num.toString()
     }
 }
 
 /** Returns html showing num as hex, signed, and unsigned */
-function intToAll(num: bigint|Bits, bytes: number = 4): string {
+function intToAll(num: bigint|Bits, bits: number = 32): string {
     let radices = [["Hex", "hex"], ["Unsigned", "unsigned"], ["Signed", "signed"]]
-    let lines = radices.map(([l, r]) => `${l}: ${intToStr(num, r, bytes)}`)
+    let lines = radices.map(([l, r]) => `${l}: ${intToStr(num, r, bits)}`)
     return lines.join("<br/>")
 }
 
@@ -405,6 +405,7 @@ export class VisualSim {
     }
     
     private dataMemRadix(): Radix { return $("#dataMem-radix").val() as Radix; }
+    /** Word size set for memory, as bits. */
     private dataMemWordSize(): number { return +($("#dataMem-word-size").val() as string); }
     private regFileRadix(): Radix { return $("#regFile-radix").val() as Radix; }
 
@@ -465,7 +466,7 @@ export class VisualSim {
             return false
         }
         try {
-            var code = codeStr.split("\n").map(s => parseInt(s, "hex", 4))
+            var code = codeStr.split("\n").map(s => parseInt(s, "hex", 32))
         } catch (e) {
             toastr.error(`Couldn't parse code: ${e.message}`)
             return false
@@ -487,7 +488,7 @@ export class VisualSim {
         try {
             var regs: Record<number, bigint> = {}
             for (let [i, s] of regStrs.entries()) {
-                if (s) regs[i] = parseInt(s, regRadix, 4)
+                if (s) regs[i] = parseInt(s, regRadix, 32)
             }
         } catch (e) {
             toastr.error(`Couldn't parse registers: ${e.message}`)
@@ -497,7 +498,7 @@ export class VisualSim {
         // We've got all the data so we can start the simulator
         this.sim.setCode(code)
         this.sim.setRegisters(regs)
-        this.sim.dataMem.data.storeArray(0n, memWordSize, mem)
+        this.sim.dataMem.data.storeArray(0n, memWordSize / 8, mem)
 
         // setup Instruction Memory view
         let instrMemTable = $(this.instrMemPanel).find(".view tbody")
@@ -546,7 +547,7 @@ export class VisualSim {
 
         if (this.state == "unstarted") {
             // renumber instruction input to match radix
-            this.dataMemEditor.setOption("lineNumberFormatter", (l) => hexLine(l, memWordSize))
+            this.dataMemEditor.setOption("lineNumberFormatter", (l) => hexLine(l, memWordSize / 8))
 
             // update Register File input placeholders and values to match radix
             let registerTds = $(this.regFilePanel).find(".editor input").get()
@@ -555,7 +556,7 @@ export class VisualSim {
                 let valStr = $(registerTds[i]).val() as string
                 if (valStr) { // update the current values to match the radix. Clear if invalid.
                     try {
-                        valStr = intToStr(parseInt(valStr, regRadix, 4), regRadix, 4)
+                        valStr = intToStr(parseInt(valStr, regRadix, 32), regRadix)
                     } catch {
                         valStr = ""
                     }
@@ -574,7 +575,7 @@ export class VisualSim {
 
             // Update Data Memory
             $(this.dataMemPanel).find(".view tbody").empty()
-            for (let [addr, val] of this.sim.dataMem.data.dump(memWordSize)) {
+            for (let [addr, val] of this.sim.dataMem.data.dump(memWordSize / 8)) {
                 let elem: string
                 if (typeof addr == "bigint") {
                     elem = `<tr> <td>${intToStr(addr, "hex")}</td> <td>${intToStr(val, memRadix, memWordSize)}</td> </tr>`
