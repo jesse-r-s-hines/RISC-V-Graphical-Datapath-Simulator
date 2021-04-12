@@ -160,8 +160,8 @@ export class VisualSim {
         },
         "instrMem-instruction-rd": {
             description: "The register to write.",
-            value: (sim) => `${intToStr(sim.instrSplit.rd, "unsigned", 5)} (${VisualSim.regNames[Bits.toNumber(sim.instrSplit.rd)]})`,
-            label: (sim) => intToStr(sim.instrSplit.rd, "unsigned", 5),
+            value: (sim) => `${intToStr(sim.instrSplit.rd, "unsigned")} (${VisualSim.regNames[Bits.toNumber(sim.instrSplit.rd)]})`,
+            label: (sim) => intToStr(sim.instrSplit.rd, "unsigned"),
         },
         "instrMem-instruction-funct3": {
             description: "More bits to determine the instruction.",
@@ -170,13 +170,13 @@ export class VisualSim {
         },
         "instrMem-instruction-rs1": {
             description: "The first register to read.",
-            value: (sim) => `${intToStr(sim.instrSplit.rs1, "unsigned", 5)} (${VisualSim.regNames[Bits.toNumber(sim.instrSplit.rs1)]})`,
-            label: (sim) => intToStr(sim.instrSplit.rs1, "unsigned", 5),
+            value: (sim) => `${intToStr(sim.instrSplit.rs1, "unsigned")} (${VisualSim.regNames[Bits.toNumber(sim.instrSplit.rs1)]})`,
+            label: (sim) => intToStr(sim.instrSplit.rs1, "unsigned"),
         },
         "instrMem-instruction-rs2": {
             description: "The second register to read.",
-            value: (sim) => `${intToStr(sim.instrSplit.rs2, "unsigned", 5)} (${VisualSim.regNames[Bits.toNumber(sim.instrSplit.rs2)]})`,
-            label: (sim) => intToStr(sim.instrSplit.rs2, "unsigned", 5),
+            value: (sim) => `${intToStr(sim.instrSplit.rs2, "unsigned")} (${VisualSim.regNames[Bits.toNumber(sim.instrSplit.rs2)]})`,
+            label: (sim) => intToStr(sim.instrSplit.rs2, "unsigned"),
         },
         "instrMem-instruction-funct7": {
             description: "More bits to determine the instruction.",
