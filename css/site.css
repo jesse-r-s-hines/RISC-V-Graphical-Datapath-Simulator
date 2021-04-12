@@ -29,7 +29,7 @@
 }
 
 #controls button:active {
-    transform: scale(1.5); /* if the zoom is too large, it will go outside of the viewport */
+    transform: scale(1.1); /* if the zoom is too large, it will go outside of the viewport */
 }
 
 #controls button:focus {
