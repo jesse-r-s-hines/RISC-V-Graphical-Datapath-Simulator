@@ -649,12 +649,17 @@ export class VisualSim {
 
     private step() {
         if (this.state == "unstarted" && this.start()) { // try to start
-            this.state = "running" // we will still do the first tick.
+            this.state = "running" // we will still will do the first tick.
         }
         if (this.state == "running") {
-            let canContinue = this.sim.tick() // Do first instruction
-            if (!canContinue) this.state = "done"
-
+            try {
+                let canContinue = this.sim.tick()
+                if (!canContinue) this.state = "done"
+            } catch (e) {
+                this.state = "done"
+                toastr.error(`Error in simulation: ${e.message}`)
+                console.error(e)
+            }
         }
         this.update()
     }
