@@ -464,7 +464,7 @@ export class VisualSim {
 
     private setupDatapath() {
         for (let id in VisualSim.datpathElements) {
-            let elem = $(`#${id}`, "#datapath")
+            let elem = $(this.svg).find(`#${id}`)
             let config = VisualSim.datpathElements[id];
 
             // Verify the SVG contains the things we expect
@@ -473,7 +473,7 @@ export class VisualSim {
                 throw Error(`#${id} has active defined, but no ".wire" elements`);
 
             if (config.description || config.tooltip) {
-                tippy(`#datapath #${id}`, {
+                tippy($(this.svg).find(`#${id}`)[0], {
                     followCursor: true, // or "initial" keep it where you entered
                     allowHTML: true,
                     maxWidth: "20em",
@@ -637,11 +637,11 @@ export class VisualSim {
     private updateDatapath() {
         let running = (this.state == "running")
 
-        $(".hide-when-running", "#datapath").toggle(!running)
-        $(".hide-when-not-running", "#datapath").toggle(running)
+        $(this.svg).find(".hide-when-running").toggle(!running)
+        $(this.svg).find(".hide-when-not-running").toggle(running)
     
         for (let id in VisualSim.datpathElements) {
-            let elem = $(`#${id}`, "#datapath")
+            let elem = $(this.svg).find(`#${id}`)
             let config = VisualSim.datpathElements[id];
            
             if (config.description || config.tooltip) {
