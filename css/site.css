@@ -24,6 +24,10 @@
     font-size: 150%
 }
 
+#controls button {
+    transition: transform 50ms;
+}
+
 #controls button:hover {
     transform: scale(1.25); /* if the zoom is too large, it will go outside of the viewport */
 }
