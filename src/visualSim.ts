@@ -71,15 +71,41 @@ function hexLine(num: number, inc: number, start: bigint = 0n): string {
     return intToStr(numB, "hex")
 }
 
+/** 
+ * Describe an element in the datapath and how to render it.
+ */
 interface DataPathElem {
     description?: string, // a description shown in the tooltip.
     hideDescriptionWhenRunning?: boolean // if the description is redundant when the value is being shown.
     label?: (sim: Simulator) => string, // the current value to display in a textbox
     tooltip?: (sim: Simulator) => string, // the current value with explanation shown in the tooltip.
-    active?: (sim: Simulator) => boolean // return true if a wire should be "powered"
+    active?: (sim: Simulator) => boolean, // return true if a wire should be "powered"
     onclick?: (visSim: VisualSim) => void, // call when an element is clicked
+    // return a value, and will show matching elements under this element that marked with value in `data-show-on-value`
+    showSubElemsByValue?: (sim: Simulator) => string,
+    callback?: (visSim: VisualSim) => void, // arbitrary callback on each update.
 }
 
+/**
+ * # SVG
+ * 
+ * The datapath is rendered in an SVG file. Each wire and component of the simulator is mapped to an ID
+ * in the SVG. The SVG also uses classes and data attributes on elements so that we can render the current
+ * state of the simulation.
+ * 
+ * ## Classes
+ * - wire -- All wires have this class. Used for emphasizing the hovered wire and coloring active wires.
+ * - datapath-label -- Indicates a text box which we will show the current value of a wire.
+ * - outline -- Indicates the outline of a component.
+ * - hide-when-running -- These elements are only shown when the simulation unstarted or done.
+ * - hide-when-not-running -- These elements are only shown when the simulation is running
+ * - powered -- This class is added in JS. Indicates a wire that is high.
+ * 
+ * ## Data attributes
+ * - data-show-on-value -- Used in muxes to make a wire showing which input is being used. 
+ */
+
+/** State the simulation is in. */
 type State = "unstarted" | "running" | "done"
 
 /**
@@ -98,6 +124,7 @@ export class VisualSim {
     private sim: Simulator
     private state: State = "unstarted"
 
+    /** All the elements in the datapath and how to render them, tooltips, etc. */
     private static readonly datpathElements: Record<string, DataPathElem> = {
         // Components
         "pc": {
@@ -123,6 +150,7 @@ export class VisualSim {
         },
         "aluInputMux": {
             description: "Switches between source register 2 or the immediate value.",
+            showSubElemsByValue: (sim) => intToStr(sim.aluInputMux.select, "unsigned"),
         },
         "alu": {
             description: "Does arithmetic on two values.",
@@ -137,6 +165,7 @@ export class VisualSim {
         },
         "jalrMux": {
             description: "Switch between PC or source register 1. JALR sets the PC to a register plus an immediate.",
+            showSubElemsByValue: (sim) => intToStr(sim.jalrMux.select, "unsigned"),
         },
         "branchAdder": {
             description: "Calculate the target address of a branch or jump.",
@@ -146,9 +175,11 @@ export class VisualSim {
         },
         "pcMux": {
             description: "Switch between PC + 4 or the branch target.",
+            showSubElemsByValue: (sim) => intToStr(sim.pcMux.select, "unsigned"),
         },
         "writeSrcMux": {
             description: "Switch between ALU result, memory read data, or PC + 4.",
+            showSubElemsByValue: (sim) => intToStr(sim.writeSrcMux.select, "unsigned"),
         },
 
         // Wires
@@ -455,9 +486,11 @@ export class VisualSim {
                 $(elem).on("click", (event) => onclick(this))
             }
 
-            if (config.label && !elem.find("text.datapath-label").length) {
+            if (config.label && !elem.find("text.datapath-label").length)
                 throw Error(`#${id} has label defined, but no ".datapath-label" elements`);
-            }
+
+            if (config.showSubElemsByValue && !elem.find("[data-show-on-value]").length)
+                throw Error(`#${id} has showSubElemsByValue defined, but no "[data-show-on-value]" elements`);
         }
     }
 
@@ -603,6 +636,9 @@ export class VisualSim {
     /** Updates datapath to match simulator state. */
     private updateDatapath() {
         let running = (this.state == "running")
+
+        $(".hide-when-running", "#datapath").toggle(!running)
+        $(".hide-when-not-running", "#datapath").toggle(running)
     
         for (let id in VisualSim.datpathElements) {
             let elem = $(`#${id}`, "#datapath")
@@ -636,6 +672,18 @@ export class VisualSim {
                     let labelElem = $(text).find("tspan")[0] ?? text
                     $(labelElem).text(content)
                 })
+            }
+
+            if (config.showSubElemsByValue) {
+                elem.find("[data-show-on-value]").hide()
+                if (running) {
+                    let val = config.showSubElemsByValue(this.sim)
+                    elem.find(`[data-show-on-value="${val}"]`).show()
+                }
+            }
+
+            if (config.callback) {
+                config.callback(this)
             }
         }
     }
