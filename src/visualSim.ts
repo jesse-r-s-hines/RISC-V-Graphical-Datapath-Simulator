@@ -75,7 +75,7 @@ interface DataPathElem {
     description?: string, // a description shown in the tooltip.
     hideDescriptionWhenRunning?: boolean // if the description is redundant when the value is being shown.
     label?: (sim: Simulator) => string, // the current value to display in a textbox
-    value?: (sim: Simulator) => string, // the current value with explanation shown in the tooltip.
+    tooltip?: (sim: Simulator) => string, // the current value with explanation shown in the tooltip.
     active?: (sim: Simulator) => boolean // return true if a wire should be "powered"
     onclick?: (visSim: VisualSim) => void, // call when an element is clicked
 }
@@ -102,7 +102,7 @@ export class VisualSim {
         // Components
         "pc": {
             description: "The program counter stores the address of the current instruction.",
-            value: (sim) => `Current Instruction: ${intToStr(sim.pc.data, "hex")}`,
+            tooltip: (sim) => `Current Instruction: ${intToStr(sim.pc.data, "hex")}`,
         },
         "instrMem": {
             description: "Stores the program.",
@@ -126,7 +126,7 @@ export class VisualSim {
         },
         "alu": {
             description: "Does arithmetic on two values.",
-            value: (sim) => VisualSim.aluSummaries.match(sim.alu.aluControl)(sim.alu.in1, sim.alu.in2),
+            tooltip: (sim) => VisualSim.aluSummaries.match(sim.alu.aluControl)(sim.alu.in1, sim.alu.in2),
         },
         "dataMem": {
             description: "Stores the data the program is working with.",
@@ -153,163 +153,163 @@ export class VisualSim {
 
         // Wires
         "pc-out": {
-            value: (sim) => intToStr(sim.pc.out, "hex"),
+            tooltip: (sim) => intToStr(sim.pc.out, "hex"),
             label: (sim) => intToStr(sim.pc.out, "hex"),
         },
         "instrMem-instruction": {
-            value: (sim) => intToStr(sim.instrMem.instruction, "hex"),
+            tooltip: (sim) => intToStr(sim.instrMem.instruction, "hex"),
             label: (sim) => intToStr(sim.instrMem.instruction, "hex"),
         },
         "instrMem-instruction-opcode": {
             description: "The opcode of the instruction.",
-            value: (sim) => `${intToStr(sim.instrSplit.opCode, "bin")} (${VisualSim.opCodeNames.match(sim.instrSplit.opCode)})`,
+            tooltip: (sim) => `${intToStr(sim.instrSplit.opCode, "bin")} (${VisualSim.opCodeNames.match(sim.instrSplit.opCode)})`,
             label: (sim) => intToStr(sim.instrSplit.opCode, "bin"),
         },
         "instrMem-instruction-rd": {
             description: "The register to write.",
-            value: (sim) => `${intToStr(sim.instrSplit.rd, "unsigned")} (${VisualSim.regNames[Bits.toNumber(sim.instrSplit.rd)]})`,
+            tooltip: (sim) => `${intToStr(sim.instrSplit.rd, "unsigned")} (${VisualSim.regNames[Bits.toNumber(sim.instrSplit.rd)]})`,
             label: (sim) => intToStr(sim.instrSplit.rd, "unsigned"),
         },
         "instrMem-instruction-funct3": {
             description: "More bits to determine the instruction.",
-            value: (sim) => `${intToStr(sim.instrSplit.funct3, "bin")}`, // TODO show what type of instruction?
+            tooltip: (sim) => `${intToStr(sim.instrSplit.funct3, "bin")}`, // TODO show what type of instruction?
             label: (sim) => intToStr(sim.instrSplit.funct3, "bin"),
         },
         "instrMem-instruction-rs1": {
             description: "The first register to read.",
-            value: (sim) => `${intToStr(sim.instrSplit.rs1, "unsigned")} (${VisualSim.regNames[Bits.toNumber(sim.instrSplit.rs1)]})`,
+            tooltip: (sim) => `${intToStr(sim.instrSplit.rs1, "unsigned")} (${VisualSim.regNames[Bits.toNumber(sim.instrSplit.rs1)]})`,
             label: (sim) => intToStr(sim.instrSplit.rs1, "unsigned"),
         },
         "instrMem-instruction-rs2": {
             description: "The second register to read.",
-            value: (sim) => `${intToStr(sim.instrSplit.rs2, "unsigned")} (${VisualSim.regNames[Bits.toNumber(sim.instrSplit.rs2)]})`,
+            tooltip: (sim) => `${intToStr(sim.instrSplit.rs2, "unsigned")} (${VisualSim.regNames[Bits.toNumber(sim.instrSplit.rs2)]})`,
             label: (sim) => intToStr(sim.instrSplit.rs2, "unsigned"),
         },
         "instrMem-instruction-funct7": {
             description: "More bits to determine the instruction.",
-            value: (sim) => `${intToStr(sim.instrSplit.funct7, "bin")}`,
+            tooltip: (sim) => `${intToStr(sim.instrSplit.funct7, "bin")}`,
             label: (sim) => intToStr(sim.instrSplit.funct7, "bin"),
         },
         "control-regWrite": {
             description: "Whether to write the register file.",
             hideDescriptionWhenRunning: true,
-            value: (sim) => `${sim.control.regWrite} (${sim.control.regWrite ? "write register file" : "don't write register file"})`,
+            tooltip: (sim) => `${sim.control.regWrite} (${sim.control.regWrite ? "write register file" : "don't write register file"})`,
             active: (sim) => sim.control.regWrite != 0,
         },
         "control-aluSrc": {
             description: "Whether to use source register 2 or the immediate.",
-            value: (sim) => `${sim.control.aluSrc} (${sim.control.aluSrc ? "use immediate" : "use register"})`,
+            tooltip: (sim) => `${sim.control.aluSrc} (${sim.control.aluSrc ? "use immediate" : "use register"})`,
             active: (sim) => sim.control.aluSrc != 0,
         },
         "control-memWrite": {
             description: "Whether to write memory.",
             hideDescriptionWhenRunning: true,
-            value: (sim) => `${sim.control.memWrite} (${sim.control.memWrite ? "write memory" : "don't write memory"})`,
+            tooltip: (sim) => `${sim.control.memWrite} (${sim.control.memWrite ? "write memory" : "don't write memory"})`,
             active: (sim) => sim.control.memWrite != 0,
         },
         "control-aluOp": {
             description: "What type of instruction this is. ALU Control will determine the exact ALU operation to use.",
-            value: (sim) => `${intToStr(sim.control.aluOp, "bin")} (${VisualSim.aluOpNames.match(sim.control.aluOp)})`,
+            tooltip: (sim) => `${intToStr(sim.control.aluOp, "bin")} (${VisualSim.aluOpNames.match(sim.control.aluOp)})`,
             active: (sim) => Bits.toInt(sim.control.aluOp) != 0n,
             label: (sim) => intToStr(sim.control.aluOp, "bin"),
         },
         "control-writeSrc": {
             description: "What to write to the register file.",
             hideDescriptionWhenRunning: true,
-            value: (sim) => `${intToStr(sim.control.writeSrc, "unsigned")} (write ${VisualSim.writeSrcNames.match(sim.control.writeSrc)} to register)`,
+            tooltip: (sim) => `${intToStr(sim.control.writeSrc, "unsigned")} (write ${VisualSim.writeSrcNames.match(sim.control.writeSrc)} to register)`,
             active: (sim) => Bits.toInt(sim.control.writeSrc) != 0n,
             label: (sim) => intToStr(sim.control.writeSrc, "unsigned"),
         },
         "control-memRead": {
             description: "Whether to read from memory.",
             hideDescriptionWhenRunning: true,
-            value: (sim) => `${sim.control.memRead} (${sim.control.memRead ? "read memory" : "don't read memory"})`,
+            tooltip: (sim) => `${sim.control.memRead} (${sim.control.memRead ? "read memory" : "don't read memory"})`,
             active: (sim) => sim.control.memRead != 0,
         },
         "control-branchZero": {
             description: "Whether to branch when ALU result is zero.",
             hideDescriptionWhenRunning: true,
-            value: (sim) => `${sim.control.branchZero} (${sim.control.branchZero ? "branch on zero" : "don't branch on zero"})`,
+            tooltip: (sim) => `${sim.control.branchZero} (${sim.control.branchZero ? "branch on zero" : "don't branch on zero"})`,
             active: (sim) => sim.control.branchZero != 0,
         },
         "control-branchNotZero": {
             description: "Whether to branch when ALU result is not zero.",
             hideDescriptionWhenRunning: true,
-            value: (sim) => `${sim.control.branchNotZero} (${sim.control.branchNotZero ? "branch on not zero" : "don't branch on not zero"})`,
+            tooltip: (sim) => `${sim.control.branchNotZero} (${sim.control.branchNotZero ? "branch on not zero" : "don't branch on not zero"})`,
             active: (sim) => sim.control.branchNotZero != 0,
         },
         "control-jump": {
             description: "Unconditionally jump.",
             hideDescriptionWhenRunning: true,
-            value: (sim) => `${sim.control.jump} (${sim.control.jump ? "do jump" : "don't jump"})`,
+            tooltip: (sim) => `${sim.control.jump} (${sim.control.jump ? "do jump" : "don't jump"})`,
             active: (sim) => sim.control.jump != 0,
         },
         "control-jalr": {
             description: "Jump to a register + immediate.",
-            value: (sim) => `${sim.control.jalr} (${sim.control.jalr ? "do jump register" : "don't jump register"})`,
+            tooltip: (sim) => `${sim.control.jalr} (${sim.control.jalr ? "do jump register" : "don't jump register"})`,
             active: (sim) => sim.control.jalr != 0,
         },
         "immGen-immediate": {
-            value: (sim) => intToAll(sim.immGen.immediate),
+            tooltip: (sim) => intToAll(sim.immGen.immediate),
             label: (sim) => intToStr(sim.immGen.immediate, "signed"),
         },
         "regFile-readData1": {
-            value: (sim) => intToAll(sim.regFile.readData1),
+            tooltip: (sim) => intToAll(sim.regFile.readData1),
             label: (sim) => intToStr(sim.regFile.readData1, "signed"),
         },
         "regFile-readData2": {
-            value: (sim) => intToAll(sim.regFile.readData2),
+            tooltip: (sim) => intToAll(sim.regFile.readData2),
             label: (sim) => intToStr(sim.regFile.readData2, "signed"),
         },
         "aluControl-aluControl": {
             description: "What operation for the ALU to preform.",
-            value: (sim) => `${intToStr(sim.aluControl.aluControl, "bin")} (${VisualSim.aluControlNames.match(sim.aluControl.aluControl)})`,
+            tooltip: (sim) => `${intToStr(sim.aluControl.aluControl, "bin")} (${VisualSim.aluControlNames.match(sim.aluControl.aluControl)})`,
             label: (sim) => intToStr(sim.aluControl.aluControl, "bin"),
         },
         "aluInputMux-out": {
-            value: (sim) => intToAll(sim.aluInputMux.out),
+            tooltip: (sim) => intToAll(sim.aluInputMux.out),
         },
         "alu-result": {
-            value: (sim) => intToAll(sim.alu.result),
+            tooltip: (sim) => intToAll(sim.alu.result),
             label: (sim) => intToStr(sim.alu.result, "signed"),
         },
         "alu-zero": {
             description: "Whether the ALU result was zero.",
             hideDescriptionWhenRunning: true,
-            value: (sim) => `${sim.alu.zero} (ALU result was ${sim.alu.zero ? "zero" : "not zero"})`,
+            tooltip: (sim) => `${sim.alu.zero} (ALU result was ${sim.alu.zero ? "zero" : "not zero"})`,
             active: (sim) => sim.alu.zero != 0,
         },
         "literalFour": {
-            value: (sim) => "4",
+            tooltip: (sim) => "4",
         },
         "pcAdd4-result": {
-            value: (sim) => intToStr(sim.pcAdd4.result, "hex"),
+            tooltip: (sim) => intToStr(sim.pcAdd4.result, "hex"),
             label: (sim) => intToStr(sim.pcAdd4.result, "hex"),
         },
         "branchAdder-result": {
-            value: (sim) => intToStr(sim.branchAdder.result, "hex"),
+            tooltip: (sim) => intToStr(sim.branchAdder.result, "hex"),
             label: (sim) => intToStr(sim.branchAdder.result, "hex"),
         },
         "jumpControl-takeBranch": {
             description: "Whether to take the branch or not.",
             hideDescriptionWhenRunning: true,
-            value: (sim) => `${sim.jumpControl.takeBranch} (${sim.jumpControl.takeBranch ? "take branch" : "don't take branch"})`,
+            tooltip: (sim) => `${sim.jumpControl.takeBranch} (${sim.jumpControl.takeBranch ? "take branch" : "don't take branch"})`,
             active: (sim) => sim.jumpControl.takeBranch != 0,
         },
         "dataMem-readData": {
-            value: (sim) => intToAll(sim.dataMem.readData),
+            tooltip: (sim) => intToAll(sim.dataMem.readData),
             active: (sim) => Bits.toInt(sim.dataMem.readData) != 0n,
         },
         "pcMux-out": {
-            value: (sim) => intToStr(sim.pcMux.out, "hex"),
+            tooltip: (sim) => intToStr(sim.pcMux.out, "hex"),
             label: (sim) => intToStr(sim.pcMux.out, "hex"),
         },
         "writeSrcMux-out": {
-            value: (sim) => intToAll(sim.writeSrcMux.out),
+            tooltip: (sim) => intToAll(sim.writeSrcMux.out),
             label: (sim) => intToStr(sim.writeSrcMux.out, "hex"),
         },
         "jalrMux-out": {
-            value: (sim) => intToStr(sim.jalrMux.out, "hex"),
+            tooltip: (sim) => intToStr(sim.jalrMux.out, "hex"),
         },
     } 
 
@@ -441,7 +441,7 @@ export class VisualSim {
             if (config.active && !elem.hasClass("wire") && !elem.find(".wire").length)
                 throw Error(`#${id} has active defined, but no ".wire" elements`);
 
-            if (config.description || config.value) {
+            if (config.description || config.tooltip) {
                 tippy(`#datapath #${id}`, {
                     followCursor: true, // or "initial" keep it where you entered
                     allowHTML: true,
@@ -608,9 +608,9 @@ export class VisualSim {
             let elem = $(`#${id}`, "#datapath")
             let config = VisualSim.datpathElements[id];
            
-            if (config.description || config.value) {
+            if (config.description || config.tooltip) {
                 let tooltip = (elem[0] as any)._tippy as Tippy
-                let value = running && config.value ? config.value(this.sim) : undefined
+                let value = running && config.tooltip ? config.tooltip(this.sim) : undefined
                 let description = (!running || !config.hideDescriptionWhenRunning) ? config.description : undefined
                 let content = [description, value].filter(s => s).join("<hr/>")
                 tooltip.setContent(content)
