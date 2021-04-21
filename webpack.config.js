@@ -26,7 +26,18 @@ module.exports = {
             }).data;
           }
         },
-      }
+      },
+      {
+        test: /\.css$/i,
+        use: ['style-loader', 'css-loader'],
+      },
+      {
+        test: /\.(woff|woff2|eot|ttf|otf)$/,
+        loader: 'file-loader', // TODO: file-loader is deprecated. Change to asset modules.
+        options: {
+          outputPath: 'fonts',
+        }
+      },
     ],
   },
   resolve: {

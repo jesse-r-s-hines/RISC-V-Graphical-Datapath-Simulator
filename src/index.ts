@@ -5,6 +5,13 @@ import "bootstrap";
 // import $ from "jquery"; 
 import toastr from "toastr";
 
+import 'bootstrap/dist/css/bootstrap.min.css';
+import "tippy.js/dist/tippy.css";
+import "codemirror/lib/codemirror.css"
+import "@fortawesome/fontawesome-free/css/all.css"
+import "toastr/build/toastr.css"
+import "../css/site.css"
+
 toastr.options = {
    positionClass: "toast-top-left",
    closeButton: true,
