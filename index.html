@@ -80,15 +80,38 @@
                         </div>
                     </div>
                 </div>
-                <div id="controls" class="card"><div class="card-body">
+                <div id="controls" class="card"><div class="card-body d-flex flex-row">
                     <button id="step" class="btn btn-sm mx-1" title="Start Simulation">
                         <i class="fas fa-step-forward text-success"></i>
                     </button>
                     <button id="restart" class="btn btn-sm mx-1" title="Restart Simulation">
                         <i class="fas fa-sync text-danger"></i>
                     </button>
+                    <button id="help" class="btn btn-sm mx-1 ms-auto" title="Help / About" data-bs-toggle="modal" data-bs-target="#help-modal">
+                        <i class="fas fa-question-circle text-info"></i>
+                    </button>
                 </div></div>
             </div>
         </div>
+
+        <div class="modal fade" id="help-modal" tabindex="-1" aria-labelledby="help-modal-label" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="help-modal-label">Help / About</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Welcome to the RISC&#8209;V graphical datapath simulator! This is a 32&#8209;bit, single-cycle implementation of RISC&#8209;V. 
+                        All the integer instructions are supported except the syscall and concurrency related instructions and "auipc".</p>
+                    <p>You can paste in assembled RISC&#8209;V machine code (<a href="https://www.kvakil.me/venus/">Venus</a> is a convenient online
+                        RISC&#8209;V assembler), and set the initial registers and initial data memory, and then step through the demo. You can input
+                        registers and memory as hex, unsigned decimal or signed decimal by using the dropdowns. While the demo is running, you can use
+                        the side pane to view the current memory and registers and labels show the values on each wire. Most components and wires also
+                        have a tooltip which gives more details on their functionality and current value.</p>
+                </div>
+              </div>
+            </div>
+          </div>
     </body>
 </html>
