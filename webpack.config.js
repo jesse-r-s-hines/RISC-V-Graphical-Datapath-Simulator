@@ -2,10 +2,10 @@
 const path = require('path');
 const { optimize } = require('svgo');
 
-module.exports = {
+module.exports = (env) => ({
   entry: './src/index.ts',
   devtool: 'source-map',
-  mode: "development",
+  mode: (env.prod) ? "production" : "development",
   module: {
     rules: [
       {
@@ -48,6 +48,6 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
   },
   optimization: {
-    minimize: false // VSCode debugger has trouble if you minify, even with the source map.
-},
-};
+    minimize: env.prod ? true : false // Debugger has trouble if you minify, even with the source map.
+  },
+});
