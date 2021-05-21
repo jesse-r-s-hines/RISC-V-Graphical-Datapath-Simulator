@@ -12,11 +12,13 @@
   "devDependencies": {
     "@types/bootstrap": "^5.0.12",
     "@types/chai": "^4.2.15",
+    "@types/codemirror": "^0.0.108",
     "@types/jquery": "^3.5.5",
     "@types/mocha": "^8.2.2",
     "@types/moo": "^0.5.4",
     "@types/nearley": "^2.11.1",
     "@types/node": "^14.14.37",
+    "@types/toastr": "^2.1.38",
     "chai": "^4.3.4",
     "css-loader": "^5.2.1",
     "file-loader": "^6.2.0",
@@ -34,8 +36,6 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.3",
-    "@types/codemirror": "^0.0.108",
-    "@types/toastr": "^2.1.38",
     "bootstrap": "^5.0.0-beta3",
     "codemirror": "^5.60.0",
     "jquery": "^3.6.0",
