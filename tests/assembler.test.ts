@@ -128,52 +128,52 @@ describe('Numbers', () => {
     })
 })
 
-// describe('Formatting', () => {
-//     it("Spacing", () => {
-//         let code = `
-//             lui   x1  ,   0   
-//             \taddi\tx1\t,\t x1\t,\t1\t
+describe('Formatting', () => {
+    it("Spacing", () => {
+        let code = `
+            lui   x1  ,   0   
+            \taddi\tx1\t,\t x1\t,\t1\t
 
-//             lw  x2 ,  4 ( x1 ) 
+            lw  x2 ,  4 ( x1 ) 
 
 
-//             sw   x2 ,  8  (  x1  )
+            sw   x2 ,  8  (  x1  )
 
-//             `;
-//         assemble_expect(code, [
-//             0x000000b7n,
-//             0x00108093n,
-//             0x0040a103n,
-//             0x0020a423n,
-//         ]);
-//     })
+            `;
+        assemble_expect(code, [
+            0x000000b7n,
+            0x00108093n,
+            0x0040a103n,
+            0x0020a423n,
+        ]);
+    })
 
-//     describe('Case', () => {
-//         let code = `AND x1, t2, ra`;
-//         assemble_expect(code, [0x0013f0b3n]);
+    // it('Case', () => {
+    //     let code = `AND x1, t2, ra`;
+    //     assemble_expect(code, [0x0013f0b3n]);
     
-//         code = `aNd x1, t2, ra`;
-//         assemble_expect(code, [0x0013f0b3n]);
-//     })
-// })
+    //     code = `aNd x1, t2, ra`;
+    //     assemble_expect(code, [0x0013f0b3n]);
+    // })
+})
 
-// describe('Labels', () => {
-//     it("Labels", () => {
-//         let code = `
-//             label1:
-//             label_2:
-//             jal label1
-//             label3: beq zero, zero, label4
-//             jal label3
-//             label4:
-//         `;
-//         assemble_expect(code, [
-//             0x000000efn,
-//             0x00000463n,
-//             0xffdff0efn,
-//         ]);
-//     });
-// })
+describe('Labels', () => {
+    it("Labels", () => {
+        let code = `
+            label1:
+            label_2:
+            jal label1
+            label3: beq zero, zero, label4
+            jal label3
+            label4:
+        `;
+        assemble_expect(code, [
+            0x000000efn,
+            0x00000463n,
+            0xffdff0efn,
+        ]);
+    });
+})
 
 
 it("Errors", () => {
