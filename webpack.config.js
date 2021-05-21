@@ -40,6 +40,12 @@ module.exports = (env) => ({
           outputPath: 'fonts',
         }
       },
+      {
+        test: /\.ne$/,
+        use: [
+          'nearley-loader',
+        ],
+      },
     ],
   },
   resolve: {
