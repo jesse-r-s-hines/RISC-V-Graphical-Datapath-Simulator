@@ -37,6 +37,7 @@ export function Bits(src: Bit[]|string|bigint, length?: number, signed?: boolean
         if (length != undefined || signed != undefined) throw Error("Invalid arguments to Bits.from")
         return fromArray(src)
     } else if (typeof src == "string") {
+        if (length != undefined || signed != undefined) throw Error("Invalid arguments to Bits.from")
         return fromString(src)
     } else { // bigint
         if (length == undefined) throw Error("Invalid arguments to Bits.from")
