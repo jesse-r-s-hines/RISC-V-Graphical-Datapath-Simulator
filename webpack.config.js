@@ -1,4 +1,5 @@
 // see https://webpack.js.org/guides/typescript/
+// see https://sysgears.github.io/mochapack/docs/installation/webpack-configuration.html
 const path = require('path');
 const { optimize } = require('svgo');
 
@@ -6,6 +7,7 @@ module.exports = (env) => ({
   entry: './src/index.ts',
   devtool: 'source-map',
   mode: (env.prod) ? "production" : "development",
+  target: (env.test) ? "node" : "web",
   module: {
     rules: [
       {
@@ -50,4 +52,5 @@ module.exports = (env) => ({
   optimization: {
     minimize: env.prod ? true : false // Debugger has trouble if you minify, even with the source map.
   },
+  externals: env.test ? [require('webpack-node-externals')()] : undefined, // in order to ignore all modules in node_modules folder
 });
