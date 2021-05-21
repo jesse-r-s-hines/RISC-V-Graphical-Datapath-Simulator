@@ -9,6 +9,7 @@ const lexer = moo.compile({
     number:  /0b[01]+|0x[0-9a-fA-F]+|[+-]?[0-9]+/,
     identifier: /[a-zA-Z_][a-zA-Z_0-9]*/,
     symbol: [",", "(", ")", ":"],
+    error: moo.error, // return an error token instead of throwing, so we can get line number info.
 });
 
 // Modify the next method to remove any token with a null value.
@@ -19,7 +20,7 @@ lexer.next = () => {
     return tok;
 };
 
-const op = ([[o]]) => o.text
+const op = ([[o]]) => o
 %}
 @lexer lexer
 
@@ -27,7 +28,9 @@ program -> line {% id %} | line %newline program {% ([l, _, p]) => [...l, ...p] 
 # split labels out as a separate "line"
 line -> (label ":"):? instr:? %comment:? {% ([l, i, c]) => [l ? {type: "label", label: l[0]} : null, i].filter(s => s) %}
 
-instr -> (int_instr | imm_instr | branch_instr | jump_instr | lui_instr | displacement_instr | store_instr) {% ([[i], n]) => i %}
+instr -> (int_instr | imm_instr | branch_instr | jump_instr | lui_instr | displacement_instr | store_instr)
+         # instr is kept as a token, we convert to string here and extract line number
+         {% ([[i]]) => ({...i, instr: i.instr.text, line: i.instr.line}) %} 
 
 # add x5, x6, x7  # R-type
 int_instr -> int_op reg "," reg "," reg {% ([i, rd, , rs1, , rs2]) => ({instr: i, rd: rd, rs1: rs1, rs2: rs2, type: "R"}) %}
@@ -43,9 +46,9 @@ branch_op -> ("beq" | "bge" | "bgeu" | "blt" | "bltu" | "bne") {% op %}
 
 # "jal x1, label" or "jal label"  # UJ-type 
 jump_instr ->
-    "jal" reg "," label {% ([i, rd, , label]) => ({instr: "jal", rd: rd, label: label, type: "UJ"}) %} |
-    "jal" label {% ([i, label]) => ({instr: "jal", rd: "ra", label: label, type: "UJ"}) %} |
-    "j" label {% ([i, label]) => ({instr: "jal", rd: "x0", label: label, type: "UJ"}) %}
+    "jal" reg "," label {% ([i, rd, , label]) => ({instr: i, rd: rd, label: label, type: "UJ"}) %} |
+    "jal" label {% ([i, label]) => ({instr: i, rd: "ra", label: label, type: "UJ"}) %} |
+    "j" label {% ([i, label]) => ({instr: i, rd: "x0", label: label, type: "UJ"}) %}
 
 # lui x28, 100000  # U-type
 lui_instr -> lui_op reg "," num {% ([i, rd, , imm]) => ({instr: i, rd: rd, imm: imm, type: "U"}) %}

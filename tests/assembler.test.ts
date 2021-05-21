@@ -176,11 +176,18 @@ describe('Numbers', () => {
 // })
 
 
-// it("Errors", () => {
-//     expect( () => assemble("jal notALabel")).to.throw("Unknown label");
-//     expect( () => assemble("addi z0, x1, 2")).to.throw("Unknown register");
-//     expect( () => assemble("addi x1, x1, 0xFFFF")).to.throw("Out of bounds");
-//     expect( () => assemble("addi -- syntax error --")).to.throw("Line TODO");
-//     expect( () => assemble("blah x1, x2, x3")).to.throw("Line TODO");
-// })
+it("Errors", () => {
+    expect( () => assemble("jal notALabel")).to.throw('Unknown label "notALabel"');
+    expect( () => assemble("addi z0, x1, 2")).to.throw('Unknown register "z0"');
+    expect( () => assemble("addi x1, x1, 0xFFFF")).to.throw("Expected a signed integer that fits in 12 bits");
+    expect( () => assemble("addi, x1, x2, x3")).to.throw("line 1 col 5");
+    expect( () => assemble("!!!")).to.throw("line 1 col 1");
+    expect( () => assemble("blah x1, x2, x3")).to.throw();
+    expect( () => assemble("lw x1, ")).to.throw("Unexpected end of program");
+    expect( () => assemble(`
+        add x1, x2, x3
+        
+        add x1, x2, x3,
+    `)).to.throw("line 4 col 23");
+})
 

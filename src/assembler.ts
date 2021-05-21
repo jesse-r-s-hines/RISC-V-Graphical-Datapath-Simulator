@@ -1,4 +1,5 @@
 import { Parser, Grammar } from 'nearley';
+import * as moo from 'moo';
 import {Bit, Bits, b} from "./utils"
 import grammar from './assembler.ne';
 
@@ -18,6 +19,7 @@ let registers: Record<string, number> = {
 let opcodes: Record<string, [Bits, Bits, Bits]> = {
     "lui"  : [b`0110111`, b``   , b``       ],   // U-type
     "jal"  : [b`1101111`, b``   , b``       ],   // UJ-type
+    "j"    : [b`1101111`, b``   , b``       ],   // UJ-type
     "beq"  : [b`1100011`, b`000`, b``       ],   // SB-type
     "bne"  : [b`1100011`, b`001`, b``       ],   // SB-type
     "blt"  : [b`1100011`, b`100`, b``       ],   // SB-type
@@ -54,11 +56,56 @@ let opcodes: Record<string, [Bits, Bits, Bits]> = {
     "and"  : [b`0110011`, b`111`, b`0000000`],   // R-type
 }
 
+/** Assembler error. Shows message and line number with a preview */
+class AssemblerError extends Error {
+    line: number; col?: number;
+
+    constructor(message: string, program: string, line: number, col?: number) {
+        let lines = program.split("\n")
+        if (col != undefined) {
+            message = `${message}\n` +
+                      `at line ${line} col ${col}:\n` +
+                      `  ${lines[line - 1]}\n` +
+                      `  ${'-'.repeat(col - 1)}^`
+        } else {
+            message = `${message}\n` +
+                      `at line ${line}:\n` +
+                      `  ${lines[line - 1]}\n`
+        }
+
+        super(message);
+        // Hack to allow extending error. https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-2.html#support-for-newtarget
+        Object.setPrototypeOf(this, new.target.prototype);
+        this.line = line; this.col = col;
+    }
+}
+
 interface Instr {
     instr: string, type: string
-    rd: Bits, rs1: Bits, rs2: Bits,
+    rd: Bits, rs1: Bits, rs2: Bits, // TODO types
     imm: bigint,
     label: string,
+}
+
+/**
+ * Parses the program using nearley, throws an error if nearley fails.
+ * Doesn't check registers, labels, etc.
+ */
+function parse(program: string): any[] {
+    let parser = new Parser(Grammar.fromCompiled(grammar));
+
+    try {
+        parser.feed(program);
+    } catch(e) {
+        throw new AssemblerError("Syntax error", program, e.token.line, e.token.col)
+    }
+    if (parser.results.length < 1) {
+        let lines = program.split("\n")
+        throw new AssemblerError(`Unexpected end of program`, program, lines.length, lines[lines.length - 1].length)
+    } else if (parser.results.length > 1) {
+        throw Error("Code is ambiguous.") // This shouldn't be possible
+    }
+    return parser.results[0]
 }
 
 /** Assembles a single instruction. */
@@ -85,9 +132,7 @@ function assemble_instr(instr: Instr): Bits {
 }
 
 export function assemble(program: string): bigint[] {
-    let parser = new Parser(Grammar.fromCompiled(grammar));
-    parser.feed(program);
-    let parsed: any[] = parser.results[0]
+    let parsed = parse(program)
 
     // Pass one, read labels
     let labels: Record<string, number> = {}
@@ -102,13 +147,27 @@ export function assemble(program: string): bigint[] {
         }
     }
 
-    for (let [line, instr] of instructions.entries()) {
-        if ("label" in instr) instr.imm = (labels[instr.label] - line) * 4;
+    for (let [instr_num, instr] of instructions.entries()) {
+        if ("label" in instr) {
+            if (!(instr.label in labels))
+                throw new AssemblerError(`Unknown label "${instr.label}"`, program, instr.line)
+            instr.imm = (labels[instr.label] - instr_num) * 4;
+        }
         if ("imm" in instr) instr.imm = BigInt(instr.imm) // TODO modify Bits to take number.
-        for (let field of ["rd", "rs1", "rs2"])
-            if (field in instr) instr[field] = Bits(BigInt(registers[instr[field]]), 5)
+        for (let field of ["rd", "rs1", "rs2"]) {
+            if (field in instr) {
+                if (!(instr[field] in registers))
+                    throw new AssemblerError(`Unknown register "${instr[field]}"`, program, instr.line)
+                instr[field] = Bits(BigInt(registers[instr[field]]), 5)
+            }
+        }
 
-        machine_code.push(Bits.toInt(assemble_instr(instr)))
+        try {
+            var machine_code_instr = assemble_instr(instr)
+        } catch (e) {
+            throw new AssemblerError(e.message, program, instr.line)
+        }
+        machine_code.push(Bits.toInt(machine_code_instr))
     }
 
     return machine_code
