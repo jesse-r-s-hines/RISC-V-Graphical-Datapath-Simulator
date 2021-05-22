@@ -5,7 +5,8 @@ import * as fs from "fs";
 
 
 function assemble_expect(program: string, expected: bigint[]) {
-    let result = assemble(program).map(i => Bits.toString(Bits(i, 32)))
+    // convert to string to make it easier to see what bits are off.
+    let result = assemble(program).map(([line, instr]) => Bits.toString(Bits(instr, 32)))
     expect(result, program).to.eql(expected.map(i => Bits.toString(Bits(i, 32))))
 }
 
@@ -134,7 +135,7 @@ describe('Numbers', () => {
 })
 
 describe('Formatting', () => {
-    it("Spacing", () => {
+    it("Spacing & Line Numbers", () => {
         let code = `
             lui   x1  ,   0   
             \taddi\tx1\t,\t x1\t,\t1\t
@@ -145,12 +146,12 @@ describe('Formatting', () => {
             sw   x2 ,  8  (  x1  )
 
             `;
-        assemble_expect(code, [
-            0x000000b7n,
-            0x00108093n,
-            0x0040a103n,
-            0x0020a423n,
-        ]);
+        expect(assemble(code), code).to.eql([
+            [2, 0x000000b7n],
+            [3, 0x00108093n],
+            [5, 0x0040a103n],
+            [8, 0x0020a423n],
+        ])
     })
 
     it('Case', () => {
@@ -160,6 +161,8 @@ describe('Formatting', () => {
         code = `aNd x1, t2, ra`;
         assemble_expect(code, [0x0013f0b3n]);
     })
+
+
 })
 
 describe('Labels', () => {

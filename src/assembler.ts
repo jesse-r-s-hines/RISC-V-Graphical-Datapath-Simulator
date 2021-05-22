@@ -167,12 +167,16 @@ function parse(program: string): AsmStatement[] {
     return parser.results[0]
 }
 
-export function assemble(program: string): bigint[] {
+/**
+ * Assembles a RISC-V assembly program.
+ * Returns a list of [line_num, machine_code_instruction] tuples, where line_num is the 1 indexed line in the string.
+ */
+export function assemble(program: string): [number, bigint][] {
     let parsed = parse(program)
 
     let labels: Record<string, number> = {}
     let instructions: Instr[] = [];
-    let machine_code: bigint[] = []
+    let machine_code: [number, bigint][] = []
 
     // Pass 1, read labels, convert AST into Instruction types
     for (let instr of parsed) {
@@ -196,7 +200,7 @@ export function assemble(program: string): bigint[] {
         } catch (e) {
             throw new AssemblerError(e.message, program, instr.line)
         }
-        machine_code.push(Bits.toInt(machine_code_instr))
+        machine_code.push([instr.line, Bits.toInt(machine_code_instr)])
     }
 
     return machine_code
