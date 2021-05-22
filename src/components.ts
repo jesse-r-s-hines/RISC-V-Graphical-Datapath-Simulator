@@ -161,7 +161,7 @@ export class ImmGen {
         [["0100011"], (i) => // S-type -> imm[11:5] | rs2 | rs1 | funct3 | imm[4:0]
             [...i.slice(7, 12), ...i.slice(25, 32)] // LSB 0
         ],
-        [["0X10111"], (i) => // U-type -> imm[31:12] | rd | opcode
+        [["0X10111"], (i) => // U-type -> imm[19:0] | rd | opcode
             i.slice(12, 32)
         ],
         [["1101111"], (i) => // UJ-type -> imm[20|10:1|11|19:12] | rd | opcode
