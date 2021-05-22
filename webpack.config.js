@@ -5,7 +5,7 @@ const { optimize } = require('svgo');
 
 module.exports = (env) => ({
   entry: './src/index.ts',
-  devtool: 'source-map',
+  devtool: (env.prod) ? undefined : 'inline-source-map',
   mode: (env.prod) ? "production" : "development",
   target: (env.test) ? "node" : "web",
   module: {
