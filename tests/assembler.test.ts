@@ -24,8 +24,13 @@ describe('Basic All Types', () => {
         let code = `slli x6, x7, 8`;
         assemble_expect(code, [0x00839313n]);
     
-        code = `ori x8, x9, -9 `;
+        code = `ori x8, x9, -9`;
         assemble_expect(code, [0xff74e413n]);
+    })
+
+    it("IS-type", () => {
+        let code = `srai x5, x6, 2`;
+        assemble_expect(code, [0x40235293n]);
     })
 
     it("SB-type", () => {
@@ -196,6 +201,7 @@ it("Errors", () => {
     expect(() => assemble("jal notALabel")).to.throw('Unknown label "notALabel"');
     expect(() => assemble("addi z0, x1, 2")).to.throw('Unknown register "z0"');
     expect(() => assemble("addi x1, x1, 0xFFFF")).to.throw("Expected a signed integer that fits in 12 bits");
+    expect(() => assemble("slli x1, x1, 64")).to.throw("Expected a signed integer that fits in 5 bits");
     expect(() => assemble("addi, x1, x2, x3")).to.throw("line 1 col 5");
     expect(() => assemble("!!!")).to.throw("line 1 col 1");
     expect(() => assemble("blah x1, x2, x3")).to.throw();

@@ -69,9 +69,11 @@ interface AsmInstr {
 }
 
 // Represents each instruction type
-type Instr = RType | IType | SType | SBType | UType | UJype
+type Instr = RType | IType | ISType | SType | SBType | UType | UJype
 interface RType { type: "R", line: number, op: string, rd: string, rs1: string, rs2: number; }
 interface IType { type: "I", line: number, op: string, rd: string, rs1: string, imm: number|string } // string imm is a label
+// Shifts use a specialized I format, with 5 bit imm and funct7. There's no official name, so we'll just call the format "IS"
+interface ISType { type: "IS", line: number, op: string, rd: string, rs1: string, imm: number|string }
 interface SType { type: "S", line: number, op: string, rs1: string, rs2: string, imm: number|string }
 interface SBType { type: "SB", line: number, op: string, rs1: string, rs2: string, imm: number|string }
 interface UType { type: "U", line: number, op: string, rd: string, imm: number|string }
@@ -98,10 +100,15 @@ const instr_rules: Rule[]  = [
         signature: ["id", "id", "id"],
         conv: (op, [rd, rs1, rs2], line) => ({type: "R", op: op, rd: rd, rs1: rs1, rs2: rs2, line: line}),
     }, {
-        instructions: ["addi", "andi", "ori", "xori", "slli", "srai", "srli", "slti", "sltiu"],
+        instructions: ["addi", "andi", "ori", "xori", "slti", "sltiu"],
         format: "basic",
         signature: ["id", "id", "num"],
         conv: (op, [rd, rs1, imm], line) => ({type: "I", op: op, rd: rd, rs1: rs1, imm: imm, line: line}),
+    }, {
+        instructions: ["slli", "srai", "srli"], // shifts are stored as a specialized I-format, 
+        format: "basic",
+        signature: ["id", "id", "num"],
+        conv: (op, [rd, rs1, imm], line) => ({type: "IS", op: op, rd: rd, rs1: rs1, imm: imm, line: line}),
     }, {
         instructions: ["beq", "bge", "bgeu", "blt", "bltu", "bne"],
         format: "basic",
@@ -239,6 +246,8 @@ function assemble_instr(instr_num: number, instr: Instr, labels: Record<string, 
         return [...opcode, ...temp.rd, ...funct3, ...temp.rs1, ...temp.rs2, ...funct7]
     } else if (instr.type == "I") {
         return [...opcode, ...temp.rd, ...funct3, ...temp.rs1, ...Bits(temp.imm, 12, true)]
+    } else if (instr.type == "IS") {
+        return [...opcode, ...temp.rd, ...funct3, ...temp.rs1, ...Bits(temp.imm, 5, true), ...funct7]
     } else if (instr.type == "S") {
         let imm = Bits(temp.imm, 12, true)
         return [...opcode, ...imm.slice(0, 5), ...funct3, ...temp.rs1, ...temp.rs2, ...imm.slice(5, 12)]
