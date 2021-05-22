@@ -6,8 +6,7 @@ import * as fs from "fs";
 
 function test_code(code: string, regs: Record<number, bigint> = {}, expected: Record<number, bigint> = {}) {
     for (let reg in regs) regs[reg] = to_twos_complement(regs[reg])
-    let machine_code = assemble(code).map(([line, instr]) => instr)
-    let sim = new Simulator(machine_code, regs)
+    let sim = new Simulator(assemble(code), regs)
     sim.run()
     for (let reg in expected) {
         expect(sim.regFile.registers[reg], `${code}\n\nregister x${reg}`).to.equal(to_twos_complement(expected[reg]))
@@ -353,7 +352,7 @@ describe("Memory", () => {
 
 describe("Bubble Sort", () => {
     let code = fs.readFileSync('./tests/assembly/bubbleSort.s', 'utf8')
-    let machine_code = assemble(code).map(([line, instr]) => instr)
+    let machine_code = assemble(code)
     let base = 0x1000_8000n // gp
 
     it("Basic", () => {

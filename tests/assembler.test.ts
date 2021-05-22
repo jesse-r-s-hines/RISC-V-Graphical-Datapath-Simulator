@@ -1,12 +1,12 @@
 import { expect } from 'chai';
-import { assemble } from '../src/assembler';
+import { assemble, assemble_keep_line_info } from '../src/assembler';
 import { Bits, b } from '../src/utils';
 import * as fs from "fs";
 
 
 function assemble_expect(program: string, expected: bigint[]) {
     // convert to string to make it easier to see what bits are off.
-    let result = assemble(program).map(([line, instr]) => Bits.toString(Bits(instr, 32)))
+    let result = assemble(program).map((instr) => Bits.toString(Bits(instr, 32)))
     expect(result, program).to.eql(expected.map(i => Bits.toString(Bits(i, 32))))
 }
 
@@ -159,11 +159,11 @@ describe('Formatting', () => {
             sw   x2 ,  8  (  x1  )
 
             `;
-        expect(assemble(code), code).to.eql([
-            [2, 0x000000b7n],
-            [3, 0x00108093n],
-            [5, 0x0040a103n],
-            [8, 0x0020a423n],
+        assemble_expect(code, [
+            0x000000b7n,
+            0x00108093n,
+            0x0040a103n,
+            0x0020a423n,
         ])
     })
 
@@ -174,8 +174,26 @@ describe('Formatting', () => {
         code = `aNd x1, t2, ra`;
         assemble_expect(code, [0x0013f0b3n]);
     })
+})
+
+describe("Line Info", () => {
+    it("Line info", () => {
+        let code = `
+            lui x1, 0
+            addi x1, x1, 1
+
+            lw  x2 ,  4 ( x1 ) 
 
 
+            sw   x2 ,  8  (  x1  )
+            `;
+        expect(assemble_keep_line_info(code), code).to.eql([
+            [2, 0x000000b7n],
+            [3, 0x00108093n],
+            [5, 0x0040a103n],
+            [8, 0x0020a423n],
+        ])
+    })
 })
 
 describe('Labels', () => {

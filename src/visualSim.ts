@@ -1,6 +1,6 @@
 import {Simulator} from "./simulator";
 import {Bits, TruthTable, from_twos_complement, to_twos_complement} from "./utils"
-import {assemble} from "./assembler"
+import {assemble, assemble_keep_line_info} from "./assembler"
 
 import CodeMirror from "codemirror";
 import "codemirror/addon/display/placeholder"
@@ -512,7 +512,7 @@ export class VisualSim {
             return false
         }
         try {
-            var assembled = assemble(code)
+            var assembled = assemble_keep_line_info(code)
         } catch (e) {
             this.error(`Couldn't parse code:\n${e.message}`)
             return false

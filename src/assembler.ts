@@ -188,7 +188,7 @@ function parse(program: string): AsmStatement[] {
  * Assembles a RISC-V assembly program.
  * Returns a list of [line_num, machine_code_instruction] tuples, where line_num is the 1 indexed line in the string.
  */
-export function assemble(program: string): [number, bigint][] {
+export function assemble_keep_line_info(program: string): [number, bigint][] {
     let parsed = parse(program)
 
     let labels: Record<string, number> = {}
@@ -222,6 +222,14 @@ export function assemble(program: string): [number, bigint][] {
 
     return machine_code
 }
+
+/**
+ * Assembles a RISC-V assembly program.
+ * Returns a list of bigints representing the machine code
+ */
+ export function assemble(program: string): bigint[] {
+     return assemble_keep_line_info(program).map(([line, instr]) => instr)
+ }
 
 /** Assembles a single instruction. */
 function assemble_instr(instr_num: number, instr: Instr, labels: Record<string, number>): Bits {
