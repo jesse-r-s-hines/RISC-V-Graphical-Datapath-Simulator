@@ -345,6 +345,26 @@ export class JumpControl {
     }
 }
 
+/**
+ * Just an adder, but word-aligns the output (to 2-byte words).
+ * RISC-V JALR drops the lowest bit of the calculated address.
+ * 
+ */
+export class BranchAdder {
+    // input
+    public in1: Bits = [] // 32 bits
+    public in2: Bits = [] // 32 bits
+    
+    // output
+    public result: Bits = [] // 32 bits
+
+    tick() {
+        let resultInt = Bits.toInt(this.in1, true) + Bits.toInt(this.in2, true)
+        this.result = Bits(resultInt, 33, true).slice(0, 32) // handle overflow. (overflow can occur when non-branch instructions are run)
+        this.result[0] = 0 // Drop lowest bit to word-align to 2-byte instructions
+    }
+}
+
 export class And {
     // input
     public in: Bit[] = []

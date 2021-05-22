@@ -20,7 +20,7 @@ export class Simulator {
     
     public pcAdd4: Comp.ALU
     public jalrMux: Comp.Mux
-    public branchAdder: Comp.ALU
+    public branchAdder: Comp.BranchAdder
     public jumpControl: Comp.JumpControl
 
     public pcMux: Comp.Mux
@@ -41,7 +41,7 @@ export class Simulator {
     
         this.pcAdd4 = new Comp.ALU()
         this.jalrMux = new Comp.Mux(2)
-        this.branchAdder = new Comp.ALU()
+        this.branchAdder = new Comp.BranchAdder()
         this.jumpControl = new Comp.JumpControl()
         
         this.pcMux = new Comp.Mux(2)
@@ -147,10 +147,10 @@ export class Simulator {
         this.jalrMux.select = [this.control.jalr]
         this.jalrMux.tick()
 
-        this.branchAdder.aluControl = b`0010` // add
         this.branchAdder.in1 = this.jalrMux.out
         this.branchAdder.in2 = this.immGen.immediate
         this.branchAdder.tick()
+        this.branchAdder.result[0] = 0; // Word align the PC
 
         this.jumpControl.branchZero = this.control.branchZero
         this.jumpControl.branchNotZero = this.control.branchNotZero
