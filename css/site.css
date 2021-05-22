@@ -11,6 +11,10 @@
     opacity: 90%;
 }
 
+#toast-container > .toast {
+    width: 350px; /* Make toast a little wider (default is 300px) */
+}
+
 .tippy-box {
     text-align: center;
     opacity: 95%;

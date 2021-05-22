@@ -442,6 +442,11 @@ export class VisualSim {
 
         this.update()
     }
+
+    /** Display an error message to the user. Newlines will be converted to <br/> */
+    private error(message: string) {
+        toastr.error(message.replace(/\n/g, "<br/>"))
+    }
     
     private dataMemRadix(): Radix { return $("#dataMem-radix").val() as Radix; }
     /** Word size set for memory, as bits. */
@@ -503,13 +508,13 @@ export class VisualSim {
         // Get memory, instructions, registers
         let code = this.instrMemEditor.getValue()
         if (code == "") {
-            toastr.error("Please enter some code to run.")
+            this.error("Please enter some code to run.")
             return false
         }
         try {
             var assembled = assemble(code)
         } catch (e) {
-            toastr.error(`Couldn't parse code:\n${e.message}`)
+            this.error(`Couldn't parse code:\n${e.message}`)
             return false
         }
         let lines = code.split("\n")
@@ -523,7 +528,7 @@ export class VisualSim {
             // split("") equals [""] for some reason
             var mem = memStr.split("\n").filter(s => s).map(s => parseInt(s, memRadix, memWordSize));
         } catch (e) {
-            toastr.error(`Couldn't parse data memory: ${e.message}`)
+            this.error(`Couldn't parse data memory:\n${e.message}`)
             return false
         }
 
@@ -535,7 +540,7 @@ export class VisualSim {
                 if (s) regs[i] = parseInt(s, regRadix, 32)
             }
         } catch (e) {
-            toastr.error(`Couldn't parse registers: ${e.message}`)
+            this.error(`Couldn't parse registers:\n${e.message}`)
             return false
         }
 
@@ -705,9 +710,9 @@ export class VisualSim {
             try {
                 let canContinue = this.sim.tick()
                 if (!canContinue) this.state = "done"
-            } catch (e) {
+            } catch (e) { // this shouldn't happen.
                 this.state = "done"
-                toastr.error(`Error in simulation: ${e.message}`)
+                this.error(`Error in simulation:\n${e.message}`)
                 console.error(e)
             }
         }
