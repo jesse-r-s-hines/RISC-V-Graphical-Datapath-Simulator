@@ -3,7 +3,7 @@ import * as moo from 'moo';
 import {Bit, Bits, b} from "./utils"
 import grammar from './assembler.ne';
 
-let registers: Record<string, number> = {
+const registers: Record<string, number> = {
     "zero":  0, "ra":  1, "sp" :  2, "gp" :  3, "tp":  4, "t0":  5, "t1":  6, "t2":  7,
     "s0"  :  8, "s1":  9, "a0" : 10, "a1" : 11, "a2": 12, "a3": 13, "a4": 14, "a5": 15,
     "a6"  : 16, "a7": 17, "s2" : 18, "s3" : 19, "s4": 20, "s5": 21, "s6": 22, "s7": 23,
@@ -16,10 +16,9 @@ let registers: Record<string, number> = {
 };
 
                  // name  [opcode, funct3, funct7]
-let opcodes: Record<string, [Bits, Bits, Bits]> = {
+const opcodes: Record<string, [Bits, Bits, Bits]> = {
     "lui"  : [b`0110111`, b``   , b``       ],   // U-type
     "jal"  : [b`1101111`, b``   , b``       ],   // UJ-type
-    "j"    : [b`1101111`, b``   , b``       ],   // UJ-type
     "beq"  : [b`1100011`, b`000`, b``       ],   // SB-type
     "bne"  : [b`1100011`, b`001`, b``       ],   // SB-type
     "blt"  : [b`1100011`, b`100`, b``       ],   // SB-type
@@ -56,42 +55,102 @@ let opcodes: Record<string, [Bits, Bits, Bits]> = {
     "and"  : [b`0110011`, b`111`, b`0000000`],   // R-type
 }
 
-/** Assembler error. Shows message and line number with a preview */
-class AssemblerError extends Error {
-    line: number; col?: number;
 
-    constructor(message: string, program: string, line: number, col?: number) {
-        let lines = program.split("\n")
-        if (col != undefined) {
-            message = `${message}\n` +
-                      `at line ${line} col ${col}:\n` +
-                      `  ${lines[line - 1]}\n` +
-                      `  ${'-'.repeat(col - 1)}^`
-        } else {
-            message = `${message}\n` +
-                      `at line ${line}:\n` +
-                      `  ${lines[line - 1]}\n`
-        }
+// AST types that are returned from the parser.
+interface Arg { type: string, value: any }
+type AsmStatement = AsmLabel | AsmInstr
+interface AsmLabel {
+    type: "label"; label: string
+}
+interface AsmInstr {
+    type: "basic"|"displacement"
+    line: number,
+    op: string; args: Arg[]
+}
 
-        super(message);
-        // Hack to allow extending error. https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-2.html#support-for-newtarget
-        Object.setPrototypeOf(this, new.target.prototype);
-        this.line = line; this.col = col;
+// Represents each instruction type
+type Instr = RType | IType | SType | SBType | UType | UJype
+interface RType { type: "R", line: number, op: string, rd: string, rs1: string, rs2: number; }
+interface IType { type: "I", line: number, op: string, rd: string, rs1: string, imm: number|string } // string imm is a label
+interface SType { type: "S", line: number, op: string, rs1: string, rs2: string, imm: number|string }
+interface SBType { type: "SB", line: number, op: string, rs1: string, rs2: string, imm: number|string }
+interface UType { type: "U", line: number, op: string, rd: string, imm: number|string }
+interface UJype { type: "UJ", line: number, op: string, rd: string, imm: number|string }
+
+/** Contains rules for the args and types of instructions and how to convert them. */
+interface Rule {
+    instructions: string[]
+    format: "basic"|"displacement"
+    signature: string[],
+    conv: (op: string, args: any[], line: number) => Instr
+}
+
+function ruleMatch(rule: Rule, instr: AsmInstr) {
+    return (rule.instructions.includes(instr.op.toLowerCase())) &&
+           (instr.type == rule.format) && (instr.args.length == rule.signature.length) &&
+           instr.args.every((arg, i) => arg.type == rule.signature[i])
+}
+
+const instr_rules: Rule[]  = [
+    {
+        instructions: ["add", "sub", "and", "or", "xor", "sll", "sra", "srl", "slt", "sltu"],
+        format: "basic",
+        signature: ["id", "id", "id"],
+        conv: (op, [rd, rs1, rs2], line) => ({type: "R", op: op, rd: rd, rs1: rs1, rs2: rs2, line: line}),
+    }, {
+        instructions: ["addi", "andi", "ori", "xori", "slli", "srai", "srli", "slti", "sltiu"],
+        format: "basic",
+        signature: ["id", "id", "num"],
+        conv: (op, [rd, rs1, imm], line) => ({type: "I", op: op, rd: rd, rs1: rs1, imm: imm, line: line}),
+    }, {
+        instructions: ["beq", "bge", "bgeu", "blt", "bltu", "bne"],
+        format: "basic",
+        signature: ["id", "id", "id"],
+        conv: (op, [rs1, rs2, label], line) => ({type: "SB", op: op, rs1: rs1, rs2: rs2, imm: label, line: line}),
+    }, {
+        instructions: ["jal"],
+        format: "basic",
+        signature: ["id", "id"],
+        conv: (op, [rd, label], line) => ({type: "UJ", op: op, rd: rd, imm: label, line: line}),
+    }, {
+        instructions: ["jal"],
+        format: "basic",
+        signature: ["id", "id"],
+        conv: (op, [rd, label], line) => ({type: "UJ", op: op, rd: rd, imm: label, line: line}),
+    }, {
+        instructions: ["jal"],
+        format: "basic",
+        signature: ["id"],
+        conv: (op, [label], line) => ({type: "UJ", op: op, rd: "ra", imm: label, line: line}),
+    }, {
+        instructions: ["j"],
+        format: "basic",
+        signature: ["id"],
+        conv: (op, [label], line) => ({type: "UJ", op: "jal", rd: "zero", imm: label, line: line}),
+    }, {
+        instructions: ["lui"],
+        format: "basic",
+        signature: ["id", "num"],
+        conv: (op, [rd, imm], line) => ({type: "U", op: op, rd: rd, imm: imm, line: line}),
+    }, {
+        instructions: ["lb", "lbu", "lh", "lhu", "lw", "jalr"],
+        format: "displacement",
+        signature: ["id", "num", "id"],
+        conv: (op, [rd, imm, rs1], line) => ({type: "I", op: op, rd: rd, rs1: rs1, imm: imm, line: line}),
+    }, {
+        instructions: ["sb","sh", "sw"],
+        format: "displacement",
+        signature: ["id", "num", "id"],
+        conv: (op, [rs2, imm, rs1], line) => ({type: "S", op: op, rs1: rs1, rs2: rs2, imm: imm, line: line}),
     }
-}
+]
 
-interface Instr {
-    instr: string, type: string
-    rd: Bits, rs1: Bits, rs2: Bits, // TODO types
-    imm: bigint,
-    label: string,
-}
 
 /**
  * Parses the program using nearley, throws an error if nearley fails.
  * Doesn't check registers, labels, etc.
  */
-function parse(program: string): any[] {
+function parse(program: string): AsmStatement[] {
     let parser = new Parser(Grammar.fromCompiled(grammar));
 
     try {
@@ -108,62 +167,32 @@ function parse(program: string): any[] {
     return parser.results[0]
 }
 
-/** Assembles a single instruction. */
-function assemble_instr(instr: Instr): Bits {
-    let [opcode, funct3, funct7] = opcodes[instr.instr.toLowerCase()]
-    if (instr.type == "R") {
-        return [...opcode, ...instr.rd, ...funct3, ...instr.rs1, ...instr.rs2, ...funct7]
-    } else if (instr.type == "I") {
-        return [...opcode, ...instr.rd, ...funct3, ...instr.rs1, ...Bits(instr.imm, 12, true)]
-    } else if (instr.type == "S") {
-        let imm = Bits(instr.imm, 12, true)
-        return [...opcode, ...imm.slice(0, 5), ...funct3, ...instr.rs1, ...instr.rs2, ...imm.slice(5, 12)]
-    } else if (instr.type == "SB") {
-        let imm = Bits(instr.imm, 13, true)
-        return [...opcode, imm[11], ...imm.slice(1, 5), ...funct3, ...instr.rs1, ...instr.rs2, ...imm.slice(5, 11), imm[12]]
-    } else if (instr.type == "U") {
-        return [...opcode, ...instr.rd, ...Bits(instr.imm, 20, true)]
-    } else if (instr.type == "UJ") {
-        let imm = Bits(instr.imm, 21, true)
-        return [...opcode, ...instr.rd, ...imm.slice(12, 20), imm[11], ...imm.slice(1, 11), imm[20]]
-    } else {
-        throw Error("Unknown instruction type")
-    }
-}
-
 export function assemble(program: string): bigint[] {
     let parsed = parse(program)
 
-    // Pass one, read labels
     let labels: Record<string, number> = {}
-    let instructions: any[] = []; // TODO types
+    let instructions: Instr[] = [];
     let machine_code: bigint[] = []
 
+    // Pass 1, read labels, convert AST into Instruction types
     for (let instr of parsed) {
         if (instr.type == "label") {
             labels[instr.label] = instructions.length // Point to next instruction
         } else {
-            instructions.push(instr)
+            let matchingRule = instr_rules.find(r => ruleMatch(r, instr as AsmInstr))
+            if (matchingRule) {
+                let newInstr = matchingRule.conv(instr.op.toLowerCase(), instr.args.map((a) => a.value), instr.line)
+                instructions.push(newInstr)
+            } else {
+                throw new AssemblerError("Unknown instruction or incorrect args", program, instr.line)
+            }
         }
     }
 
+    // Pass 2, actually assemble the assembly
     for (let [instr_num, instr] of instructions.entries()) {
-        if ("label" in instr) {
-            if (!(instr.label in labels))
-                throw new AssemblerError(`Unknown label "${instr.label}"`, program, instr.line)
-            instr.imm = (labels[instr.label] - instr_num) * 4;
-        }
-        if ("imm" in instr) instr.imm = BigInt(instr.imm) // TODO modify Bits to take number.
-        for (let field of ["rd", "rs1", "rs2"]) {
-            if (field in instr) {
-                if (!(instr[field] in registers))
-                    throw new AssemblerError(`Unknown register "${instr[field]}"`, program, instr.line)
-                instr[field] = Bits(BigInt(registers[instr[field]]), 5)
-            }
-        }
-
         try {
-            var machine_code_instr = assemble_instr(instr)
+            var machine_code_instr = assemble_instr(instr_num, instr, labels)
         } catch (e) {
             throw new AssemblerError(e.message, program, instr.line)
         }
@@ -171,4 +200,70 @@ export function assemble(program: string): bigint[] {
     }
 
     return machine_code
+}
+
+/** Assembles a single instruction. */
+function assemble_instr(instr_num: number, instr: Instr, labels: Record<string, number>): Bits {
+    let temp: any = {...instr} // Copy instr into an any so we can store Bits and BigInts in it.
+    if ("imm" in instr) {
+        if (typeof instr.imm == "string") {
+            if (!(instr.imm in labels)) throw Error(`Unknown label "${temp.imm}"`)
+            temp.imm = (labels[instr.imm] - instr_num) * 4;
+        }
+        temp.imm = BigInt(temp.imm) // TODO modify Bits to take number.
+    }
+    for (let field of ["rd", "rs1", "rs2"]) {
+        if (field in temp) {
+            if (!(temp[field] in registers))
+                throw Error(`Unknown register "${temp[field]}"`)
+            temp[field] = Bits(BigInt(registers[temp[field]]), 5)
+        }
+    }
+
+    let [opcode, funct3, funct7] = opcodes[instr.op]
+    if (instr.type == "R") {
+        return [...opcode, ...temp.rd, ...funct3, ...temp.rs1, ...temp.rs2, ...funct7]
+    } else if (instr.type == "I") {
+        return [...opcode, ...temp.rd, ...funct3, ...temp.rs1, ...Bits(temp.imm, 12, true)]
+    } else if (instr.type == "S") {
+        let imm = Bits(temp.imm, 12, true)
+        return [...opcode, ...imm.slice(0, 5), ...funct3, ...temp.rs1, ...temp.rs2, ...imm.slice(5, 12)]
+    } else if (instr.type == "SB") {
+        let imm = Bits(temp.imm, 13, true)
+        return [...opcode, imm[11], ...imm.slice(1, 5), ...funct3, ...temp.rs1, ...temp.rs2, ...imm.slice(5, 11), imm[12]]
+    } else if (instr.type == "U") {
+        return [...opcode, ...temp.rd, ...Bits(temp.imm, 20, true)]
+    } else if (instr.type == "UJ") {
+        let imm = Bits(temp.imm, 21, true)
+        return [...opcode, ...temp.rd, ...imm.slice(12, 20), imm[11], ...imm.slice(1, 11), imm[20]]
+    } else {
+        throw Error("Unknown instruction type")
+    }
+}
+
+
+/** Assembler error. Shows message and line number with a preview */
+class AssemblerError extends Error {
+    line: number; col?: number;
+
+    constructor(message: string, program: string, line: number, col?: number) {
+        let lines = program.split("\n")
+        let preview = lines[line - 1].trimLeft()
+        let whitespace = lines[line - 1].length - preview.length
+        if (col != undefined) {
+            message = `${message}\n` +
+                      `at line ${line} col ${col}:\n` +
+                      `  ${preview}\n` +
+                      `  ${'-'.repeat(col - 1 - whitespace)}^`
+        } else {
+            message = `${message}\n` +
+                      `at line ${line}:\n` +
+                      `  ${preview}\n`
+        }
+
+        super(message);
+        // Hack to allow extending error. https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-2.html#support-for-newtarget
+        Object.setPrototypeOf(this, new.target.prototype);
+        this.line = line; this.col = col;
+    }
 }
