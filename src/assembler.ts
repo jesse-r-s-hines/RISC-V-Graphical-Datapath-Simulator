@@ -113,16 +113,6 @@ const instr_rules: Rule[]  = [
         signature: ["id", "id"],
         conv: (op, [rd, label], line) => ({type: "UJ", op: op, rd: rd, imm: label, line: line}),
     }, {
-        instructions: ["jal"],
-        format: "basic",
-        signature: ["id", "id"],
-        conv: (op, [rd, label], line) => ({type: "UJ", op: op, rd: rd, imm: label, line: line}),
-    }, {
-        instructions: ["jal"],
-        format: "basic",
-        signature: ["id"],
-        conv: (op, [label], line) => ({type: "UJ", op: op, rd: "ra", imm: label, line: line}),
-    }, {
         instructions: ["j"],
         format: "basic",
         signature: ["id"],
@@ -142,7 +132,27 @@ const instr_rules: Rule[]  = [
         format: "displacement",
         signature: ["id", "num", "id"],
         conv: (op, [rs2, imm, rs1], line) => ({type: "S", op: op, rs1: rs1, rs2: rs2, imm: imm, line: line}),
-    }
+    }, {
+        instructions: ["jal"],
+        format: "basic",
+        signature: ["id", "id"],
+        conv: (op, [rd, label], line) => ({type: "UJ", op: op, rd: rd, imm: label, line: line}),
+    }, {
+        instructions: ["jal"],
+        format: "basic",
+        signature: ["id"],
+        conv: (op, [label], line) => ({type: "UJ", op: op, rd: "ra", imm: label, line: line}),
+    }, {
+        instructions: ["mv"],
+        format: "basic",
+        signature: ["id", "id"],
+        conv: (op, [rd, rs1], line) => ({type: "I", op: "addi", rd: rd, rs1: rs1, imm: 0, line: line}),
+    }, {
+        instructions: ["li"], // Does not support greater than 12-bit immediates. You have to `lui` and `li` yourself
+        format: "basic",
+        signature: ["id", "num"],
+        conv: (op, [rd, imm], line) => ({type: "I", op: "addi", rd: rd, rs1: "zero", imm: imm, line: line}),
+    },
 ]
 
 

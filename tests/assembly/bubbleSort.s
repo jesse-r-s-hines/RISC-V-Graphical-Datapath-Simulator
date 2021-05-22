@@ -39,12 +39,12 @@ sort:
     bge s3, s6, exit1 # go to exit1 if i >= n
         addi s4, s3, -1 # j = i - 1
         for2tst:
-        blt s4, x0, exit2 # go to exit2 if j < 0
+        bge x0, s4, exit2 # go to exit2 if j < 0
             slli t0, s4, 2 # t0 = j * 4
             add t0, s5, t0 # t0 = v + (j * 4)
             lw t1, 0(t0) # t1 = v[j]
             lw t2, 4(t0) # t2 = v[j + 1]
-            ble t1, t2, exit2 # go to exit2 if t1 < t2
+            bge t2, t1, exit2 # go to exit2 if t1 < t2
 
             mv a0, s5 # first swap parameter is v
             mv a1, s4 # second swap parameter is j

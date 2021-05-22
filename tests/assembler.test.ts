@@ -76,6 +76,14 @@ describe('Basic All Types', () => {
         let code = `sh x1, 3(x2)`;
         assemble_expect(code, [0x001111a3n]);
     })
+
+    it("Pseudo Instructions", () => {
+        let code = `mv s0, s5`
+        assemble_expect(code, [0x000a8413n]);
+
+        code = `li a0, 200`
+        assemble_expect(code, [0x0c800513n]);
+    })
 })
 
 describe("Registers", () => {
