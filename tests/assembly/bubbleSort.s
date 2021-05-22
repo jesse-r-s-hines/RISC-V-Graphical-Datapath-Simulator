@@ -1,9 +1,3 @@
-.globl main
-
-.data
-array: .word 4, 3, 2, 1, 0, -1, -2, -3, -4
-
-.text
 main:
     # la a0, array
     # li a1, 100
@@ -39,7 +33,7 @@ sort:
     bge s3, s6, exit1 # go to exit1 if i >= n
         addi s4, s3, -1 # j = i - 1
         for2tst:
-        bge x0, s4, exit2 # go to exit2 if j < 0
+        blt s4, x0, exit2 # go to exit2 if j < 0
             slli t0, s4, 2 # t0 = j * 4
             add t0, s5, t0 # t0 = v + (j * 4)
             lw t1, 0(t0) # t1 = v[j]
