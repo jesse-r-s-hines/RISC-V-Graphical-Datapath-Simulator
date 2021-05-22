@@ -6,7 +6,7 @@ const lexer = moo.compile({
     WS:      {match: /[ \t]+/, value: x => undefined},
     newline: {match: '\n', lineBreaks: true},
     comment: {match: /#.*?$/, value: x => undefined},
-    number:  /0b[01]+|0x[0-9a-fA-F]+|[+-]?[0-9]+/,
+    number:  /0[bB][01]+|0[xX][0-9a-fA-F]+|[+-]?[0-9]+/,
     identifier: /[a-zA-Z_][a-zA-Z_0-9]*/,
     symbol: [",", "(", ")", ":"],
     error: moo.error, // return an error token instead of throwing, so we can get line number info.

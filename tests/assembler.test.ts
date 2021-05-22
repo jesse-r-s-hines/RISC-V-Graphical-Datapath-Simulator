@@ -120,10 +120,15 @@ describe('Numbers', () => {
     it("Hex", () => {
         let code = `sw x1, 0xA2(zero)`;
         assemble_expect(code, [0x0a102123n]);
+
+        code = `sw x1, 0Xa2(zero)`;
+        assemble_expect(code, [0x0a102123n]);
     })
 
     it("Binary", () => {
         let code = `lui x1, 0b10`;
+        assemble_expect(code, [0x000020b7n]);
+        code = `lui x1, 0B10`;
         assemble_expect(code, [0x000020b7n]);
     })
 })
