@@ -1,5 +1,7 @@
 import {Simulator} from "./simulator";
 import {Bits, TruthTable, from_twos_complement, to_twos_complement} from "./utils"
+import {assemble} from "./assembler"
+
 import CodeMirror from "codemirror";
 import "codemirror/addon/display/placeholder"
 import datapath from "../datapath.svg" // import the string of the optimized svg
@@ -420,7 +422,6 @@ export class VisualSim {
         // Set up the Instruction Memory Tab
         this.instrMemEditor = CodeMirror.fromTextArea($(this.instrMemPanel).find<HTMLTextAreaElement>(".editor textarea")[0], {
             lineNumbers: true,
-            lineNumberFormatter: (l) => hexLine(l, 4, Simulator.text_start),
         });
 
         // Set up the Data Memory Tab
@@ -500,17 +501,20 @@ export class VisualSim {
      */
     private start() {
         // Get memory, instructions, registers
-        let codeStr = this.instrMemEditor.getValue().trim()
-        if (codeStr == "") {
+        let code = this.instrMemEditor.getValue()
+        if (code == "") {
             toastr.error("Please enter some code to run.")
             return false
         }
         try {
-            var code = codeStr.split("\n").map(s => parseInt(s, "hex", 32))
+            var assembled = assemble(code)
         } catch (e) {
-            toastr.error(`Couldn't parse code: ${e.message}`)
+            toastr.error(`Couldn't parse code:\n${e.message}`)
             return false
         }
+        let lines = code.split("\n")
+        let asm_code = assembled.map(([line, instr]) => lines[line - 1].trim())
+        let machine_code = assembled.map(([line, instr]) => instr)
 
         let memRadix = this.dataMemRadix()
         let memWordSize = this.dataMemWordSize()
@@ -536,21 +540,19 @@ export class VisualSim {
         }
 
         // We've got all the data so we can start the simulator
-        this.sim.setCode(code)
+        this.sim.setCode(machine_code)
         this.sim.setRegisters(regs)
         this.sim.dataMem.data.storeArray(0n, memWordSize / 8, mem)
 
         // setup Instruction Memory view
         let instrMemTable = $(this.instrMemPanel).find(".view tbody")
         instrMemTable.empty()
-        for (let [addr, val] of this.sim.instrMem.data.dump(4)) {
-            if (typeof addr == "bigint") {
-                instrMemTable.append(`
-                    <tr> <td>${intToStr(addr, "hex")}</td> <td>${intToStr(val, "hex")}</td> </tr>
-                `)
-            } else {
-                break // End of instruction memory
-            }
+        for (let [i, instr] of machine_code.entries()) {
+            let line = asm_code[i];
+            let addr = Simulator.text_start + BigInt(i * 4)
+            instrMemTable.append(`
+                <tr> <td>${intToStr(addr, "hex")}</td> <td>${intToStr(instr, "hex")}</td> <td>${line}</td> </tr>
+            `)
         }
 
         // Data Memory view is recreated every tick.
