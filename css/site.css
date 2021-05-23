@@ -13,6 +13,10 @@
 #editors > .tab-pane:nth-child(2)  { transform: translate(0, -100%); } 
 #editors > .tab-pane:nth-child(3)  { transform: translate(0, -200%); }
 
+p {
+    text-indent: 2em;
+}
+
 .CodeMirror {
     height: 100%;
     width: 100%;
