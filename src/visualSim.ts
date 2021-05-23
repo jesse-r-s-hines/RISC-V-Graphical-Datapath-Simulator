@@ -126,6 +126,8 @@ export class VisualSim {
 
     private sim: Simulator
     private state: State = "unstarted"
+    private playing: number = 0; // Timer handle to the play loop, or 0 if not playing.
+    private readonly playSpeed = 500; // ms between steps when playing
 
     /** All the elements in the datapath and how to render them, tooltips, etc. */
     private static readonly datpathElements: Record<string, DataPathElem> = {
@@ -466,6 +468,8 @@ export class VisualSim {
 
         $("#dataMem-radix, #dataMem-word-size, #regFile-radix").on("change", (event) => this.updateEditorsAndViews())
 
+        $("#play").on("click", (event) => this.play())
+        $("#pause").on("click", (event) => this.pause())
         $("#step").on("click", (event) => this.step())
         $("#restart").on("click", (event) => this.restart())
     }
@@ -503,7 +507,7 @@ export class VisualSim {
     }
 
     /**
-     * Load code/memory/registers and start the simulation.
+     * Load code/memory/registers and start the simulation, updates state
      * Returns true if started successfully, false otherwise.
      */
     private start() {
@@ -578,14 +582,21 @@ export class VisualSim {
         $(this.editors).find(".editor").hide()
         $(this.editors).find(".view").show()
 
+        this.state = "running"
         return true
     }
 
     /** Updates the controls to match simulator state. */
     private updateControls() {
-        $("#step").prop("disabled", this.state == "done")
-        $("#step").prop("title", `${this.state == "unstarted" ? "Start" : "Step"} Simulation`)
-        $("#restart").prop("disabled", this.state == "unstarted")
+        $("#play").prop("disabled", this.state == "done")
+        $("#play").toggle(!this.playing)
+        
+        $("#pause").toggle(!!this.playing) // convert to bool
+        
+        $("#step").toggle(!this.playing)
+        $("#step").prop("disabled", this.playing || this.state == "done")
+        
+        $("#restart").toggle(this.state != "unstarted")
     }
 
     /** Update the editor and view panels to match the simulation */
@@ -704,11 +715,27 @@ export class VisualSim {
         this.updateDatapath()
     }
 
-    private step() {
-        if (this.state == "unstarted" && this.start()) { // try to start
-            this.state = "running" // we will still will do the first tick.
+    private play() {
+        if (this.step()) {
+            this.playing = window.setInterval( () => {
+                if (!this.step()) this.pause() // keep stepping unless the simulation didn't start or is finished.
+            }, this.playSpeed)
+            this.updateControls() // update control panel immediately so that pause shows. (setInterval does call immediately)
         }
-        if (this.state == "running") {
+    }
+
+    private pause() {
+        clearInterval(this.playing)
+        this.playing = 0;
+        this.updateControls()
+    }
+
+    /** Steps simulation. Returns true if we can continue stepping, or false if the simulation failed to start or is done. */
+    private step() {
+        if (this.state == "unstarted")
+            this.start() // try to start, updates state to running if success
+
+        if (this.state == "running") { // don't do anything if we are "done" or if start failed
             try {
                 let canContinue = this.sim.tick()
                 if (!canContinue) this.state = "done"
@@ -719,11 +746,13 @@ export class VisualSim {
             }
         }
         this.update()
+        return this.state == "running"
     }
 
     private restart() {
         this.sim = new Simulator() // reset the simulator
         this.state = "unstarted"
+        if (this.playing) this.pause(); // clear interval
 
         // Switch back to editors
         $(this.editors).find(".view").hide()
