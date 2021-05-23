@@ -1,10 +1,32 @@
+/** ==== Editors and Positioning ==== */
+
+#editors > .tab-pane {
+    height: 100%;
+}
+
+/** Can't `display: flex` on the table panel as it is `display: none` by bootstrap. */
+#editors > .tab-pane > div {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+#editors .editor, #editors .view {
+    height: 100%;
+    overflow: auto;
+}
+
+.radix-select {
+    margin: 0.25rem;
+}
+
 /* Hack to make the tabs keep the width of the widest tab, so that the view doesn't shift every time you change tabs.
    see https://stackoverflow.com/questions/42394208/tab-box-sized-by-biggest-panel-content-in-pure-css (though I've changed
    it quite a bit from the SO post to make it work for width instead of height) */
 #editors > .tab-pane {
-    display: block; /* Change the panel from "display: hidden" to "visibility: hidden" so it takes up space */
+    /* Change the panel from "display: hidden" to "visibility: hidden" so it takes up space */
+    display: block;
     visibility: hidden;
-    height: 100%;
 }
 #editors > .tab-pane.active {
     visibility: visible;
@@ -13,42 +35,14 @@
 #editors > .tab-pane:nth-child(2)  { transform: translate(0, -100%); } 
 #editors > .tab-pane:nth-child(3)  { transform: translate(0, -200%); }
 
-p {
-    text-indent: 2em;
-}
 
-.CodeMirror {
-    height: 100%;
-    width: 100%;
-}
 
-.CodeMirror pre.CodeMirror-placeholder {
-    color: #999;
-}
-
-#toast-container > div {
-    opacity: 90%;
-}
-
-#toast-container > .toast {
-    width: 350px; /* Make toast a little wider (default is 300px) */
-}
-
-.tippy-box {
-    text-align: center;
-    opacity: 95%;
-}
-
-.tippy-box hr {
-    margin: 5px 0px;
-}
-
-.fas {
-    font-size: 150%
-}
+/* ==== Controls Styling ==== */
 
 #controls button {
     transition: transform 50ms;
+    margin-right: 2px;
+    margin-left: 2px;
 }
 
 #controls button:hover {
@@ -63,6 +57,23 @@ p {
     box-shadow: none; /* After click it was showing outline until you clicked somewhere else. */
 }
 
+
+
+
+/** Misc **/
+
+p {
+    text-indent: 2em;
+}
+
+.fas {
+    font-size: 150%
+}
+
+
+
+/** ==== Table Styling === */
+
 /* table.table-fit {
     width: auto !important;
     table-layout: auto !important;
@@ -76,7 +87,7 @@ table.table-fit tbody td, table.table-fit tfoot td {
 
 .address-table {
     font-family: monospace;
-    font-size: 125%;
+    font-size: 110%;
     padding: 0;
     margin: 0;
 }
@@ -88,7 +99,6 @@ table.table-fit tbody td, table.table-fit tfoot td {
 
 /** But an input in a table cell. */
 .address-table input {
-    padding: 0px;
     border:none;
     outline: none;
     background-color: transparent;
@@ -115,7 +125,11 @@ table.table-fit tbody td, table.table-fit tfoot td {
     background-color: yellow
 }
 
-/** SVG Styling */
+
+
+
+/** ==== SVG Styling ==== */
+
 #datapath svg {
     width: 100%;
     height: 100%;
@@ -153,4 +167,34 @@ table.table-fit tbody td, table.table-fit tfoot td {
  */
 #diagram > g:hover > .wire, #diagram > .wire:hover {
     stroke-width: 0.75; /** Wire are 0.5 normally */
+}
+
+
+
+/* ==== Library styling ==== */
+
+.CodeMirror {
+    height: 100%;
+    width: 100%;
+}
+
+.CodeMirror pre.CodeMirror-placeholder {
+    color: #999;
+}
+
+#toast-container > div {
+    opacity: 90%;
+}
+
+#toast-container > .toast {
+    width: 350px; /* Make toast a little wider (default is 300px) */
+}
+
+.tippy-box {
+    text-align: center;
+    opacity: 95%;
+}
+
+.tippy-box hr {
+    margin: 5px 0px;
 }
