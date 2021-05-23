@@ -4,6 +4,7 @@ import {assemble, assemble_keep_line_info} from "./assembler"
 
 import CodeMirror from "codemirror";
 import "codemirror/addon/display/placeholder"
+import "./risc-mode"
 import datapath from "../datapath.svg" // import the string of the optimized svg
 import tippy, {followCursor, Instance as Tippy} from 'tippy.js';
 import toastr from "toastr";
@@ -421,6 +422,7 @@ export class VisualSim {
 
         // Set up the Instruction Memory Tab
         this.instrMemEditor = CodeMirror.fromTextArea($(this.instrMemPanel).find<HTMLTextAreaElement>(".editor textarea")[0], {
+            mode: "riscv",
             lineNumbers: true,
         });
 
