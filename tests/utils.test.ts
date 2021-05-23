@@ -173,6 +173,10 @@ describe("Bits", () => {
         expect(Bits.equal(b`000`, Bits(0n, 3))).to.be.true
         expect(Bits.equal(b`1010`,"0001")).to.be.false
     })
+
+    it("Join", () => {
+        expect(Bits.join(b`0001`, 1, b`0101`)).to.eql(b`000110101`)
+    })
 })
 
 describe("Truth Table", () => {

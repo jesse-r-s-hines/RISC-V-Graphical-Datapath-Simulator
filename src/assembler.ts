@@ -251,22 +251,22 @@ function assemble_instr(instr_num: number, instr: Instr, labels: Record<string, 
 
     let [opcode, funct3, funct7] = opcodes[instr.op]
     if (instr.type == "R") {
-        return [...opcode, ...temp.rd, ...funct3, ...temp.rs1, ...temp.rs2, ...funct7]
+        return Bits.join(funct7, temp.rs2, temp.rs1, funct3, temp.rd, opcode)
     } else if (instr.type == "I") {
-        return [...opcode, ...temp.rd, ...funct3, ...temp.rs1, ...Bits(temp.imm, 12, true)]
+        return Bits.join(Bits(temp.imm, 12, true), temp.rs1, funct3, temp.rd, opcode)
     } else if (instr.type == "IS") {
-        return [...opcode, ...temp.rd, ...funct3, ...temp.rs1, ...Bits(temp.imm, 5, true), ...funct7]
+        return Bits.join(funct7, Bits(temp.imm, 5, true), temp.rs1, funct3, temp.rd, opcode)
     } else if (instr.type == "S") {
         let imm = Bits(temp.imm, 12, true)
-        return [...opcode, ...imm.slice(0, 5), ...funct3, ...temp.rs1, ...temp.rs2, ...imm.slice(5, 12)]
+        return Bits.join(imm.slice(5, 12), temp.rs2, temp.rs1, funct3, imm.slice(0, 5), opcode)
     } else if (instr.type == "SB") {
         let imm = Bits(temp.imm, 13, true)
-        return [...opcode, imm[11], ...imm.slice(1, 5), ...funct3, ...temp.rs1, ...temp.rs2, ...imm.slice(5, 11), imm[12]]
+        return Bits.join(imm[12], imm.slice(5, 11), temp.rs2, temp.rs1, funct3, imm.slice(1, 5), imm[11], opcode)
     } else if (instr.type == "U") {
-        return [...opcode, ...temp.rd, ...Bits(temp.imm, 20, true)]
+        return Bits.join(Bits(temp.imm, 20, true), temp.rd, opcode)
     } else if (instr.type == "UJ") {
         let imm = Bits(temp.imm, 21, true)
-        return [...opcode, ...temp.rd, ...imm.slice(12, 20), imm[11], ...imm.slice(1, 11), imm[20]]
+        return Bits.join(imm[20], imm.slice(1, 11), imm[11], imm.slice(12, 20), temp.rd, opcode)
     } else {
         throw Error("Unknown instruction type")
     }

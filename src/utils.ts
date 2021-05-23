@@ -129,6 +129,11 @@ export namespace Bits {
         if (typeof b != "string") b = Bits.toString(b)
         return a == b
     }
+
+    /** Concatenates multiple bits */
+    export function join(...arr: (Bits|Bit)[]): Bits {
+        return Bits([]).concat(...arr.reverse())
+    }
 }
 
 /**
