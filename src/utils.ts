@@ -25,23 +25,25 @@ export function Bits(arr: Bit[]): Bits
 export function Bits(str: string): Bits
 
 /**
- * Converts a bigint to an array of bits.
- * @param num The bigint to convert into bits.
+ * Converts a number to an array of bits.
+ * @param num The number or bigint to convert into bits.
  * @param length The number of bits in the array.
  * @param signed Whether the bits should be signed or not. Defaults to false.
  */
-export function Bits(num: bigint, length: number, signed?: boolean): Bits
+export function Bits(num: number|bigint, length: number, signed?: boolean): Bits
 
-export function Bits(src: Bit[]|string|bigint, length?: number, signed?: boolean): Bits {
+export function Bits(src: Bit[]|string|number|bigint, length?: number, signed?: boolean): Bits {
     if (typeof src == "object") {
-        if (length != undefined || signed != undefined) throw Error("Invalid arguments to Bits.from")
+        if (length != undefined || signed != undefined) throw Error("Invalid arguments to Bits()")
         return fromArray(src)
     } else if (typeof src == "string") {
-        if (length != undefined || signed != undefined) throw Error("Invalid arguments to Bits.from")
+        if (length != undefined || signed != undefined) throw Error("Invalid arguments to Bits()")
         return fromString(src)
-    } else { // bigint
-        if (length == undefined) throw Error("Invalid arguments to Bits.from")
+    } else if (typeof src == "bigint" || typeof src == "number") {
+        if (length == undefined) throw Error("Invalid arguments to Bits()")
         return fromInt(src, length, signed)
+    } else {
+        throw Error("Invalid arguments to Bits()")
     }
 }
 
@@ -61,7 +63,8 @@ function fromString(str: string): Bits {
     return [...str].map(b => Number(b)).reverse()
 }
 
-function fromInt(num: bigint, length: number, signed: boolean = false): Bits {
+function fromInt(num: number|bigint, length: number, signed: boolean = false): Bits {
+    if (typeof num == "number") num = BigInt(num)
     let len =  BigInt(length)
     let [a, b] = signed ? [-(2n**(len-1n)), 2n**(len-1n) - 1n] : [0, 2n**len - 1n]
     if (num < a || num > b) throw Error(`${num} is invalid. Expected a ${signed ? "" : "un"}signed integer that fits in ${length} bits.`)

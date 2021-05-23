@@ -234,18 +234,15 @@ export function assemble_keep_line_info(program: string): [number, bigint][] {
 /** Assembles a single instruction. */
 function assemble_instr(instr_num: number, instr: Instr, labels: Record<string, number>): Bits {
     let temp: any = {...instr} // Copy instr into an any so we can store Bits and BigInts in it.
-    if ("imm" in instr) {
-        if (typeof instr.imm == "string") {
-            if (!(instr.imm in labels)) throw Error(`Unknown label "${temp.imm}"`)
-            temp.imm = (labels[instr.imm] - instr_num) * 4;
-        }
-        temp.imm = BigInt(temp.imm) // TODO modify Bits to take number.
+    if ("imm" in instr && typeof instr.imm == "string") {
+        if (!(instr.imm in labels)) throw Error(`Unknown label "${temp.imm}"`)
+        temp.imm = (labels[instr.imm] - instr_num) * 4;
     }
     for (let field of ["rd", "rs1", "rs2"]) {
         if (field in temp) {
             if (!(temp[field] in registers))
                 throw Error(`Unknown register "${temp[field]}"`)
-            temp[field] = Bits(BigInt(registers[temp[field]]), 5)
+            temp[field] = Bits(registers[temp[field]], 5)
         }
     }
 
