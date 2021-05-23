@@ -56,8 +56,9 @@ function fromArray(arr: Bit[]): Bits {
 }
 
 function fromString(str: string): Bits {
-    let bitString = [...str].filter( b => !("_ ".includes(b)) )
-    return bitString.map(b => Number(b)).reverse()
+    if (!str.match(/^[01 _]*$/)) throw Error(`Invalid bit string "${str}"`)
+    str = str.replace(/[ _]/g, "") // ignore " " and "_"
+    return [...str].map(b => Number(b)).reverse()
 }
 
 function fromInt(num: bigint, length: number, signed: boolean = false): Bits {

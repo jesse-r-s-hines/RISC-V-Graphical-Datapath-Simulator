@@ -35,6 +35,9 @@ describe("Bits", () => {
         expect(ba).to.eql([0, 0, 1, 1])
 
         expect(b`100`).to.eql([0, 0, 1])
+
+        expect(() => Bits("stuff")).to.throw("Invalid bit string")
+        expect(() => Bits("012")).to.throw("Invalid bit string")
     });
 
     it('From Int Unsigned', () => {
