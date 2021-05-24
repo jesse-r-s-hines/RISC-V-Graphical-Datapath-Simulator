@@ -5,8 +5,10 @@ import {assemble, assemble_keep_line_info} from "./assembler"
 
 import CodeMirror from "codemirror";
 import "codemirror/addon/display/placeholder"
+import "codemirror/lib/codemirror.css"
 import "./risc-mode"
 import tippy, {followCursor, Instance as Tippy} from 'tippy.js';
+import "tippy.js/dist/tippy.css";
 import toastr from "toastr";
 
 type CodeMirror = CodeMirror.Editor
