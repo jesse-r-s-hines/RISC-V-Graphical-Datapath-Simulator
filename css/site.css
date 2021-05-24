@@ -23,6 +23,10 @@
     margin: 0.25rem;
 }
 
+.nav-link, .nav-link:hover {
+    color: inherit; /* Don't color the nav links as links */
+}
+
 /*
 /* Hack to make the tabs keep the width of the widest tab, so that the view doesn't shift every time you change tabs.
    see https://stackoverflow.com/questions/42394208/tab-box-sized-by-biggest-panel-content-in-pure-css (though I've changed
