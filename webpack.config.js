@@ -54,6 +54,7 @@ module.exports = (env) => ({
   output: {
     filename: 'risc-v-simulator.js',
     path: path.resolve(__dirname, 'dist'),
+    clean: true,
   },
   optimization: {
     minimize: env.prod ? true : false // Debugger has trouble if you minify, even with the source map.
