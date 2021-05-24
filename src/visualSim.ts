@@ -1,5 +1,6 @@
 import {Simulator} from "./simulator";
 import {Bits, TruthTable, from_twos_complement, to_twos_complement} from "./utils"
+import {registerNames} from "./constants"
 import {assemble, assemble_keep_line_info} from "./assembler"
 
 import CodeMirror from "codemirror";
@@ -203,7 +204,7 @@ export class VisualSim {
         },
         "instrMem-instruction-rd": {
             description: "The register to write.",
-            tooltip: (sim) => `${intToStr(sim.instrSplit.rd, "unsigned")} (${VisualSim.regNames[Bits.toNumber(sim.instrSplit.rd)]})`,
+            tooltip: (sim) => `${intToStr(sim.instrSplit.rd, "unsigned")} (${registerNames[Bits.toNumber(sim.instrSplit.rd)]})`,
             label: (sim) => intToStr(sim.instrSplit.rd, "unsigned"),
         },
         "instrMem-instruction-funct3": {
@@ -213,12 +214,12 @@ export class VisualSim {
         },
         "instrMem-instruction-rs1": {
             description: "The first register to read.",
-            tooltip: (sim) => `${intToStr(sim.instrSplit.rs1, "unsigned")} (${VisualSim.regNames[Bits.toNumber(sim.instrSplit.rs1)]})`,
+            tooltip: (sim) => `${intToStr(sim.instrSplit.rs1, "unsigned")} (${registerNames[Bits.toNumber(sim.instrSplit.rs1)]})`,
             label: (sim) => intToStr(sim.instrSplit.rs1, "unsigned"),
         },
         "instrMem-instruction-rs2": {
             description: "The second register to read.",
-            tooltip: (sim) => `${intToStr(sim.instrSplit.rs2, "unsigned")} (${VisualSim.regNames[Bits.toNumber(sim.instrSplit.rs2)]})`,
+            tooltip: (sim) => `${intToStr(sim.instrSplit.rs2, "unsigned")} (${registerNames[Bits.toNumber(sim.instrSplit.rs2)]})`,
             label: (sim) => intToStr(sim.instrSplit.rs2, "unsigned"),
         },
         "instrMem-instruction-funct7": {
@@ -349,13 +350,6 @@ export class VisualSim {
         },
     } 
 
-    public static readonly regNames = [
-        "zero", "ra", "sp",  "gp",  "tp", "t0", "t1", "t2",
-        "s0",   "s1", "a0",  "a1",  "a2", "a3", "a4", "a5",
-        "a6",   "a7", "s2",  "s3",  "s4", "s5", "s6", "s7",
-        "s8",   "s9", "s10", "s11", "t3", "t4", "t5", "t6",
-    ]
-        
     private static readonly opCodeNames = new TruthTable([
         [["0110011"], "R-format"],
         [["0010011"], "I-format"],
@@ -434,7 +428,7 @@ export class VisualSim {
         });
 
         // set up the Register File tab
-        for (let [i, name] of VisualSim.regNames.entries()) {
+        for (let [i, name] of registerNames.entries()) {
             $(this.regFilePanel).find(".editor tbody").append(`
                 <tr> <td>${name} (x${i})</td> <td><input type="text"></td> </tr>
             `)
@@ -571,7 +565,7 @@ export class VisualSim {
         // set up Register File view if needed
         let regFileTable = $(this.regFilePanel).find(".view tbody")
         if (regFileTable.children().length == 0) {
-            for (let [i, name] of VisualSim.regNames.entries()) {
+            for (let [i, name] of registerNames.entries()) {
                 regFileTable.append(`
                     <tr> <td>${name} (x${i})</td> <td class="register-value"></td> </tr>
                 `)
