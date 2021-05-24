@@ -171,7 +171,7 @@ table.table-fit tbody td, table.table-fit tfoot td {
  * class to the groups instead of relying on their relative position.)
  */
 #diagram > g:hover > .wire, #diagram > .wire:hover {
-    stroke-width: 0.75; /** Wire are 0.5 normally */
+    stroke-width: 0.75; /** Wires are 0.5 normally */
 }
 
 
