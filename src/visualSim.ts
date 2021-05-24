@@ -568,7 +568,7 @@ export class VisualSim {
 
         // Data Memory view is recreated every tick.
 
-        // set up Rigester File view if needed
+        // set up Register File view if needed
         let regFileTable = $(this.regFilePanel).find(".view tbody")
         if (regFileTable.children().length == 0) {
             for (let [i, name] of VisualSim.regNames.entries()) {
@@ -628,7 +628,7 @@ export class VisualSim {
             $(this.instrMemPanel).find(".current-instruction").removeClass("current-instruction")
             if (this.state != "done") { // don't show current instruction if we are done.
                 let line = Number((this.sim.pc.data - Simulator.text_start) / 4n)
-                let currentInstr = $(this.instrMemPanel).find(".view tr")[line]
+                let currentInstr = $(this.instrMemPanel).find(".view tbody tr")[line]
                 currentInstr.classList.add("current-instruction")
                 currentInstr.scrollIntoView({behavior: "smooth", block: "nearest"})
             }
