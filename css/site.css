@@ -20,20 +20,22 @@
     margin: 0.25rem;
 }
 
+/*
 /* Hack to make the tabs keep the width of the widest tab, so that the view doesn't shift every time you change tabs.
    see https://stackoverflow.com/questions/42394208/tab-box-sized-by-biggest-panel-content-in-pure-css (though I've changed
-   it quite a bit from the SO post to make it work for width instead of height) */
+   it quite a bit from the SO post to make it work for width instead of height) * /
 #editors > .tab-pane {
-    /* Change the panel from "display: hidden" to "visibility: hidden" so it takes up space */
+    /* Change the panel from "display: hidden" to "visibility: hidden" so it takes up space * /
     display: block;
     visibility: hidden;
 }
 #editors > .tab-pane.active {
     visibility: visible;
 }
-/* Move the two panels up so they are overlaying each other. */
+/* Move the two panels up so they are overlaying each other. * /
 #editors > .tab-pane:nth-child(2)  { transform: translate(0, -100%); } 
 #editors > .tab-pane:nth-child(3)  { transform: translate(0, -200%); }
+*/
 
 
 
