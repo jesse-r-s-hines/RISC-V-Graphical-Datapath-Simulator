@@ -1,7 +1,7 @@
 // see https://webpack.js.org/guides/typescript/
 // see https://sysgears.github.io/mochapack/docs/installation/webpack-configuration.html
 const path = require('path');
-const { optimize } = require('svgo');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 // env.prod, env.dev, or env.test can be set.
 module.exports = (env) => ({
@@ -9,6 +9,9 @@ module.exports = (env) => ({
   devtool: (env.prod) ? 'source-map' : 'inline-source-map', // inline-source-map makes debugging work better.
   mode: (env.prod) ? "production" : "development",
   target: (env.test) ? "node" : "web",
+  plugins: [
+    new MiniCssExtractPlugin()
+  ],
   module: {
     rules: [
       {
@@ -30,7 +33,7 @@ module.exports = (env) => ({
       },
       {
         test: /\.css$/i,
-        use: ['style-loader', 'css-loader'],
+        use: [MiniCssExtractPlugin.loader, 'css-loader'],
       },
       {
         test: /\.(svg|woff|woff2|eot|ttf|otf)$/,
