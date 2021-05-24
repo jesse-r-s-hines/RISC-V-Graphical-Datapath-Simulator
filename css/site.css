@@ -13,6 +13,9 @@
 
 #editors .editor, #editors .view {
     height: 100%;
+    /* There is a bug in Firefox (see https://bugzilla.mozilla.org/show_bug.cgi?id=764076) where the scrollbar isn't accounted for,
+       causing a x scrollbar to show even though it should be expanding to fit. A workaround is "overflow-y: scroll" but then the
+       scrollbar always shows. */
     overflow: auto;
 }
 
