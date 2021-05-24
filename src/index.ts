@@ -25,7 +25,7 @@ toastr.options = {
 
 $(function() {
    $("#datapath").load(datapath, () => { // Load databath svg then run the simulation
-      let sim = new VisualSim()
+      (window as any).sim = new VisualSim()
    })
 })
 
