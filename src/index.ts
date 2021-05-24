@@ -1,8 +1,5 @@
 import "bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
-// for some reason importing jquery causes problems. jQuery seems to be getting loaded twice. 
-// @types/jquery assumes you have jquery in global scope so I'm just using a script tag to include jquery.
-// import $ from "jquery"; 
 import "@fortawesome/fontawesome-free/css/all.css"
 import toastr from "toastr";
 import "toastr/build/toastr.css"
@@ -12,13 +9,17 @@ import datapath from "../assets/datapath.svg" // import path to the svg
 
 // This needs to be imported last so that my css overrides any defaults
 import "../css/site.css"
+/* html-loader imports any assets referenced in the html, such as the jquery script. But if I use HtmlWebpackPlugin,
+   these resources don't get recognized by `webpack watch`, and are deleted after any watch update, causing failures.
+   Using require directly seems to make watch work. */
+require("../index.html")
 
 toastr.options = {
    positionClass: "toast-top-left",
    closeButton: true,
-   timeOut: 8000, // stay
-   // timeOut: 0, // stay
-   // extendedTimeOut: 0, // stay,
+   timeOut: 8000,
+   // timeOut: 0,
+   // extendedTimeOut: 0,
    preventDuplicates: true,
 }
 

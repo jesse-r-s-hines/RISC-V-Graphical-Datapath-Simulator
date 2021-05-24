@@ -22,16 +22,16 @@ module.exports = (env) => ({
         exclude: /node_modules/,
       },
       {
-          test: /\.svg/,
-          type: 'asset/resource',
-          use: [
-            {
-              loader: 'svgo-loader',
-              options: { configFile:  path.resolve(__dirname, "./svgo.config.js") }
-            }
-          ],
-          generator: {filename: "[name]-[hash][ext][query]"},
-          include: path.resolve(__dirname, "assets"),
+        test: /\.svg/,
+        type: 'asset/resource',
+        use: [
+          {
+            loader: 'svgo-loader',
+            options: { configFile:  path.resolve(__dirname, "./svgo.config.js") }
+          }
+        ],
+        generator: {filename: "[name]-[hash][ext][query]"},
+        include: path.resolve(__dirname, "assets"),
       },
       {
         test: /\.html$/,
@@ -58,7 +58,7 @@ module.exports = (env) => ({
     extensions: ['.tsx', '.ts', '.js'],
   },
   output: {
-    filename: 'risc-v-simulator.js',
+    filename: '[name].bundle.js',
     path: path.resolve(__dirname, 'dist'),
     clean: true,
   },
