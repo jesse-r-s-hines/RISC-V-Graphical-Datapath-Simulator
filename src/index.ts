@@ -12,7 +12,7 @@ import "toastr/build/toastr.css"
 import "../css/site.css"
 
 import {VisualSim} from "./visualSim";
-import datapath from "../datapath.svg" // import path to the svg
+import datapath from "../assets/datapath.svg" // import path to the svg
 
 toastr.options = {
    positionClass: "toast-top-left",

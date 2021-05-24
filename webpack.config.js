@@ -22,11 +22,11 @@ module.exports = (env) => ({
             {
               loader: 'svgo-loader',
               options: {
-                configFile: "./svgo.config.js",
+                configFile:  path.resolve(__dirname, "./svgo.config.js"),
               }
             }
           ],
-          include: path.resolve("./datapath.svg"),
+          include: path.resolve(__dirname, "assets"),
       },
       {
         test: /\.css$/i,
