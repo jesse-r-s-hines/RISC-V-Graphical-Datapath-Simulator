@@ -2,6 +2,7 @@
 // see https://sysgears.github.io/mochapack/docs/installation/webpack-configuration.html
 const path = require('path');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 // env.prod, env.dev, or env.test can be set.
 module.exports = (env) => ({
@@ -10,7 +11,8 @@ module.exports = (env) => ({
   mode: (env.prod) ? "production" : "development",
   target: (env.test) ? "node" : "web",
   plugins: [
-    new MiniCssExtractPlugin()
+    new MiniCssExtractPlugin(),
+    new HtmlWebpackPlugin({template: "./index.html"}),
   ],
   module: {
     rules: [
@@ -30,6 +32,10 @@ module.exports = (env) => ({
           ],
           generator: {filename: "[name]-[hash][ext][query]"},
           include: path.resolve(__dirname, "assets"),
+      },
+      {
+        test: /\.html$/,
+        loader: 'html-loader'
       },
       {
         test: /\.css$/i,
