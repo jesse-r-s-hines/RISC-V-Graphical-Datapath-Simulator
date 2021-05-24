@@ -3,9 +3,10 @@
 const path = require('path');
 const { optimize } = require('svgo');
 
+// env.prod, env.dev, or env.test can be set.
 module.exports = (env) => ({
   entry: './src/index.ts',
-  devtool: (env.prod) ? undefined : 'inline-source-map',
+  devtool: (env.prod) ? 'source-map' : 'inline-source-map', // inline-source-map makes debugging work better.
   mode: (env.prod) ? "production" : "development",
   target: (env.test) ? "node" : "web",
   module: {
@@ -21,11 +22,10 @@ module.exports = (env) => ({
           use: [
             {
               loader: 'svgo-loader',
-              options: {
-                configFile:  path.resolve(__dirname, "./svgo.config.js"),
-              }
+              options: { configFile:  path.resolve(__dirname, "./svgo.config.js") }
             }
           ],
+          generator: {filename: "[name]-[hash][ext][query]"},
           include: path.resolve(__dirname, "assets"),
       },
       {
@@ -35,14 +35,13 @@ module.exports = (env) => ({
       {
         test: /\.(svg|woff|woff2|eot|ttf|otf)$/,
         type: 'asset/resource',
-        generator: {filename: 'fonts/[hash][ext][query]'},
+        generator: {filename: 'fonts/[name]-[hash][ext][query]'},
         include: path.resolve("./node_modules/")
       },
       {
         test: /\.ne$/,
-        use: [
-          'nearley-loader',
-        ],
+        use: ['nearley-loader'],
+        include: path.resolve(__dirname, "src"),
       },
     ],
   },
