@@ -35,10 +35,8 @@ module.exports = (env) => ({
       },
       {
         test: /\.(woff|woff2|eot|ttf|otf)$/,
-        loader: 'file-loader', // TODO: file-loader is deprecated. Change to asset modules.
-        options: {
-          outputPath: 'fonts',
-        }
+        type: 'asset/resource',
+        generator: {filename: 'fonts/[hash][ext][query]'}
       },
       {
         test: /\.ne$/,
