@@ -4,6 +4,7 @@
   "description": "A graphical datapath simulator for the 64 bit RISC-V architecture",
   "scripts": {
     "build": "webpack --env dev",
+    "build-prod": "webpack --env prod",
     "watch": "webpack --watch",
     "test": "mochapack --webpack-config webpack.config.js --webpack-env.test test 'tests/**/*.ts'"
   },
