@@ -6,7 +6,6 @@ import {assemble, assemble_keep_line_info} from "./assembler"
 import CodeMirror from "codemirror";
 import "codemirror/addon/display/placeholder"
 import "./risc-mode"
-import datapath from "../datapath.svg" // import the string of the optimized svg
 import tippy, {followCursor, Instance as Tippy} from 'tippy.js';
 import toastr from "toastr";
 
@@ -412,9 +411,6 @@ export class VisualSim {
         this.instrMemPanel = $("#instrMem-panel")[0]
         this.dataMemPanel = $("#dataMem-panel")[0]
         this.regFilePanel = $("#regFile-panel")[0]
-
-        // Load the SVG
-        $(this.svg).html(datapath)
 
         // Set up the Instruction Memory Tab
         this.instrMemEditor = CodeMirror.fromTextArea($(this.instrMemPanel).find<HTMLTextAreaElement>(".editor textarea")[0], {

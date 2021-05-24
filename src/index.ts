@@ -1,4 +1,3 @@
-import {VisualSim} from "./visualSim";
 import "bootstrap";
 // for some reason importing jquery causes problems. jQuery seems to be getting loaded twice. 
 // @types/jquery assumes you have jquery in global scope so I'm just using a script tag to include jquery.
@@ -12,6 +11,9 @@ import "@fortawesome/fontawesome-free/css/all.css"
 import "toastr/build/toastr.css"
 import "../css/site.css"
 
+import {VisualSim} from "./visualSim";
+import datapath from "../datapath.svg" // import path to the svg
+
 toastr.options = {
    positionClass: "toast-top-left",
    closeButton: true,
@@ -22,7 +24,9 @@ toastr.options = {
 }
 
 $(function() {
-   let sim = new VisualSim()
+   $("#datapath").load(datapath, () => { // Load databath svg then run the simulation
+      let sim = new VisualSim()
+   })
 })
 
 

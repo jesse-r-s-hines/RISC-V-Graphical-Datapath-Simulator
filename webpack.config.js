@@ -16,27 +16,27 @@ module.exports = (env) => ({
         exclude: /node_modules/,
       },
       {
-        test: /\.svg/,
-        type: 'asset/inline',
-        generator: {
-          dataUrl: content => {
-            content = content.toString();
-            return optimize(content, {
-              plugins: [
-                "convertStyleToAttrs",
-              ],
-            }).data;
-          }
-        },
+          test: /\.svg/,
+          type: 'asset/resource',
+          use: [
+            {
+              loader: 'svgo-loader',
+              options: {
+                configFile: "./svgo.config.js",
+              }
+            }
+          ],
+          include: path.resolve("./datapath.svg"),
       },
       {
         test: /\.css$/i,
         use: ['style-loader', 'css-loader'],
       },
       {
-        test: /\.(woff|woff2|eot|ttf|otf)$/,
+        test: /\.(svg|woff|woff2|eot|ttf|otf)$/,
         type: 'asset/resource',
-        generator: {filename: 'fonts/[hash][ext][query]'}
+        generator: {filename: 'fonts/[hash][ext][query]'},
+        include: path.resolve("./node_modules/")
       },
       {
         test: /\.ne$/,
