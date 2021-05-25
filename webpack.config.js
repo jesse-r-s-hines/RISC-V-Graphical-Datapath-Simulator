@@ -65,5 +65,8 @@ module.exports = (env) => ({
   optimization: {
     minimize: env.prod ? true : false // Debugger has trouble if you minify, even with the source map.
   },
+  devServer: {
+    contentBase: path.join(__dirname, 'dist'),
+  },
   externals: env.test ? [require('webpack-node-externals')()] : undefined, // in order to ignore all modules in node_modules folder
 });
