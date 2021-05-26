@@ -1,7 +1,7 @@
 {
-  "name": "risc-v-simulator",
+  "name": "risc-v-graphical-datapath-simulator",
   "version": "1.0.0",
-  "description": "A graphical datapath simulator for the 64 bit RISC-V architecture",
+  "description": "A web-based graphcial simulator for a simple 32-bit, single-cycle implementation of RISC-V.",
   "scripts": {
     "build": "webpack --env dev",
     "build-prod": "webpack --env prod",
