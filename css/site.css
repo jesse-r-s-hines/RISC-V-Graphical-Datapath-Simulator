@@ -55,11 +55,11 @@
 }
 
 #controls button:hover {
-    transform: scale(1.25); /* if the zoom is too large, it will go outside of the viewport */
+    transform: scale(1.25);
 }
 
 #controls button:active {
-    transform: scale(1.1); /* if the zoom is too large, it will go outside of the viewport */
+    transform: scale(1.1);
 }
 
 #controls button:focus {
@@ -69,6 +69,20 @@
 #controls input[type="range"] {
     height: 100%;
     padding: 0 5%; /* Some left/right padding */
+}
+
+#controls input[type="range"]::-webkit-slider-thumb:hover {
+    transform: scale(1.25);
+}
+#controls input[type="range"]::-moz-range-thumb:hover {
+    transform: scale(1.25);
+}
+
+#controls input[type="range"]::-webkit-slider-thumb:active {
+    transform: scale(1.1);
+}
+#controls input[type="range"]::-moz-range-thumb:active {
+    transform: scale(1.1);
 }
 
 
