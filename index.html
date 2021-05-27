@@ -100,8 +100,10 @@
                     <button id="restart" class="btn btn-sm" title="Restart Simulation">
                         <i class="fas fa-sync text-danger"></i>
                     </button>
-                    <!-- ms-auto makes the help button go to the far right. -->
-                    <button id="help" class="btn btn-sm ms-auto" title="Help / About" data-bs-toggle="modal" data-bs-target="#help-modal">
+                    <div class="flex-grow-1">
+                        <input id="speed" type="range" class="form-range" title="Speed" min="-2" max="4"> <!-- 2 ** x steps per second-->
+                    </div>
+                    <button id="help" class="btn btn-sm" title="Help / About" data-bs-toggle="modal" data-bs-target="#help-modal">
                         <i class="fas fa-question-circle text-info"></i>
                     </button>
                 </div></div>

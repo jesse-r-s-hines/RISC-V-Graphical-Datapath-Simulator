@@ -129,7 +129,6 @@ export class VisualSim {
     private sim: Simulator
     private state: State = "unstarted"
     private playing: number = 0; // Timer handle to the play loop, or 0 if not playing.
-    private readonly playSpeed = 500; // ms between steps when playing
 
     /** All the elements in the datapath and how to render them, tooltips, etc. */
     private static readonly datpathElements: Record<string, DataPathElem> = {
@@ -449,6 +448,12 @@ export class VisualSim {
     private dataMemWordSize(): number { return +($("#dataMem-word-size").val() as string); }
     private regFileRadix(): Radix { return $("#regFile-radix").val() as Radix; }
 
+    /** Speed as ms between steps when playing */
+    private speed(): number {
+        let power = +($("#speed").val() as string) // (2 ** slider) steps per second 
+        return (1 / (2 ** power)) * 1000 // convert to ms per step
+    }
+
     private setupEvents() {
         $("#editor-tabs").on("shown.bs.tab", (event) => {
             let tab = $( $(event.target).data("bs-target") ).find(".CodeMirror")[0] as any
@@ -462,6 +467,7 @@ export class VisualSim {
 
         $("#play").on("click", (event) => this.play())
         $("#pause").on("click", (event) => this.pause())
+        $("#speed").on("change", (event) => this.updatePlaySpeed())
         $("#step").on("click", (event) => this.step())
         $("#restart").on("click", (event) => this.restart())
     }
@@ -589,6 +595,8 @@ export class VisualSim {
         $("#step").prop("disabled", this.playing || this.state == "done")
         
         $("#restart").toggle(this.state != "unstarted")
+
+        $("#speed").toggle(!!this.playing)
     }
 
     /** Update the editor and view panels to match the simulation */
@@ -707,23 +715,31 @@ export class VisualSim {
         this.updateDatapath()
     }
 
-    private play() {
-        if (this.step()) {
-            this.playing = window.setInterval( () => {
-                if (!this.step()) this.pause() // keep stepping unless the simulation didn't start or is finished.
-            }, this.playSpeed)
-            this.updateControls() // update control panel immediately so that pause shows. (setInterval does call immediately)
+    /** Start playing the simulation. */
+    public play() {
+        if (this.step()) { // try to do first step immediately
+            this.updatePlaySpeed(); // calls setInterval() and sets this.playing
         }
     }
 
-    private pause() {
+    /** Starts or updates a setInterval() with the speed from the speed slider. */
+    public updatePlaySpeed() {
+        if (this.playing) this.pause()
+        this.playing = window.setInterval( () => {
+            if (!this.step()) this.pause() // keep stepping until the simulation is finished
+        }, this.speed())
+        this.updateControls()
+    }
+
+    /** Stop playing the simulation */
+    public pause() {
         clearInterval(this.playing)
         this.playing = 0;
         this.updateControls()
     }
 
     /** Steps simulation. Returns true if we can continue stepping, or false if the simulation failed to start or is done. */
-    private step() {
+    public step() {
         if (this.state == "unstarted")
             this.start() // try to start, updates state to running if success
 
@@ -741,7 +757,8 @@ export class VisualSim {
         return this.state == "running"
     }
 
-    private restart() {
+    /** Restarts the simulation, set everything back to editor views so we can change the code/memory/registers. */
+    public restart() {
         this.sim = new Simulator() // reset the simulator
         this.state = "unstarted"
         if (this.playing) this.pause(); // clear interval
