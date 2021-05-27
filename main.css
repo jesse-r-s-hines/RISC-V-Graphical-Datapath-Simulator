@@ -5274,6 +5274,10 @@ span.CodeMirror-selectedtext { background: none; }
     box-shadow: none; /* After click it was showing outline until you clicked somewhere else. */
 }
 
+#controls input[type="range"] {
+    height: 100%;
+    padding: 0 5%; /* Some left/right padding */
+}
 
 
 
