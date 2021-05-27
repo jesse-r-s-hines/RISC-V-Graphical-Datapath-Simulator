@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8"/>
-        <title>RISC-V Simulator</title>
+        <title>RISC-V Graphical Datapath Simulator</title>
         <!-- html-loader will resolve urls -->
         <script src="./node_modules/jquery/dist/jquery.min.js"></script>
     </head>
@@ -34,7 +34,7 @@
                     <div id="editors" class="tab-content" style="height: 100%">
                         <div id="instrMem-panel" class="tab-pane fade show active" role="tabpanel" aria-labelledby="instrMem-tab"><div> 
                             <div class="editor">
-                                <textarea placeholder="Write RISC&#8209;V assembly here..."></textarea>
+                                <textarea placeholder="Write RISC&#8209;V assembly..."></textarea>
                             </div>
                             <div class="view" style="display: none">
                                 <table class="table table-striped table-hover table-bordered address-table">
@@ -74,7 +74,7 @@
                                 </select>
                             </div>
                             <div class="editor">
-                                <textarea placeholder="Paste initial memory here..."></textarea>
+                                <textarea placeholder="Set initial memory..."></textarea>
                             </div>
                             <div class="view" style="display: none">
                                 <table class="table table-striped table-hover table-bordered address-table">
@@ -118,7 +118,7 @@
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p>Welcome to the RISC&#8209;V graphical datapath simulator! This is a 32&#8209;bit, single-cycle implementation of RISC&#8209;V. 
+                    <p>Welcome to the RISC&#8209;V Graphical Datapath Simulator! This is a 32&#8209;bit, single-cycle implementation of RISC&#8209;V. 
                         All the 32-bit integer instructions are supported except the syscall and concurrency related instructions and <code>auipc</code>.
                         The datapath is closely based on the design described in <i>Computer Organization and Design RISC&#8209;V Edition</i></p>
                     <p>You can write RISC&#8209;V assembly and set the initial registers and initial data memory, and then step through the demo. You
