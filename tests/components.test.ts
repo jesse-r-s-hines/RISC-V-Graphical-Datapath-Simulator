@@ -44,6 +44,11 @@ describe("Components", () => {
         expect(imm.immediate.length).to.equal(32)
         expect(Bits.toInt(imm.immediate, true)).to.equal(0x87654n)
 
+        // bne x5, x6, -12 # - 3 instructions
+        imm.instruction = b`1111111_00110_00101_001_10101_1100011`
+        imm.tick()
+        expect(imm.immediate.length).to.equal(32)
+        expect(Bits.toInt(imm.immediate, true)).to.equal(-12n)
 
         // or x5, x6, x7
         imm.instruction = b`0000000_00111_00110_110_00101_0110011`

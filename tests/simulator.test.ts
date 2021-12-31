@@ -192,17 +192,11 @@ describe("Arithmetic", () => {
 
 describe("Branch", () => {
     it('beq', () => {
-        let code = `
-            beq x5, x28, label # +4 instructions, false
-            addi zero, zero, 0
-            addi zero, zero, 0
-            addi x7, zero, 1
-            label: addi x6, zero, 1
-        `
-        test_code(code, {5: 1n, 28: 2n}, {6: 1n, 7: 1n})
-    
-        let code2 = `beq x5, x28, label`
-        test_branch(code2, {5: 1n, 28: 1n}, true)
+        let code = `beq x5, x28, label`
+        test_branch(code, {5: 1n, 28: 1n}, true)
+
+        let code2 = `beq x0, x0, label`
+        test_branch(code2, {}, true)
     })
     
     it('bge', () => {
@@ -240,6 +234,34 @@ describe("Branch", () => {
     it('bne', () => {
         let code = `bne x5, x28, label`
         test_branch(code, {5: 1n, 28: 3n}, true)
+
+        let code2 = `bne x0, x0, label`
+        test_branch(code2, {}, false)
+    })
+
+    it('long branch', () => {
+        let code = `
+            beq x5, x28, label
+            addi zero, zero, 0
+            addi zero, zero, 0
+            li x7, 1
+            label:
+            li x6, 1
+        `
+        test_code(code, {5: 1n, 28: 2n}, {6: 1n, 7: 1n}) // Don't take
+
+        test_code(code, {5: 1n, 28: 1n}, {6: 1n, 7: 0n}) // take
+
+        let code2 = `
+            li x6, 4
+            label:
+            addi x5, x5, 1
+            addi zero, zero, 0
+            addi zero, zero, 0
+            bne x5, x6, label
+            li x7, 1
+        `
+        test_code(code2, {5: 0n, 28: 2n}, {5: 4n, 6: 4n, 7: 1n})
     })
     
     it('jal', () => {
@@ -249,6 +271,18 @@ describe("Branch", () => {
             dest: addi x6, zero, 1
         `
         test_code(code, {}, {5: 0x0000_0004n, 6: 1n, 7: 0n})
+
+        let code2 = `
+            jal x1, label1
+            label2:
+            li x2, 1
+            jal x3, exit
+            label1:
+            jal x4, label2
+            li x2, 2
+            exit:
+        `
+        test_code(code2, {}, {1: 0x0000_0004n, 2: 1n, 3: 0x0000_0000Cn, 4: 0x0000_0010n})
     })
     
     it('jalr', () => {
@@ -276,7 +310,7 @@ describe("Branch", () => {
         `
         test_code(code, {28: 0x0000_0004n}, {5: 0x0000_0004n, 6: 1n, 7: 0n})
     })
-    
+
     // it('auipc', () => {
     //     let code = `
     //         addi zero, zero, 0

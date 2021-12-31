@@ -156,7 +156,7 @@ export class ImmGen {
 
     private static table = new TruthTable<(i: Bits) => Bits>([
         [["1100011"], (i) => // SB-type -> imm[12|10:5] | rs2 | rs1 | funct3 | imm[4:1|11]
-            Bits.join(i[32], i[7], i.slice(25,31), i.slice(8, 12), 0) // RISC-V uses LSB 0
+            Bits.join(i[31], i[7], i.slice(25,31), i.slice(8, 12), 0) // RISC-V uses LSB 0
         ], 
         [["0100011"], (i) => // S-type -> imm[11:5] | rs2 | rs1 | funct3 | imm[4:0]
             Bits.join(i.slice(25, 32), i.slice(7, 12))
