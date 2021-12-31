@@ -1,6 +1,6 @@
 main:
-    # la a0, array
-    # li a1, 100
+    # li a0, 0 # Base of array
+    # li a1, 10 # Length of array
     jal ra, sort
 
     j quit
@@ -29,26 +29,26 @@ sort:
     mv s6, a1 # copy parameter n into s6 (length of array)
 
     li s3, 0 # i = 0
-    for1tst:
-    bge s3, s6, exit1 # go to exit1 if i >= n
+    forI:
+    bge s3, s6, endForI # go to endForI if i >= n
         addi s4, s3, -1 # j = i - 1
-        for2tst:
-        blt s4, x0, exit2 # go to exit2 if j < 0
+        forJ:
+        blt s4, x0, endForJ # go to endForJ if j < 0
             slli t0, s4, 2 # t0 = j * 4
             add t0, s5, t0 # t0 = v + (j * 4)
             lw t1, 0(t0) # t1 = v[j]
             lw t2, 4(t0) # t2 = v[j + 1]
-            bge t2, t1, exit2 # go to exit2 if t1 < t2
+            bge t2, t1, endForJ # go to endForJ if t1 < t2
 
             mv a0, s5 # first swap parameter is v
             mv a1, s4 # second swap parameter is j
             jal ra, swap # call swap
         addi s4, s4, -1 # j -= 1
-        j for2tst # go to for2tst
-        exit2:
+        j forJ
+        endForJ:
     addi s3, s3, 1 # i += 1
-    j for1tst # go to for1tst
-    exit1:
+    j forI
+    endForI:
 
     # Restoring registers
     lw s3, 0(sp) # restore s3
