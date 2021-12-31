@@ -19,7 +19,7 @@
     overflow: auto;
 }
 
-.radix-select {
+#editors .form-select {
     margin: 0.25rem;
 }
 
