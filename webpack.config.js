@@ -48,6 +48,11 @@ module.exports = (env) => ({
         include: path.resolve("./node_modules/")
       },
       {
+        test: /\.(s|asm)$/, // assembly examples
+        type: 'asset/resource',
+        generator: {filename: 'assembly/[name]-[hash][ext][query]'},
+      },
+      {
         test: /\.ne$/,
         use: ['nearley-loader'],
         include: path.resolve(__dirname, "src"),
