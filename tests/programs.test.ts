@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { Simulator } from "../src/simulator";
-import { Bits, from_twos_complement, to_twos_complement } from "../src/utils";
+import { Bits, fromTwosComplement, toTwosComplement } from "../src/utils";
 import { assemble } from "../src/assembler"
 import * as fs from "fs";
 
@@ -19,7 +19,7 @@ describe("Bubble Sort", () => {
     let base = 0x1000_8000n // gp
 
     it("Basic", () => {
-        let array = [3n, 2n, 1n, 0n, -1n, -2n, -3n].map(e => to_twos_complement(e))
+        let array = [3n, 2n, 1n, 0n, -1n, -2n, -3n].map(e => toTwosComplement(e))
         let size = BigInt(array.length)
 
         let sim = makeSim(file, {10: base, 11: size}) // a0, a1
@@ -27,14 +27,14 @@ describe("Bubble Sort", () => {
 
         sim.run()
 
-        array = sim.dataMem.data.loadArray(base, 4, array.length).map(e => from_twos_complement(e))
+        array = sim.dataMem.data.loadArray(base, 4, array.length).map(e => fromTwosComplement(e))
 
         expect(array).to.eql([-3n, -2n, -1n, 0n, 1n, 2n, 3n]);
     })
 
     it("Random", () => {
         let array: bigint[] = []
-        for (let i = 0n; i < 10n; i++) array.push( to_twos_complement(BigInt(Math.floor(Math.random() * (2**32-1)))) )
+        for (let i = 0n; i < 10n; i++) array.push( toTwosComplement(BigInt(Math.floor(Math.random() * (2**32-1)))) )
 
         let sim = makeSim(file, {10: base, 11: 10n}) // a0, a1
 
@@ -42,7 +42,7 @@ describe("Bubble Sort", () => {
 
         sim.run()
 
-        array = sim.dataMem.data.loadArray(base, 4, 10).map(e => from_twos_complement(e))
+        array = sim.dataMem.data.loadArray(base, 4, 10).map(e => fromTwosComplement(e))
 
         for (let i = 1; i < 10; i++) {
             expect(array[0] <= array[1], `${array[0]} < ${array[1]}`).to.be.true
@@ -55,7 +55,7 @@ describe("Selection Sort", () => {
     let base = 0x1000_8000n // gp
 
     it("Basic", () => {
-        let array = [3n, 2n, 6n, 0n, -1n, -2n, 0n].map(e => to_twos_complement(e))
+        let array = [3n, 2n, 6n, 0n, -1n, -2n, 0n].map(e => toTwosComplement(e))
         let size = BigInt(array.length)
 
         let sim = makeSim(file, {10: base, 11: size}) // a0, a1
@@ -63,14 +63,14 @@ describe("Selection Sort", () => {
 
         sim.run()
 
-        array = sim.dataMem.data.loadArray(base, 4, array.length).map(e => from_twos_complement(e))
+        array = sim.dataMem.data.loadArray(base, 4, array.length).map(e => fromTwosComplement(e))
 
         expect(array).to.eql([-2n, -1n, 0n, 0n, 2n, 3n, 6n]);
     })
 
     it("Random", () => {
         let array: bigint[] = []
-        for (let i = 0n; i < 10n; i++) array.push( to_twos_complement(BigInt(Math.floor(Math.random() * (2**32-1)))) )
+        for (let i = 0n; i < 10n; i++) array.push( toTwosComplement(BigInt(Math.floor(Math.random() * (2**32-1)))) )
 
         let sim = makeSim(file, {10: base, 11: 10n}) // a0, a1
 
@@ -78,7 +78,7 @@ describe("Selection Sort", () => {
 
         sim.run()
 
-        array = sim.dataMem.data.loadArray(base, 4, 10).map(e => from_twos_complement(e))
+        array = sim.dataMem.data.loadArray(base, 4, 10).map(e => fromTwosComplement(e))
 
         for (let i = 1; i < 10; i++) {
             expect(array[0] <= array[1], `${array[0]} < ${array[1]}`).to.be.true

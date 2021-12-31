@@ -1,7 +1,7 @@
 import {Simulator} from "./simulator";
-import {Bits, TruthTable, from_twos_complement, to_twos_complement} from "./utils"
+import {Bits, TruthTable, fromTwosComplement, toTwosComplement} from "./utils"
 import {registerNames} from "./constants"
-import {assemble, assemble_keep_line_info} from "./assembler"
+import {assemble, assembleKeepLineInfo} from "./assembler"
 
 import CodeMirror from "codemirror";
 import "codemirror/addon/display/placeholder"
@@ -28,7 +28,7 @@ function parseInt(str: string, radix: Radix, bits: number): bigint {
         } else if (radix == "bin") {
             var num = BigInt( /^0[xb]/.test(str) ? str : `0b${str}` )
         } else if (radix == "signed") {
-            var num =  to_twos_complement(BigInt(str), bits)
+            var num =  toTwosComplement(BigInt(str), bits)
         } else { // (radix == "unsigned")
             var num =  BigInt(str)
         }
@@ -57,7 +57,7 @@ function parseInt(str: string, radix: Radix, bits: number): bigint {
     } else if (radix == "bin") {
         return "0b" + num.toString(2).padStart(bits, "0")
     } else if (radix == "signed") {
-        return from_twos_complement(num, bits).toString()
+        return fromTwosComplement(num, bits).toString()
     } else { // (radix == "unsigned")
         return num.toString()
     }
@@ -576,14 +576,14 @@ export class VisualSim {
             return false
         }
         try {
-            var assembled = assemble_keep_line_info(code)
+            var assembled = assembleKeepLineInfo(code)
         } catch (e: any) {
             this.error(`Couldn't parse code:\n${e.message}`)
             return false
         }
         let lines = code.split("\n")
-        let asm_code = assembled.map(([line, instr]) => lines[line - 1].trim())
-        let machine_code = assembled.map(([line, instr]) => instr)
+        let asmCode = assembled.map(([line, instr]) => lines[line - 1].trim())
+        let machineCode = assembled.map(([line, instr]) => instr)
 
         let memRadix = this.dataMemRadix()
         let memWordSize = this.dataMemWordSize()
@@ -609,16 +609,16 @@ export class VisualSim {
         }
 
         // We've got all the data so we can start the simulator
-        this.sim.setCode(machine_code)
+        this.sim.setCode(machineCode)
         this.sim.setRegisters(regs)
         this.sim.dataMem.data.storeArray(0n, memWordSize / 8, mem)
 
         // setup Instruction Memory view
         let instrMemTable = $(this.instrMemPanel).find(".view tbody")
         instrMemTable.empty()
-        for (let [i, instr] of machine_code.entries()) {
-            let line = asm_code[i];
-            let addr = Simulator.text_start + BigInt(i * 4)
+        for (let [i, instr] of machineCode.entries()) {
+            let line = asmCode[i];
+            let addr = Simulator.textStart + BigInt(i * 4)
             instrMemTable.append(`
                 <tr> <td>${intToStr(addr, "hex")}</td> <td>${intToStr(instr, "hex")}</td> <td>${line}</td> </tr>
             `)
@@ -687,7 +687,7 @@ export class VisualSim {
             // Update Instruction Memory
             $(this.instrMemPanel).find(".current-instruction").removeClass("current-instruction")
             if (this.state != "done") { // don't show current instruction if we are done.
-                let line = Number((this.sim.pc.data - Simulator.text_start) / 4n)
+                let line = Number((this.sim.pc.data - Simulator.textStart) / 4n)
                 let currentInstr = $(this.instrMemPanel).find(".view tbody tr")[line]
                 currentInstr.classList.add("current-instruction")
                 currentInstr.scrollIntoView({behavior: "smooth", block: "nearest"})

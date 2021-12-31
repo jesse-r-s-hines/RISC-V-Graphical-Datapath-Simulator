@@ -144,7 +144,7 @@ export namespace Bits {
  * Converts an unsigned int to a signed one.
  * @param bits The number of bits the int should be. Default 32.
  */
-export function from_twos_complement(num: bigint, bits: number = 32): bigint {
+export function fromTwosComplement(num: bigint, bits: number = 32): bigint {
     // ~num + 1 doesn't work because of how Javscript does ~
     let bitsB = BigInt(bits)
     if (num >= (1n << (bitsB - 1n))) num -= (1n << bitsB) // interpret as two's complement
@@ -155,7 +155,7 @@ export function from_twos_complement(num: bigint, bits: number = 32): bigint {
  * Converts an signed int to an unsigned one.
  * @param bits The number of bits the int should be. Default 32.
  */
-export function to_twos_complement(num: bigint, bits: number = 32): bigint {
+export function toTwosComplement(num: bigint, bits: number = 32): bigint {
     if (num < 0) num += (1n << BigInt(bits))
     return num
 }

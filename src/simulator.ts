@@ -1,8 +1,8 @@
-import { Bit, Bits, b, to_twos_complement } from "./utils"
+import { Bit, Bits, b, toTwosComplement } from "./utils"
 import * as Comp from "./components"
 
 export class Simulator {
-    public static readonly text_start = 0x0000_0000n // typically this would be 0x0001_0000 but lets use zero for simplicity.
+    public static readonly textStart = 0x0000_0000n // typically this would be 0x0001_0000 but lets use zero for simplicity.
 
     public codeLength: number = 0; // The number of instructions in the code
 
@@ -48,21 +48,21 @@ export class Simulator {
         this.aluInputMux = new Comp.Mux(2)
         this.writeSrcMux = new Comp.Mux(3)
 
-        this.pc.data = Simulator.text_start
+        this.pc.data = Simulator.textStart
         this.setRegisters({2: 0xbffffff0n, 3: 0x10008000n}) // sp and gp
 
         this.setCode(code) // initialize code memory
         this.setRegisters(regs) // set custom registers
 
         // These values need to be initialized since they are set until the end of the tick
-        this.pc.in = Bits(Simulator.text_start, 32)
+        this.pc.in = Bits(Simulator.textStart, 32)
         this.regFile.regWrite = 0
     }
 
     /** Initialize instruction memory */
     setCode(code: bigint[]) {
         this.codeLength = code.length
-        this.instrMem.data.storeArray(Simulator.text_start, 4, code)
+        this.instrMem.data.storeArray(Simulator.textStart, 4, code)
     }
 
     /**
@@ -87,7 +87,7 @@ export class Simulator {
         // tick() will set it to the value set during the previous tick.
         this.pc.tick()
 
-        if ( (this.pc.data - Simulator.text_start) / 4n >= this.codeLength ) { // hit the end of the code
+        if ( (this.pc.data - Simulator.textStart) / 4n >= this.codeLength ) { // hit the end of the code
             this.regFile.tick() // Write anything from last tick
             return false
         }

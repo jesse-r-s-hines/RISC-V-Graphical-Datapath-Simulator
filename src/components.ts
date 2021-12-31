@@ -46,7 +46,7 @@ export class Control {
         [["0110111"], [  1,      b`00`,       1,         0,        0,      b`100`]], // lui
     ])
 
-    private static branch_table = new TruthTable([
+    private static branchTable = new TruthTable([
         // opcode  | funct3 | branchZero | branchNotZero | jump | jalr
         [["1100011", "000"], [     1,           0,          0,     0]], // beq
         [["1100011", "1X1"], [     1,           0,          0,     0]], // bge, bgeu
@@ -59,7 +59,7 @@ export class Control {
 
     public tick() {
         [this.aluSrc, this.writeSrc, this.regWrite, this.memRead, this.memWrite, this.aluOp] = Control.table.match(this.opCode);
-        [this.branchZero, this.branchNotZero, this.jump, this.jalr] = Control.branch_table.match(this.opCode, this.funct3)
+        [this.branchZero, this.branchNotZero, this.jump, this.jalr] = Control.branchTable.match(this.opCode, this.funct3)
     }
 }
 
@@ -116,7 +116,7 @@ export class ALU {
     public zero: Bit = 0
 
     // whether to interpret operands as signed or unsigned
-    private static table_signed = new TruthTable([
+    private static tableSigned = new TruthTable([
         // (bigint doesn't have >>>, but if we interpret as unsigned it will work)
         [["1001"], false], // shift right logical 
         [["1111"], false], // set on less than unsigned
@@ -136,7 +136,7 @@ export class ALU {
     ])
 
     tick() {
-        let signed = ALU.table_signed.match(this.aluControl)
+        let signed = ALU.tableSigned.match(this.aluControl)
         let [a, b] = [Bits.toInt(this.in1, signed), Bits.toInt(this.in2, signed)]
 
         let op = ALU.table.match(this.aluControl)

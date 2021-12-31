@@ -1,10 +1,10 @@
 import { expect } from 'chai';
-import { assemble, assemble_keep_line_info } from '../src/assembler';
+import { assemble, assembleKeepLineInfo } from '../src/assembler';
 import { Bits, b } from '../src/utils';
 import * as fs from "fs";
 
 
-function assemble_expect(program: string, expected: bigint[]) {
+function assembleExpect(program: string, expected: bigint[]) {
     // convert to string to make it easier to see what bits are off.
     let result = assemble(program).map((instr) => Bits.toString(Bits(instr, 32)))
     expect(result, program).to.eql(expected.map(i => Bits.toString(Bits(i, 32))))
@@ -14,23 +14,23 @@ function assemble_expect(program: string, expected: bigint[]) {
 describe('Basic All Types', () => {
     it("R-type", () => {
         let code = `add x0, x1, x2`;
-        assemble_expect(code, [0x00208033n]);
+        assembleExpect(code, [0x00208033n]);
     
         code = `sub x3, x4, x5`;
-        assemble_expect(code, [0x405201b3n]);
+        assembleExpect(code, [0x405201b3n]);
     })
 
     it("I-type", () => {
         let code = `slli x6, x7, 8`;
-        assemble_expect(code, [0x00839313n]);
+        assembleExpect(code, [0x00839313n]);
     
         code = `ori x8, x9, -9`;
-        assemble_expect(code, [0xff74e413n]);
+        assembleExpect(code, [0xff74e413n]);
     })
 
     it("IS-type", () => {
         let code = `srai x5, x6, 2`;
-        assemble_expect(code, [0x40235293n]);
+        assembleExpect(code, [0x40235293n]);
     })
 
     it("SB-type", () => {
@@ -38,10 +38,10 @@ describe('Basic All Types', () => {
             beq x11, x12, next
             next:
         `;
-        assemble_expect(code, [0x00c58263n]);
+        assembleExpect(code, [0x00c58263n]);
 
         code = `prev: bge x13, x14, prev`;
-        assemble_expect(code, [0x00e6d063n]);
+        assembleExpect(code, [0x00e6d063n]);
     })
 
     it("UJ-type", () => {
@@ -49,61 +49,61 @@ describe('Basic All Types', () => {
             jal x15, next
             next:
         `;
-        assemble_expect(code, [0x004007efn]);
+        assembleExpect(code, [0x004007efn]);
 
         code = `
             jal next
             next:
         `;
-        assemble_expect(code, [0x004000efn]);
+        assembleExpect(code, [0x004000efn]);
 
         code = `
             prev:
             j prev
         `;
-        assemble_expect(code, [0x0000006fn]);
+        assembleExpect(code, [0x0000006fn]);
     })
 
     it("U-type", () => {
         let code = `lui x16, 100`;
-        assemble_expect(code, [0x00064837n]);
+        assembleExpect(code, [0x00064837n]);
     })
 
     it("Displacement I-type", () => {
         let code = `lb x1, 3(x2)`;
-        assemble_expect(code, [0x00310083n]);
+        assembleExpect(code, [0x00310083n]);
     
         code = `jalr x1, 1(x2)`;
-        assemble_expect(code, [0x001100e7n]);
+        assembleExpect(code, [0x001100e7n]);
     })
 
     it("Store S-type", () => {
         let code = `sh x1, 3(x2)`;
-        assemble_expect(code, [0x001111a3n]);
+        assembleExpect(code, [0x001111a3n]);
     })
 
     it("Pseudo Instructions", () => {
         let code = `mv s0, s5`
-        assemble_expect(code, [0x000a8413n]);
+        assembleExpect(code, [0x000a8413n]);
 
         code = `li a0, 200`
-        assemble_expect(code, [0x0c800513n]);
+        assembleExpect(code, [0x0c800513n]);
     })
 })
 
 describe("Registers", () => {
     it("Register Names", () => {
         let code = `or zero, x0, x31`;
-        assemble_expect(code, [0x01f06033n]);
+        assembleExpect(code, [0x01f06033n]);
     
         code = `xor ra, s0, s11`;
-        assemble_expect(code, [0x01b440b3n]);
+        assembleExpect(code, [0x01b440b3n]);
     
         code = `sll t0, t2, t6`;
-        assemble_expect(code, [0x01f392b3n]);
+        assembleExpect(code, [0x01f392b3n]);
     
         code = `sra a0, a1, a7`;
-        assemble_expect(code, [0x4115d533n]);
+        assembleExpect(code, [0x4115d533n]);
     })
 })
 
@@ -111,39 +111,39 @@ describe("Registers", () => {
 describe('Numbers', () => {
     it("0", () => {
         let code = `andi x1, x2, 0`;
-        assemble_expect(code, [0x00017093n]);
+        assembleExpect(code, [0x00017093n]);
     
         code = `lw x1, -0(zero)`;
-        assemble_expect(code, [0x00002083n]);
+        assembleExpect(code, [0x00002083n]);
     
         code = `andi x1, x2, +0`;
-        assemble_expect(code, [0x00017093n]);
+        assembleExpect(code, [0x00017093n]);
     })
 
     it("Decimal", () => {
         let code = `andi x1, x2, -3`;
-        assemble_expect(code, [0xffd17093n]);
+        assembleExpect(code, [0xffd17093n]);
     
         code = `andi x1, x2, 3`;
-        assemble_expect(code, [0x00317093n]);
+        assembleExpect(code, [0x00317093n]);
 
         code = `andi x1, x2, -2048`;
-        assemble_expect(code, [0x80017093n]);
+        assembleExpect(code, [0x80017093n]);
     })
 
     it("Hex", () => {
         let code = `sw x1, 0xA2(zero)`;
-        assemble_expect(code, [0x0a102123n]);
+        assembleExpect(code, [0x0a102123n]);
 
         code = `sw x1, 0Xa2(zero)`;
-        assemble_expect(code, [0x0a102123n]);
+        assembleExpect(code, [0x0a102123n]);
     })
 
     it("Binary", () => {
         let code = `lui x1, 0b10`;
-        assemble_expect(code, [0x000020b7n]);
+        assembleExpect(code, [0x000020b7n]);
         code = `lui x1, 0B10`;
-        assemble_expect(code, [0x000020b7n]);
+        assembleExpect(code, [0x000020b7n]);
     })
 })
 
@@ -159,7 +159,7 @@ describe('Formatting', () => {
             sw   x2 ,  8  (  x1  )
 
             `;
-        assemble_expect(code, [
+        assembleExpect(code, [
             0x000000b7n,
             0x00108093n,
             0x0040a103n,
@@ -169,10 +169,10 @@ describe('Formatting', () => {
 
     it('Case', () => {
         let code = `AND x1, t2, ra`;
-        assemble_expect(code, [0x0013f0b3n]);
+        assembleExpect(code, [0x0013f0b3n]);
     
         code = `aNd x1, t2, ra`;
-        assemble_expect(code, [0x0013f0b3n]);
+        assembleExpect(code, [0x0013f0b3n]);
     })
 })
 
@@ -187,7 +187,7 @@ describe("Line Info", () => {
 
             sw   x2 ,  8  (  x1  )
             `;
-        expect(assemble_keep_line_info(code), code).to.eql([
+        expect(assembleKeepLineInfo(code), code).to.eql([
             [2, 0x000000b7n],
             [3, 0x00108093n],
             [5, 0x0040a103n],
@@ -206,7 +206,7 @@ describe('Labels', () => {
             jal label3
             label4:
         `;
-        assemble_expect(code, [
+        assembleExpect(code, [
             0x000000efn,
             0x00000463n,
             0xffdff0efn,

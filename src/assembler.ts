@@ -41,7 +41,7 @@ function ruleMatch(rule: Rule, instr: AsmInstr) {
            instr.args.every((arg, i) => arg.type == rule.signature[i])
 }
 
-const instr_rules: Rule[]  = [
+const instrRules: Rule[]  = [
     {
         instructions: ["add", "sub", "and", "or", "xor", "sll", "sra", "srl", "slt", "sltu"],
         format: "basic",
@@ -134,21 +134,21 @@ function parse(program: string): AsmStatement[] {
 
 /**
  * Assembles a RISC-V assembly program.
- * Returns a list of [line_num, machine_code_instruction] tuples, where line_num is the 1 indexed line in the string.
+ * Returns a list of [lineNum, machineCodeInstruction] tuples, where lineNum is the 1 indexed line in the string.
  */
-export function assemble_keep_line_info(program: string): [number, bigint][] {
+export function assembleKeepLineInfo(program: string): [number, bigint][] {
     let parsed = parse(program)
 
     let labels: Record<string, number> = {}
     let instructions: Instr[] = [];
-    let machine_code: [number, bigint][] = []
+    let machineCode: [number, bigint][] = []
 
     // Pass 1, read labels, convert AST into Instruction types
     for (let instr of parsed) {
         if (instr.type == "label") {
             labels[instr.label] = instructions.length // Point to next instruction
         } else {
-            let matchingRule = instr_rules.find(r => ruleMatch(r, instr as AsmInstr))
+            let matchingRule = instrRules.find(r => ruleMatch(r, instr as AsmInstr))
             if (matchingRule) {
                 let newInstr = matchingRule.conv(instr.op.toLowerCase(), instr.args.map((a) => a.value), instr.line)
                 instructions.push(newInstr)
@@ -159,16 +159,16 @@ export function assemble_keep_line_info(program: string): [number, bigint][] {
     }
 
     // Pass 2, actually assemble the assembly
-    for (let [instr_num, instr] of instructions.entries()) {
+    for (let [instrNum, instr] of instructions.entries()) {
         try {
-            var machine_code_instr = assemble_instr(instr_num, instr, labels)
+            var machineCodeInstr = assembleInstr(instrNum, instr, labels)
         } catch (e: any) {
             throw new AssemblerError(e.message, program, instr.line)
         }
-        machine_code.push([instr.line, Bits.toInt(machine_code_instr)])
+        machineCode.push([instr.line, Bits.toInt(machineCodeInstr)])
     }
 
-    return machine_code
+    return machineCode
 }
 
 /**
@@ -176,15 +176,15 @@ export function assemble_keep_line_info(program: string): [number, bigint][] {
  * Returns a list of bigints representing the machine code
  */
  export function assemble(program: string): bigint[] {
-     return assemble_keep_line_info(program).map(([line, instr]) => instr)
+     return assembleKeepLineInfo(program).map(([line, instr]) => instr)
  }
 
 /** Assembles a single instruction. */
-function assemble_instr(instr_num: number, instr: Instr, labels: Record<string, number>): Bits {
+function assembleInstr(instrNum: number, instr: Instr, labels: Record<string, number>): Bits {
     let temp: any = {...instr} // Copy instr into an any so we can store Bits and BigInts in it.
     if ("imm" in instr && typeof instr.imm == "string") {
         if (!(instr.imm in labels)) throw Error(`Unknown label "${temp.imm}"`)
-        temp.imm = (labels[instr.imm] - instr_num) * 4;
+        temp.imm = (labels[instr.imm] - instrNum) * 4;
     }
     for (let field of ["rd", "rs1", "rs2"]) {
         if (field in temp) {

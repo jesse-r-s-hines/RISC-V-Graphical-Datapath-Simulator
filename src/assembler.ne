@@ -27,14 +27,14 @@ program -> line {% id %} | line %newline program {% ([l, _, p]) => [...l, ...p] 
 # split labels out as a separate "line"
 line -> (%identifier ":"):? instr:? %comment:? {% ([l, i, c]) => [l ? {type: "label", label: l[0].text} : null, i].filter(s => s) %}
 
-instr -> (basic_instr | displacement_instr)
+instr -> (basicInstr | displacementInstr)
          # We kept op as a token, now we get line number and convert to a string
          {% ([[instr]]) => ({...instr, op: instr.op.text, line: instr.op.line}) %} 
 
-basic_instr -> op (arg ","):* arg
+basicInstr -> op (arg ","):* arg
     {% ([op, args, last]) => ({type: "basic", op: op, args: [...args.map(([a, _]) => a), last]}) %}
 
-displacement_instr -> op arg "," arg "(" arg ")"
+displacementInstr -> op arg "," arg "(" arg ")"
     {% ([op, regA, , disp, , regB, ]) => ({type: "displacement", op: op, args: [regA, disp, regB]}) %}
 
 op -> %identifier {% ([op]) => op %} # keep op as a token so we can get line number from it.
