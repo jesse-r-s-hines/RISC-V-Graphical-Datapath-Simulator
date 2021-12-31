@@ -517,7 +517,7 @@ export class VisualSim {
         }
         try {
             var assembled = assemble_keep_line_info(code)
-        } catch (e) {
+        } catch (e: any) {
             this.error(`Couldn't parse code:\n${e.message}`)
             return false
         }
@@ -531,7 +531,7 @@ export class VisualSim {
         try {
             // split("") equals [""] for some reason
             var mem = memStr.split("\n").filter(s => s).map(s => parseInt(s, memRadix, memWordSize));
-        } catch (e) {
+        } catch (e: any) {
             this.error(`Couldn't parse data memory:\n${e.message}`)
             return false
         }
@@ -543,7 +543,7 @@ export class VisualSim {
             for (let [i, s] of regStrs.entries()) {
                 if (s) regs[i] = parseInt(s, regRadix, 32)
             }
-        } catch (e) {
+        } catch (e: any) {
             this.error(`Couldn't parse registers:\n${e.message}`)
             return false
         }
@@ -747,7 +747,7 @@ export class VisualSim {
             try {
                 let canContinue = this.sim.tick()
                 if (!canContinue) this.state = "done"
-            } catch (e) { // this shouldn't happen.
+            } catch (e: any) { // this shouldn't happen.
                 this.state = "done"
                 this.error(`Error in simulation:\n${e.message}`)
                 console.error(e)
