@@ -557,7 +557,10 @@ export class VisualSim {
         })))
 
         this.examples.forEach((example) => $("#examples .dropdown-menu").append(
-            $(`<li><a class="dropdown-item" href="#" data-example-name="${example.name}">${example.name}</a></li>`)
+            $(`<li>
+                <a class="dropdown-item" href="#" data-example-name="${example.name}"
+                   data-bs-toggle="tooltip" title="${example.description}">${example.name}</a>
+               </li>`)
         ))
     }
 
