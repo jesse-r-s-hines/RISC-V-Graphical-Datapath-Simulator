@@ -61,5 +61,3 @@ sort:
     jalr x0, 0(ra) # procedure return.
 
 quit:
-    # li a0, 10 # ends the program with status code 0
-    # ecall
