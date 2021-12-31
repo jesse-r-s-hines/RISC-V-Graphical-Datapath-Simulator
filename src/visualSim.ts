@@ -506,9 +506,10 @@ export class VisualSim {
 
         $("#dataMem-radix, #dataMem-word-size, #regFile-radix").on("change", (event) => this.updateEditorsAndViews())
 
-        $("#examples").on("click", ".dropdown-item", (event) =>
+        $("#examples").on("click", ".dropdown-item", (event) => {
             this.loadExample(event.target.dataset.exampleName)
-        )
+            event.preventDefault()
+        })
 
         $("#play").on("click", (event) => this.play())
         $("#pause").on("click", (event) => this.pause())
