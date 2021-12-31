@@ -120,7 +120,7 @@ function parse(program: string): AsmStatement[] {
 
     try {
         parser.feed(program);
-    } catch(e) {
+    } catch(e: any) {
         throw new AssemblerError("Syntax error", program, e.token.line, e.token.col)
     }
     if (parser.results.length < 1) {
@@ -162,7 +162,7 @@ export function assemble_keep_line_info(program: string): [number, bigint][] {
     for (let [instr_num, instr] of instructions.entries()) {
         try {
             var machine_code_instr = assemble_instr(instr_num, instr, labels)
-        } catch (e) {
+        } catch (e: any) {
             throw new AssemblerError(e.message, program, instr.line)
         }
         machine_code.push([instr.line, Bits.toInt(machine_code_instr)])
