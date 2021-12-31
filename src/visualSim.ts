@@ -92,6 +92,23 @@ interface DataPathElem {
 }
 
 /**
+ * Stores a snapshot of code, register, and memory settings
+ */
+interface Snapshot {
+    code?: string,
+    memory?: string,
+    registers?: Record<number, string>
+    dataMemRadix?: Radix,
+    dataMemWordSize?: number,
+    regFileRadix?: Radix,
+}
+interface Example extends Snapshot {
+    name: string,
+    description: string,
+    url?: string,
+}
+
+/**
  * # SVG
  * 
  * The datapath is rendered in an SVG file. Each wire and component of the simulator is mapped to an ID
@@ -129,6 +146,8 @@ export class VisualSim {
     private sim: Simulator
     private state: State = "unstarted"
     private playing: number = 0; // Timer handle to the play loop, or 0 if not playing.
+
+    private examples: Example[] = []
 
     /** All the elements in the datapath and how to render them, tooltips, etc. */
     private static readonly datpathElements: Record<string, DataPathElem> = {
@@ -403,6 +422,27 @@ export class VisualSim {
         [["10"], "PC + 4"],
     ])
 
+    private static readonly examples: Example[] = [
+        {
+            name: "Blank",
+            description: "Clear the code, registers, and memory",
+        }, {
+            name: "Bubble Sort",
+            description: "The bubble sort algorithm",
+            url: require("../assets/examples/bubbleSort.s"),
+            dataMemRadix: "signed", regFileRadix: "signed",
+            memory: [7, 3, 1, 5, 1, 5, 10, 0, -5, -2].join("\n"),
+            registers: {10: "0", 11: "10"},
+        }, {
+            name: "Selection Sort",
+            description: "The selection sort algorithm",
+            url: require("../assets/examples/selectionSort.s"),
+            dataMemRadix: "signed", regFileRadix: "signed",
+            memory: [7, 3, 1, 5, 1, 5, 10, 0, -5, -2].join("\n"),
+            registers: {10: "0", 11: "10"},
+        }
+    ]
+
     constructor() {
         this.sim = new Simulator()
 
@@ -433,6 +473,7 @@ export class VisualSim {
         $(this.regFilePanel).find(".editor input").eq(0).prop("disabled", true) // disable x0
 
         this.setupEvents()
+        this.setupExamples()
         this.setupDatapath()
 
         this.update()
@@ -464,6 +505,10 @@ export class VisualSim {
         $(this.regFilePanel).on("change", "input", (event) => this.updateEditorsAndViews())
 
         $("#dataMem-radix, #dataMem-word-size, #regFile-radix").on("change", (event) => this.updateEditorsAndViews())
+
+        $("#examples").on("click", ".dropdown-item", (event) =>
+            this.loadExample(event.target.dataset.exampleName)
+        )
 
         $("#play").on("click", (event) => this.play())
         $("#pause").on("click", (event) => this.pause())
@@ -502,6 +547,17 @@ export class VisualSim {
             if (config.showSubElemsByValue && !elem.find("[data-show-on-value]").length)
                 throw Error(`#${id} has showSubElemsByValue defined, but no "[data-show-on-value]" elements`);
         }
+    }
+
+    private async setupExamples() {
+        this.examples = await Promise.all(VisualSim.examples.map(async example => ({
+            ...example,
+            code: example.url ? await (await fetch(example.url)).text() : example.code
+        })))
+
+        this.examples.forEach((example) => $("#examples .dropdown-menu").append(
+            $(`<li><a class="dropdown-item" href="#" data-example-name="${example.name}">${example.name}</a></li>`)
+        ))
     }
 
     /**
@@ -770,5 +826,30 @@ export class VisualSim {
         this.dataMemEditor.refresh()
 
         this.update()
+    }
+
+    /** Clears all code, registers, and data back to default */
+    public reset(snapshot: Snapshot = {}) {
+        this.restart()
+
+        this.instrMemEditor.setValue(snapshot.code ?? "")
+        this.dataMemEditor.setValue(snapshot.memory ?? "")
+
+        $("#dataMem-radix").val(snapshot.dataMemRadix ?? "hex")
+        $("#dataMem-word-size").val(snapshot.dataMemWordSize ?? 32)
+        $("#regFile-radix").val(snapshot.regFileRadix ?? "hex")
+
+        let registerInputs = $(this.regFilePanel).find(".editor input")
+        registerInputs.each((i, input) => {
+            $(input).val(snapshot.registers?.[i] ?? "")
+        })
+
+        this.update()
+    }
+
+    /** Loads an example by name */
+    public loadExample(name: string) {
+        let example = this.examples.find(e => e.name === name)!
+        this.reset(example)
     }
 }
