@@ -1,3 +1,5 @@
+# The bubble sort algorithm
+
 main:
     # li a0, 0 # Base of array
     # li a1, 10 # Length of array

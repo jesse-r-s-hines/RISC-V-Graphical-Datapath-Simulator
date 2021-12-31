@@ -1,5 +1,5 @@
-# A function that implements the selection sort algorithm.
-# Based on https://github.com/cgyurgyik/riscv-assembly/blob/master/selection_sort.s
+# The selection sort algorithm. Based on
+# https://github.com/cgyurgyik/riscv-assembly
 
 MAIN:
     # li a0, 0 # Base of array
@@ -20,8 +20,10 @@ addi t2, x0, 0 # min_index
 
 addi s0, a1, 0 # store n.
 addi a1, a1, -1 # n-1
+
+# (while i < (n-1))
 UNSORTED_ARRAY_BOUNDARY_LOOP:
-beq t0, a1, END_UNSORTED_ARRAY_BOUNDARY_LOOP # (while i < (n-1))
+beq t0, a1, END_UNSORTED_ARRAY_BOUNDARY_LOOP
 
 addi t2, t0, 0   # min_index = i
 addi t1, t0, 1   # j = i + 1
@@ -37,7 +39,8 @@ slli t5, t2, 2  # min_index * sizeof(int)
 add t6, a0, t5  # arr[min_index]
 lw t3, 0(t6)    # Load arr[min_index] 
 
-blt t3, t4, MIN_REMAINS_SAME # if (arr[min_index] < arr[j]), don't change the min.
+# if (arr[min_index] < arr[j]), don't change the min.
+blt t3, t4, MIN_REMAINS_SAME
 addi t2, t1,0   # min_index = j
 MIN_REMAINS_SAME:
 
