@@ -53,7 +53,7 @@ function parseInt(str: string, radix: Radix, bits: number): bigint {
     }
 
     if (radix == "hex") {
-        return "0x" + num.toString(16).padStart(Math.ceil(bits / 4), "0")
+        return "0x" + num.toString(16).toUpperCase().padStart(Math.ceil(bits / 4), "0")
     } else if (radix == "bin") {
         return "0b" + num.toString(2).padStart(bits, "0")
     } else if (radix == "signed") {

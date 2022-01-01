@@ -139,11 +139,11 @@ export class Memory {
      */
     toString(wordSize = 8, hex = true) {
         let addrSize = (this.size - 1n).toString(16).length // hex chars needed.
-        let addrStr = (addr: bigint) => `0x${addr.toString(16).padStart(addrSize, "0")}`
+        let addrStr = (addr: bigint) => `0x${addr.toString(16).toUpperCase().padStart(addrSize, "0")}`
 
         let rows = []
         for (let [addr, val] of this.dump(wordSize)) {
-            let valStr = hex ? `0x${val.toString(16).padStart(wordSize*2, "0")}` : val.toString()
+            let valStr = hex ? `0x${val.toString(16).toUpperCase().padStart(wordSize*2, "0")}` : val.toString()
             if (typeof addr == "bigint") {
                 rows.push(`${addrStr(addr)}: ${valStr}`)
             } else { // skipped section

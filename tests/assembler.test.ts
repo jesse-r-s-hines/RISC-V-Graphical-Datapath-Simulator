@@ -17,7 +17,7 @@ describe('Basic All Types', () => {
         assembleExpect(code, [0x00208033n]);
     
         code = `sub x3, x4, x5`;
-        assembleExpect(code, [0x405201b3n]);
+        assembleExpect(code, [0x405201B3n]);
     })
 
     it("I-type", () => {
@@ -25,7 +25,7 @@ describe('Basic All Types', () => {
         assembleExpect(code, [0x00839313n]);
     
         code = `ori x8, x9, -9`;
-        assembleExpect(code, [0xff74e413n]);
+        assembleExpect(code, [0xFF74E413n]);
     })
 
     it("IS-type", () => {
@@ -38,10 +38,10 @@ describe('Basic All Types', () => {
             beq x11, x12, next
             next:
         `;
-        assembleExpect(code, [0x00c58263n]);
+        assembleExpect(code, [0x00C58263n]);
 
         code = `prev: bge x13, x14, prev`;
-        assembleExpect(code, [0x00e6d063n]);
+        assembleExpect(code, [0x00E6D063n]);
     })
 
     it("UJ-type", () => {
@@ -49,19 +49,19 @@ describe('Basic All Types', () => {
             jal x15, next
             next:
         `;
-        assembleExpect(code, [0x004007efn]);
+        assembleExpect(code, [0x004007EFn]);
 
         code = `
             jal next
             next:
         `;
-        assembleExpect(code, [0x004000efn]);
+        assembleExpect(code, [0x004000EFn]);
 
         code = `
             prev:
             j prev
         `;
-        assembleExpect(code, [0x0000006fn]);
+        assembleExpect(code, [0x0000006Fn]);
     })
 
     it("U-type", () => {
@@ -74,36 +74,36 @@ describe('Basic All Types', () => {
         assembleExpect(code, [0x00310083n]);
     
         code = `jalr x1, 1(x2)`;
-        assembleExpect(code, [0x001100e7n]);
+        assembleExpect(code, [0x001100E7n]);
     })
 
     it("Store S-type", () => {
         let code = `sh x1, 3(x2)`;
-        assembleExpect(code, [0x001111a3n]);
+        assembleExpect(code, [0x001111A3n]);
     })
 
     it("Pseudo Instructions", () => {
         let code = `mv s0, s5`
-        assembleExpect(code, [0x000a8413n]);
+        assembleExpect(code, [0x000A8413n]);
 
         code = `li a0, 200`
-        assembleExpect(code, [0x0c800513n]);
+        assembleExpect(code, [0x0C800513n]);
     })
 })
 
 describe("Registers", () => {
     it("Register Names", () => {
         let code = `or zero, x0, x31`;
-        assembleExpect(code, [0x01f06033n]);
+        assembleExpect(code, [0x01F06033n]);
     
         code = `xor ra, s0, s11`;
-        assembleExpect(code, [0x01b440b3n]);
+        assembleExpect(code, [0x01B440B3n]);
     
         code = `sll t0, t2, t6`;
-        assembleExpect(code, [0x01f392b3n]);
+        assembleExpect(code, [0x01F392B3n]);
     
         code = `sra a0, a1, a7`;
-        assembleExpect(code, [0x4115d533n]);
+        assembleExpect(code, [0x4115D533n]);
     })
 })
 
@@ -122,7 +122,7 @@ describe('Numbers', () => {
 
     it("Decimal", () => {
         let code = `andi x1, x2, -3`;
-        assembleExpect(code, [0xffd17093n]);
+        assembleExpect(code, [0xFFD17093n]);
     
         code = `andi x1, x2, 3`;
         assembleExpect(code, [0x00317093n]);
@@ -133,17 +133,17 @@ describe('Numbers', () => {
 
     it("Hex", () => {
         let code = `sw x1, 0xA2(zero)`;
-        assembleExpect(code, [0x0a102123n]);
+        assembleExpect(code, [0x0A102123n]);
 
         code = `sw x1, 0Xa2(zero)`;
-        assembleExpect(code, [0x0a102123n]);
+        assembleExpect(code, [0x0A102123n]);
     })
 
     it("Binary", () => {
         let code = `lui x1, 0b10`;
-        assembleExpect(code, [0x000020b7n]);
+        assembleExpect(code, [0x000020B7n]);
         code = `lui x1, 0B10`;
-        assembleExpect(code, [0x000020b7n]);
+        assembleExpect(code, [0x000020B7n]);
     })
 })
 
@@ -160,19 +160,19 @@ describe('Formatting', () => {
 
             `;
         assembleExpect(code, [
-            0x000000b7n,
+            0x000000B7n,
             0x00108093n,
-            0x0040a103n,
-            0x0020a423n,
+            0x0040A103n,
+            0x0020A423n,
         ])
     })
 
     it('Case', () => {
         let code = `AND x1, t2, ra`;
-        assembleExpect(code, [0x0013f0b3n]);
+        assembleExpect(code, [0x0013F0B3n]);
     
         code = `aNd x1, t2, ra`;
-        assembleExpect(code, [0x0013f0b3n]);
+        assembleExpect(code, [0x0013F0B3n]);
     })
 })
 
@@ -188,10 +188,10 @@ describe("Line Info", () => {
             sw   x2 ,  8  (  x1  )
             `;
         expect(assembleKeepLineInfo(code), code).to.eql([
-            [2, 0x000000b7n],
+            [2, 0x000000B7n],
             [3, 0x00108093n],
-            [5, 0x0040a103n],
-            [8, 0x0020a423n],
+            [5, 0x0040A103n],
+            [8, 0x0020A423n],
         ])
     })
 })
@@ -207,9 +207,9 @@ describe('Labels', () => {
             label4:
         `;
         assembleExpect(code, [
-            0x000000efn,
+            0x000000EFn,
             0x00000463n,
-            0xffdff0efn,
+            0xFFDFF0EFn,
         ]);
     });
 })

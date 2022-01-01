@@ -49,7 +49,7 @@ export class Simulator {
         this.writeSrcMux = new Comp.Mux(3)
 
         this.pc.data = Simulator.textStart
-        this.setRegisters({2: 0xbffffff0n, 3: 0x10008000n}) // sp and gp
+        this.setRegisters({2: 0xBFFFFFF0n, 3: 0x10008000n}) // sp and gp
 
         this.setCode(code) // initialize code memory
         this.setRegisters(regs) // set custom registers

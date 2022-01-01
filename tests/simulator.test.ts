@@ -25,8 +25,8 @@ function testBranch(branch: string, regs: Record<number, bigint> = {}, taken: bo
 
 describe("Misc", () => {
     it('sp and gp initialization', () => {
-        testCode(``, {}, {2: 0xbfff_fff0n, 3: 0x1000_8000n})
-        testCode(``, {3: 42n}, {2: 0xbfff_fff0n, 3: 42n})
+        testCode(``, {}, {2: 0xBFFF_fff0n, 3: 0x1000_8000n})
+        testCode(``, {3: 42n}, {2: 0xBFFF_fff0n, 3: 42n})
     })
 
     it('Empty', () => {
