@@ -1,14 +1,14 @@
-import {Simulator} from "../simulator/simulator";
-import {Bits, fromTwosComplement, toTwosComplement} from "../utils/bits"
+import { Simulator } from "../simulator/simulator";
+import { Bits, fromTwosComplement, toTwosComplement } from "../utils/bits"
 import { TruthTable } from "../utils/truthTable"
-import {registerNames} from "../simulator/constants"
-import {assemble, assembleKeepLineInfo} from "../assembler/assembler"
+import { registerNames } from "../simulator/constants"
+import { assemble, assembleKeepLineInfo } from "../assembler/assembler"
 
 import CodeMirror from "codemirror";
 import "codemirror/addon/display/placeholder"
 import "codemirror/lib/codemirror.css"
 import "./risc-mode"
-import tippy, {followCursor, Instance as Tippy} from 'tippy.js';
+import tippy, { followCursor, Instance as Tippy } from 'tippy.js';
 import "tippy.js/dist/tippy.css";
 import toastr from "toastr";
 

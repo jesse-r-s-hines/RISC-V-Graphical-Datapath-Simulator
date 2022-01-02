@@ -1,6 +1,6 @@
 import { Parser, Grammar } from 'nearley';
 import * as moo from 'moo';
-import {Bit, Bits, b} from "../utils/bits"
+import { Bit, Bits, b } from "../utils/bits"
 import { registers, opcodes } from "../simulator/constants";
 import grammar from './assembler.ne';
 

@@ -4,7 +4,7 @@ import "@fortawesome/fontawesome-free/css/all.css"
 import toastr from "toastr";
 import "toastr/build/toastr.css"
 
-import {VisualSim} from "./ui/visualSim";
+import { VisualSim } from "./ui/visualSim";
 import datapath from "../assets/datapath.svg" // import path to the svg
 
 // This needs to be imported last so that my css overrides any defaults
