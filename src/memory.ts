@@ -25,7 +25,7 @@ export class Memory {
      */
     public load(addr: bigint, bytes: number): bigint {
         let bytesB = BigInt(bytes) // Convert to bigint so we can add it to bigints
-        if (addr < 0n || (addr + bytesB) >= this.size) throw Error(`Memory address ${addr} out of range for ${bytes} bytes.`)
+        if (addr < 0n || (addr + bytesB) > this.size) throw Error(`Memory address ${addr} out of range for ${bytes} bytes.`)
 
         let val = 0n
         for (let i = bytesB - 1n; i >= 0; i--) { // Backwards because little-endian
@@ -44,7 +44,7 @@ export class Memory {
      */
     public store(addr: bigint, bytes: number, val: bigint) {
         let bytesB = BigInt(bytes) // Convert to bigint so we can add it to bigints
-        if (addr < 0n || (addr + bytesB) >= this.size) throw Error(`Memory address ${addr} out of range for ${bytes} bytes.`)
+        if (addr < 0n || (addr + bytesB) > this.size) throw Error(`Memory address ${addr} out of range for ${bytes} bytes.`)
         if (val < 0n || val >= 2n ** (8n * bytesB))
             throw Error(`${val} is invalid. Expected a positive integer that fits in ${bytes} bytes.`)
         

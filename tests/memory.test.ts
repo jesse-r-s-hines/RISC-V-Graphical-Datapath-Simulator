@@ -76,11 +76,11 @@ describe("Memory", () => {
         expect(() => mem.storeByte(2n**16n, 1n)).to.throw("out of range")
         expect(() => mem.loadByte(2n**16n)).to.throw("out of range")
     
-        expect(() => mem.storeDoubleWord(2n**16n - 8n, 1n)).to.throw("out of range")
-        expect(() => mem.loadDoubleWord(2n**16n - 8n)).to.throw("out of range")
-    
-        expect(() => mem.storeDoubleWord(2n**16n - 9n, 1n)).not.to.throw()
-        expect(() => mem.loadDoubleWord(2n**16n - 9n)).not.to.throw()
+        expect(() => mem.storeDoubleWord(2n**16n - 7n, 1n)).to.throw("out of range")
+        expect(() => mem.loadDoubleWord(2n**16n - 7n)).to.throw("out of range")
+
+        expect(() => mem.storeDoubleWord(2n**16n - 8n, 1n)).to.not.throw()
+        expect(() => mem.loadDoubleWord(2n**16n - 8n)).to.not.throw()
     });
     
     it('Test Invalid Value', () => {
@@ -151,6 +151,27 @@ describe("Memory", () => {
             [[0x0010n, 0x00F8n], 0n],
             [0x00FCn, 0x11_22_00_00n],
             [[0x0100n, 0xFFFCn], 0n],
+        ])
+
+        mem = new Memory(2n**16n)
+        mem.storeWord(0x0000n, 0x11_22_33_44n)
+        mem.storeWord(0xFFFCn, 0x55_66_77_88n)
+        expect([...mem.dump(4)]).to.eql([
+            [0x0000n, 0x11_22_33_44n],
+            [[0x0004n, 0xFFF8n], 0n],
+            [0xFFFCn, 0x55_66_77_88n],
+        ])
+
+        expect([...mem.dump(1)]).to.eql([
+            [0x0000n, 0x44n],
+            [0x0001n, 0x33n],
+            [0x0002n, 0x22n],
+            [0x0003n, 0x11n],
+            [[0x0004n, 0xFFFBn], 0n],
+            [0xFFFCn, 0x88n],
+            [0xFFFDn, 0x77n],
+            [0xFFFEn, 0x66n],
+            [0xFFFFn, 0x55n],
         ])
     })
     
