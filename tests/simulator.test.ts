@@ -1,7 +1,7 @@
 import { expect } from "chai";
-import { Simulator } from "../src/simulator";
-import { Bits, fromTwosComplement, toTwosComplement } from "../src/utils";
-import { assemble } from "../src/assembler"
+import { Simulator } from "../src/simulator/simulator";
+import { Bits, fromTwosComplement, toTwosComplement } from "../src/utils/bits";
+import { assemble } from "../src/assembler/assembler"
 import * as fs from "fs";
 
 function testCode(code: string, regs: Record<number, bigint> = {}, expected: Record<number, bigint> = {}) {

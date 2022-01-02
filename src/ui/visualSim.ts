@@ -1,7 +1,8 @@
-import {Simulator} from "./simulator";
-import {Bits, TruthTable, fromTwosComplement, toTwosComplement} from "./utils"
-import {registerNames} from "./constants"
-import {assemble, assembleKeepLineInfo} from "./assembler"
+import {Simulator} from "../simulator/simulator";
+import {Bits, fromTwosComplement, toTwosComplement} from "../utils/bits"
+import { TruthTable } from "../utils/truthTable"
+import {registerNames} from "../simulator/constants"
+import {assemble, assembleKeepLineInfo} from "../assembler/assembler"
 
 import CodeMirror from "codemirror";
 import "codemirror/addon/display/placeholder"
@@ -429,14 +430,14 @@ export class VisualSim {
         }, {
             name: "Bubble Sort",
             description: "The bubble sort algorithm",
-            url: require("../assets/examples/bubbleSort.s"),
+            url: require("../../assets/examples/bubbleSort.s"),
             dataMemRadix: "signed", regFileRadix: "signed",
             memory: [7, 3, 1, 5, 1, 5, 10, 0, -5, -2].join("\n"),
             registers: {10: "0", 11: "10"},
         }, {
             name: "Selection Sort",
             description: "The selection sort algorithm",
-            url: require("../assets/examples/selectionSort.s"),
+            url: require("../../assets/examples/selectionSort.s"),
             dataMemRadix: "signed", regFileRadix: "signed",
             memory: [7, 3, 1, 5, 1, 5, 10, 0, -5, -2].join("\n"),
             registers: {10: "0", 11: "10"},

@@ -1,5 +1,6 @@
 import { expect } from 'chai';
-import { Bits, b, TruthTable, fromTwosComplement, toTwosComplement } from '../src/utils';
+import { Bits, b, fromTwosComplement, toTwosComplement } from '../src/utils/bits';
+import {TruthTable} from "../src/utils/truthTable"
 
 describe("Bits", () => {
     it('From array', () => {

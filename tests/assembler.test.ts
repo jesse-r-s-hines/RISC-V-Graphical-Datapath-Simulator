@@ -1,6 +1,6 @@
 import { expect } from 'chai';
-import { assemble, assembleKeepLineInfo } from '../src/assembler';
-import { Bits, b } from '../src/utils';
+import { assemble, assembleKeepLineInfo } from '../src/assembler/assembler';
+import { Bits, b } from '../src/utils/bits';
 import * as fs from "fs";
 
 
