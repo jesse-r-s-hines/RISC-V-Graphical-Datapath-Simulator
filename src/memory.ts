@@ -103,7 +103,7 @@ export class Memory {
     /**
      * Returns an iterator over the memory. It returns a sequence of [address, value] tuples, except where
      * there are large spans of unused memory, then it includes a [[start, end], 0n] tuple where [start, end]
-     * is and incluse range of word-aligned addresses that are unused.
+     * is an inclusive range of word-aligned addresses that are unused.
      * @param wordSize The number of bytes in each entry
      */
     *dump(wordSize: number = 8): Generator<[bigint|[bigint, bigint], bigint]> {

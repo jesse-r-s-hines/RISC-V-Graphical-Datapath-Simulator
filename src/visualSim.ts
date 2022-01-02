@@ -394,7 +394,7 @@ export class VisualSim {
         [["0010"], "Add"],
         [["0110"], "Sub"],
         [["0111"], "Set on less than"],
-        [["1111"], "Set on less than unsigned."],
+        [["1111"], "Set on less than unsigned"],
         [["1000"], "Shift left logical"],
         [["1001"], "Shift right logical"],
         [["1011"], "Shift right arithmetic"],
