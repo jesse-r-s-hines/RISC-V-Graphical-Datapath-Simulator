@@ -2,9 +2,9 @@ import { Bit, Bits, b, toTwosComplement } from "./utils"
 import * as Comp from "./components"
 
 export class Simulator {
-    public static readonly textStart = 0x0000_0000n // typically this would be 0x0001_0000 but lets use zero for simplicity.
+    public code: bigint[] = []; // The code loaded in the simulator
 
-    public codeLength: number = 0; // The number of instructions in the code
+    public static readonly textStart = 0x0000_0000n // typically this would be 0x0001_0000 but lets use zero for simplicity.
 
     // components
     public pc: Comp.PC
@@ -61,7 +61,7 @@ export class Simulator {
 
     /** Initialize instruction memory */
     setCode(code: bigint[]) {
-        this.codeLength = code.length
+        this.code = [...code]
         this.instrMem.data.storeArray(Simulator.textStart, 4, code)
     }
 
@@ -87,7 +87,7 @@ export class Simulator {
         // tick() will set it to the value set during the previous tick.
         this.pc.tick()
 
-        if ( (this.pc.data - Simulator.textStart) / 4n >= this.codeLength ) { // hit the end of the code
+        if ( (this.pc.data - Simulator.textStart) / 4n >= this.code.length ) { // hit the end of the code
             this.regFile.tick() // Write anything from last tick
             return false
         }
