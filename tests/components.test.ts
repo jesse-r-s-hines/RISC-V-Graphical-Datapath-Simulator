@@ -1,6 +1,6 @@
 import { expect } from 'chai';
-import * as Comps from '../src/simulator/components';
-import { Bits, b } from '../src/utils/bits';
+import * as Comps from 'simulator/components';
+import { Bits, b } from 'utils/bits';
 
 
 describe("Components", () => {

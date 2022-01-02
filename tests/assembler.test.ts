@@ -1,8 +1,6 @@
 import { expect } from 'chai';
-import { assemble, assembleKeepLineInfo } from '../src/assembler/assembler';
-import { Bits, b } from '../src/utils/bits';
-import * as fs from "fs";
-
+import { assemble, assembleKeepLineInfo } from 'assembler/assembler';
+import { Bits, b } from 'utils/bits';
 
 function assembleExpect(program: string, expected: bigint[]) {
     // convert to string to make it easier to see what bits are off.

@@ -1,8 +1,7 @@
 import { expect } from "chai";
-import { Simulator } from "../src/simulator/simulator";
-import { Bits, fromTwosComplement, toTwosComplement } from "../src/utils/bits";
-import { assemble } from "../src/assembler/assembler"
-import * as fs from "fs";
+import { Simulator } from "simulator/simulator";
+import { Bits, fromTwosComplement, toTwosComplement } from "utils/bits";
+import { assemble } from "assembler/assembler"
 
 function testCode(code: string, regs: Record<number, bigint> = {}, expected: Record<number, bigint> = {}) {
     for (let reg in regs) regs[reg] = toTwosComplement(regs[reg])

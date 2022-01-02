@@ -1,4 +1,4 @@
-import { Memory } from '../src/simulator/memory';
+import { Memory } from 'simulator/memory';
 import { expect } from 'chai';
 import dedent from 'ts-dedent';
 

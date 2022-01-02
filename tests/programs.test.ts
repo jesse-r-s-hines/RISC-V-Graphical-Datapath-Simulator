@@ -1,7 +1,7 @@
 import { expect } from "chai";
-import { Simulator } from "../src/simulator/simulator";
-import { Bits, fromTwosComplement, toTwosComplement } from "../src/utils/bits";
-import { assemble } from "../src/assembler/assembler"
+import { Simulator } from "simulator/simulator";
+import { Bits, fromTwosComplement, toTwosComplement } from "utils/bits";
+import { assemble } from "assembler/assembler"
 import * as fs from "fs";
 
 /**

@@ -61,6 +61,11 @@ module.exports = (env) => ({
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
+    modules: [path.resolve(__dirname, 'src'), 'node_modules'],
+    alias: {
+      assets: path.resolve(__dirname, 'assets'),
+      css: path.resolve(__dirname, 'css'),
+    },
   },
   output: {
     filename: '[name].bundle.js',

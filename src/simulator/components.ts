@@ -1,6 +1,6 @@
 import { Memory } from "./memory"
-import { Bit, Bits, b } from "../utils/bits"
-import { TruthTable } from "../utils/truthTable"
+import { Bit, Bits, b } from "utils/bits"
+import { TruthTable } from "utils/truthTable"
 
 export class PC {
     // inputs
