@@ -571,16 +571,18 @@ export class VisualSim {
     private start() {
         // Get memory, instructions, registers
         let code = this.instrMemEditor.getValue()
-        if (code == "") {
-            this.error("Please enter some code to run.")
-            return false
-        }
         try {
             var assembled = assembleKeepLineInfo(code)
         } catch (e: any) {
             this.error(`Couldn't parse code:\n${e.message}`)
             return false
         }
+
+        if (assembled.length === 0) {
+            this.error("Please enter some code to run.")
+            return false
+        }
+
         let lines = code.split("\n")
         let asmCode = assembled.map(([line, instr]) => lines[line - 1].trim())
         let machineCode = assembled.map(([line, instr]) => instr)
