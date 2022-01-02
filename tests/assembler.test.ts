@@ -214,6 +214,12 @@ describe('Labels', () => {
     });
 })
 
+describe("Empty", () => {
+    it("Empty", () => {
+        assembleExpect("", []);
+        assembleExpect("  \n  ", []);
+    });
+})
 
 it("Errors", () => {
     expect(() => assemble("jal notALabel")).to.throw('Unknown label "notALabel"');
