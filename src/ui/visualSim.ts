@@ -5,6 +5,8 @@ import { registerNames } from "simulator/constants"
 import { assemble, assembleKeepLineInfo } from "assembler/assembler"
 import { Radix, parseInt, intToStr } from "utils/radix"
 
+import { Example, examples } from "./examples";
+
 import CodeMirror from "codemirror";
 import "codemirror/addon/display/placeholder"
 import "codemirror/lib/codemirror.css"
@@ -43,22 +45,6 @@ interface DataPathElem {
     callback?: (visSim: VisualSim) => void, // arbitrary callback on each update.
 }
 
-/**
- * Stores a snapshot of code, register, and memory settings
- */
-interface Snapshot {
-    code?: string,
-    memory?: string,
-    registers?: Record<number, string>
-    dataMemRadix?: Radix,
-    dataMemWordSize?: number,
-    regFileRadix?: Radix,
-}
-interface Example extends Snapshot {
-    name: string,
-    description: string,
-    url?: string,
-}
 
 /**
  * # SVG
@@ -78,6 +64,7 @@ interface Example extends Snapshot {
  * ## Data attributes
  * - data-show-on-value -- Used in muxes to make a wire showing which input is being used. 
  */
+
 
 /** State the simulation is in. */
 type State = "unstarted" | "running" | "done"
@@ -374,29 +361,9 @@ export class VisualSim {
         [["10"], "PC + 4"],
     ])
 
-    private static readonly examples: Example[] = [
-        {
-            name: "Blank",
-            description: "Clear the code, registers, and memory",
-        }, {
-            name: "Bubble Sort",
-            description: "The bubble sort algorithm",
-            url: require("assets/examples/bubbleSort.s"),
-            dataMemRadix: "signed", regFileRadix: "signed",
-            memory: [7, 3, 1, 5, 1, 5, 10, 0, -5, -2].join("\n"),
-            registers: {10: "0", 11: "10"},
-        }, {
-            name: "Selection Sort",
-            description: "The selection sort algorithm",
-            url: require("assets/examples/selectionSort.s"),
-            dataMemRadix: "signed", regFileRadix: "signed",
-            memory: [7, 3, 1, 5, 1, 5, 10, 0, -5, -2].join("\n"),
-            registers: {10: "0", 11: "10"},
-        }
-    ]
-
     constructor() {
         this.sim = new Simulator()
+        this.examples = examples
 
         // initialize elements
         this.svg = $("#datapath")[0]
@@ -424,8 +391,15 @@ export class VisualSim {
         }
         $(this.regFilePanel).find(".editor input").eq(0).prop("disabled", true) // disable x0
 
+        // Setup examples dropdown
+        this.examples.forEach((example) => $("#examples .dropdown-menu").append(
+            $(`<li>
+                <a class="dropdown-item" href="#" data-example-name="${example.name}"
+                   data-bs-toggle="tooltip" title="${example.description}">${example.name}</a>
+               </li>`)
+        ))
+
         this.setupEvents()
-        this.setupExamples()
         this.setupDatapath()
 
         this.update()
@@ -500,20 +474,6 @@ export class VisualSim {
             if (config.showSubElemsByValue && !elem.find("[data-show-on-value]").length)
                 throw Error(`#${id} has showSubElemsByValue defined, but no "[data-show-on-value]" elements`);
         }
-    }
-
-    private async setupExamples() {
-        this.examples = await Promise.all(VisualSim.examples.map(async example => ({
-            ...example,
-            code: example.url ? await (await fetch(example.url)).text() : example.code
-        })))
-
-        this.examples.forEach((example) => $("#examples .dropdown-menu").append(
-            $(`<li>
-                <a class="dropdown-item" href="#" data-example-name="${example.name}"
-                   data-bs-toggle="tooltip" title="${example.description}">${example.name}</a>
-               </li>`)
-        ))
     }
 
     /**
@@ -787,27 +747,31 @@ export class VisualSim {
     }
 
     /** Clears all code, registers, and data back to default */
-    public reset(snapshot: Snapshot = {}) {
+    public reset(example?: Example) {
         this.restart()
 
-        this.instrMemEditor.setValue(snapshot.code ?? "")
-        this.dataMemEditor.setValue(snapshot.memory ?? "")
+        this.instrMemEditor.setValue(example?.code ?? "")
+        this.dataMemEditor.setValue(example?.memory ?? "")
 
-        $("#dataMem-radix").val(snapshot.dataMemRadix ?? "hex")
-        $("#dataMem-word-size").val(snapshot.dataMemWordSize ?? 32)
-        $("#regFile-radix").val(snapshot.regFileRadix ?? "hex")
+        $("#dataMem-radix").val(example?.dataMemRadix ?? "hex")
+        $("#dataMem-word-size").val(example?.dataMemWordSize ?? 32)
+        $("#regFile-radix").val(example?.regFileRadix ?? "hex")
 
         let registerInputs = $(this.regFilePanel).find(".editor input")
         registerInputs.each((i, input) => {
-            $(input).val(snapshot.registers?.[i] ?? "")
+            $(input).val(example?.registers?.[i] ?? "")
         })
 
         this.update()
     }
 
     /** Loads an example by name */
-    public loadExample(name: string) {
+    public async loadExample(name: string) {
         let example = this.examples.find(e => e.name === name)!
+        if (!example.code && example.url) {
+            example.code = await (await fetch(example.url)).text()
+        }
+
         this.reset(example)
     }
 }
