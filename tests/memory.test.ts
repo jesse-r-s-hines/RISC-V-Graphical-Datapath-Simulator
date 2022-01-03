@@ -2,7 +2,7 @@ import { Memory } from '../src/memory';
 import { expect } from 'chai';
 import dedent from 'ts-dedent';
 
-describe("Memory", () => {
+describe("Load/Store", () => {
     it('Test Byte', () => {
         let mem = new Memory(2n**32n)
     
@@ -113,8 +113,10 @@ describe("Memory", () => {
         expect(mem.loadArray(100n, 8, 0)).to.eql([])
         expect(() => mem.storeArray(100n, 8, [])).to.not.throw()
     })
+})
 
-    it("Dump", () => {
+describe("Dump", () => {
+    it("Basic", () => {
         let mem = new Memory(2n**16n)
 
         expect([...mem.dump(8)]).to.eql([[[0x0000n, 0xFFF8n], 0n]])
@@ -126,7 +128,8 @@ describe("Memory", () => {
         ])
 
         expect([...mem.dump(2)]).to.eql([
-            [[0x0000n, 0x000Cn], 0n], [0x000En, 0x00_01n],
+            [[0x0000n, 0x000Cn], 0n],
+            [0x000En, 0x00_01n],
             [[0x0010n, 0xFFFEn], 0n],
         ])
 
@@ -152,8 +155,10 @@ describe("Memory", () => {
             [0x00FCn, 0x11_22_00_00n],
             [[0x0100n, 0xFFFCn], 0n],
         ])
+    })
 
-        mem = new Memory(2n**16n)
+    it("Edges", () => {
+        let mem = new Memory(2n**16n)
         mem.storeWord(0x0000n, 0x11_22_33_44n)
         mem.storeWord(0xFFFCn, 0x55_66_77_88n)
         expect([...mem.dump(4)]).to.eql([
@@ -174,7 +179,87 @@ describe("Memory", () => {
             [0xFFFFn, 0x55n],
         ])
     })
-    
+
+    it("Gaps", () => {
+        let mem = new Memory(2n**16n)
+        mem.storeHalfWord(0x0000n, 0x11_22n)
+        mem.storeHalfWord(0x0008n, 0x33_44n)
+        expect([...mem.dump(2, 4)]).to.eql([
+            [0x0000n, 0x11_22n],
+            [0x0002n, 0x00_00n],
+            [0x0004n, 0x00_00n],
+            [0x0006n, 0x00_00n],
+            [0x0008n, 0x33_44n],
+            [[0x000An, 0xFFFEn], 0n],
+        ])
+
+        mem = new Memory(2n**16n)
+        mem.storeHalfWord(0x0000n, 0x11_22n)
+        mem.storeHalfWord(0x0008n, 0x33_44n)
+        expect([...mem.dump(2, 3)]).to.eql([
+            [0x0000n, 0x11_22n],
+            [[0x0002n, 0x0006n], 0n],
+            [0x0008n, 0x33_44n],
+            [[0x000An, 0xFFFEn], 0n],
+        ])
+
+        mem = new Memory(2n**16n)
+        mem.storeHalfWord(0x0000n, 0x11_22n)
+        mem.storeHalfWord(0x0004n, 0x33_44n)
+        expect([...mem.dump(2, 1)]).to.eql([
+            [0x0000n, 0x11_22n],
+            [[0x0002n, 0x0002n], 0n],
+            [0x0004n, 0x33_44n],
+            [[0x0006n, 0xFFFEn], 0n],
+        ])
+
+        mem = new Memory(2n**16n)
+        mem.storeHalfWord(0x0006n, 0x33_44n)
+        expect([...mem.dump(2, 4)]).to.eql([
+            [0x0000n, 0n],
+            [0x0002n, 0n],
+            [0x0004n, 0n],
+            [0x0006n, 0x33_44n],
+            [[0x0008n, 0xFFFEn], 0n],
+        ])
+
+        mem = new Memory(2n**16n)
+        mem.storeHalfWord(0x0008n, 0x33_44n)
+        expect([...mem.dump(2, 4)]).to.eql([
+            [[0x0000n, 0x0006n], 0n],
+            [0x0008n, 0x33_44n],
+            [[0x000An, 0xFFFEn], 0n],
+        ])
+    })
+
+    it("No collapse", () => {
+        let mem = new Memory(2n**4n)
+        mem.storeByte(0x0n, 0x11n)
+        mem.storeByte(0xFn, 0x22n)
+        expect([...mem.dump(1, Infinity)]).to.eql([
+            [0x0n, 0x11n],
+            ...[...Array(14)].map((_, i) => [BigInt(i + 1), 0n]),
+            [0xFn, 0x22n],
+        ])
+    })
+
+    it("Manual 0s", () => {
+        let mem = new Memory(2n**16n)
+        mem.storeHalfWord(0x0000n, 0x11_22n)
+        for (let i = 0x0002n; i < 0x00FEn; i += 2n) {
+            mem.storeHalfWord(i, 0x0n)
+        }
+        mem.storeHalfWord(0x00FEn, 0x33_44n)
+        expect([...mem.dump(2, 4)]).to.eql([
+            [0x0000n, 0x11_22n],
+            [[0x0002n, 0x00FCn], 0n],
+            [0x00FEn, 0x33_44n],
+            [[0x0100n, 0xFFFEn], 0n],
+        ])
+    })
+})
+
+describe("Other", () => {
     it('Test toString', () => {
         let mem = new Memory(2n**32n)
         mem.storeDoubleWord(0n, 100n)
@@ -199,12 +284,10 @@ describe("Memory", () => {
             0x00000000: 0x00000064
             0x00000004: 0x00000000
             0x00000008: 0x00000065
-            0x0000000C: 0x00000000
-            0x00000010 - 0x0000003C: 0x00000000
+            0x0000000C - 0x0000003C: 0x00000000
             0x00000040: 0x540BE400
             0x00000044: 0x00000002
             0x00000048 - 0xFFFFFFFC: 0x00000000
         `)
     });
 })
-

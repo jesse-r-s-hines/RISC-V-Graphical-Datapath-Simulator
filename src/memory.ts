@@ -105,29 +105,41 @@ export class Memory {
      * there are large spans of unused memory, then it includes a [[start, end], 0n] tuple where [start, end]
      * is an inclusive range of word-aligned addresses that are unused.
      * @param wordSize The number of bytes in each entry
+     * @param collapseSize The minimum number of consecutive 0 words that will be collapsed into a "range" in the
+     *                     output. Spans of consecutive 0s less than collapseSize long will not be collapsed.
+     *                     collapseSize Infinity will turn off collasping entirely (Not recommended unless your memory
+     *                     size is tiny). Should be a integer >= 1.
      */
-    *dump(wordSize: number = 8): Generator<[bigint|[bigint, bigint], bigint]> {
+    *dump(wordSize: number = 8, collapseSize: number = 4): Generator<[bigint|[bigint, bigint], bigint]> {
         let addrShift = BigInt(Math.ceil(Math.log2(wordSize)))
-        let gapSize = 4n // number of missing entries before we skip
         let wordSizeB = BigInt(wordSize)
 
-        let addresses = Array.from(this.data.keys())
-        addresses = addresses.map(a => ((a >> addrShift) << addrShift) ) // word align all entries
-        addresses = [...new Set(addresses)] // remove duplicates
+        let addresses = [...this.data.keys()]
+            .map(a => ((a >> addrShift) << addrShift)) // word align all entries
+        addresses = [...new Set(addresses)]
         addresses.sort((a, b) => (a < b) ? -1 : ((a > b) ? 1 : 0)) // have to specify sort func for BigInts
-        addresses.push(this.size) // Make it add a range at the end.
+        
+        let dump = addresses
+            .map(addr => [addr, this.load(addr, wordSize)])
+            .filter(([addr, val]) => val != 0n)
+        dump.push([this.size, 0n]) // Make it add a range at the end.
 
         let prevAddr: bigint = -wordSizeB
-        for (let addr of addresses) {
-            if ( (addr - prevAddr) / wordSizeB - 1n > gapSize ) { // collapse missing entries
+        for (let [addr, val] of dump) {
+            let gap = (addr - prevAddr) / wordSizeB - 1n // gap between the last address and this one
+
+            if (gap >= collapseSize) { // collapse missing entries
                 yield [[prevAddr + wordSizeB, addr - wordSizeB], 0n]
-            } else if ( (addr - prevAddr) > wordSizeB) { // expand small gap of missing entries
+            } else if (gap > 0) { // expand small gap of missing entries
                 for (let addr2 = prevAddr + wordSizeB; addr2 < addr; addr2 += wordSizeB) {
-                    yield [addr2, this.load(addr2, wordSize)]
+                    yield [addr2, 0n]
                 }
             }
-            if (addr < this.size) yield [addr, this.load(addr, wordSize)]
-            prevAddr = addr;
+
+            if (addr < this.size) {
+                yield [addr, val]
+                prevAddr = addr;
+            }
         }
     }
 
