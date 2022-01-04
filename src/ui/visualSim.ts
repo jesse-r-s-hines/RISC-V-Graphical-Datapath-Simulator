@@ -1,6 +1,6 @@
 import { Simulator } from "simulator/simulator";
 import { registerNames } from "simulator/constants"
-import { assemble, assembleKeepLineInfo } from "assembler/assembler"
+import { assembleKeepLineInfo } from "assembler/assembler"
 import { Radix, parseInt, intToStr } from "utils/radix"
 
 import { Example, examples } from "./examples";
