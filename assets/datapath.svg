@@ -92,9 +92,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.70710678"
-     inkscape:cx="719.12759"
-     inkscape:cy="302.6417"
+     inkscape:zoom="1.4142136"
+     inkscape:cx="392.79782"
+     inkscape:cy="420.02143"
      inkscape:document-units="mm"
      inkscape:document-rotation="0"
      showgrid="false"
@@ -109,7 +109,7 @@
      fit-margin-right="5"
      fit-margin-bottom="4"
      units="mm"
-     inkscape:current-layer="diagram"
+     inkscape:current-layer="control-jalr"
      inkscape:snap-text-baseline="true"
      inkscape:pagecheckerboard="0" />
   <metadata
@@ -317,10 +317,10 @@
          transform="translate(-37.320527,-66.20967)"><tspan
            x="71.111542"
            y="200.54567"
-           id="tspan114728">Read </tspan><tspan
+           id="tspan2581">Read </tspan><tspan
            x="71.111542"
            y="206.2783"
-           id="tspan114730">Address</tspan></text>
+           id="tspan2583">Address</tspan></text>
       <text
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:end;text-anchor:end;white-space:pre;inline-size:32.9187;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
          x="95.26252"
@@ -330,12 +330,12 @@
          xml:space="preserve"><tspan
            x="95.26252"
            y="200.54567"
-           id="tspan114732">Instruction<tspan
+           id="tspan2585">Instruction<tspan
    y="200.54567"
-   id="tspan114734"> </tspan></tspan><tspan
+   id="tspan2587"> </tspan></tspan><tspan
            x="95.26252"
            y="206.2783"
-           id="tspan114736">[31-0]</tspan></text>
+           id="tspan2589">[31-0]</tspan></text>
       <text
          style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;white-space:pre;inline-size:27.6026;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
          x="85.060211"
@@ -345,12 +345,12 @@
          xml:space="preserve"><tspan
            x="85.060211"
            y="200.54567"
-           id="tspan114738">Instruction<tspan
+           id="tspan2591">Instruction<tspan
    y="200.54567"
-   id="tspan114740"> </tspan></tspan><tspan
+   id="tspan2593"> </tspan></tspan><tspan
            x="85.060211"
            y="206.2783"
-           id="tspan114742">Memory</tspan></text>
+           id="tspan2595">Memory</tspan></text>
     </g>
     <g
        id="immGen">
@@ -371,12 +371,12 @@
          transform="translate(14.405197,13.896024)"><tspan
            x="132.55078"
            y="188.57198"
-           id="tspan114744">Imm<tspan
+           id="tspan2597">Imm<tspan
    y="188.57198"
-   id="tspan114746"> </tspan></tspan><tspan
+   id="tspan2599"> </tspan></tspan><tspan
            x="132.55078"
            y="194.3046"
-           id="tspan114748">Gen</tspan></text>
+           id="tspan2601">Gen</tspan></text>
     </g>
     <g
        id="pc">
@@ -417,12 +417,12 @@
          xml:space="preserve"><tspan
            x="80.386772"
            y="200.54567"
-           id="tspan114750">ALU<tspan
+           id="tspan2603">ALU<tspan
    y="200.54567"
-   id="tspan114752"> </tspan></tspan><tspan
+   id="tspan2605"> </tspan></tspan><tspan
            x="80.386772"
            y="206.2783"
-           id="tspan114754">Control</tspan></text>
+           id="tspan2607">Control</tspan></text>
     </g>
     <g
        id="control">
@@ -480,12 +480,12 @@
          xml:space="preserve"><tspan
            x="79.304062"
            y="200.54567"
-           id="tspan114756">Jump<tspan
+           id="tspan2609">Jump<tspan
    y="200.54567"
-   id="tspan114758"> </tspan></tspan><tspan
+   id="tspan2611"> </tspan></tspan><tspan
            x="79.304062"
            y="205.39636"
-           id="tspan114760">Control</tspan></text>
+           id="tspan2613">Control</tspan></text>
     </g>
     <g
        id="instrMem-instruction-rd">
@@ -496,11 +496,11 @@
          id="path858" />
       <text
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-         x="70.82576"
+         x="72.413261"
          y="160.00261"
          id="text321"><tspan
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"
-           x="70.82576"
+           x="72.413261"
            y="160.00261"
            id="tspan319">Instruction [11-7]</tspan></text>
       <text
@@ -525,11 +525,11 @@
          id="path858-5" />
       <text
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-         x="70.77594"
+         x="72.363441"
          y="141.89761"
          id="text354"><tspan
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"
-           x="70.77594"
+           x="72.363441"
            y="141.89761"
            id="tspan352">Instruction [24-20]</tspan></text>
       <text
@@ -554,11 +554,11 @@
          id="path858-5-2" />
       <text
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-         x="71.076942"
+         x="72.664444"
          y="128.93161"
          id="text387"><tspan
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"
-           x="71.076942"
+           x="72.664444"
            y="128.93161"
            id="tspan385">Instruction [19-15]</tspan></text>
       <text
@@ -583,11 +583,11 @@
          id="path858-5-2-9-8" />
       <text
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-         x="69.460747"
+         x="71.048248"
          y="78.849777"
          id="text418"><tspan
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"
-           x="69.460747"
+           x="71.048248"
            y="78.849777"
            id="tspan416">Instruction [6-0]</tspan></text>
       <text
@@ -612,11 +612,11 @@
          id="path858-5-2-54" />
       <text
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-         x="136.36501"
+         x="135.15047"
          y="116.983"
          id="text441"><tspan
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"
-           x="136.36501"
+           x="135.15047"
            y="116.983"
            id="tspan439">RegWrite</tspan></text>
     </g>
@@ -630,11 +630,11 @@
          sodipodi:nodetypes="ccccc" />
       <text
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-         x="136.179"
+         x="135.51772"
          y="110.52"
          id="text460"><tspan
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"
-           x="136.179"
+           x="135.51772"
            y="110.52"
            id="tspan458">ALUSrc</tspan></text>
     </g>
@@ -647,11 +647,11 @@
          id="path858-5-2-54-1" />
       <text
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-         x="135.66594"
+         x="135.17062"
          y="103.84228"
          id="text481"><tspan
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"
-           x="135.66594"
+           x="135.17062"
            y="103.84228"
            id="tspan479">MemWrite</tspan></text>
     </g>
@@ -664,11 +664,11 @@
          id="path858-5-2-54-2" />
       <text
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-         x="136.3313"
+         x="135.51772"
          y="97.237297"
          id="text499"><tspan
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"
-           x="136.3313"
+           x="135.51772"
            y="97.237297"
            id="tspan497">ALUOp</tspan></text>
       <text
@@ -739,11 +739,11 @@
          id="path858-5-2-54-80" />
       <text
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-         x="134.97086"
+         x="135.17511"
          y="78.1213"
          id="text567"><tspan
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"
-           x="134.97086"
+           x="135.17511"
            y="78.1213"
            id="tspan565">BranchZero</tspan></text>
     </g>
@@ -756,11 +756,11 @@
          id="path858-5-2-54-80-2" />
       <text
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-         x="134.68594"
+         x="135.17511"
          y="71.932281"
          id="text593"><tspan
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"
-           x="134.68594"
+           x="135.17511"
            y="71.932281"
            id="tspan591">BranchNotZero</tspan></text>
     </g>
@@ -773,12 +773,12 @@
          id="path858-5-2-54-80-2-1" />
       <text
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-         x="135.22581"
-         y="64.772278"
+         x="135.37921"
+         y="65.301445"
          id="text610"><tspan
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"
-           x="135.22581"
-           y="64.772278"
+           x="135.37921"
+           y="65.301445"
            id="tspan608">Jump</tspan></text>
     </g>
     <g
@@ -805,11 +805,11 @@
          id="path9380" />
       <text
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-         x="71.111435"
+         x="72.698936"
          y="200.517"
          id="text643"><tspan
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"
-           x="71.111435"
+           x="72.698936"
            y="200.517"
            id="tspan641">Instruction [31-0]</tspan></text>
       <text
@@ -916,12 +916,12 @@
          xml:space="preserve"><tspan
            x="85.136353"
            y="200.54567"
-           id="tspan114762">ALU<tspan
+           id="tspan2615">ALU<tspan
    y="200.54567"
-   id="tspan114764"> </tspan></tspan><tspan
+   id="tspan2617"> </tspan></tspan><tspan
            x="85.136353"
            y="206.2783"
-           id="tspan114766">Result</tspan></text>
+           id="tspan2619">Result</tspan></text>
       <text
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
          x="230.57593"
@@ -1167,20 +1167,20 @@
          id="path858-02-8" />
       <text
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-         x="69.459755"
+         x="71.047256"
          y="94.03624"
          id="text944"><tspan
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"
-           x="69.459755"
+           x="71.047256"
            y="94.03624"
            id="tspan942">Instruction [14-12]</tspan></text>
       <text
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-         x="71.059143"
+         x="72.646645"
          y="216.85899"
          id="text973"><tspan
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"
-           x="71.059143"
+           x="72.646645"
            y="216.85899"
            id="tspan971">Instruction [14-12]</tspan></text>
       <text
@@ -1217,11 +1217,11 @@
          id="path858-02-8-3" />
       <text
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-         x="71.041023"
+         x="72.628525"
          y="226.90401"
          id="text1008"><tspan
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"
-           x="71.041023"
+           x="72.628525"
            y="226.90401"
            id="tspan1006">Instruction [31-25]</tspan></text>
       <text
@@ -1256,12 +1256,12 @@
          xml:space="preserve"><tspan
            x="81.286972"
            y="200.54567"
-           id="tspan114768">Data<tspan
+           id="tspan2621">Data<tspan
    y="200.54567"
-   id="tspan114770"> </tspan></tspan><tspan
+   id="tspan2623"> </tspan></tspan><tspan
            x="81.286972"
            y="206.2783"
-           id="tspan114772">Memory</tspan></text>
+           id="tspan2625">Memory</tspan></text>
       <text
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;white-space:pre;inline-size:11.7672;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
          x="71.111542"
@@ -1271,10 +1271,10 @@
          transform="translate(183.22922,-14.69039)"><tspan
            x="71.111542"
            y="200.54567"
-           id="tspan114774">Write </tspan><tspan
+           id="tspan2627">Write </tspan><tspan
            x="71.111542"
            y="206.2783"
-           id="tspan114776">Data</tspan></text>
+           id="tspan2629">Data</tspan></text>
       <text
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
          x="254.85796"
@@ -1293,12 +1293,12 @@
          xml:space="preserve"><tspan
            x="94.176453"
            y="200.54567"
-           id="tspan114778">Read<tspan
+           id="tspan2631">Read<tspan
    y="200.54567"
-   id="tspan114780"> </tspan></tspan><tspan
+   id="tspan2633"> </tspan></tspan><tspan
            x="94.176453"
            y="206.2783"
-           id="tspan114782">Data</tspan></text>
+           id="tspan2635">Data</tspan></text>
       <text
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52778px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
          x="259.78445"
@@ -1345,10 +1345,10 @@
          transform="translate(56.365473,-70.34467)"><tspan
            x="71.111542"
            y="200.54567"
-           id="tspan114784">Read </tspan><tspan
+           id="tspan2637">Read </tspan><tspan
            x="71.111542"
            y="206.2783"
-           id="tspan114786">Register 1</tspan></text>
+           id="tspan2639">Register 1</tspan></text>
       <text
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;white-space:pre;inline-size:28.565;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
          x="71.111542"
@@ -1358,10 +1358,10 @@
          transform="translate(56.254506,-54.87167)"><tspan
            x="71.111542"
            y="200.54567"
-           id="tspan114788">Read </tspan><tspan
+           id="tspan2641">Read </tspan><tspan
            x="71.111542"
            y="206.2783"
-           id="tspan114790">Register 2</tspan></text>
+           id="tspan2643">Register 2</tspan></text>
       <text
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;white-space:pre;inline-size:28.0606;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
          x="71.111542"
@@ -1371,10 +1371,10 @@
          transform="translate(56.30885,-39.46539)"><tspan
            x="71.111542"
            y="200.54567"
-           id="tspan114792">Write </tspan><tspan
+           id="tspan2645">Write </tspan><tspan
            x="71.111542"
            y="206.2783"
-           id="tspan114794">Register</tspan></text>
+           id="tspan2647">Register</tspan></text>
       <text
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;white-space:pre;inline-size:20.9339;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
          x="71.111542"
@@ -1384,10 +1384,10 @@
          xml:space="preserve"><tspan
            x="71.111542"
            y="200.54567"
-           id="tspan114796">Write </tspan><tspan
+           id="tspan2649">Write </tspan><tspan
            x="71.111542"
            y="206.2783"
-           id="tspan114798">Data</tspan></text>
+           id="tspan2651">Data</tspan></text>
       <text
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:end;text-anchor:end;white-space:pre;inline-size:21.1714;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
          x="85.528229"
@@ -1397,12 +1397,12 @@
          xml:space="preserve"><tspan
            x="85.528229"
            y="200.54567"
-           id="tspan114800">Read<tspan
+           id="tspan2653">Read<tspan
    y="200.54567"
-   id="tspan114802"> </tspan></tspan><tspan
+   id="tspan2655"> </tspan></tspan><tspan
            x="85.528229"
            y="206.2783"
-           id="tspan114804">Data 2</tspan></text>
+           id="tspan2657">Data 2</tspan></text>
       <text
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:end;text-anchor:end;white-space:pre;inline-size:17.8555;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
          x="85.564056"
@@ -1412,12 +1412,12 @@
          xml:space="preserve"><tspan
            x="85.564056"
            y="200.54567"
-           id="tspan114806">Read<tspan
+           id="tspan2659">Read<tspan
    y="200.54567"
-   id="tspan114808"> </tspan></tspan><tspan
+   id="tspan2661"> </tspan></tspan><tspan
            x="85.564056"
            y="206.2783"
-           id="tspan114810">Data 1</tspan></text>
+           id="tspan2663">Data 1</tspan></text>
       <text
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52778px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
          x="141.3445"
@@ -1497,12 +1497,12 @@
          id="path858-5-2-54-80-2-1-4" />
       <text
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-         x="135.16545"
-         y="57.61367"
+         x="135.37921"
+         y="58.531689"
          id="text1350"><tspan
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"
-           x="135.16545"
-           y="57.61367"
+           x="135.37921"
+           y="58.531689"
            id="tspan1348">Jalr</tspan></text>
     </g>
     <path
