@@ -15,7 +15,7 @@ import { Radix, intToStr } from "utils/radix"
  * 
  * ## Classes
  * - wire 
- *   Can go on a path. Used for emphasizing the hovered wire and coloring active wires.
+ *   Can go on a path. Used for emphasizing the hovered wire and coloring powered wires.
  * - wires 
  *   Can go on a group containing wire paths. When a wire-group is hovered all wire paths in it will be emphasized. 
  *   Lets you make labels emphasize their associated wire, or to treat multiple paths as one wire.
@@ -42,7 +42,7 @@ export interface DataPathElem {
     hideDescriptionWhenRunning?: boolean // if the description is redundant when the value is being shown.
     label?: (sim: Simulator) => string, // the current value to display in a textbox
     tooltip?: (sim: Simulator) => string, // the current value with explanation shown in the tooltip.
-    active?: (sim: Simulator) => boolean, // return true if a wire should be "powered"
+    powered?: (sim: Simulator) => boolean, // return true if a wire is "powered" (powered wires will colored)
     onclick?: (visSim: VisualSim) => void, // call when an element is clicked
     // return a value, and will show matching elements under this element that marked with value in `data-show-on-value`
     showSubElemsByValue?: (sim: Simulator) => string,
@@ -215,60 +215,60 @@ export const datapathElements: Record<string, DataPathElem> = {
         description: "Whether to write the register file.",
         hideDescriptionWhenRunning: true,
         tooltip: (sim) => `${sim.control.regWrite} (${sim.control.regWrite ? "write register file" : "don't write register file"})`,
-        active: (sim) => sim.control.regWrite != 0,
+        powered: (sim) => sim.control.regWrite != 0,
     },
     "control-aluSrc": {
         description: "Whether to use source register 2 or the immediate.",
         tooltip: (sim) => `${sim.control.aluSrc} (${sim.control.aluSrc ? "use immediate" : "use register"})`,
-        active: (sim) => sim.control.aluSrc != 0,
+        powered: (sim) => sim.control.aluSrc != 0,
     },
     "control-memWrite": {
         description: "Whether to write memory.",
         hideDescriptionWhenRunning: true,
         tooltip: (sim) => `${sim.control.memWrite} (${sim.control.memWrite ? "write memory" : "don't write memory"})`,
-        active: (sim) => sim.control.memWrite != 0,
+        powered: (sim) => sim.control.memWrite != 0,
     },
     "control-aluOp": {
         description: "What type of instruction this is. ALU Control will determine the exact ALU operation to use.",
         tooltip: (sim) => `${intToStr(sim.control.aluOp, "bin")} (${aluOpNames.match(sim.control.aluOp)})`,
-        active: (sim) => Bits.toInt(sim.control.aluOp) != 0n,
+        powered: (sim) => Bits.toInt(sim.control.aluOp) != 0n,
         label: (sim) => intToStr(sim.control.aluOp, "bin"),
     },
     "control-writeSrc": {
         description: "What to write to the register file.",
         hideDescriptionWhenRunning: true,
         tooltip: (sim) => `${intToStr(sim.control.writeSrc, "unsigned")} (write ${writeSrcNames.match(sim.control.writeSrc)} to register)`,
-        active: (sim) => Bits.toInt(sim.control.writeSrc) != 0n,
+        powered: (sim) => Bits.toInt(sim.control.writeSrc) != 0n,
         label: (sim) => intToStr(sim.control.writeSrc, "unsigned"),
     },
     "control-memRead": {
         description: "Whether to read from memory.",
         hideDescriptionWhenRunning: true,
         tooltip: (sim) => `${sim.control.memRead} (${sim.control.memRead ? "read memory" : "don't read memory"})`,
-        active: (sim) => sim.control.memRead != 0,
+        powered: (sim) => sim.control.memRead != 0,
     },
     "control-branchZero": {
         description: "Whether to branch when ALU result is zero.",
         hideDescriptionWhenRunning: true,
         tooltip: (sim) => `${sim.control.branchZero} (${sim.control.branchZero ? "branch on zero" : "don't branch on zero"})`,
-        active: (sim) => sim.control.branchZero != 0,
+        powered: (sim) => sim.control.branchZero != 0,
     },
     "control-branchNotZero": {
         description: "Whether to branch when ALU result is not zero.",
         hideDescriptionWhenRunning: true,
         tooltip: (sim) => `${sim.control.branchNotZero} (${sim.control.branchNotZero ? "branch on not zero" : "don't branch on not zero"})`,
-        active: (sim) => sim.control.branchNotZero != 0,
+        powered: (sim) => sim.control.branchNotZero != 0,
     },
     "control-jump": {
         description: "Unconditionally jump.",
         hideDescriptionWhenRunning: true,
         tooltip: (sim) => `${sim.control.jump} (${sim.control.jump ? "do jump" : "don't jump"})`,
-        active: (sim) => sim.control.jump != 0,
+        powered: (sim) => sim.control.jump != 0,
     },
     "control-jalr": {
         description: "Jump to a register + immediate.",
         tooltip: (sim) => `${sim.control.jalr} (${sim.control.jalr ? "do jump register" : "don't jump register"})`,
-        active: (sim) => sim.control.jalr != 0,
+        powered: (sim) => sim.control.jalr != 0,
     },
     "immGen-immediate": {
         tooltip: (sim) => intToAll(sim.immGen.immediate),
@@ -298,7 +298,7 @@ export const datapathElements: Record<string, DataPathElem> = {
         description: "Whether the ALU result was zero.",
         hideDescriptionWhenRunning: true,
         tooltip: (sim) => `${sim.alu.zero} (ALU result was ${sim.alu.zero ? "zero" : "not zero"})`,
-        active: (sim) => sim.alu.zero != 0,
+        powered: (sim) => sim.alu.zero != 0,
     },
     "literalFour": {
         tooltip: (sim) => "4",
@@ -315,11 +315,11 @@ export const datapathElements: Record<string, DataPathElem> = {
         description: "Whether to take the branch or not.",
         hideDescriptionWhenRunning: true,
         tooltip: (sim) => `${sim.jumpControl.takeBranch} (${sim.jumpControl.takeBranch ? "take branch" : "don't take branch"})`,
-        active: (sim) => sim.jumpControl.takeBranch != 0,
+        powered: (sim) => sim.jumpControl.takeBranch != 0,
     },
     "dataMem-readData": {
         tooltip: (sim) => intToAll(sim.dataMem.readData),
-        active: (sim) => Bits.toInt(sim.dataMem.readData) != 0n,
+        powered: (sim) => Bits.toInt(sim.dataMem.readData) != 0n,
     },
     "pcMux-out": {
         tooltip: (sim) => intToStr(sim.pcMux.out, "hex"),

@@ -134,8 +134,8 @@ export class VisualSim {
 
             // Verify the SVG contains the things we expect
             if (!elem.length) throw Error(`${id} doesn't exist`);
-            if (config.active && !elem.hasClass("wire") && !elem.find(".wire").length)
-                throw Error(`#${id} has active defined, but no ".wire" elements`);
+            if (config.powered && !elem.hasClass("wire") && !elem.find(".wire").length)
+                throw Error(`#${id} has powered defined, but no ".wire" elements`);
 
             if (config.description || config.tooltip) {
                 tippy($(this.svg).find(`#${id}`)[0], {
@@ -335,7 +335,7 @@ export class VisualSim {
                 }
             }
 
-            if (running && config.active && config.active(this.sim)) {
+            if (running && config.powered && config.powered(this.sim)) {
                 elem.addClass("powered")
             } else {
                 elem.removeClass("powered")
