@@ -28,6 +28,28 @@
     fill:none;
     display:inline;
 }
+text.datapath-label, text.datapath-label tspan { 
+    display:inline;
+    fill:#000000;
+    fill-opacity:1;
+    filter:url(#bg-filter);
+    font-family:monospace;
+    font-size:3.88056px;
+    font-stretch:normal;
+    font-style:normal;
+    font-variant:normal;
+    font-variant-caps:normal;
+    font-variant-east-asian:normal;
+    font-variant-ligatures:normal;
+    font-variant-numeric:normal;
+    font-weight:normal;
+    -inkscape-font-specification:'monospace, Normal';
+    line-height:1.25;
+    stroke:none;
+    stroke-width:0.264583;
+    text-align:center;
+    text-anchor:middle ;
+}
 </style>
   <defs
      id="defs2">
@@ -107,9 +129,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1"
-     inkscape:cx="344.5"
-     inkscape:cy="471"
+     inkscape:zoom="2.8284272"
+     inkscape:cx="625.96626"
+     inkscape:cy="741.40144"
      inkscape:document-units="mm"
      inkscape:document-rotation="0"
      showgrid="false"
@@ -124,7 +146,7 @@
      fit-margin-right="5"
      fit-margin-bottom="4"
      units="mm"
-     inkscape:current-layer="diagram"
+     inkscape:current-layer="immGen-immediate"
      inkscape:snap-text-baseline="true"
      inkscape:pagecheckerboard="0" />
   <metadata
@@ -173,15 +195,15 @@
       <text
          class="datapath-label"
          xml:space="preserve"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88056px;line-height:1.25;font-family:monospace;-inkscape-font-specification:'monospace, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583;filter:url(#bg-filter)"
          x="195.82581"
          y="188.60875"
-         id="text711-6-6-5-6-8-3-2"><tspan
+         id="text711-6-6-5-6-8-3-2"
+         style="text-anchor:middle"><tspan
            sodipodi:role="line"
            id="tspan709-4-2-8-2-4-6-6"
            x="195.82581"
            y="188.60875"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88056px;font-family:monospace;-inkscape-font-specification:'monospace, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;stroke-width:0.264583">Label</tspan></text>
+           style="text-anchor:middle">Label</tspan></text>
     </g>
     <g
        id="regFile-readData1"
@@ -200,15 +222,15 @@
       <text
          class="datapath-label"
          xml:space="preserve"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88056px;line-height:1.25;font-family:monospace;-inkscape-font-specification:'monospace, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583;filter:url(#bg-filter)"
          x="196.4348"
          y="140.81035"
-         id="text711-6-6-5-6-8-3-2-0"><tspan
+         id="text711-6-6-5-6-8-3-2-0"
+         style="text-anchor:middle"><tspan
            sodipodi:role="line"
            id="tspan709-4-2-8-2-4-6-6-2"
            x="196.4348"
            y="140.81035"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88056px;font-family:monospace;-inkscape-font-specification:'monospace, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;stroke-width:0.264583">Label</tspan></text>
+           style="text-anchor:middle">Label</tspan></text>
     </g>
     <path
        class="wire "
@@ -238,15 +260,15 @@
       <text
          class="datapath-label"
          xml:space="preserve"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88056px;line-height:1.25;font-family:monospace;-inkscape-font-specification:'monospace, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583;filter:url(#bg-filter)"
          x="270.84793"
          y="204.08606"
-         id="text711-6-6-5-6-8-3-2-6"><tspan
+         id="text711-6-6-5-6-8-3-2-6"
+         style="text-anchor:middle"><tspan
            sodipodi:role="line"
            id="tspan709-4-2-8-2-4-6-6-8"
            x="270.84793"
            y="204.08606"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88056px;font-family:monospace;-inkscape-font-specification:'monospace, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;stroke-width:0.264583">Label</tspan></text>
+           style="text-anchor:middle">Label</tspan></text>
     </g>
     <g
        id="pc-out"
@@ -270,7 +292,6 @@
       <text
          class="datapath-label"
          xml:space="preserve"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88056px;line-height:1.25;font-family:monospace;-inkscape-font-specification:'monospace, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583;filter:url(#bg-filter)"
          x="53.994457"
          y="66.00856"
          id="text711-6-6-5-6-8-6-9-2-6-2"><tspan
@@ -278,11 +299,10 @@
            id="tspan709-4-2-8-2-4-2-9-0-6-2"
            x="53.994457"
            y="66.00856"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88056px;font-family:monospace;-inkscape-font-specification:'monospace, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;stroke-width:0.264583">Label</tspan></text>
+           style="text-anchor:middle">Label</tspan></text>
     </g>
     <path
        class="wire"
-       style=""
        d="m 256.20944,72.381754 17.27879,-0.0125 -0.17269,-24.302319"
        id="jumpControl-takeBranch" />
     <g
@@ -303,7 +323,6 @@
       <text
          class="datapath-label"
          xml:space="preserve"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88056px;line-height:1.25;font-family:monospace;-inkscape-font-specification:'monospace, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583;filter:url(#bg-filter)"
          x="121.45955"
          y="20.96104"
          id="text711-6-6-5-6-8-6-9-2-6"><tspan
@@ -311,11 +330,10 @@
            id="tspan709-4-2-8-2-4-2-9-0-6"
            x="121.45955"
            y="20.96104"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88056px;font-family:monospace;-inkscape-font-specification:'monospace, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;stroke-width:0.264583">Label</tspan></text>
+           style="text-anchor:middle">Label</tspan></text>
     </g>
     <path
        class="wire"
-       style=""
        d="m 247.74603,85.028561 c -0.0199,21.331989 -0.0339,44.147779 -0.0327,62.746949 h -5.10062"
        id="alu-zero" />
     <g
@@ -527,7 +545,6 @@
       <text
          class="datapath-label"
          xml:space="preserve"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88056px;line-height:1.25;font-family:monospace;-inkscape-font-specification:'monospace, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583;filter:url(#bg-filter)"
          x="96.405174"
          y="164.55464"
          id="text711-6-6-5-6"><tspan
@@ -535,7 +552,7 @@
            id="tspan709-4-2-8-2"
            x="96.405174"
            y="164.55464"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88056px;font-family:monospace;-inkscape-font-specification:'monospace, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;stroke-width:0.264583">Label</tspan></text>
+           style="text-anchor:middle">Label</tspan></text>
     </g>
     <g
        id="instrMem-instruction-rs2"
@@ -557,7 +574,6 @@
       <text
          class="datapath-label"
          xml:space="preserve"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88056px;line-height:1.25;font-family:monospace;-inkscape-font-specification:'monospace, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583;filter:url(#bg-filter)"
          x="96.340355"
          y="146.40106"
          id="text711-6-6-5"><tspan
@@ -565,7 +581,7 @@
            id="tspan709-4-2-8"
            x="96.340355"
            y="146.40106"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88056px;font-family:monospace;-inkscape-font-specification:'monospace, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;stroke-width:0.264583">Label</tspan></text>
+           style="text-anchor:middle">Label</tspan></text>
     </g>
     <g
        id="instrMem-instruction-rs1"
@@ -587,7 +603,6 @@
       <text
          class="datapath-label"
          xml:space="preserve"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88056px;line-height:1.25;font-family:monospace;-inkscape-font-specification:'monospace, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583;filter:url(#bg-filter)"
          x="96.29567"
          y="133.52127"
          id="text711-6-6"><tspan
@@ -595,7 +610,7 @@
            id="tspan709-4-2"
            x="96.29567"
            y="133.52127"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88056px;font-family:monospace;-inkscape-font-specification:'monospace, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;stroke-width:0.264583">Label</tspan></text>
+           style="text-anchor:middle">Label</tspan></text>
     </g>
     <g
        id="instrMem-instruction-opcode"
@@ -617,7 +632,6 @@
       <text
          class="datapath-label"
          xml:space="preserve"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88056px;line-height:1.25;font-family:monospace;-inkscape-font-specification:'monospace, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583;filter:url(#bg-filter)"
          x="90.006912"
          y="83.697304"
          id="text711"><tspan
@@ -625,14 +639,13 @@
            id="tspan709"
            x="90.006912"
            y="83.697304"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88056px;font-family:monospace;-inkscape-font-specification:'monospace, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;stroke-width:0.264583">Label</tspan></text>
+           style="text-anchor:middle">Label</tspan></text>
     </g>
     <g
        id="control-regWrite"
        class="wires">
       <path
          class="wire"
-         style=""
          d="m 126.984,118.609 h 19.042 l -0.02,5.355"
          id="path858-5-2-54" />
       <text
@@ -650,7 +663,6 @@
        class="wires">
       <path
          class="wire"
-         style=""
          d="m 130.513,111.88 h 40.47125 l 0.0502,37.16767 h 29.25942 v 6.80325"
          id="path858-5-2-54-8"
          sodipodi:nodetypes="ccccc" />
@@ -669,7 +681,6 @@
        class="wires">
       <path
          class="wire"
-         style=""
          d="m 132.176,105.159 132.108,0.018 -0.117,38.4"
          id="path858-5-2-54-1" />
       <text
@@ -687,7 +698,6 @@
        class="wires">
       <path
          class="wire"
-         style=""
          d="m 133.063,99.2344 41.511,0.0374 v 94.3662 l 26.449,0.004 0.022,3.686"
          id="path858-5-2-54-2" />
       <text
@@ -702,7 +712,6 @@
       <text
          class="datapath-label"
          xml:space="preserve"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88056px;line-height:1.25;font-family:monospace;-inkscape-font-specification:'monospace, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583;filter:url(#bg-filter)"
          x="164.92928"
          y="100.72179"
          id="text711-6-1-1"><tspan
@@ -710,14 +719,13 @@
            id="tspan709-4-3-1"
            x="164.92928"
            y="100.72179"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88056px;font-family:monospace;-inkscape-font-specification:'monospace, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;stroke-width:0.264583">Label</tspan></text>
+           style="text-anchor:middle">Label</tspan></text>
     </g>
     <g
        id="control-writeSrc"
        class="wires">
       <path
          class="wire"
-         style=""
          d="m 133.625,92.8366 h 169.711 l -0.097,45.0244"
          id="path858-5-2-54-3" />
       <text
@@ -732,7 +740,6 @@
       <text
          class="datapath-label"
          xml:space="preserve"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88056px;line-height:1.25;font-family:monospace;-inkscape-font-specification:'monospace, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583;filter:url(#bg-filter)"
          x="164.95012"
          y="94.26889"
          id="text711-6-1"><tspan
@@ -740,14 +747,13 @@
            id="tspan709-4-3"
            x="164.95012"
            y="94.26889"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88056px;font-family:monospace;-inkscape-font-specification:'monospace, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;stroke-width:0.264583">Label</tspan></text>
+           style="text-anchor:middle">Label</tspan></text>
     </g>
     <g
        id="control-memRead"
        class="wires">
       <path
          class="wire"
-         style=""
          d="m 133.544,86.1246 h 72.987 v 2.8068 h 70.748 l 0.072,54.7836"
          id="path858-5-2-54-6" />
       <text
@@ -765,7 +771,6 @@
        class="wires">
       <path
          class="wire"
-         style=""
          d="M 133.088,79.7366 H 240.825"
          id="path858-5-2-54-80" />
       <text
@@ -783,7 +788,6 @@
        class="wires">
       <path
          class="wire"
-         style=""
          d="M 132.072,73.3866 H 239.138"
          id="path858-5-2-54-80-2" />
       <text
@@ -801,7 +805,6 @@
        class="wires">
       <path
          class="wire"
-         style=""
          d="M 130.448,67.0366 H 239.881"
          id="path858-5-2-54-80-2-1" />
       <text
@@ -824,7 +827,6 @@
          id="path858-8" />
       <path
          class="wire"
-         style=""
          d="m 63.155,153.557 h 5.407"
          id="path858-5-2-5" />
       <path
@@ -858,7 +860,6 @@
       <text
          class="datapath-label"
          xml:space="preserve"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88056px;line-height:1.25;font-family:monospace;-inkscape-font-specification:'monospace, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583;filter:url(#bg-filter)"
          x="96.242805"
          y="204.88007"
          id="text711-6-6-5-6-8"><tspan
@@ -866,7 +867,7 @@
            id="tspan709-4-2-8-2-4"
            x="96.242805"
            y="204.88007"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88056px;font-family:monospace;-inkscape-font-specification:'monospace, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;stroke-width:0.264583">Label</tspan></text>
+           style="text-anchor:middle">Label</tspan></text>
     </g>
     <g
        id="immGen-immediate"
@@ -899,15 +900,15 @@
       <text
          class="datapath-label"
          xml:space="preserve"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88056px;line-height:1.25;font-family:monospace;-inkscape-font-specification:'monospace, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;text-anchor:start;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583;filter:url(#bg-filter)"
-         x="165.97006"
+         x="165.96811"
          y="204.8481"
-         id="text711-6-6-5-6-8-3"><tspan
+         id="text711-6-6-5-6-8-3"
+         style="text-align:start;text-anchor:start"><tspan
            sodipodi:role="line"
            id="tspan709-4-2-8-2-4-6"
-           x="165.97006"
+           x="165.96811"
            y="204.8481"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88056px;font-family:monospace;-inkscape-font-specification:'monospace, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;text-anchor:start;stroke-width:0.264583">Label</tspan></text>
+           style="text-align:start;text-anchor:start">Label</tspan></text>
     </g>
     <g
        id="literalFour"
@@ -1223,7 +1224,6 @@
       <text
          class="datapath-label"
          xml:space="preserve"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88056px;line-height:1.25;font-family:monospace;-inkscape-font-specification:'monospace, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583;filter:url(#bg-filter)"
          x="89.994179"
          y="98.480881"
          id="text711-6"><tspan
@@ -1231,11 +1231,10 @@
            id="tspan709-4"
            x="89.994179"
            y="98.480881"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88056px;font-family:monospace;-inkscape-font-specification:'monospace, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;stroke-width:0.264583">Label</tspan></text>
+           style="text-anchor:middle">Label</tspan></text>
       <text
          class="datapath-label"
          xml:space="preserve"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88056px;line-height:1.25;font-family:monospace;-inkscape-font-specification:'monospace, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583;filter:url(#bg-filter)"
          x="96.097412"
          y="221.24519"
          id="text711-6-6-5-6-8-6-9"><tspan
@@ -1243,7 +1242,7 @@
            id="tspan709-4-2-8-2-4-2-9"
            x="96.097412"
            y="221.24519"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88056px;font-family:monospace;-inkscape-font-specification:'monospace, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;stroke-width:0.264583">Label</tspan></text>
+           style="text-anchor:middle">Label</tspan></text>
     </g>
     <g
        id="instrMem-instruction-funct7"
@@ -1265,7 +1264,6 @@
       <text
          class="datapath-label"
          xml:space="preserve"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88056px;line-height:1.25;font-family:monospace;-inkscape-font-specification:'monospace, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583;filter:url(#bg-filter)"
          x="96.027138"
          y="231.27463"
          id="text711-6-6-5-6-8-6-9-2"><tspan
@@ -1273,7 +1271,7 @@
            id="tspan709-4-2-8-2-4-2-9-0"
            x="96.027138"
            y="231.27463"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88056px;font-family:monospace;-inkscape-font-specification:'monospace, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;stroke-width:0.264583">Label</tspan></text>
+           style="text-anchor:middle">Label</tspan></text>
     </g>
     <g
        id="dataMem">
@@ -1531,7 +1529,6 @@
        class="wires">
       <path
          class="wire"
-         style=""
          d="m 126.484,59.9912 h 41.537 v -8.6897 l 28.787,2e-4 v -4.2768"
          id="path858-5-2-54-80-2-1-4" />
       <text
@@ -1562,7 +1559,6 @@
       <text
          class="datapath-label"
          xml:space="preserve"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88056px;line-height:1.25;font-family:monospace;-inkscape-font-specification:'monospace, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583;filter:url(#bg-filter)"
          x="252.29286"
          y="44.749317"
          id="text711-6-6-5-6-8-6-9-2-6-0"><tspan
@@ -1570,7 +1566,7 @@
            id="tspan709-4-2-8-2-4-2-9-0-6-6"
            x="252.29286"
            y="44.749317"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88056px;font-family:monospace;-inkscape-font-specification:'monospace, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;stroke-width:0.264583">Label</tspan></text>
+           style="text-anchor:middle">Label</tspan></text>
     </g>
     <g
        id="pcMux-out"
@@ -1584,7 +1580,6 @@
       <text
          class="datapath-label"
          xml:space="preserve"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88056px;line-height:1.25;font-family:monospace;-inkscape-font-specification:'monospace, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583;filter:url(#bg-filter)"
          x="189.67046"
          y="6.9411087"
          id="text711-6-6-5-6-8-6-9-2-6-0-9"><tspan
@@ -1592,7 +1587,7 @@
            id="tspan709-4-2-8-2-4-2-9-0-6-6-0"
            x="189.67046"
            y="6.9411087"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88056px;font-family:monospace;-inkscape-font-specification:'monospace, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;stroke-width:0.264583">Label</tspan></text>
+           style="text-anchor:middle">Label</tspan></text>
     </g>
     <g
        id="aluControl-aluControl"
@@ -1600,13 +1595,11 @@
        class="wires">
       <path
          class="wire"
-         style=""
          d="m 211.415,212.383 15.958,-0.008 0.031,-42.707"
          id="path12345678899" />
       <text
          class="datapath-label"
          xml:space="preserve"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88056px;line-height:1.25;font-family:monospace;-inkscape-font-specification:'monospace, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583;filter:url(#bg-filter)"
          x="227.39999"
          y="202.2234"
          id="text711-6-6-5-6-8-0"><tspan
@@ -1614,7 +1607,7 @@
            id="tspan709-4-2-8-2-4-3"
            x="227.39999"
            y="202.2234"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88056px;font-family:monospace;-inkscape-font-specification:'monospace, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;stroke-width:0.264583">Label</tspan></text>
+           style="text-anchor:middle">Label</tspan></text>
     </g>
     <g
        id="writeSrcMux-out"
@@ -1628,15 +1621,15 @@
       <text
          class="datapath-label"
          xml:space="preserve"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88056px;line-height:1.25;font-family:monospace;-inkscape-font-specification:'monospace, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583;filter:url(#bg-filter)"
          x="270.83081"
          y="237.39583"
-         id="text711-6-6-5-6-8-3-2-6-7"><tspan
+         id="text711-6-6-5-6-8-3-2-6-7"
+         style="text-anchor:middle"><tspan
            sodipodi:role="line"
            id="tspan709-4-2-8-2-4-6-6-8-2"
            x="270.83081"
            y="237.39583"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88056px;font-family:monospace;-inkscape-font-specification:'monospace, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;stroke-width:0.264583">Label</tspan></text>
+           style="text-anchor:middle">Label</tspan></text>
     </g>
   </g>
 </svg>
