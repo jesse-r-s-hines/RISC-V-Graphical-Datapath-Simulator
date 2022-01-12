@@ -14,6 +14,21 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:cc="http://creativecommons.org/ns#"
    xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <style
+     id="style1228">
+.wire { 
+    stroke-opacity:1;
+    stroke-width:0.5;
+    stroke-miterlimit:4;
+    stroke-linejoin:miter;
+    stroke-linecap:butt;
+    stroke-dasharray:none;
+    stroke:#000000;
+    mix-blend-mode:normal;
+    fill:none;
+    display:inline;
+}
+</style>
   <defs
      id="defs2">
     <marker
@@ -92,9 +107,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.4142136"
-     inkscape:cx="392.79782"
-     inkscape:cy="420.02143"
+     inkscape:zoom="1"
+     inkscape:cx="344.5"
+     inkscape:cy="471"
      inkscape:document-units="mm"
      inkscape:document-rotation="0"
      showgrid="false"
@@ -109,7 +124,7 @@
      fit-margin-right="5"
      fit-margin-bottom="4"
      units="mm"
-     inkscape:current-layer="control-jalr"
+     inkscape:current-layer="diagram"
      inkscape:snap-text-baseline="true"
      inkscape:pagecheckerboard="0" />
   <metadata
@@ -146,13 +161,13 @@
        class="wires">
       <path
          class="wire"
-         style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-mid:url(#Junction);marker-end:url(#Arrow)"
+         style="marker-mid:url(#Junction);marker-end:url(#Arrow)"
          d="m 168.168,160.644 h 2.894 24.84817"
          id="path858-0"
          sodipodi:nodetypes="ccc" />
       <path
          class="wire"
-         style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow)"
+         style="marker-end:url(#Arrow)"
          d="m 171.069,160.62 -0.097,26.513 80.486,0.063"
          id="path858-1" />
       <text
@@ -173,13 +188,13 @@
        class="wires">
       <path
          class="wire"
-         style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Junction);marker-end:url(#Arrow)"
+         style="marker-start:url(#Junction);marker-end:url(#Arrow)"
          d="M 182.54,139.471 V 42.2377 h 9.72717"
          id="path858-5-8"
          sodipodi:nodetypes="ccc" />
       <path
          class="wire"
-         style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow)"
+         style="marker-end:url(#Arrow)"
          d="m 168.045,139.453 h 44.869"
          id="path-1-1-1" />
       <text
@@ -196,13 +211,13 @@
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88056px;font-family:monospace;-inkscape-font-specification:'monospace, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;stroke-width:0.264583">Label</tspan></text>
     </g>
     <path
-       class="wire"
-       style="display:inline;opacity:0.997;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow)"
+       class="wire "
+       style="marker-end:url(#Arrow)"
        d="m 204.79521,167.77255 h 8.16691"
        id="aluInputMux-out" />
     <path
        class="wire"
-       style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow)"
+       style="marker-end:url(#Arrow)"
        d="m 289.12686,159.07369 h 9.49533"
        id="dataMem-readData"
        sodipodi:nodetypes="cc" />
@@ -211,13 +226,13 @@
        class="wires">
       <path
          class="wire"
-         style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Junction);marker-end:url(#Arrow)"
+         style="marker-start:url(#Junction);marker-end:url(#Arrow)"
          d="m 245.681,159.094 0.046,43.547 47.259,0.006 0.09,-26.888 5.55324,0.013"
          id="path858-03"
          sodipodi:nodetypes="ccccc" />
       <path
          class="wire"
-         style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow)"
+         style="marker-end:url(#Arrow)"
          d="m 242.628,159.094 h 8.95"
          id="path858-56-0" />
       <text
@@ -238,17 +253,17 @@
        class="wires">
       <path
          class="wire"
-         style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow)"
+         style="marker-end:url(#Arrow)"
          d="m 21.443,135.037 h 9.0771"
          id="path858-9" />
       <path
          class="wire"
-         style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Junction);marker-end:url(#Arrow)"
+         style="marker-start:url(#Junction);marker-end:url(#Arrow)"
          d="M 24.3913,135.022 24.2346,18.3556 45.9812,18.3472"
          id="path858-5-6" />
       <path
          class="wire"
-         style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Junction);marker-end:url(#Arrow)"
+         style="marker-start:url(#Junction);marker-end:url(#Arrow)"
          d="m 24.3331,64.6039 h 80.2629 l 0.074,-38.2497 87.75517,0.0276"
          id="path858-7"
          sodipodi:nodetypes="cccc" />
@@ -267,7 +282,7 @@
     </g>
     <path
        class="wire"
-       style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style=""
        d="m 256.20944,72.381754 17.27879,-0.0125 -0.17269,-24.302319"
        id="jumpControl-takeBranch" />
     <g
@@ -275,13 +290,13 @@
        class="wires">
       <path
          class="wire"
-         style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow)"
+         style="marker-end:url(#Arrow)"
          d="m 64.6947,31.798 27.8035,0.0431 0.0667,-12.294 176.02391,0.048"
          id="path858-7-4"
          sodipodi:nodetypes="cccc" />
       <path
          class="wire"
-         style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Junction);marker-end:url(#Arrow)"
+         style="marker-start:url(#Junction);marker-end:url(#Arrow)"
          d="m 244.431,19.6268 -0.024,-7.3918 45.106,-0.0149 0.22,130.4439 8.89624,-0.016"
          id="path858-06"
          sodipodi:nodetypes="ccccc" />
@@ -300,7 +315,7 @@
     </g>
     <path
        class="wire"
-       style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style=""
        d="m 247.74603,85.028561 c -0.0199,21.331989 -0.0339,44.147779 -0.0327,62.746949 h -5.10062"
        id="alu-zero" />
     <g
@@ -497,7 +512,7 @@
        class="wires">
       <path
          class="wire"
-         style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Junction);marker-end:url(#Arrow)"
+         style="marker-start:url(#Junction);marker-end:url(#Arrow)"
          d="M 68.4877,162.939 H 124.218"
          id="path858" />
       <text
@@ -527,7 +542,7 @@
        class="wires">
       <path
          class="wire"
-         style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Junction);marker-end:url(#Arrow)"
+         style="marker-start:url(#Junction);marker-end:url(#Arrow)"
          d="M 68.4877,144.947 H 124.218"
          id="path858-5" />
       <text
@@ -557,7 +572,7 @@
        class="wires">
       <path
          class="wire"
-         style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Junction);marker-end:url(#Arrow)"
+         style="marker-start:url(#Junction);marker-end:url(#Arrow)"
          d="M 68.4877,132.058 H 124.218"
          id="path858-5-2" />
       <text
@@ -587,7 +602,7 @@
        class="wires">
       <path
          class="wire"
-         style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Junction);marker-end:url(#Arrow)"
+         style="marker-start:url(#Junction);marker-end:url(#Arrow)"
          d="M 68.4877,82.1862 H 112.429"
          id="path858-5-2-9-8" />
       <text
@@ -617,7 +632,7 @@
        class="wires">
       <path
          class="wire"
-         style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         style=""
          d="m 126.984,118.609 h 19.042 l -0.02,5.355"
          id="path858-5-2-54" />
       <text
@@ -635,7 +650,7 @@
        class="wires">
       <path
          class="wire"
-         style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         style=""
          d="m 130.513,111.88 h 40.47125 l 0.0502,37.16767 h 29.25942 v 6.80325"
          id="path858-5-2-54-8"
          sodipodi:nodetypes="ccccc" />
@@ -654,7 +669,7 @@
        class="wires">
       <path
          class="wire"
-         style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         style=""
          d="m 132.176,105.159 132.108,0.018 -0.117,38.4"
          id="path858-5-2-54-1" />
       <text
@@ -672,7 +687,7 @@
        class="wires">
       <path
          class="wire"
-         style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         style=""
          d="m 133.063,99.2344 41.511,0.0374 v 94.3662 l 26.449,0.004 0.022,3.686"
          id="path858-5-2-54-2" />
       <text
@@ -702,7 +717,7 @@
        class="wires">
       <path
          class="wire"
-         style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         style=""
          d="m 133.625,92.8366 h 169.711 l -0.097,45.0244"
          id="path858-5-2-54-3" />
       <text
@@ -732,7 +747,7 @@
        class="wires">
       <path
          class="wire"
-         style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         style=""
          d="m 133.544,86.1246 h 72.987 v 2.8068 h 70.748 l 0.072,54.7836"
          id="path858-5-2-54-6" />
       <text
@@ -750,7 +765,7 @@
        class="wires">
       <path
          class="wire"
-         style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         style=""
          d="M 133.088,79.7366 H 240.825"
          id="path858-5-2-54-80" />
       <text
@@ -768,7 +783,7 @@
        class="wires">
       <path
          class="wire"
-         style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         style=""
          d="M 132.072,73.3866 H 239.138"
          id="path858-5-2-54-80-2" />
       <text
@@ -786,7 +801,7 @@
        class="wires">
       <path
          class="wire"
-         style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         style=""
          d="M 130.448,67.0366 H 239.881"
          id="path858-5-2-54-80-2-1" />
       <text
@@ -804,24 +819,24 @@
        class="wires">
       <path
          class="wire"
-         style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-mid:url(#Junction)"
+         style="marker-mid:url(#Junction)"
          d="m 68.4877,82.1862 -0.0762,71.4028 c -0.0883,25.46 -0.0607,50.919 0.0762,76.378"
          id="path858-8" />
       <path
          class="wire"
-         style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         style=""
          d="m 63.155,153.557 h 5.407"
          id="path858-5-2-5" />
       <path
          class="wire"
-         style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Junction);marker-end:url(#Arrow)"
+         style="marker-start:url(#Junction);marker-end:url(#Arrow)"
          d="M 68.4877,203.398 H 136.083"
          id="path858-02" />
       <path
          class="wire"
-         style="display:inline;fill:none;stroke:#000000;stroke-width:0.264583;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
          d="m 126.777,201.092 4.217,4.216"
-         id="path9380" />
+         id="path9380"
+         style="stroke-width:0.265;stroke-miterlimit:4" />
       <text
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
          x="72.698936"
@@ -858,20 +873,20 @@
        class="wires">
       <path
          class="wire"
-         style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow)"
+         style="marker-end:url(#Arrow)"
          d="m 156.991,203.395 h 21.825 l -0.056,-146.9422 29.996,-0.004"
          id="path858-4" />
       <path
          class="wire"
-         style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Junction);marker-end:url(#Arrow)"
+         style="marker-start:url(#Junction);marker-end:url(#Arrow)"
          d="m 178.811,176.797 h 17.01717"
          id="path858-84-4-2"
          sodipodi:nodetypes="cc" />
       <path
-         style="display:inline;fill:none;stroke:#000000;stroke-width:0.264583;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
          d="m 160.644,201.092 4.217,4.216"
          id="path9380-6"
-         class="wire" />
+         class="wire"
+         style="stroke-width:0.265;stroke-miterlimit:4" />
       <text
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
          x="160.17957"
@@ -899,7 +914,7 @@
        class="wires">
       <path
          class="wire"
-         style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow)"
+         style="marker-end:url(#Arrow)"
          d="m 38.2604,44.3651 h 7.7783"
          id="path-12468056" />
       <text
@@ -1179,12 +1194,12 @@
        class="wires">
       <path
          class="wire"
-         style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Junction);marker-end:url(#Arrow)"
+         style="marker-start:url(#Junction);marker-end:url(#Arrow)"
          d="M 68.4877,97.0029 H 112.429"
          id="path858-5-2-9" />
       <path
          class="wire"
-         style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Junction);marker-end:url(#Arrow)"
+         style="marker-start:url(#Junction);marker-end:url(#Arrow)"
          d="m 68.4877,219.851 h 96.4073 l -0.025,-11.471 25.674,-0.026"
          id="path858-02-8" />
       <text
@@ -1235,7 +1250,7 @@
        class="wires">
       <path
          class="wire"
-         style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Junction);marker-end:url(#Arrow)"
+         style="marker-start:url(#Junction);marker-end:url(#Arrow)"
          d="m 68.4877,229.857 110.1303,-0.001 0.03,-13.959 11.699,0.003"
          id="path858-02-8-3" />
       <text
@@ -1516,7 +1531,7 @@
        class="wires">
       <path
          class="wire"
-         style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         style=""
          d="m 126.484,59.9912 h 41.537 v -8.6897 l 28.787,2e-4 v -4.2768"
          id="path858-5-2-54-80-2-1-4" />
       <text
@@ -1530,7 +1545,7 @@
            id="tspan1348">Jalr</tspan></text>
     </g>
     <path
-       style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.498898;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow)"
+       style="marker-end:url(#Arrow)"
        d="m 201.02781,34.381639 h 2.57611 v -2.616741 h 5.04068"
        id="jalrMux-out"
        class="wire" />
@@ -1540,7 +1555,7 @@
        class="wires">
       <path
          class="wire"
-         style="display:inline;opacity:1;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow)"
+         style="marker-end:url(#Arrow)"
          d="m 239.024,43.3795 h 29.45481"
          id="path-ba-1"
          sodipodi:nodetypes="cc" />
@@ -1563,7 +1578,7 @@
        class="wires">
       <path
          class="wire"
-         style="display:inline;opacity:1;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow)"
+         style="marker-end:url(#Arrow)"
          d="M 277.565,30.7631 282.26,30.7592 282.324,5.38264 6.45727,5.47739 4.98612,135.231 10.1759,135.216"
          id="path-pco-1" />
       <text
@@ -1585,7 +1600,7 @@
        class="wires">
       <path
          class="wire"
-         style="display:inline;opacity:1;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         style=""
          d="m 211.415,212.383 15.958,-0.008 0.031,-42.707"
          id="path12345678899" />
       <text
@@ -1607,7 +1622,7 @@
        class="wires">
       <path
          class="wire"
-         style="display:inline;opacity:1;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow)"
+         style="marker-end:url(#Arrow)"
          d="m 307.598,159.017 3.661,-0.011 0.034,76.942 -194.303,-0.09 -0.081,-58.091 7.264,-0.01"
          id="path-wsm-2" />
       <text
