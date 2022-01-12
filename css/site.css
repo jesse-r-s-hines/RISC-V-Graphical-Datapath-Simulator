@@ -192,7 +192,7 @@ table.table-fit tbody td, table.table-fit tfoot td {
  * Highlight current wire group (Wire groups are directly under the #diagram layer. It might be better to add a
  * class to the groups instead of relying on their relative position.)
  */
-#diagram > g:hover > .wire, #diagram > .wire:hover {
+.wires:hover .wire, .wire:hover {
     stroke-width: 0.75; /** Wires are 0.5 normally */
 }
 

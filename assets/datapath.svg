@@ -142,7 +142,8 @@
      inkscape:label="Diagram"
      style="display:inline;opacity:1;mix-blend-mode:normal">
     <g
-       id="regFile-readData2">
+       id="regFile-readData2"
+       class="wires">
       <path
          class="wire"
          style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-mid:url(#Junction);marker-end:url(#Arrow)"
@@ -168,7 +169,8 @@
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88056px;font-family:monospace;-inkscape-font-specification:'monospace, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;stroke-width:0.264583">Label</tspan></text>
     </g>
     <g
-       id="regFile-readData1">
+       id="regFile-readData1"
+       class="wires">
       <path
          class="wire"
          style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Junction);marker-end:url(#Arrow)"
@@ -205,7 +207,8 @@
        id="dataMem-readData"
        sodipodi:nodetypes="cc" />
     <g
-       id="alu-result">
+       id="alu-result"
+       class="wires">
       <path
          class="wire"
          style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Junction);marker-end:url(#Arrow)"
@@ -231,7 +234,8 @@
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88056px;font-family:monospace;-inkscape-font-specification:'monospace, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;stroke-width:0.264583">Label</tspan></text>
     </g>
     <g
-       id="pc-out">
+       id="pc-out"
+       class="wires">
       <path
          class="wire"
          style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow)"
@@ -267,7 +271,8 @@
        d="m 256.20944,72.381754 17.27879,-0.0125 -0.17269,-24.302319"
        id="jumpControl-takeBranch" />
     <g
-       id="pcAdd4-result">
+       id="pcAdd4-result"
+       class="wires">
       <path
          class="wire"
          style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow)"
@@ -488,7 +493,8 @@
            id="tspan2613">Control</tspan></text>
     </g>
     <g
-       id="instrMem-instruction-rd">
+       id="instrMem-instruction-rd"
+       class="wires">
       <path
          class="wire"
          style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Junction);marker-end:url(#Arrow)"
@@ -517,7 +523,8 @@
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88056px;font-family:monospace;-inkscape-font-specification:'monospace, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;stroke-width:0.264583">Label</tspan></text>
     </g>
     <g
-       id="instrMem-instruction-rs2">
+       id="instrMem-instruction-rs2"
+       class="wires">
       <path
          class="wire"
          style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Junction);marker-end:url(#Arrow)"
@@ -546,7 +553,8 @@
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88056px;font-family:monospace;-inkscape-font-specification:'monospace, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;stroke-width:0.264583">Label</tspan></text>
     </g>
     <g
-       id="instrMem-instruction-rs1">
+       id="instrMem-instruction-rs1"
+       class="wires">
       <path
          class="wire"
          style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Junction);marker-end:url(#Arrow)"
@@ -575,7 +583,8 @@
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88056px;font-family:monospace;-inkscape-font-specification:'monospace, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;stroke-width:0.264583">Label</tspan></text>
     </g>
     <g
-       id="instrMem-instruction-opcode">
+       id="instrMem-instruction-opcode"
+       class="wires">
       <path
          class="wire"
          style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Junction);marker-end:url(#Arrow)"
@@ -604,7 +613,8 @@
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88056px;font-family:monospace;-inkscape-font-specification:'monospace, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;stroke-width:0.264583">Label</tspan></text>
     </g>
     <g
-       id="control-regWrite">
+       id="control-regWrite"
+       class="wires">
       <path
          class="wire"
          style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
@@ -621,7 +631,8 @@
            id="tspan439">RegWrite</tspan></text>
     </g>
     <g
-       id="control-aluSrc">
+       id="control-aluSrc"
+       class="wires">
       <path
          class="wire"
          style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
@@ -639,7 +650,8 @@
            id="tspan458">ALUSrc</tspan></text>
     </g>
     <g
-       id="control-memWrite">
+       id="control-memWrite"
+       class="wires">
       <path
          class="wire"
          style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
@@ -656,7 +668,8 @@
            id="tspan479">MemWrite</tspan></text>
     </g>
     <g
-       id="control-aluOp">
+       id="control-aluOp"
+       class="wires">
       <path
          class="wire"
          style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
@@ -685,7 +698,8 @@
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88056px;font-family:monospace;-inkscape-font-specification:'monospace, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;stroke-width:0.264583">Label</tspan></text>
     </g>
     <g
-       id="control-writeSrc">
+       id="control-writeSrc"
+       class="wires">
       <path
          class="wire"
          style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
@@ -714,7 +728,8 @@
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88056px;font-family:monospace;-inkscape-font-specification:'monospace, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;stroke-width:0.264583">Label</tspan></text>
     </g>
     <g
-       id="control-memRead">
+       id="control-memRead"
+       class="wires">
       <path
          class="wire"
          style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
@@ -731,7 +746,8 @@
            id="tspan542">MemRead</tspan></text>
     </g>
     <g
-       id="control-branchZero">
+       id="control-branchZero"
+       class="wires">
       <path
          class="wire"
          style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
@@ -748,7 +764,8 @@
            id="tspan565">BranchZero</tspan></text>
     </g>
     <g
-       id="control-branchNotZero">
+       id="control-branchNotZero"
+       class="wires">
       <path
          class="wire"
          style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
@@ -765,7 +782,8 @@
            id="tspan591">BranchNotZero</tspan></text>
     </g>
     <g
-       id="control-jump">
+       id="control-jump"
+       class="wires">
       <path
          class="wire"
          style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
@@ -782,7 +800,8 @@
            id="tspan608">Jump</tspan></text>
     </g>
     <g
-       id="instrMem-instruction">
+       id="instrMem-instruction"
+       class="wires">
       <path
          class="wire"
          style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-mid:url(#Junction)"
@@ -835,7 +854,8 @@
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88056px;font-family:monospace;-inkscape-font-specification:'monospace, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;stroke-width:0.264583">Label</tspan></text>
     </g>
     <g
-       id="immGen-immediate">
+       id="immGen-immediate"
+       class="wires">
       <path
          class="wire"
          style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow)"
@@ -875,7 +895,8 @@
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88056px;font-family:monospace;-inkscape-font-specification:'monospace, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;text-anchor:start;stroke-width:0.264583">Label</tspan></text>
     </g>
     <g
-       id="literalFour">
+       id="literalFour"
+       class="wires">
       <path
          class="wire"
          style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow)"
@@ -1154,7 +1175,8 @@
          data-show-on-value="1" />
     </g>
     <g
-       id="instrMem-instruction-funct3">
+       id="instrMem-instruction-funct3"
+       class="wires">
       <path
          class="wire"
          style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Junction);marker-end:url(#Arrow)"
@@ -1209,7 +1231,8 @@
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88056px;font-family:monospace;-inkscape-font-specification:'monospace, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;stroke-width:0.264583">Label</tspan></text>
     </g>
     <g
-       id="instrMem-instruction-funct7">
+       id="instrMem-instruction-funct7"
+       class="wires">
       <path
          class="wire"
          style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Junction);marker-end:url(#Arrow)"
@@ -1489,7 +1512,8 @@
          data-show-on-value="1" />
     </g>
     <g
-       id="control-jalr">
+       id="control-jalr"
+       class="wires">
       <path
          class="wire"
          style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
@@ -1512,7 +1536,8 @@
        class="wire" />
     <g
        id="branchAdder-result"
-       style="display:inline">
+       style="display:inline"
+       class="wires">
       <path
          class="wire"
          style="display:inline;opacity:1;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow)"
@@ -1534,7 +1559,8 @@
     </g>
     <g
        id="pcMux-out"
-       style="display:inline">
+       style="display:inline"
+       class="wires">
       <path
          class="wire"
          style="display:inline;opacity:1;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow)"
@@ -1555,7 +1581,8 @@
     </g>
     <g
        id="aluControl-aluControl"
-       style="display:inline">
+       style="display:inline"
+       class="wires">
       <path
          class="wire"
          style="display:inline;opacity:1;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
@@ -1576,7 +1603,8 @@
     </g>
     <g
        id="writeSrcMux-out"
-       style="display:inline">
+       style="display:inline"
+       class="wires">
       <path
          class="wire"
          style="display:inline;opacity:1;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow)"

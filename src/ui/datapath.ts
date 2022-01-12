@@ -14,12 +14,21 @@ import { Radix, intToStr } from "utils/radix"
  * state of the simulation.
  * 
  * ## Classes
- * - wire -- All wires have this class. Used for emphasizing the hovered wire and coloring active wires.
- * - datapath-label -- Indicates a text box which we will show the current value of a wire.
- * - outline -- Indicates the outline of a component.
- * - hide-when-running -- These elements are only shown when the simulation unstarted or done.
- * - hide-when-not-running -- These elements are only shown when the simulation is running
- * - powered -- This class is added in JS. Indicates a wire that is high.
+ * - wire 
+ *   Can go on a path. Used for emphasizing the hovered wire and coloring active wires.
+ * - wires 
+ *   Can go on a group containing wire paths. When a wire-group is hovered all wire paths in it will be emphasized. 
+ *   Lets you make labels emphasize their associated wire, or to treat multiple paths as one wire.
+ * - datapath-label 
+ *   Indicates a text box which we will show the current value of a wire.
+ * - outline 
+ *   Indicates the outline of a component.
+ * - hide-when-running 
+ *   These elements are only shown when the simulation unstarted or done.
+ * - hide-when-not-running 
+ *   These elements are only shown when the simulation is running
+ * - powered 
+ *   This class is added in JS. Indicates a wire that is high.
  * 
  * ## Data attributes
  * - data-show-on-value -- Used in muxes to make a wire showing which input is being used. 
