@@ -138,7 +138,7 @@ export class VisualSim {
                 throw Error(`#${id} has powered defined, but no ".wire" elements`);
 
             if (config.description || config.tooltip) {
-                tippy($(this.svg).find(`#${id}`)[0], {
+                tippy(elem[0], {
                     followCursor: true, // or "initial" keep it where you entered
                     allowHTML: true,
                     maxWidth: "20em",
@@ -148,7 +148,7 @@ export class VisualSim {
 
             if (config.onclick) {
                 let onclick = config.onclick // rescope to capture current value and let typescript know is defined.
-                $(elem).on("click", (event) => onclick(this))
+                elem.on("click", (event) => onclick(this))
             }
 
             if (config.label && !elem.find("text.datapath-label").length)
