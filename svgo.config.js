@@ -7,9 +7,6 @@ module.exports = {
     // },
     multipass: true,
     plugins: [
-        // required, inkscape uses "style=" and we can't override "style=" with css, but we can override attributes
-        "convertStyleToAttrs",            // convert styles into attributes
-
         // Optimizations
         // Note: since we are manipulating datapath.svg via javascript we have to be careful which optimizations we use.
         //       datapath.svg has unused defs and hidden/empty elements which will be used in javscript, so we can't remove
@@ -34,6 +31,7 @@ module.exports = {
         // "removeViewBox",               // remove viewBox attribute when possible
         // "cleanupEnableBackground",     // remove or cleanup enable-background attribute when possible
         "minifyStyles",                   // minify <style> elements content with CSSO
+        // "convertStyleToAttrs",         // convert styles into attributes
         "convertColors",                  // convert colors (from rgb() to #rrggbb, from #rrggbb to #rgb)
         "convertPathData",                // convert Path data to relative or absolute (whichever is shorter), convert one segment to another, trim useless delimiters, smart rounding, and much more
         "convertTransform",               // collapse multiple transforms into one, convert matrices to the short aliases, and much more

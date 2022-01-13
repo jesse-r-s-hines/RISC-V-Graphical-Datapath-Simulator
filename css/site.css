@@ -170,12 +170,13 @@ table.table-fit tbody td, table.table-fit tfoot td {
 
 /** Highlight powered wires. */
 #datapath .powered.wire {
-    stroke: blue;
+    stroke: blue !important; /* I'm abusing !important, but it lets us override inline styles and inkscapes's svg will
+                                  usually have lots of inline styles. */
 }
 
 #datapath marker.powered * {
-    stroke: blue;
-    fill: blue;
+    stroke: blue !important;
+    fill: blue !important;
 }
 
 /** 
@@ -184,16 +185,16 @@ table.table-fit tbody td, table.table-fit tfoot td {
  * So we have to make 2 versions of the marker and switch between them.
  * Inkscape also tends to duplicate the markers, so we had to remove the duplicates in the SVG file to make this easier.
  */
-.powered.wire[marker-start] { marker-start: url(#Junction-powered); }
-.powered.wire[marker-mid] { marker-mid: url(#Junction-powered); }
-.powered.wire[marker-end] { marker-end: url(#Arrow-powered); }
+.powered.wire[marker-start] { marker-start: url(#Junction-powered) !important; }
+.powered.wire[marker-mid] { marker-mid: url(#Junction-powered) !important; }
+.powered.wire[marker-end] { marker-end: url(#Arrow-powered) !important; }
 
 /**
  * Highlight current wire group (Wire groups are directly under the #diagram layer. It might be better to add a
  * class to the groups instead of relying on their relative position.)
  */
 .wires:hover .wire, .wire:hover {
-    stroke-width: 0.75; /** Wires are 0.5 normally */
+    stroke-width: 0.75 !important; /** Wires are 0.5 normally */
 }
 
 
