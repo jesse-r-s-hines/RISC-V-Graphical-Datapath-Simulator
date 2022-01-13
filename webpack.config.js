@@ -12,7 +12,10 @@ module.exports = (env) => ({
   target: (env.test) ? "node" : "web",
   plugins: [
     new MiniCssExtractPlugin(),
-    new HtmlWebpackPlugin({template: "./index.html"}),
+    new HtmlWebpackPlugin({
+      template: "./index.html",
+      minify: false,
+    }),
   ],
   module: {
     rules: [
@@ -35,7 +38,10 @@ module.exports = (env) => ({
       },
       {
         test: /\.html$/,
-        loader: 'html-loader'
+        loader: 'html-loader',
+        options: {
+          minimize: false,
+        },
       },
       {
         test: /\.css$/i,
