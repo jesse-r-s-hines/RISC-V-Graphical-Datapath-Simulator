@@ -336,9 +336,10 @@ export class VisualSim {
             }
 
             if (running && config.powered && config.powered(this.sim)) {
-                elem.addClass("powered")
+                // add powered to elem if its a wire, and any wires under elem
+                elem.filter(".wire").add(elem.find(".wire")).addClass("powered")
             } else {
-                elem.removeClass("powered")
+                elem.filter(".wire").add(elem.find(".wire")).removeClass("powered")
             }
 
             if (config.label) {
