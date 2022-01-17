@@ -319,7 +319,6 @@ export const datapathElements: Record<string, DataPathElem> = {
     },
     "dataMem-readData": {
         tooltip: (sim) => intToAll(sim.dataMem.readData),
-        powered: (sim) => Bits.toInt(sim.dataMem.readData) != 0n,
     },
     "pcMux-out": {
         tooltip: (sim) => intToStr(sim.pcMux.out, "hex"),
