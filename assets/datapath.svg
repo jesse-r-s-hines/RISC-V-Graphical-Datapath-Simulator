@@ -86,12 +86,13 @@ text.datapath-label, text.datapath-label tspan {
        refX="0"
        refY="0"
        orient="auto">
-      <path
+      <circle
+         cx="0"
+         cy="0"
+         r="1.75"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke-width:1pt;"
          class="wire"
-         transform="scale(-0.6)"
-         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
-         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round"
-         id="path6" />
+         id="circle5" />
     </marker>
     <marker
        style="overflow:visible"
@@ -100,12 +101,13 @@ text.datapath-label, text.datapath-label tspan {
        refX="0"
        refY="0"
        orient="auto">
-      <path
+      <circle
+         cx="0"
+         cy="0"
+         r="1.75"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke-width:1pt;"
          class="wire"
-         transform="matrix(0.4,0,0,0.4,2.96,0.4)"
-         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke-width:1pt"
-         d="m -2.5,-1 c 0,2.76 -2.24,5 -5,5 -2.76,0 -5,-2.24 -5,-5 0,-2.76 2.24,-5 5,-5 2.76,0 5,2.24 5,5 z"
-         id="path9" />
+         id="circle9" />
     </marker>
     <filter
        style="color-interpolation-filters:sRGB"
