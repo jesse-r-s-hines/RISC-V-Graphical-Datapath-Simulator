@@ -24,7 +24,7 @@ toastr.options = {
 }
 
 $(function() {
-   // Load databath svg then run the simulation. We can't include the svg as an img, because we can manipulate it as an img.
+   // Load databath svg then run the simulation. Load SVG inline so we can manipulate it.
    $("#datapath").load(datapath, () => {
       (window as any).sim = new VisualSim()
    })

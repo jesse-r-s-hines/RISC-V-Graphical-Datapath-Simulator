@@ -50,7 +50,7 @@ export class VisualSim {
         this.datapathElements = datapathElements
 
         // initialize elements
-        this.svg = $("#datapath")[0]
+        this.svg = $("#datapath svg")[0]
         this.editors = $("#editors")[0]
         this.instrMemPanel = $("#instrMem-panel")[0]
         this.dataMemPanel = $("#dataMem-panel")[0]
