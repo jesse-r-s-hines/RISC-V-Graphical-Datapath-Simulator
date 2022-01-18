@@ -212,8 +212,8 @@ export class VisualSim {
                 elem.on("click", (event) => onclick(this))
             }
 
-            if (config.label && !elem.find("text.datapath-label").length)
-                throw Error(`#${id} has label defined, but no ".datapath-label" elements`);
+            if (config.label && !elem.find("text.value-label").length)
+                throw Error(`#${id} has label defined, but no ".value-label" elements`);
 
             if (config.showSubElemsByValue && !elem.find("[data-show-on-value]").length)
                 throw Error(`#${id} has showSubElemsByValue defined, but no "[data-show-on-value]" elements`);
@@ -407,7 +407,7 @@ export class VisualSim {
 
             if (config.label) {
                 let content = running ? config.label(this.sim) : "" // set labels empty if not running
-                elem.find(".datapath-label").each((i, text) => {
+                elem.find(".value-label").each((i, text) => {
                     // use first tspan if there is one, else place direclty in text element.
                     let labelElem = $(text).find("tspan")[0] ?? text
                     $(labelElem).text(content)

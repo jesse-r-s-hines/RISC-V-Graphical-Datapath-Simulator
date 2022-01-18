@@ -28,7 +28,7 @@
     fill:none;
     display:inline;
 }
-text.datapath-label, text.datapath-label tspan { 
+text.value-label, text.value-label tspan { 
     display:inline;
     fill:#000000;
     fill-opacity:1;
@@ -189,7 +189,7 @@ text.datapath-label, text.datapath-label tspan {
          d="m 171.069,160.62 -0.097,26.513 80.486,0.063"
          id="path858-1" />
       <text
-         class="datapath-label"
+         class="value-label"
          xml:space="preserve"
          x="195.82581"
          y="188.60875"
@@ -216,7 +216,7 @@ text.datapath-label, text.datapath-label tspan {
          d="m 168.045,139.453 h 44.869"
          id="path-1-1-1" />
       <text
-         class="datapath-label"
+         class="value-label"
          xml:space="preserve"
          x="196.4348"
          y="140.81035"
@@ -254,7 +254,7 @@ text.datapath-label, text.datapath-label tspan {
          d="m 242.628,159.094 h 8.95"
          id="path858-56-0" />
       <text
-         class="datapath-label"
+         class="value-label"
          xml:space="preserve"
          x="270.84793"
          y="204.08606"
@@ -286,7 +286,7 @@ text.datapath-label, text.datapath-label tspan {
          id="path858-7"
          sodipodi:nodetypes="cccc" />
       <text
-         class="datapath-label"
+         class="value-label"
          xml:space="preserve"
          x="53.994457"
          y="66.00856"
@@ -317,7 +317,7 @@ text.datapath-label, text.datapath-label tspan {
          id="path858-06"
          sodipodi:nodetypes="ccccc" />
       <text
-         class="datapath-label"
+         class="value-label"
          xml:space="preserve"
          x="121.45955"
          y="20.96104"
@@ -540,7 +540,7 @@ text.datapath-label, text.datapath-label tspan {
            y="160.00261"
            id="tspan319">Instruction [11-7]</tspan></text>
       <text
-         class="datapath-label"
+         class="value-label"
          xml:space="preserve"
          x="96.405174"
          y="164.55464"
@@ -569,7 +569,7 @@ text.datapath-label, text.datapath-label tspan {
            y="141.89761"
            id="tspan352">Instruction [24-20]</tspan></text>
       <text
-         class="datapath-label"
+         class="value-label"
          xml:space="preserve"
          x="96.340355"
          y="146.40106"
@@ -598,7 +598,7 @@ text.datapath-label, text.datapath-label tspan {
            y="128.93161"
            id="tspan385">Instruction [19-15]</tspan></text>
       <text
-         class="datapath-label"
+         class="value-label"
          xml:space="preserve"
          x="96.29567"
          y="133.52127"
@@ -627,7 +627,7 @@ text.datapath-label, text.datapath-label tspan {
            y="78.849777"
            id="tspan416">Instruction [6-0]</tspan></text>
       <text
-         class="datapath-label"
+         class="value-label"
          xml:space="preserve"
          x="90.006912"
          y="83.697304"
@@ -707,7 +707,7 @@ text.datapath-label, text.datapath-label tspan {
            y="97.237297"
            id="tspan497">ALUOp</tspan></text>
       <text
-         class="datapath-label"
+         class="value-label"
          xml:space="preserve"
          x="164.92928"
          y="100.72179"
@@ -735,7 +735,7 @@ text.datapath-label, text.datapath-label tspan {
            y="91.04422"
            id="tspan520">WriteSrc</tspan></text>
       <text
-         class="datapath-label"
+         class="value-label"
          xml:space="preserve"
          x="164.95012"
          y="94.26889"
@@ -855,7 +855,7 @@ text.datapath-label, text.datapath-label tspan {
            y="199.65167"
            id="tspan654">32</tspan></text>
       <text
-         class="datapath-label"
+         class="value-label"
          xml:space="preserve"
          x="96.242805"
          y="204.88007"
@@ -895,7 +895,7 @@ text.datapath-label, text.datapath-label tspan {
            y="199.65125"
            id="tspan673">32</tspan></text>
       <text
-         class="datapath-label"
+         class="value-label"
          xml:space="preserve"
          x="165.96811"
          y="204.8481"
@@ -1217,7 +1217,7 @@ text.datapath-label, text.datapath-label tspan {
            y="216.85899"
            id="tspan971">Instruction [14-12]</tspan></text>
       <text
-         class="datapath-label"
+         class="value-label"
          xml:space="preserve"
          x="89.994179"
          y="98.480881"
@@ -1228,7 +1228,7 @@ text.datapath-label, text.datapath-label tspan {
            y="98.480881"
            style="text-anchor:middle">Label</tspan></text>
       <text
-         class="datapath-label"
+         class="value-label"
          xml:space="preserve"
          x="96.097412"
          y="221.24519"
@@ -1257,7 +1257,7 @@ text.datapath-label, text.datapath-label tspan {
            y="226.90401"
            id="tspan1006">Instruction [31-25]</tspan></text>
       <text
-         class="datapath-label"
+         class="value-label"
          xml:space="preserve"
          x="96.027138"
          y="231.27463"
@@ -1553,7 +1553,7 @@ text.datapath-label, text.datapath-label tspan {
          id="path-ba-1"
          sodipodi:nodetypes="cc" />
       <text
-         class="datapath-label"
+         class="value-label"
          xml:space="preserve"
          x="252.29286"
          y="44.749317"
@@ -1574,7 +1574,7 @@ text.datapath-label, text.datapath-label tspan {
          d="M 277.565,30.7631 282.26,30.7592 282.324,5.38264 6.45727,5.47739 4.98612,135.231 10.1759,135.216"
          id="path-pco-1" />
       <text
-         class="datapath-label"
+         class="value-label"
          xml:space="preserve"
          x="189.67046"
          y="6.9411087"
@@ -1594,7 +1594,7 @@ text.datapath-label, text.datapath-label tspan {
          d="m 211.415,212.383 15.958,-0.008 0.031,-42.707"
          id="path12345678899" />
       <text
-         class="datapath-label"
+         class="value-label"
          xml:space="preserve"
          x="227.39999"
          y="202.2234"
@@ -1615,7 +1615,7 @@ text.datapath-label, text.datapath-label tspan {
          d="m 307.598,159.017 3.661,-0.011 0.034,76.942 -194.303,-0.09 -0.081,-58.091 7.264,-0.01"
          id="path-wsm-2" />
       <text
-         class="datapath-label"
+         class="value-label"
          xml:space="preserve"
          x="270.83081"
          y="237.39583"

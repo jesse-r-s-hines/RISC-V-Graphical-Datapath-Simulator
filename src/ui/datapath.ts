@@ -19,7 +19,7 @@ import { Radix, intToStr } from "utils/radix"
  * - wires 
  *   Can go on a group containing wire paths. When a wire-group is hovered all wire paths in it will be emphasized. 
  *   Lets you make labels emphasize their associated wire, or to treat multiple paths as one wire.
- * - datapath-label 
+ * - value-label 
  *   Indicates a text box which we will show the current value of a wire.
  * - outline 
  *   Indicates the outline of a component.
