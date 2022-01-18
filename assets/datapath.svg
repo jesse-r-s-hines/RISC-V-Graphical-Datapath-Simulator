@@ -50,6 +50,17 @@ text.value-label, text.value-label tspan {
     text-align:center;
     text-anchor:middle ;
 }
+.component { 
+    stroke-width:0.265;
+    stroke-opacity:1;
+    stroke-miterlimit:4;
+    stroke-linejoin:round;
+    stroke-linecap:round;
+    stroke:#000000;
+    fill-rule:evenodd;
+    fill-opacity:1;
+    fill:#fffffd;
+}
 .component-name { 
     font-style:normal;
     text-anchor:middle;
@@ -371,9 +382,8 @@ text.value-label, text.value-label tspan {
     <g
        id="instrMem">
       <rect
-         style="display:inline;opacity:1;fill:#fffffd;fill-opacity:1;stroke:#000000;stroke-width:0.264999"
          id="rect1057"
-         class="outline"
+         class="component"
          width="31.876415"
          height="45.628403"
          x="31.20252"
@@ -428,8 +438,7 @@ text.value-label, text.value-label tspan {
     <g
        id="immGen">
       <ellipse
-         style="opacity:1;fill:#fffffd;fill-opacity:1;stroke:#000000;stroke-width:0.264999;stroke-miterlimit:4;stroke-dasharray:none"
-         class="outline"
+         class="component"
          ry="13.284794"
          rx="10.047919"
          cy="203.35696"
@@ -455,8 +464,7 @@ text.value-label, text.value-label tspan {
     <g
        id="pc">
       <rect
-         style="opacity:1;fill:#fffffd;fill-opacity:1;stroke:#000000;stroke-width:0.265;stroke-miterlimit:4;stroke-dasharray:none"
-         class="outline"
+         class="component"
          width="10.318446"
          height="33.092224"
          x="11.00474"
@@ -474,8 +482,7 @@ text.value-label, text.value-label tspan {
     <g
        id="aluControl">
       <ellipse
-         style="display:inline;mix-blend-mode:normal;fill:#fffffd;fill-opacity:1;stroke:#000000;stroke-width:0.265;stroke-miterlimit:4;stroke-dasharray:none"
-         class="outline"
+         class="component"
          cx="201.08887"
          cy="212.37717"
          rx="10.193884"
@@ -501,8 +508,7 @@ text.value-label, text.value-label tspan {
     <g
        id="control">
       <ellipse
-         style="opacity:1;fill:#fffffd;fill-opacity:1;stroke:#000000;stroke-width:0.264999"
-         class="outline"
+         class="component"
          cx="123.2449"
          cy="89.604218"
          ry="31.200548"
@@ -520,9 +526,8 @@ text.value-label, text.value-label tspan {
     <g
        id="pcAdd4">
       <path
-         style="display:inline;fill:#fffffd;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.396875;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          d="M 47.0141,52.2816 V 36.0731 l 4.408,-4.9891 -4.52,-5.2065 V 10.5408 l 17.6957,10.7349 v 19.4276 c 0,0 -13.7451,9.3621 -17.5837,11.5783"
-         class="outline"
+         class="component"
          id="path383" />
       <text
          class="component-name"
@@ -536,8 +541,7 @@ text.value-label, text.value-label tspan {
     <g
        id="jumpControl">
       <ellipse
-         style="display:inline;mix-blend-mode:normal;fill:#fffffd;fill-opacity:1;stroke:#000000;stroke-width:0.265;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none"
-         class="outline"
+         class="component"
          ry="12.757064"
          rx="8.504261"
          cy="72.142838"
@@ -949,9 +953,8 @@ text.value-label, text.value-label tspan {
     <g
        id="alu">
       <path
-         style="display:inline;opacity:1;fill:#fffffd;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.396875;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          d="m 213.411,175.461 v -16.209 l 4.409,-4.989 -4.521,-5.206 V 133.72 l 29.338,10.735 v 19.427 c 0,0 -25.384,9.359 -29.222,11.575"
-         class="outline"
+         class="component"
          id="path619" />
       <text
          class="component-name"
@@ -989,9 +992,8 @@ text.value-label, text.value-label tspan {
     <g
        id="branchAdder">
       <path
-         style="display:inline;fill:#fffffd;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.396875;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          d="M 209.693,65.0038 V 48.7954 l 4.408,-4.9891 -4.52,-5.2066 V 23.2631 l 29.338,10.7348 v 19.4277 c 0,0 -25.384,9.3585 -29.223,11.5748"
-         class="outline"
+         class="component"
          id="path641" />
       <text
          class="component-name"
@@ -1013,8 +1015,7 @@ text.value-label, text.value-label tspan {
     <g
        id="writeSrcMux">
       <rect
-         style="display:inline;fill:#fffffd;fill-opacity:1;stroke:#000000;stroke-width:0.264999"
-         class="outline"
+         class="component"
          width="8.561676"
          height="42.103325"
          x="298.96054"
@@ -1085,8 +1086,7 @@ text.value-label, text.value-label tspan {
     <g
        id="aluInputMux">
       <rect
-         style="display:inline;fill:#fffffd;fill-opacity:1;stroke:#000000;stroke-width:0.264999"
-         class="outline"
+         class="component"
          width="8.5159845"
          height="25.584352"
          x="196.14438"
@@ -1143,8 +1143,7 @@ text.value-label, text.value-label tspan {
     <g
        id="pcMux">
       <rect
-         style="fill:#fffffd;fill-opacity:1;stroke:#000000;stroke-width:0.264999"
-         class="outline"
+         class="component"
          width="8.7676888"
          height="33.285988"
          x="268.9158"
@@ -1281,8 +1280,7 @@ text.value-label, text.value-label tspan {
     <g
        id="dataMem">
       <rect
-         style="opacity:1;fill:#fffffd;fill-opacity:1;stroke:#000000;stroke-width:0.264999"
-         class="outline"
+         class="component"
          width="36.561493"
          height="54.354294"
          x="252.42381"
@@ -1362,7 +1360,7 @@ text.value-label, text.value-label tspan {
     <g
        id="regFile">
       <rect
-         style="display:inline;opacity:1;fill:#fffffd;fill-opacity:1;stroke:#000000;stroke-width:0.264999"
+         class="component"
          id="rect1052"
          width="43.035778"
          height="60.931778"
@@ -1477,8 +1475,7 @@ text.value-label, text.value-label tspan {
        id="jalrMux"
        style="display:inline;mix-blend-mode:normal">
       <rect
-         style="display:inline;fill:#fffffd;fill-opacity:1;stroke:#000000;stroke-width:0.264999"
-         class="outline"
+         class="component"
          width="8.5159845"
          height="25.584352"
          x="192.58385"
