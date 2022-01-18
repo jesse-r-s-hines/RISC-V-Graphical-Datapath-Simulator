@@ -70,6 +70,42 @@ text.value-label, text.value-label tspan {
     fill-opacity:1;
     fill:#000000;
 }
+.label { 
+    stroke-width:0.264583 ;
+    stroke:none;
+    line-height:1.25;
+    -inkscape-font-specification:'Arial, Normal';
+    font-weight:normal;
+    font-variant-numeric:normal;
+    font-variant-ligatures:normal;
+    font-variant-east-asian:normal;
+    font-variant-caps:normal;
+    font-variant:normal;
+    font-style:normal;
+    font-stretch:normal;
+    font-size:4.58611px;
+    font-family:Arial;
+    fill-opacity:1;
+    fill:#000000;
+}
+.label-small { 
+    stroke-width:0.264583 ;
+    stroke:none;
+    line-height:1.25;
+    -inkscape-font-specification:'Arial, Normal';
+    font-weight:normal;
+    font-variant-numeric:normal;
+    font-variant-ligatures:normal;
+    font-variant-east-asian:normal;
+    font-variant-caps:normal;
+    font-variant:normal;
+    font-style:normal;
+    font-stretch:normal;
+    font-size:3.52778px;
+    font-family:Arial;
+    fill-opacity:1;
+    fill:#000000;
+}
 </style>
   <defs
      id="defs2">
@@ -125,9 +161,9 @@ text.value-label, text.value-label tspan {
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.35355339"
-     inkscape:cx="349.31075"
-     inkscape:cy="642.05296"
+     inkscape:zoom="0.25"
+     inkscape:cx="974"
+     inkscape:cy="228"
      inkscape:document-units="mm"
      inkscape:document-rotation="0"
      showgrid="false"
@@ -343,7 +379,8 @@ text.value-label, text.value-label tspan {
          x="31.20252"
          y="128.44087" />
       <text
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;white-space:pre;inline-size:28.0449;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         style="white-space:pre;inline-size:28.0449"
+         class="label"
          x="71.111542"
          y="200.54567"
          id="text118"
@@ -356,7 +393,8 @@ text.value-label, text.value-label tspan {
            y="206.2783"
            id="tspan2583">Address</tspan></text>
       <text
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:end;text-anchor:end;white-space:pre;inline-size:32.9187;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         style="text-align:end;text-anchor:end;white-space:pre;inline-size:32.9187"
+         class="label"
          x="95.26252"
          y="200.54567"
          id="text146"
@@ -531,11 +569,10 @@ text.value-label, text.value-label tspan {
          d="M 68.4877,162.939 H 124.218"
          id="path858" />
       <text
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         class="label"
          x="72.413261"
          y="160.00261"
          id="text321"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"
            x="72.413261"
            y="160.00261"
            id="tspan319">Instruction [11-7]</tspan></text>
@@ -560,11 +597,10 @@ text.value-label, text.value-label tspan {
          d="M 68.4877,144.947 H 124.218"
          id="path858-5" />
       <text
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         class="label"
          x="72.363441"
          y="141.89761"
          id="text354"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"
            x="72.363441"
            y="141.89761"
            id="tspan352">Instruction [24-20]</tspan></text>
@@ -589,11 +625,10 @@ text.value-label, text.value-label tspan {
          d="M 68.4877,132.058 H 124.218"
          id="path858-5-2" />
       <text
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         class="label"
          x="72.664444"
          y="128.93161"
          id="text387"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"
            x="72.664444"
            y="128.93161"
            id="tspan385">Instruction [19-15]</tspan></text>
@@ -618,11 +653,10 @@ text.value-label, text.value-label tspan {
          d="M 68.4877,82.1862 H 112.429"
          id="path858-5-2-9-8" />
       <text
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         class="label"
          x="71.048248"
          y="78.849777"
          id="text418"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"
            x="71.048248"
            y="78.849777"
            id="tspan416">Instruction [6-0]</tspan></text>
@@ -646,11 +680,10 @@ text.value-label, text.value-label tspan {
          d="m 126.984,118.609 h 19.042 l -0.02,5.355"
          id="path858-5-2-54" />
       <text
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         class="label"
          x="135.15047"
          y="116.983"
          id="text441"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"
            x="135.15047"
            y="116.983"
            id="tspan439">RegWrite</tspan></text>
@@ -664,11 +697,10 @@ text.value-label, text.value-label tspan {
          id="path858-5-2-54-8"
          sodipodi:nodetypes="ccccc" />
       <text
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         class="label"
          x="135.51772"
          y="110.52"
          id="text460"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"
            x="135.51772"
            y="110.52"
            id="tspan458">ALUSrc</tspan></text>
@@ -681,11 +713,10 @@ text.value-label, text.value-label tspan {
          d="m 132.176,105.159 132.108,0.018 -0.117,38.4"
          id="path858-5-2-54-1" />
       <text
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         class="label"
          x="135.17062"
          y="103.84228"
          id="text481"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"
            x="135.17062"
            y="103.84228"
            id="tspan479">MemWrite</tspan></text>
@@ -698,11 +729,10 @@ text.value-label, text.value-label tspan {
          d="m 133.063,99.2344 41.511,0.0374 v 94.3662 l 26.449,0.004 0.022,3.686"
          id="path858-5-2-54-2" />
       <text
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         class="label"
          x="135.51772"
          y="97.237297"
          id="text499"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"
            x="135.51772"
            y="97.237297"
            id="tspan497">ALUOp</tspan></text>
@@ -726,11 +756,10 @@ text.value-label, text.value-label tspan {
          d="m 133.625,92.8366 h 169.711 l -0.097,45.0244"
          id="path858-5-2-54-3" />
       <text
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         class="label"
          x="135.45476"
          y="91.04422"
          id="text522"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"
            x="135.45476"
            y="91.04422"
            id="tspan520">WriteSrc</tspan></text>
@@ -754,11 +783,10 @@ text.value-label, text.value-label tspan {
          d="m 133.544,86.1246 h 72.987 v 2.8068 h 70.748 l 0.072,54.7836"
          id="path858-5-2-54-6" />
       <text
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         class="label"
          x="135.52664"
          y="84.526321"
          id="text544"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"
            x="135.52664"
            y="84.526321"
            id="tspan542">MemRead</tspan></text>
@@ -771,11 +799,10 @@ text.value-label, text.value-label tspan {
          d="M 133.088,79.7366 H 240.825"
          id="path858-5-2-54-80" />
       <text
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         class="label"
          x="135.17511"
          y="78.1213"
          id="text567"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"
            x="135.17511"
            y="78.1213"
            id="tspan565">BranchZero</tspan></text>
@@ -788,11 +815,10 @@ text.value-label, text.value-label tspan {
          d="M 132.072,73.3866 H 239.138"
          id="path858-5-2-54-80-2" />
       <text
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         class="label"
          x="135.17511"
          y="71.932281"
          id="text593"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"
            x="135.17511"
            y="71.932281"
            id="tspan591">BranchNotZero</tspan></text>
@@ -805,11 +831,10 @@ text.value-label, text.value-label tspan {
          d="M 130.448,67.0366 H 239.881"
          id="path858-5-2-54-80-2-1" />
       <text
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         class="label"
          x="135.37921"
          y="65.301445"
          id="text610"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"
            x="135.37921"
            y="65.301445"
            id="tspan608">Jump</tspan></text>
@@ -837,20 +862,18 @@ text.value-label, text.value-label tspan {
          id="path9380"
          style="stroke-width:0.265;stroke-miterlimit:4" />
       <text
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         class="label"
          x="72.698936"
          y="200.517"
          id="text643"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"
            x="72.698936"
            y="200.517"
            id="tspan641">Instruction [31-0]</tspan></text>
       <text
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         class="label"
          x="126.31213"
          y="199.65167"
          id="text656"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"
            x="126.31213"
            y="199.65167"
            id="tspan654">32</tspan></text>
@@ -886,11 +909,10 @@ text.value-label, text.value-label tspan {
          class="wire"
          style="stroke-width:0.265;stroke-miterlimit:4" />
       <text
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         class="label"
          x="160.17957"
          y="199.65125"
          id="text675"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"
            x="160.17957"
            y="199.65125"
            id="tspan673">32</tspan></text>
@@ -916,11 +938,10 @@ text.value-label, text.value-label tspan {
          d="m 38.2604,44.3651 h 7.7783"
          id="path-12468056" />
       <text
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         class="label"
          x="32.989971"
          y="46.166241"
          id="text691"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"
            x="32.989971"
            y="46.166241"
            id="tspan689">4</tspan></text>
@@ -941,7 +962,8 @@ text.value-label, text.value-label tspan {
            y="155.86601"
            id="tspan705">ALU</tspan></text>
       <text
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:end;text-anchor:end;white-space:pre;inline-size:13.7196;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         style="text-align:end;text-anchor:end;white-space:pre;inline-size:13.7196"
+         class="label"
          x="85.136353"
          y="200.54567"
          id="text728"
@@ -956,11 +978,10 @@ text.value-label, text.value-label tspan {
            y="206.2783"
            id="tspan2619">Result</tspan></text>
       <text
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         class="label"
          x="230.57593"
          y="148.82816"
          id="text743"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"
            x="230.57593"
            y="148.82816"
            id="tspan741">Zero</tspan></text>
@@ -981,11 +1002,10 @@ text.value-label, text.value-label tspan {
            y="45.304306"
            id="tspan757">Add</tspan></text>
       <text
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         class="label"
          x="227.67641"
          y="44.648281"
          id="text773"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"
            x="227.67641"
            y="44.648281"
            id="tspan771">Sum</tspan></text>
@@ -1002,29 +1022,26 @@ text.value-label, text.value-label tspan {
          ry="5.6197147"
          id="rect652" />
       <text
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         class="label"
          x="300.24423"
          y="159.69168"
          id="text787"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"
            x="300.24423"
            y="159.69168"
            id="tspan785">1</tspan></text>
       <text
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         class="label"
          x="300.16122"
          y="177.69046"
          id="text799"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"
            x="300.16122"
            y="177.69046"
            id="tspan797">0</tspan></text>
       <text
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         class="label"
          x="300.05124"
          y="143.89967"
          id="text811"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"
            x="300.05124"
            y="143.89967"
            id="tspan809">2</tspan></text>
@@ -1059,7 +1076,7 @@ text.value-label, text.value-label tspan {
          sodipodi:nodetypes="cc"
          data-show-on-value="0" />
       <path
-         style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         class="label"
          d="M 298.90787,159.07369 307.598,159.017"
          id="path1597-36-7"
          sodipodi:nodetypes="cc"
@@ -1095,20 +1112,18 @@ text.value-label, text.value-label tspan {
            x="200.48686"
            y="174.08438">x</tspan></text>
       <text
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         class="label"
          x="198.05124"
          y="179.63626"
          id="text856"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"
            x="198.05124"
            y="179.63626"
            id="tspan854">1</tspan></text>
       <text
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         class="label"
          x="197.58421"
          y="161.13846"
          id="text868"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"
            x="197.58421"
            y="161.13846"
            id="tspan866">0</tspan></text>
@@ -1155,20 +1170,18 @@ text.value-label, text.value-label tspan {
            x="273.27209"
            y="36.359486">x</tspan></text>
       <text
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         class="label"
          x="270.72021"
          y="20.851259"
          id="text898"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"
            x="270.72021"
            y="20.851259"
            id="tspan896">0</tspan></text>
       <text
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         class="label"
          x="270.7894"
          y="44.951279"
          id="text910"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"
            x="270.7894"
            y="44.951279"
            id="tspan908">1</tspan></text>
@@ -1199,20 +1212,18 @@ text.value-label, text.value-label tspan {
          d="m 68.4877,219.851 h 96.4073 l -0.025,-11.471 25.674,-0.026"
          id="path858-02-8" />
       <text
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         class="label"
          x="71.047256"
          y="94.03624"
          id="text944"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"
            x="71.047256"
            y="94.03624"
            id="tspan942">Instruction [14-12]</tspan></text>
       <text
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         class="label"
          x="72.646645"
          y="216.85899"
          id="text973"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"
            x="72.646645"
            y="216.85899"
            id="tspan971">Instruction [14-12]</tspan></text>
@@ -1248,11 +1259,10 @@ text.value-label, text.value-label tspan {
          d="m 68.4877,229.857 110.1303,-0.001 0.03,-13.959 11.699,0.003"
          id="path858-02-8-3" />
       <text
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         class="label"
          x="72.628525"
          y="226.90401"
          id="text1008"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"
            x="72.628525"
            y="226.90401"
            id="tspan1006">Instruction [31-25]</tspan></text>
@@ -1295,7 +1305,8 @@ text.value-label, text.value-label tspan {
            y="206.2783"
            id="tspan2625">Memory</tspan></text>
       <text
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;white-space:pre;inline-size:11.7672;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         style="white-space:pre;inline-size:11.7672"
+         class="label"
          x="71.111542"
          y="200.54567"
          id="text1053"
@@ -1308,16 +1319,16 @@ text.value-label, text.value-label tspan {
            y="206.2783"
            id="tspan2629">Data</tspan></text>
       <text
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         class="label"
          x="254.85796"
          y="160.71703"
          id="text1071"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"
            x="254.85796"
            y="160.71703"
            id="tspan1069">Address</tspan></text>
       <text
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:end;text-anchor:end;white-space:pre;inline-size:18.4052;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         style="text-align:end;text-anchor:end;white-space:pre;inline-size:18.4052"
+         class="label"
          x="94.176453"
          y="200.54567"
          id="text1090"
@@ -1332,20 +1343,18 @@ text.value-label, text.value-label tspan {
            y="206.2783"
            id="tspan2635">Data</tspan></text>
       <text
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52778px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         class="label-small"
          x="259.78445"
          y="147.60501"
          id="text1106"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52778px;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"
            x="259.78445"
            y="147.60501"
            id="tspan1104">Write</tspan></text>
       <text
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52778px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         class="label-small"
          x="273.38452"
          y="147.58099"
          id="text1121"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52778px;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"
            x="273.38452"
            y="147.58099"
            id="tspan1119">Read</tspan></text>
@@ -1368,7 +1377,8 @@ text.value-label, text.value-label tspan {
            y="182.216"
            id="tspan1141">Registers</tspan></text>
       <text
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;white-space:pre;inline-size:27.193;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         style="white-space:pre;inline-size:27.193"
+         class="label"
          x="71.111542"
          y="200.54567"
          id="text1167"
@@ -1381,7 +1391,8 @@ text.value-label, text.value-label tspan {
            y="206.2783"
            id="tspan2639">Register 1</tspan></text>
       <text
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;white-space:pre;inline-size:28.565;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         style="white-space:pre;inline-size:28.565"
+         class="label"
          x="71.111542"
          y="200.54567"
          id="text1191"
@@ -1394,7 +1405,8 @@ text.value-label, text.value-label tspan {
            y="206.2783"
            id="tspan2643">Register 2</tspan></text>
       <text
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;white-space:pre;inline-size:28.0606;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         style="white-space:pre;inline-size:28.0606"
+         class="label"
          x="71.111542"
          y="200.54567"
          id="text1215"
@@ -1407,7 +1419,8 @@ text.value-label, text.value-label tspan {
            y="206.2783"
            id="tspan2647">Register</tspan></text>
       <text
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;white-space:pre;inline-size:20.9339;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         style="white-space:pre;inline-size:20.9339"
+         class="label"
          x="71.111542"
          y="200.54567"
          id="text1235"
@@ -1420,7 +1433,8 @@ text.value-label, text.value-label tspan {
            y="206.2783"
            id="tspan2651">Data</tspan></text>
       <text
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:end;text-anchor:end;white-space:pre;inline-size:21.1714;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         style="text-align:end;text-anchor:end;white-space:pre;inline-size:21.1714"
+         class="label"
          x="85.528229"
          y="200.54567"
          id="text1255"
@@ -1435,7 +1449,8 @@ text.value-label, text.value-label tspan {
            y="206.2783"
            id="tspan2657">Data 2</tspan></text>
       <text
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:end;text-anchor:end;white-space:pre;inline-size:17.8555;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         style="text-align:end;text-anchor:end;white-space:pre;inline-size:17.8555"
+         class="label"
          x="85.564056"
          y="200.54567"
          id="text1275"
@@ -1450,11 +1465,10 @@ text.value-label, text.value-label tspan {
            y="206.2783"
            id="tspan2663">Data 1</tspan></text>
       <text
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52778px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         class="label-small"
          x="141.3445"
          y="128.03999"
          id="text1291"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52778px;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"
            x="141.3445"
            y="128.03999"
            id="tspan1289">Write</tspan></text>
@@ -1490,20 +1504,18 @@ text.value-label, text.value-label tspan {
            x="196.81192"
            y="39.603085">x</tspan></text>
       <text
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         class="label"
          x="195.4344"
          y="45.15498"
          id="text1319"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"
            x="195.4344"
            y="45.15498"
            id="tspan1317">1</tspan></text>
       <text
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         class="label"
          x="194.96721"
          y="26.65686"
          id="text1331"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"
            x="194.96721"
            y="26.65686"
            id="tspan1329">0</tspan></text>
@@ -1528,11 +1540,10 @@ text.value-label, text.value-label tspan {
          d="m 126.484,59.9912 h 41.537 v -8.6897 l 28.787,2e-4 v -4.2768"
          id="path858-5-2-54-80-2-1-4" />
       <text
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         class="label"
          x="135.37921"
          y="58.531689"
          id="text1350"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"
            x="135.37921"
            y="58.531689"
            id="tspan1348">Jalr</tspan></text>
