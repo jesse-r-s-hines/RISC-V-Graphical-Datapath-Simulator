@@ -50,6 +50,26 @@ text.datapath-label, text.datapath-label tspan {
     text-align:center;
     text-anchor:middle ;
 }
+.component-name { 
+    font-style:normal;
+    text-anchor:middle;
+    text-align:center;
+    stroke-width:0.264583;
+    stroke:none;
+    line-height:1.25;
+    -inkscape-font-specification:'Arial, Bold';
+    font-weight:bold;
+    font-variant-numeric:normal;
+    font-variant-ligatures:normal;
+    font-variant-east-asian:normal;
+    font-variant-caps:normal;
+    font-variant:normal;
+    font-stretch:normal;
+    font-size:4.58611px;
+    font-family:Arial;
+    fill-opacity:1;
+    fill:#000000;
+}
 </style>
   <defs
      id="defs2">
@@ -105,9 +125,9 @@ text.datapath-label, text.datapath-label tspan {
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2.8284272"
-     inkscape:cx="625.96626"
-     inkscape:cy="741.40144"
+     inkscape:zoom="0.35355339"
+     inkscape:cx="349.31075"
+     inkscape:cy="642.05296"
      inkscape:document-units="mm"
      inkscape:document-rotation="0"
      showgrid="false"
@@ -122,7 +142,7 @@ text.datapath-label, text.datapath-label tspan {
      fit-margin-right="5"
      fit-margin-bottom="4"
      units="mm"
-     inkscape:current-layer="immGen-immediate"
+     inkscape:current-layer="diagram"
      inkscape:snap-text-baseline="true"
      inkscape:pagecheckerboard="0" />
   <metadata
@@ -351,7 +371,8 @@ text.datapath-label, text.datapath-label tspan {
            y="206.2783"
            id="tspan2589">[31-0]</tspan></text>
       <text
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;white-space:pre;inline-size:27.6026;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         style="white-space:pre;inline-size:27.6026"
+         class="component-name"
          x="85.060211"
          y="200.54567"
          id="text174"
@@ -377,7 +398,8 @@ text.datapath-label, text.datapath-label tspan {
          cx="146.85999"
          id="ellipse342" />
       <text
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;white-space:pre;inline-size:10.538;mix-blend-mode:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         style="white-space:pre;inline-size:10.538;mix-blend-mode:normal"
+         class="component-name"
          x="132.55078"
          y="188.57198"
          id="text1143-9"
@@ -403,11 +425,10 @@ text.datapath-label, text.datapath-label tspan {
          y="118.51336"
          id="rect352" />
       <text
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         class="component-name"
          x="18.858686"
          y="136.01999"
          id="text208"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.58611px;font-family:Arial;-inkscape-font-specification:'Arial Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;stroke-width:0.264583"
            x="16.224134"
            y="136.01999"
            id="tspan206">PC</tspan></text>
@@ -423,7 +444,8 @@ text.datapath-label, text.datapath-label tspan {
          ry="15.043646"
          id="ellipse358" />
       <text
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;white-space:pre;inline-size:23.8877;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         style="white-space:pre;inline-size:23.8877"
+         class="component-name"
          x="80.386772"
          y="200.54567"
          id="text231"
@@ -449,11 +471,10 @@ text.datapath-label, text.datapath-label tspan {
          rx="10.362817"
          id="ellipse372" />
       <text
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         class="component-name"
          x="132.44673"
          y="91.071793"
          id="text251"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.58611px;font-family:Arial;-inkscape-font-specification:'Arial, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;stroke-width:0.264583"
            x="123.27451"
            y="91.071793"
            id="tspan249">Control</tspan></text>
@@ -466,11 +487,10 @@ text.datapath-label, text.datapath-label tspan {
          class="outline"
          id="path383" />
       <text
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         class="component-name"
          x="62.213375"
          y="32.727303"
          id="text267"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.58611px;font-family:Arial;-inkscape-font-specification:'Arial Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;stroke-width:0.264583"
            x="58.000111"
            y="32.727303"
            id="tspan265">Add</tspan></text>
@@ -486,7 +506,8 @@ text.datapath-label, text.datapath-label tspan {
          cx="247.66292"
          id="ellipse390" />
       <text
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:3.88056px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;white-space:pre;inline-size:17.1246;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         style="font-size:3.88056px;line-height:1.25;white-space:pre;inline-size:17.1246"
+         class="component-name"
          x="79.304062"
          y="200.54567"
          id="text291"
@@ -912,11 +933,10 @@ text.datapath-label, text.datapath-label tspan {
          class="outline"
          id="path619" />
       <text
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         class="component-name"
          x="228.40541"
          y="155.86601"
          id="text707"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.58611px;font-family:Arial;-inkscape-font-specification:'Arial, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;stroke-width:0.264583"
            x="223.61104"
            y="155.86601"
            id="tspan705">ALU</tspan></text>
@@ -953,11 +973,10 @@ text.datapath-label, text.datapath-label tspan {
          class="outline"
          id="path641" />
       <text
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         class="component-name"
          x="225.32169"
          y="45.304306"
          id="text759"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.58611px;font-family:Arial;-inkscape-font-specification:'Arial, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;stroke-width:0.264583"
            x="220.46799"
            y="45.304306"
            id="tspan757">Add</tspan></text>
@@ -1010,24 +1029,22 @@ text.datapath-label, text.datapath-label tspan {
            y="143.89967"
            id="tspan809">2</tspan></text>
       <text
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:0.85;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         style="line-height:0.85"
+         class="component-name"
          x="303.29919"
          y="164.78101"
          id="text825"><tspan
            sodipodi:role="line"
            id="tspan145187"
            x="303.29919"
-           y="164.78101"
-           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:Arial;-inkscape-font-specification:'Arial Bold';text-align:center;text-anchor:middle">M</tspan><tspan
+           y="164.78101">M</tspan><tspan
            sodipodi:role="line"
            id="tspan145189"
            x="303.29919"
-           y="168.6792"
-           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:Arial;-inkscape-font-specification:'Arial Bold';text-align:center;text-anchor:middle">u</tspan><tspan
+           y="168.6792">u</tspan><tspan
            id="tspan145191"
            x="303.29919"
            y="172.57739"
-           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:Arial;-inkscape-font-specification:'Arial Bold';text-align:center;text-anchor:middle"
            sodipodi:role="line">x</tspan></text>
       <path
          style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
@@ -1060,7 +1077,8 @@ text.datapath-label, text.datapath-label tspan {
          ry="5.6197147"
          id="rect665" />
       <text
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.58611px;line-height:0.85;font-family:Arial;-inkscape-font-specification:'Arial, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         style="line-height:0.85"
+         class="component-name"
          x="200.48686"
          y="166.28799"
          id="text844"><tspan
@@ -1119,7 +1137,8 @@ text.datapath-label, text.datapath-label tspan {
          ry="5.6197147"
          id="rect676" />
       <text
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.58611px;line-height:0.85;font-family:Arial;-inkscape-font-specification:'Arial, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         style="line-height:0.85"
+         class="component-name"
          x="273.27209"
          y="28.563099"
          id="text886"><tspan
@@ -1260,7 +1279,8 @@ text.datapath-label, text.datapath-label tspan {
          y="143.71306"
          id="rect749" />
       <text
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;white-space:pre;inline-size:20.6888;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         style="white-space:pre;inline-size:20.6888"
+         class="component-name"
          x="81.286972"
          y="200.54567"
          id="text1033"
@@ -1340,11 +1360,10 @@ text.datapath-label, text.datapath-label tspan {
          x="125.02954"
          y="124.07574" />
       <text
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.58611px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         class="component-name"
          x="166.01123"
          y="182.216"
          id="text1143"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.58611px;font-family:Arial;-inkscape-font-specification:'Arial, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;stroke-width:0.264583"
            x="154.0701"
            y="182.216"
            id="tspan1141">Registers</tspan></text>
@@ -1453,7 +1472,8 @@ text.datapath-label, text.datapath-label tspan {
          ry="5.6197147"
          id="rect891" />
       <text
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.58611px;line-height:0.85;font-family:Arial;-inkscape-font-specification:'Arial, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         style="line-height:0.85"
+         class="component-name"
          x="196.81192"
          y="31.806696"
          id="text1307"><tspan
