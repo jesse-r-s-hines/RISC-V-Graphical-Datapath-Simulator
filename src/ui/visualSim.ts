@@ -128,6 +128,67 @@ export class VisualSim {
         $("#restart").on("click", (event) => this.restart())
     }
 
+    /**
+     * Create some CSS rules for hover and powered wires so that we can have the hover width and wire markers relative 
+     * to what is defined in the SVG.
+     * 
+     * If we did this in static CSS we'd have to hardcode the hover width. And we can't fix the powered marker colors in
+     * static CSS unless we make inkscape (or SVGO) output marker-start/mid/end as attributes instead of styles somehow
+     * so we could use `[marker-end] { marker-end: url(#Arrow-powered) }`. In SVG2, there's a context-fill value that
+     * can be used to inherit colors from the line easily, but its not supported yet.
+     * 
+     * The purpose of this is to make the SVG more flexible, and allow us to have multiple database SVGs in the future.
+     * 
+     * An alternative, more traditional method would be to make JS events on power/hover that set the inline styles. But
+     * then I'd have to worry about reverting state back to default. I might consider changing to that, but I think
+     * making the CSS is simpler and faster. Its also easier to switch to static CSS if SVG2 or the `attr()` CSS
+     * function ever get supported.
+     */
+    private generateDynamicSvgCss() {
+        let wires = $(this.svg).find(".wire").not("marker .wire").get()
+
+        let strokeWidths = new Set(wires.map(wire => {
+            let width = $(wire).css("stroke-width")
+            $(wire).attr("data-stroke-width", width)
+            return width
+        }))
+        let hoverRules = [...strokeWidths].map(width => `
+            .wires:hover .wire[data-stroke-width="${width}"], .wire[data-stroke-width="${width}"]:hover {
+                stroke-width: calc(${width} * 1.5) !important
+            }
+        `)
+
+        let markerPos = ["start", "mid", "end"]
+        let markers = new Set(wires.flatMap(wire => markerPos.map(pos => {
+            // marker must be of form "url(#marker-id)" or "url(https://current-address.com/#marker-id)"
+            let marker = $(wire).css(`marker-${pos}`).trim().match(/url\(\s*"?.*?#(.+?)"?\s*\)/)?.[1]
+            if (marker && marker != "none") {
+                $(wire).attr(`data-marker-${pos}`, marker)
+                return marker
+            }
+            return ""
+        }).filter(marker => marker)))
+        let markerRules = [...markers].flatMap(marker => markerPos.map(pos => `
+            .powered.wire[data-marker-${pos}="${marker}"] {
+                marker-${pos}: url("#${marker}-powered") !important
+            }
+        `))
+
+        // Create "powered" versions of markers used on paths so that we can make the markers change color with the wire
+        markers.forEach(markerId => $(`#${markerId}`).clone()
+            .attr("id", `${markerId}-powered`)
+            .addClass("powered")
+            .insertAfter(`#${markerId}`)
+        )
+
+        let rules = [...hoverRules, ...markerRules]
+
+        // inject the generated styles into the SVG
+        let style = $("<style>").addClass("dynamic-styles").prependTo(this.svg)[0] as HTMLStyleElement
+        // rules.forEach(rule => style.sheet!.insertRule(rule)) // this works, but doesn't show the CSS in the inspector
+        $(style).text(rules.join("\n"))
+    }
+
     private setupDatapath() {
         for (let [id, config] of Object.entries(this.datapathElements)) {
             let elem = $(this.svg).find(`#${id}`)
@@ -157,6 +218,8 @@ export class VisualSim {
             if (config.showSubElemsByValue && !elem.find("[data-show-on-value]").length)
                 throw Error(`#${id} has showSubElemsByValue defined, but no "[data-show-on-value]" elements`);
         }
+
+        this.generateDynamicSvgCss()
     }
 
     /**

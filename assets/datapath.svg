@@ -79,36 +79,6 @@ text.datapath-label, text.datapath-label tspan {
          d="m -2.5,-1 c 0,2.76 -2.24,5 -5,5 -2.76,0 -5,-2.24 -5,-5 0,-2.76 2.24,-5 5,-5 2.76,0 5,2.24 5,5 z"
          id="path924" />
     </marker>
-    <marker
-       style="overflow:visible"
-       id="Arrow-powered"
-       class="powered"
-       refX="0"
-       refY="0"
-       orient="auto">
-      <circle
-         cx="0"
-         cy="0"
-         r="1.75"
-         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke-width:1pt;"
-         class="wire"
-         id="circle5" />
-    </marker>
-    <marker
-       style="overflow:visible"
-       id="Junction-powered"
-       class="powered"
-       refX="0"
-       refY="0"
-       orient="auto">
-      <circle
-         cx="0"
-         cy="0"
-         r="1.75"
-         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke-width:1pt;"
-         class="wire"
-         id="circle9" />
-    </marker>
     <filter
        style="color-interpolation-filters:sRGB"
        id="bg-filter"
