@@ -5,7 +5,7 @@ This is a web-based graphcial simulator for a simple 32-bit, single-cycle implem
 ## Online Demo
 ![Screenshot](docs/Screenshot.png)
 
-The simulator is available at https://jessehines0.github.io/RISC-V-Graphical-Datapath-Simulator.
+The simulator is available at https://jesse-r-s-hines.github.io/RISC-V-Graphical-Datapath-Simulator.
 
 ## Building
 
