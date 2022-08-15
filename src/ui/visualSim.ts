@@ -6,6 +6,7 @@ import { Radix, parseInt, intToStr } from "utils/radix"
 import { Example, examples } from "./examples";
 import { DataPathElem, datapathElements } from "./datapath";
 
+import $ from "jquery"
 import CodeMirror from "codemirror";
 import "codemirror/addon/display/placeholder"
 import "codemirror/lib/codemirror.css"

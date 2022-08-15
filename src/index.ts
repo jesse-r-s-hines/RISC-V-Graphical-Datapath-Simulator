@@ -1,3 +1,4 @@
+import $ from "jquery"
 import "bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "@fortawesome/fontawesome-free/css/all.css"
@@ -9,10 +10,7 @@ import datapath from "assets/datapath.svg" // import path to the svg
 
 // This needs to be imported last so that my css overrides any defaults
 import "css/site.css"
-/* html-loader imports any assets referenced in the html, such as the jquery script. But if I use HtmlWebpackPlugin,
-   these resources don't get recognized by `webpack watch`, and are deleted after any watch update, causing failures.
-   Using require directly seems to make watch work. */
-require("../index.html")
+import "../index.html"
 
 toastr.options = {
    positionClass: "toast-top-left",

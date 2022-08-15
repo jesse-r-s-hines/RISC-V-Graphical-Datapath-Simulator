@@ -6,7 +6,13 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 // env.prod, env.dev, or env.test can be set.
 module.exports = (env) => ({
-  entry: './src/index.ts',
+  entry: {
+    jquery: 'jquery',
+    main: {
+      import: './src/index.ts',
+      dependOn: 'jquery',
+    },
+  },
   devtool: (env.prod) ? 'source-map' : 'inline-source-map', // inline-source-map makes debugging work better.
   mode: (env.prod) ? "production" : "development",
   target: (env.test) ? "node" : "web",
