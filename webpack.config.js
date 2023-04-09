@@ -9,7 +9,7 @@ module.exports = (env) => ({
   entry: {
     jquery: 'jquery',
     main: {
-      import: './src/index.ts',
+      import: './src/index.tsx',
       dependOn: 'jquery',
     },
   },
