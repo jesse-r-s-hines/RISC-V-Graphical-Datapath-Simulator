@@ -4,7 +4,9 @@ import "toastr/build/toastr.css"
 
 import { examples } from "./examples";
 import { Simulator } from "simulator/simulator";
+import { assembleKeepLineInfo } from "assembler/assembler"
 import SimEditor from "./SimEditor";
+import SimView from "./SimView";
 import HelpModal from "./HelpModal";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -30,17 +32,32 @@ export default function App(props: Props) {
     const updateSim = (func: (sim: Simulator) => void) => () => {
         func(sim!.sim)
         setSim_({sim: sim!.sim})
+        setAssembled(assembleKeepLineInfo(code))
     }
 
+    const [code, setCode] = useState(`
+        li t1, 1
+        lw t0, -0(sp)
+        lw t0, -1(sp)
+    `)
+
+    const [assembled, setAssembled] = useState<[number, bigint][]>([])
+
     const [showHelp, setShowHelp] = useState(false)
+
+    React.useEffect(updateSim(sim => sim.tick()), [])
 
     return (
         <div id="app">
             <div className="container-fluid d-flex flex-row p-2" style={{height: "100vh"}}>
                 <div id="datapath" className="flex-grow-1"> {/* We'll load the SVG inline here. */} </div>
                 <div className="d-flex flex-column" style={{height: "100%", maxWidth: "50%"}}>
-                    <SimEditor className="flex-grow-overflow"
-                        sim={sim} examples={examples}
+                    {/* <SimEditor className="flex-grow-overflow"
+                        sim={sim} code={code} examples={examples}
+                        onCodeChange={setCode}
+                    /> */}
+                    <SimView className="flex-grow-overflow"
+                        sim={sim} code={code} assembled={assembled} examples={examples}
                     />
                     <div id="controls" className="card"><div className="card-body d-flex flex-row">
                         <button id="play" className="btn btn-sm" title="Run Simulation">

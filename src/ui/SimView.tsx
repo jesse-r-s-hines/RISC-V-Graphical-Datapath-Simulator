@@ -1,5 +1,6 @@
-import React, {useEffect, useState} from "react"
+import React, {useEffect, useState, useRef} from "react"
 import {Tab, Nav, NavDropdown} from 'react-bootstrap';
+import classNames from 'classnames';
 import CodeMirror from '@uiw/react-codemirror';
 import { bbedit } from '@uiw/codemirror-theme-bbedit';
 import { lineNumbers } from "@codemirror/view"
@@ -11,12 +12,13 @@ import { registerNames } from "simulator/constants";
 import { Example } from "./examples";
 import { StyleProps, getStyleProps } from "./reactUtils";
 
-import "./SimEditor.css"
+import "./SimView.css"
 
 type Props = {
     sim: {sim: Simulator},
     code: string,
-    examples: Example[]
+    assembled: [number, bigint][],
+    examples: Example[],
     onCodeChange?: (code: string) => void,
     onRegisterChange?: (i: number, val: bigint) => void,
     onDataChange?: (data: bigint[]) => void,
@@ -28,46 +30,49 @@ function hexLine(num: number, inc: number, start: bigint = 0n): string {
     return intToStr(start + BigInt((num - 1) * inc), "hex")
 }
 
-export default function SimEditor(props: Props) {
+export default function SimView(props: Props) {
     const {sim} = props.sim;
     const [memRadix, setMemRadix] = useState<Radix>("hex")
     const [memWordSize, setDataMemWordSize] = useState<number>(32)
     const [regRadix, setRegRadix] = useState<Radix>("hex")
 
+    const lines = props.code.split("\n")
+    const listing = props.assembled.map(([line, instr], i) => (
+        {addr: Simulator.textStart + BigInt(i * 4), instr, line: lines[line - 1].trim()}
+    ))
+
+    const [tab, setTab] = useState("code")
+
+    const instrMemTable = useRef<HTMLTableElement>(null)
+    useEffect(() => {
+        instrMemTable.current?.querySelector(".current-instruction")?.scrollIntoView({behavior: "smooth", block: "nearest"})
+    }, [sim.pc.data])
+
+
     return (
-        <Tab.Container defaultActiveKey="code">
-            <div {...getStyleProps(props, {className: "sim-editor d-flex flex-column"})}>
+        <Tab.Container activeKey={tab} onSelect={(k) => setTab(k ?? "code")}>
+            <div {...getStyleProps(props, {className: "sim-view d-flex flex-column"})}>
                 <Nav variant="tabs" className="flex-row flex-nowrap">
                     <Nav.Item><Nav.Link eventKey="code">Code</Nav.Link></Nav.Item>
                     <Nav.Item><Nav.Link eventKey="registers">Registers</Nav.Link></Nav.Item>
                     <Nav.Item><Nav.Link eventKey="memory">Memory</Nav.Link></Nav.Item>
-                    <Nav.Item>
-                        <NavDropdown title="Load Example">
-                            {props.examples.map(example => (
-                                <NavDropdown.Item key={example.name} title={example.description}
-                                    onClick={() => props.onLoadExample?.(example)}
-                                >
-                                    {example.name}
-                                </NavDropdown.Item>
-                            ))}
-                        </NavDropdown>
-                    </Nav.Item>
                 </Nav>
                 <Tab.Content className="flex-grow-overflow">
                     <Tab.Pane eventKey="code" title="Code">
-                        <CodeMirror
-                            style={{height: "100%"}} height="100%"
-                            placeholder="Write RISC&#8209;V assembly..."
-                            theme={bbedit}
-                            value={props.code}
-                            basicSetup={{
-                                lineNumbers: true,
-                            }}
-                            extensions={[
-                                riscvLang(),
-                            ]}
-                            onChange={props.onCodeChange}
-                        />
+                        <div className="h-100"  style={{overflow: "auto"}}>
+                            <table ref={instrMemTable} className="table table-striped table-hover table-bordered address-table">
+                                <thead>
+                                    <tr><th>Address</th><th>Instruction</th><th>Code</th></tr>
+                                </thead>
+                                <tbody>
+                                    {listing.map(({addr, instr, line}) => (
+                                        <tr key={`${addr}`} className={classNames({"current-instruction": addr === sim.pc.data})}>
+                                            <td>{intToStr(addr, "hex")}</td><td>{intToStr(instr, "hex")}</td><td>{line}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
                     </Tab.Pane>
                     <Tab.Pane eventKey="registers" title="Registers">
                         <div className="d-flex flex-column h-100">
@@ -86,15 +91,7 @@ export default function SimEditor(props: Props) {
                                     <tbody>
                                         {sim.regFile.registers.map((reg, i) => (
                                             <tr key={i}>
-                                                <td>{`${registerNames[i]} (x${i})`}</td>
-                                                <td>
-                                                    <input type="text" disabled={i == 0}
-                                                        value={intToStr(reg, regRadix)}
-                                                        onChange={e => props.onRegisterChange?.(i,
-                                                            parseInt(e.target.value, regRadix, 32)
-                                                        )}
-                                                    />
-                                                </td>
+                                                <td>{`${registerNames[i]} (x${i})`}</td><td>{intToStr(reg, regRadix)}</td>
                                             </tr>
                                         ))}
                                     </tbody>
@@ -120,20 +117,21 @@ export default function SimEditor(props: Props) {
                                     <option value="32">Word</option>
                                 </select>
                             </div>
-                            <div className="flex-grow-overflow">
-                                <CodeMirror
-                                    style={{height: "100%"}} height="100%"
-                                    theme={bbedit}
-                                    placeholder="Set initial memory..."
-                                    basicSetup={{
-                                        lineNumbers: true,
-                                    }}
-                                    extensions={[
-                                        lineNumbers({formatNumber: (l) => hexLine(l, memWordSize / 8)}),
-                                    ]}
-                                    onChange={(value) => props.onDataChange?.(
-                                        value.split("\n").filter(s => s).map(s => parseInt(s, memRadix, memWordSize))
-                                    )}/>
+                            <div className="flex-grow-overflow"  style={{overflow: "auto"}}>
+                                <table
+                                    className="table table-striped table-hover table-bordered address-table"
+                                    spellCheck={false}
+                                >
+                                    <tbody>
+                                        {[...sim.dataMem.data.dump(memWordSize / 8)].map(([addr, val]) =>
+                                            (typeof addr == "bigint") ? (
+                                                <tr key={`${addr}`}><td>{intToStr(addr, "hex")}</td> <td>{intToStr(val, memRadix, memWordSize)}</td></tr>
+                                            ) : (
+                                                <tr key={`${addr}`}><td colSpan={2}>...</td></tr>
+                                            )
+                                        )}
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </Tab.Pane>
