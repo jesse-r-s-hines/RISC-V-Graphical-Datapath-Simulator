@@ -49,107 +49,6 @@
 }
 
 
-
-
-
-
-/** ==== Editors and Positioning ==== */
-/* 
-#editors > .tab-pane {
-    height: 100%;
-}
-
-/** Can't `display: flex` on the table panel as it is `display: none` by bootstrap. * /
-#editors > .tab-pane > div {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-} */
-
-
-    /* There is a bug in Firefox (see https://bugzilla.mozilla.org/show_bug.cgi?id=764076) where the scrollbar isn't accounted for,
-       causing a x scrollbar to show even though it should be expanding to fit. A workaround is "overflow-y: scroll" but then the
-       scrollbar always shows. */
-
-
-/* editors .form-select {
-    margin: 0.25rem;
-} */
-
-
-
-/*
-/* Hack to make the tabs keep the width of the widest tab, so that the view doesn't shift every time you change tabs.
-   see https://stackoverflow.com/questions/42394208/tab-box-sized-by-biggest-panel-content-in-pure-css (though I've changed
-   it quite a bit from the SO post to make it work for width instead of height) * /
-#editors > .tab-pane {
-    /* Change the panel from "display: hidden" to "visibility: hidden" so it takes up space * /
-    display: block;
-    visibility: hidden;
-}
-#editors > .tab-pane.active {
-    visibility: visible;
-}
-/* Move the two panels up so they are overlaying each other. * /
-#editors > .tab-pane:nth-child(2)  { transform: translate(0, -100%); } 
-#editors > .tab-pane:nth-child(3)  { transform: translate(0, -200%); }
-*/
-
-
-
-/* ==== Controls Styling ==== */
-/* 
-#controls button {
-    transition: transform 50ms;
-    margin-right: 2px;
-    margin-left: 2px;
-}
-
-#controls button:hover {
-    transform: scale(1.25);
-}
-
-#controls button:active {
-    transform: scale(1.1);
-}
-
-#controls button:focus {
-    box-shadow: none; /* After click it was showing outline until you clicked somewhere else. * /
-}
-
-#controls input[type="range"] {
-    height: 100%;
-    padding: 0 5%; /* Some left/right padding * /
-}
-
-#controls input[type="range"]::-webkit-slider-thumb:hover {
-    transform: scale(1.25);
-}
-#controls input[type="range"]::-moz-range-thumb:hover {
-    transform: scale(1.25);
-}
-
-#controls input[type="range"]::-webkit-slider-thumb:active {
-    transform: scale(1.1);
-}
-#controls input[type="range"]::-moz-range-thumb:active {
-    transform: scale(1.1);
-} */
-
-
-
-/** Misc **/
-
-/* p {
-    text-indent: 2em;
-}
-
-.fas {
-    font-size: 150%
-} */
-
-
-
 /** ==== Table Styling === */
 
 /* table.table-fit {
@@ -163,11 +62,6 @@ table.table-fit tbody td, table.table-fit tfoot td {
     width: auto !important;
 } */
  
-
-/* .current-instruction {
-    background-color: yellow
-} */
-
 
 /** ==== SVG Styling ==== */
 

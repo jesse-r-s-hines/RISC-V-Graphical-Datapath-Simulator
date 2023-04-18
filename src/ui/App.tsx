@@ -7,7 +7,7 @@ import { Simulator } from "simulator/simulator";
 import { assembleKeepLineInfo } from "assembler/assembler"
 import SimEditor from "./SimEditor";
 import SimView from "./SimView";
-import HelpModal from "./HelpModal";
+import SimControls from "./SimControls";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "@fortawesome/fontawesome-free/css/all.css"
@@ -43,8 +43,6 @@ export default function App(props: Props) {
 
     const [assembled, setAssembled] = useState<[number, bigint][]>([])
 
-    const [showHelp, setShowHelp] = useState(false)
-
     React.useEffect(updateSim(sim => sim.tick()), [])
 
     return (
@@ -59,30 +57,9 @@ export default function App(props: Props) {
                     <SimView className="flex-grow-overflow"
                         sim={sim} code={code} assembled={assembled} examples={examples}
                     />
-                    <div id="controls" className="card"><div className="card-body d-flex flex-row">
-                        <button id="play" className="btn btn-sm" title="Run Simulation">
-                            <i className="fas fa-play text-success"></i>
-                        </button>
-                        <button id="pause" className="btn btn-sm" title="Pause Simulation">
-                            <i className="fas fa-pause text-warning"></i>
-                        </button>
-                        <button id="step" className="btn btn-sm" title="Step Simulation">
-                            <i className="fas fa-step-forward text-success"></i>
-                        </button>
-                        <button id="restart" className="btn btn-sm" title="Restart Simulation">
-                            <i className="fas fa-sync text-danger"></i>
-                        </button>
-                        <div className="flex-grow-1">
-                            <input id="speed" type="range" className="form-range" title="Speed" min="-2" max="4"/> {/* 2**x steps per second */}
-                        </div>
-                        <button id="help" className="btn btn-sm" title="Help / About" onClick={() => setShowHelp(true)}>
-                            <i className="fas fa-question-circle text-info"></i>
-                        </button>
-                    </div></div>
+                    <SimControls state="unstarted" speed={1}/>
                 </div>
             </div>
- 
-            <HelpModal show={showHelp} onHide={() => setShowHelp(false)}/>
         </div>
    )
 }

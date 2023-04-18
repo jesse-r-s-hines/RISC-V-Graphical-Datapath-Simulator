@@ -1,0 +1,42 @@
+.sim-controls button {
+    transition: transform 50ms;
+    margin-right: 2px;
+    margin-left: 2px;
+    border: inherit;
+}
+
+.sim-controls button:hover {
+    transform: scale(1.25);
+}
+
+.sim-controls button:active {
+    transform: scale(1.1);
+}
+
+.sim-controls button:focus {
+    box-shadow: none; /* After click it was showing outline until you clicked somewhere else. */
+}
+
+.sim-controls input[type="range"] {
+    height: 100%;
+    padding: 0 5%; /* Some left/right padding */
+}
+
+.sim-controls input[type="range"]::-webkit-slider-thumb:hover {
+    transform: scale(1.25);
+}
+.sim-controls input[type="range"]::-moz-range-thumb:hover {
+    transform: scale(1.25);
+}
+
+.sim-controls input[type="range"]::-webkit-slider-thumb:active {
+    transform: scale(1.1);
+}
+.sim-controls input[type="range"]::-moz-range-thumb:active {
+    transform: scale(1.1);
+}
+
+.sim-controls .fas {
+    font-size: 150%
+}
+
