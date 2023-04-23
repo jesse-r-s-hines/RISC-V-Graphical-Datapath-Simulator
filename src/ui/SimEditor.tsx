@@ -19,7 +19,7 @@ type Props = {
     examples: Example[]
     onCodeChange?: (code: string) => void,
     onRegisterChange?: (i: number, val: bigint) => void,
-    onDataChange?: (data: bigint[]) => void,
+    onDataChange?: (data: bigint[], wordSize: number) => void,
     onLoadExample?: (example: Example) => void,
 } & StyleProps
 
@@ -131,9 +131,10 @@ export default function SimEditor(props: Props) {
                                     extensions={[
                                         lineNumbers({formatNumber: (l) => hexLine(l, memWordSize / 8)}),
                                     ]}
-                                    onChange={(value) => props.onDataChange?.(
-                                        value.split("\n").filter(s => s).map(s => parseInt(s, memRadix, memWordSize))
-                                    )}/>
+                                    onChange={(value) => {
+                                        const data = value.split("\n").filter(s => s).map(s => parseInt(s, memRadix, memWordSize))
+                                        props.onDataChange?.(data, memWordSize)
+                                    }}/>
                             </div>
                         </div>
                     </Tab.Pane>

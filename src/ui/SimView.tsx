@@ -18,11 +18,6 @@ type Props = {
     sim: {sim: Simulator},
     code: string,
     assembled: [number, bigint][],
-    examples: Example[],
-    onCodeChange?: (code: string) => void,
-    onRegisterChange?: (i: number, val: bigint) => void,
-    onDataChange?: (data: bigint[]) => void,
-    onLoadExample?: (example: Example) => void,
 } & StyleProps
 
 /** Converts a line number into a hex address. */
@@ -125,7 +120,7 @@ export default function SimView(props: Props) {
                                     <tbody>
                                         {[...sim.dataMem.data.dump(memWordSize / 8)].map(([addr, val]) =>
                                             (typeof addr == "bigint") ? (
-                                                <tr key={`${addr}`}><td>{intToStr(addr, "hex")}</td> <td>{intToStr(val, memRadix, memWordSize)}</td></tr>
+                                                <tr key={`${addr}`}><td>{intToStr(addr, "hex")}</td><td>{intToStr(val, memRadix, memWordSize)}</td></tr>
                                             ) : (
                                                 <tr key={`${addr}`}><td colSpan={2}>...</td></tr>
                                             )
