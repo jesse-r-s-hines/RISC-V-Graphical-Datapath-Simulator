@@ -166,8 +166,6 @@ const streamLang = StreamLanguage.define({
     token: function(stream, state) {
         if (stream.eatSpace()) return null;
         var style = state.cur(stream, state);
-        const word = stream.current()
-        console.log(word, style)
         return style;
     }
 })
