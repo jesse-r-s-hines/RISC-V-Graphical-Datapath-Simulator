@@ -3,7 +3,7 @@
  * Uses a map so that you can emulate the full address space but only allocate the memory actually needed. 
  * (Essentially emulating a makeshift form of virtual memory)
  * 
- * You can store store/load bytes, halfwords, words, and doublewords
+ * You can store/load bytes, halfwords, words, and doublewords
  * RISC-V is little-endian so halfwords/words/doublewords will be stored least significant byte first.
  * 
  * All functions have to take and return bigints, as javascript's normal number is a float and can't represent

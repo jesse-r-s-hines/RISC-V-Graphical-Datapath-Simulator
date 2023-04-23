@@ -66,14 +66,14 @@ export class Simulator {
     }
 
     /**
-     * Sets the registers. Takes a map of register number to register value.
+     * updates the registers. Takes a map of register number to register value.
      * Register values should be positive.
      */
     setRegisters(regs: Record<number, bigint>) {
-        for (let reg in regs) {
-            if (regs[reg] < 0) throw Error("setRegisters() expects unsigned integers.")
-            if (reg == "0" && regs[reg] != 0n) throw Error("Can't set zero register.")
-            this.regFile.registers[reg] = regs[reg]
+        for (const [reg, val] of Object.entries(regs)) {
+            if (val < 0) throw Error("setRegisters() expects unsigned integers.")
+            if (reg == "0" && val != 0n) throw Error("Can't set zero register.")
+            this.regFile.registers[+reg] = val
         }
     }
 
