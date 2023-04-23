@@ -21,12 +21,6 @@ import { Radix, intToStr } from "utils/radix"
  *   Lets you make labels emphasize their associated wire, or to treat multiple paths as one wire.
  * - value-label 
  *   Indicates a text box which we will show the current value of a wire.
- * - outline 
- *   Indicates the outline of a component.
- * - hide-when-running 
- *   These elements are only shown when the simulation unstarted or done.
- * - hide-when-not-running 
- *   These elements are only shown when the simulation is running
  * - powered 
  *   This class is added in JS. Indicates a wire that is high.
  * 
@@ -46,7 +40,6 @@ export interface DataPathElem {
     onclick?: (visSim: any) => void, // call when an element is clicked
     // return a value, and will show matching elements under this element that marked with value in `data-show-on-value`
     showSubElemsByValue?: (sim: Simulator) => string,
-    callback?: (visSim: any) => void, // arbitrary callback on each update.
 }
 
 

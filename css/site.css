@@ -63,35 +63,6 @@ table.table-fit tbody td, table.table-fit tfoot td {
 } */
  
 
-/** ==== SVG Styling ==== */
-
-/* #datapath svg {
-    width: 100%;
-    height: 100%;
-}
-
-/* Fix weird bug where adding a tooltip would make an svg element "selectable" and show a border on click.
-   The bug only seems to occur on Chrome for me. See https://github.com/atomiks/tippyjs/issues/121 * /
-#datapath *:focus {
-    outline: none;
-}
-
-/** Highlight powered wires. * /
-#datapath .powered.wire {
-    stroke: blue !important; /* I'm abusing !important, but it lets us override inline styles and inkscapes's svg will
-                                  usually have lots of inline styles.  * /
-}
-
-#datapath marker.powered * {
-    stroke: blue !important;
-    fill: blue !important;
-} */
-
-/** Styles for wire hover and fixing powered wire markers will be generated dynamically in JS since we can't make CSS
-    base off of width dynamically or make markers inherit the color of their path */
-
-
-
 
 /* ==== Library styling ==== */
 
