@@ -13,7 +13,7 @@ module.exports = {
         //       them, and we can't change the structure of the SVG much.
 
         "cleanupAttrs",                   // cleanup attributes from newlines, trailing, and repeating spaces
-        "mergeStyles",                    // merge multiple style elements into one
+        // "mergeStyles",                    // merge multiple style elements into one
         // "inlineStyles",                // move and merge styles from <style> elements to element style attributes
         "removeDoctype",                  // remove doctype declaration
         "removeXMLProcInst",              // remove XML processing instructions
@@ -30,7 +30,12 @@ module.exports = {
         // "removeEmptyContainers",       // remove empty Container elements
         // "removeViewBox",               // remove viewBox attribute when possible
         // "cleanupEnableBackground",     // remove or cleanup enable-background attribute when possible
-        "minifyStyles",                   // minify <style> elements content with CSSO
+        {
+            name: "minifyStyles", // minify <style> elements content with CSSO 
+            // don't remove unused classes or do fancy restructuring since styles may refer to classes added in the JS
+            // See https://github.com/css/csso#minifysource-options for more options
+            params: {usage: false, restructure: false},
+        },
         // "convertStyleToAttrs",         // convert styles into attributes
         "convertColors",                  // convert colors (from rgb() to #rrggbb, from #rrggbb to #rgb)
         "convertPathData",                // convert Path data to relative or absolute (whichever is shorter), convert one segment to another, trim useless delimiters, smart rounding, and much more
