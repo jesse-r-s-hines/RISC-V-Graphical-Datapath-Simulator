@@ -65,8 +65,10 @@ table.table-fit tbody td, table.table-fit tfoot td {
 
 
 /* ==== Library styling ==== */
-
-
+.tippy-box {
+    text-align: center;
+    opacity: 95%;
+}
 
 /*
 .CodeMirror pre.CodeMirror-placeholder {
@@ -81,10 +83,7 @@ table.table-fit tbody td, table.table-fit tfoot td {
     width: 350px; /* Make toast a little wider (default is 300px) * /
 }
 
-.tippy-box {
-    text-align: center;
-    opacity: 95%;
-}
+
 
 .tippy-box hr {
     margin: 5px 0px;
