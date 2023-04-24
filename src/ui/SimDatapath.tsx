@@ -17,7 +17,7 @@ import "./SimDatapath.css"
 
 type State = "unstarted"|"playing"|"paused"|"done" // TODO think about this
 type Props = {
-    sim: {sim: Simulator},
+    sim: Simulator,
     state: State,
     /** url to the datapath svg */
     datapathUrl: string,
@@ -182,7 +182,6 @@ function updateDatapath(svg: SVGElement, sim: Simulator, datapathElements: Recor
 
 
 export default function SimDatapath(props: Props) {
-    const {sim} = props.sim;
     const divRef = useRef<HTMLDivElement>(null)
     const [datapathSrc, setDatapathSrc] = useState<string>()
     
@@ -196,7 +195,7 @@ export default function SimDatapath(props: Props) {
             divRef.current!.innerHTML = datapathSrc
             const svg = divRef.current!.querySelector("svg")!
             setupDatapath(svg, props.datapathElements)
-            updateDatapath(svg, sim, props.datapathElements, props.state)
+            updateDatapath(svg, props.sim, props.datapathElements, props.state)
         }
     }, [datapathSrc, props.datapathElements])
 

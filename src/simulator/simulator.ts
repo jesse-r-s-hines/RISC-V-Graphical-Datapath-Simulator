@@ -79,8 +79,7 @@ export class Simulator {
 
     /**
      * Steps the simulation one clock tick. Returns false is the simulation has reached the
-     * end of the program, true otherwise. The "end of the program" is the first 0x00000000
-     * instruction. (0x00000000 is not a valid RISC-V instruction.)
+     * end of the program, true otherwise.
      */
     tick() {
         // this.pc.in is set at the end.
@@ -88,8 +87,8 @@ export class Simulator {
         this.pc.tick()
 
         if ( (this.pc.data - Simulator.textStart) / 4n >= this.code.length ) { // hit the end of the code
-            this.regFile.tick() // Write anything from last tick
-            return false
+            this.regFile.tick() // Write anything from last tick, but don't do anything else
+            return
         }
 
         this.instrMem.address = this.pc.out
@@ -174,12 +173,14 @@ export class Simulator {
         this.regFile.regWrite = this.control.regWrite
         this.regFile.writeData = this.writeSrcMux.out
         this.regFile.writeReg = this.instrSplit.rd
+    }
 
-        return true
+    isDone(): boolean {
+        return (this.pc.data - Simulator.textStart) / 4n >= this.code.length // hit the end of the code
     }
 
     /** Runs the simulator until the end of the code. */
     run() {
-        while (this.tick()) {}
+        while (!this.isDone()) this.tick()
     }
 }

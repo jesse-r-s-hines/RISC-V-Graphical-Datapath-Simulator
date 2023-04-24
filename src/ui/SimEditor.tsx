@@ -6,7 +6,6 @@ import { lineNumbers } from "@codemirror/view"
 
 import { riscv as riscvLang } from './riscvLang';
 import { Radix, parseInt, intToStr } from "utils/radix"
-import { Simulator } from "simulator/simulator";
 import { registerNames } from "simulator/constants";
 import { Example } from "./examples";
 import { StyleProps, getStyleProps } from "./reactUtils";
@@ -14,12 +13,20 @@ import { StyleProps, getStyleProps } from "./reactUtils";
 import "./SimEditor.css"
 
 type Props = {
-    sim: {sim: Simulator},
     code: string,
-    examples: Example[]
     onCodeChange?: (code: string) => void,
+
+    registers: bigint[],
     onRegisterChange?: (i: number, val: bigint) => void,
-    onDataChange?: (data: bigint[], wordSize: number) => void,
+
+    data: string,
+    dataRadix: Radix,
+    dataWordSize: number,
+    onDataChange?: (data: string) => void,
+    onDataRadixChange?: (radix: Radix) => void,
+    onDataWordSizeChange?: (wordSize: number) => void,
+
+    examples: Example[],
     onLoadExample?: (example: Example) => void,
 } & StyleProps
 
@@ -28,10 +35,9 @@ function hexLine(num: number, inc: number, start: bigint = 0n): string {
     return intToStr(start + BigInt((num - 1) * inc), "hex")
 }
 
-export default function SimEditor(props: Props) {
-    const {sim} = props.sim;
-    const [memRadix, setMemRadix] = useState<Radix>("hex")
-    const [memWordSize, setDataMemWordSize] = useState<number>(32)
+export default function SimEditor({
+    code, data, dataRadix, dataWordSize, ...props
+}: Props) {
     const [regRadix, setRegRadix] = useState<Radix>("hex")
 
     return (
@@ -59,7 +65,7 @@ export default function SimEditor(props: Props) {
                             style={{height: "100%"}} height="100%"
                             placeholder="Write RISC&#8209;V assembly..."
                             theme={bbedit}
-                            value={props.code}
+                            value={code}
                             basicSetup={{
                                 lineNumbers: true,
                             }}
@@ -84,7 +90,7 @@ export default function SimEditor(props: Props) {
                                     spellCheck={false}
                                 >
                                     <tbody>
-                                        {sim.regFile.registers.map((reg, i) => (
+                                        {props.registers.map((reg, i) => (
                                             <tr key={i}>
                                                 <td>{`${registerNames[i]} (x${i})`}</td>
                                                 <td>
@@ -105,15 +111,15 @@ export default function SimEditor(props: Props) {
                     <Tab.Pane eventKey="memory" title="Memory" className="">
                         <div className="d-flex flex-column h-100">
                             <div className="d-flex flex-row">
-                                <select id="dataMem-radix" className="form-select m-1" value={memRadix}
-                                    onChange={(e) => setMemRadix(e.target.value as Radix)}
+                                <select id="dataMem-radix" className="form-select m-1" value={dataRadix}
+                                    onChange={(e) => props.onDataRadixChange?.(e.target.value as Radix)}
                                 >
                                     <option value="hex">Hex</option>
                                     <option value="signed">Signed Decimal</option>
                                     <option value="unsigned">Unsigned Decimal</option>
                                 </select>
-                                <select id="dataMem-word-size" className="form-select m-1" value={memWordSize}
-                                    onChange={(e) => setDataMemWordSize(+e.target.value)}
+                                <select id="dataMem-word-size" className="form-select m-1" value={dataWordSize}
+                                    onChange={(e) => props.onDataWordSizeChange?.(+e.target.value)}
                                 >
                                     <option value="8">Byte</option>
                                     <option value="16">Half-Word</option>
@@ -124,17 +130,16 @@ export default function SimEditor(props: Props) {
                                 <CodeMirror
                                     style={{height: "100%"}} height="100%"
                                     theme={bbedit}
+                                    value={data}
                                     placeholder="Set initial memory..."
                                     basicSetup={{
                                         lineNumbers: true,
                                     }}
                                     extensions={[
-                                        lineNumbers({formatNumber: (l) => hexLine(l, memWordSize / 8)}),
+                                        lineNumbers({formatNumber: (l) => hexLine(l, dataWordSize / 8)}),
                                     ]}
-                                    onChange={(value) => {
-                                        const data = value.split("\n").filter(s => s).map(s => parseInt(s, memRadix, memWordSize))
-                                        props.onDataChange?.(data, memWordSize)
-                                    }}/>
+                                    onChange={(value) => props.onDataChange?.(value)}
+                                />
                             </div>
                         </div>
                     </Tab.Pane>

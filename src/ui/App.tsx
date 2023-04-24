@@ -1,9 +1,9 @@
-import React, {useState} from "react"
+import React, {useState, useRef} from "react"
 import toastr from "toastr";
 import "toastr/build/toastr.css"
 
 import { examples, Example } from "./examples";
-import { parseInt } from "utils/radix";
+import { Radix, parseInt } from "utils/radix";
 import { Simulator } from "simulator/simulator";
 import { assembleKeepLineInfo } from "assembler/assembler"
 import SimEditor from "./SimEditor";
@@ -31,133 +31,130 @@ toastr.options = {
 }
 
 export default function App(props: Props) {
-    // NOTE: Simulator is mutable, so wrap it in an object so react will realize it has changed
-    const [sim, setSim_] = useState<{sim: Simulator}>(() => ({sim: new Simulator()}))
-    // Updates the sim then updates the wrapper object so react rerenders
-    function updateSim<T>(func: (sim: Simulator) => T): T {
-        const val = func(sim!.sim)
-        setSim_({sim: sim!.sim})
-        return val;
+    // NOTE: Simulator is mutable, so use a ref, and manually update a counter to trigger rerender.
+    // It is not recommended to read a Ref during render, so maybe consider doing deepClone? Though that seems to be a bit expensive.
+    const sim = useRef<Simulator>()
+    if (!sim.current) sim.current = new Simulator()
+    const [simUpdateCounter_, setSimUpdateCounter_] = useState(0)
+    // Updates the sim and updates the counter so react rerenders
+    const updateSim = <T,>(func: (sim: Simulator) => T): T => {
+        const rtrn = func(sim.current!)
+        setSimUpdateCounter_(c => c + 1)
+        return rtrn;
     }
 
     const [state, setState] = useState<"unstarted"|"playing"|"paused"|"done">("unstarted")
     const [speed, setSpeed] = useState(1)
+
     const [code, setCode] = useState("")
-
     const [assembled, setAssembled] = useState<[number, bigint][]>([])
-
-
-
-    React.useEffect(() => {
-        updateSim(sim => sim.tick())
-        // setState("paused")
-    }, [])
+    const [registers, setRegisters_] = useState<bigint[]>(() => Array(32).fill(0n))
+    const setRegisters = (regs: Record<number, bigint>) => {
+        setRegisters_(registers.map((val, i) => regs[i] ?? val))
+    }
+    const [data, setData] = useState<string>("")
+    const [dataRadix, setDataRadix] = useState<Radix>("hex")
+    const [dataWordSize, setDataWordSize] = useState(32)
 
     const reset = (example?: Example) => {
-        setSim_({sim: new Simulator()}) // reset the simulator
         setState("unstarted")
-        // if (state == "playing") pause(); // clear interval // TODO
-
         setCode(example?.code ?? "")
-        if (example?.memory) {
-            const data = example.memory.split("\n").filter(s => s)
-                            .map(s => parseInt(s, example.dataMemRadix ?? "hex", example.dataMemWordSize ?? 32))
-            console.log({data, example})
-            updateSim(sim => sim.dataMem.data.storeArray(0n, (example.dataMemWordSize ?? 32) / 8, data))
-        }
-
-        updateSim(sim => sim.setRegisters(example?.registers ?? {}))
+        setAssembled([])
+        setRegisters(Array(32).fill(0n).map((_, i) => example?.registers?.[i] ?? 0n))
+        setData(example?.memory ?? "")
+        setDataRadix(example?.dataMemRadix ?? "hex")
+        setDataWordSize(example?.dataMemWordSize ?? 32)
     }
 
-
     /**
-     * Load code/memory/registers and start the simulation, updates state
+     * Load code/memory/registers and start the simulation.
      * Returns true if started successfully, false otherwise.
      */
     const start = () => {
-        console.log("start")
-        let newAssembled: [number, bigint][] = []
         try {
-            newAssembled = assembleKeepLineInfo(code)
+            var newAssembled = assembleKeepLineInfo(code)
             setAssembled(newAssembled)
         } catch (e: any) {
-            console.log(`Couldn't parse code:\n${e.message}`) // TODO
+            console.error(`Couldn't parse code:\n${e.message}`) // TODO
             return false
         }
 
         if (newAssembled.length === 0) {
-            console.log("Please enter some code to run.") // TODO
+            console.error("Please enter some code to run.")
             return false
         }
 
-        // this.error(`Couldn't parse data memory:\n${e.message}`) // TODO: Couldn't parse data memory
-        // this.error(`Couldn't parse registers:\n${e.message}`)
+        try {
+            var mem = data.split("\n").filter(s => s).map(s => parseInt(s, dataRadix, dataWordSize));
+        } catch (e: any) {
+            console.error(`Couldn't parse data memory:\n${e.message}`)
+            return false
+        }
 
         // We've got all the data so we can start the simulator
+        sim.current = new Simulator()
         updateSim(sim => {
             sim.setCode(newAssembled.map(([line, instr]) => instr))
+            sim.setRegisters(registers)
+            sim.dataMem.data.storeArray(0n, dataWordSize / 8, mem)
         })
 
-        setState("paused")
         return true
     }
-    
-    console.log("App.render")
 
-    /** Steps simulation. Returns true if we can continue stepping, or false if the simulation failed to start or is done. */
-    const step = () => {
-        let started = true;
-        if (state == "unstarted") {
-            started = start() // try to start, updates state to paused if success
+    /** Steps simulation. */
+    const step = (mode: "play"|"step") => {
+        let nextState = state
+        if (nextState == "unstarted") { // try to start if we are unstarted
+            const started = start() // try to start, updates state to paused if success
+            if (started) nextState = (mode == "play" ? 'playing' : 'paused')
         }
-        console.log({started, state})
 
-        if (started && state != "done") { // don't do anything if we are "done" or if start failed
+        if (["paused", "playing"].includes(nextState)) { // don't do anything if we are "done" or if start failed
             try {
-                let canContinue = updateSim(sim => sim.tick())
-                console.log({canContinue})
-                if (!canContinue) {
-                    setState("done")
-                    return false
-                }
+                updateSim(sim => sim.tick())
+                if (sim.current!.isDone()) nextState = "done"
             } catch (e: any) { // this shouldn't happen.
-                setState("done")
-                console.log(`Error in simulation:\n${e.message}`) // TODO
-                return false
+                nextState = "done"
+                console.error(`Error in simulation:\n${e.message}`) // TODO
             }
         }
-        return true
+
+        setState(nextState)
+    }
+
+    const loadExample = async (example: Example) => {
+        if (!example.code && example.url) {
+            example.code = await fetch(example.url).then(res => res.text())
+        }
+        reset(example)
     }
 
     return (
         <div id="app">
             <div className="container-fluid d-flex flex-row p-2" style={{height: "100vh"}}>
-                <SimDatapath className="flex-grow-1" sim={sim} datapathUrl={datapath} datapathElements={datapathElements} state={state}/>
+                <SimDatapath className="flex-grow-1" sim={sim.current!} datapathUrl={datapath} datapathElements={datapathElements} state={state}/>
                 <div className="d-flex flex-column" style={{height: "100%", maxWidth: "50%"}}>
                     {state == "unstarted" ? (
                         <SimEditor className="flex-grow-overflow"
-                            sim={sim} code={code} examples={examples}
-                            onCodeChange={setCode}
-                            onRegisterChange={(reg, val) => updateSim(sim => sim.setRegisters({[reg]: val}))}
-                            onDataChange={(data, wordSize) => updateSim(sim => sim.dataMem.data.storeArray(0n, wordSize, data))}
-                            onLoadExample={async (example) => {
-                                if (!example.code && example.url) {
-                                    example.code = await fetch(example.url).then(res => res.text())
-                                }
-                                reset(example)
-                            }}
+                            code={code} onCodeChange={setCode}
+                            data={data} onDataChange={setData}
+                            dataRadix={dataRadix} onDataRadixChange={setDataRadix}
+                            dataWordSize={dataWordSize} onDataWordSizeChange={setDataWordSize}
+                            registers={registers} onRegisterChange={(i, val) => setRegisters({[i]: val})}
+                            examples={examples} onLoadExample={loadExample}
                         />
                     ) : (
                         <SimView className="flex-grow-overflow"
-                            sim={sim} code={code} assembled={assembled}
+                            sim={sim.current!} code={code} assembled={assembled}
                         />
                     )}
                     <SimControls
                         state="unstarted"
                         speed={speed}
-                        onStep={step}
+                        onStep={() => step("step")}
                         onReset={reset}
-                        // onPlay={}
+                        // onPlay={() => step("play")}
                         // onPause={pause}
                         onSpeedChange={setSpeed}
                     />

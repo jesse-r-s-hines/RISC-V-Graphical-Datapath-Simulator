@@ -1,32 +1,21 @@
 import React, {useEffect, useState, useRef} from "react"
-import {Tab, Nav, NavDropdown} from 'react-bootstrap';
+import {Tab, Nav} from 'react-bootstrap';
 import classNames from 'classnames';
-import CodeMirror from '@uiw/react-codemirror';
-import { bbedit } from '@uiw/codemirror-theme-bbedit';
-import { lineNumbers } from "@codemirror/view"
 
-import { riscv as riscvLang } from './riscvLang';
-import { Radix, parseInt, intToStr } from "utils/radix"
+import { Radix, intToStr } from "utils/radix"
 import { Simulator } from "simulator/simulator";
 import { registerNames } from "simulator/constants";
-import { Example } from "./examples";
 import { StyleProps, getStyleProps } from "./reactUtils";
 
 import "./SimView.css"
 
 type Props = {
-    sim: {sim: Simulator},
+    sim: Simulator,
     code: string,
     assembled: [number, bigint][],
 } & StyleProps
 
-/** Converts a line number into a hex address. */
-function hexLine(num: number, inc: number, start: bigint = 0n): string {
-    return intToStr(start + BigInt((num - 1) * inc), "hex")
-}
-
-export default function SimView(props: Props) {
-    const {sim} = props.sim;
+export default function SimView({sim, ...props}: Props) {
     const [memRadix, setMemRadix] = useState<Radix>("hex")
     const [memWordSize, setDataMemWordSize] = useState<number>(32)
     const [regRadix, setRegRadix] = useState<Radix>("hex")
