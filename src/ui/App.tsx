@@ -1,6 +1,5 @@
 import React, {useState, useRef} from "react"
-import toastr from "toastr";
-import "toastr/build/toastr.css"
+import toast, { Toaster } from 'react-hot-toast';
 
 import { examples, Example } from "./examples";
 import { Radix, parseInt } from "utils/radix";
@@ -21,13 +20,10 @@ import "tippy.js/dist/tippy.css";
 type Props = {
 }
 
-toastr.options = {
-    positionClass: "toast-top-left",
-    closeButton: true,
-    timeOut: 8000,
-    // timeOut: 0,
-    // extendedTimeOut: 0,
-    preventDuplicates: true,
+/** Display an error message to the user. Newlines will be converted to <br/> */
+function error(message: string) {
+    console.error(message)
+    toast.error(message, {id: "error"})
 }
 
 export default function App(props: Props) {
@@ -75,19 +71,19 @@ export default function App(props: Props) {
             var newAssembled = assembleKeepLineInfo(code)
             setAssembled(newAssembled)
         } catch (e: any) {
-            console.error(`Couldn't parse code:\n${e.message}`) // TODO
+            error(`Couldn't parse code:\n${e.message}`)
             return false
         }
 
         if (newAssembled.length === 0) {
-            console.error("Please enter some code to run.")
+            error("Please enter some code to run.")
             return false
         }
 
         try {
             var mem = data.split("\n").filter(s => s).map(s => parseInt(s, dataRadix, dataWordSize));
         } catch (e: any) {
-            console.error(`Couldn't parse data memory:\n${e.message}`)
+            error(`Couldn't parse data memory:\n${e.message}`)
             return false
         }
 
@@ -116,7 +112,7 @@ export default function App(props: Props) {
                 if (sim.current!.isDone()) nextState = "done"
             } catch (e: any) { // this shouldn't happen.
                 nextState = "done"
-                console.error(`Error in simulation:\n${e.message}`) // TODO
+                error(`Error in simulation:\n${e.message}`)
             }
         }
 
@@ -160,6 +156,18 @@ export default function App(props: Props) {
                     />
                 </div>
             </div>
+            <Toaster
+                position="top-left"
+                containerStyle={{
+                    opacity: "90%",
+                }}
+                toastOptions={{
+                    duration: 8000, // TODO: Maybe make these dismissible? Or show error somewhere more accessible?
+                    style: {
+                        width: '350px',
+                    }
+                }}
+            />
         </div>
    )
 }
