@@ -98,7 +98,7 @@ export default function App(props: Props) {
     }
 
     /** Steps simulation. */
-    const step = (mode: "play"|"step") => {
+    const step = (mode: "play"|"step", count = 1) => {
         let nextState = state
         if (nextState == "unstarted") { // try to start if we are unstarted
             const started = start() // try to start, updates state to paused if success
@@ -107,7 +107,12 @@ export default function App(props: Props) {
 
         if (["paused", "playing"].includes(nextState)) { // don't do anything if we are "done" or if start failed
             try {
-                updateSim(sim => sim.tick())
+                // step the simulation `count` times. We step multiple at once when playing at full speed to avoid rendering each tick
+                updateSim(sim => {
+                    for (let i = 0; i < count && !sim!.isDone(); i++) {
+                        sim.tick()
+                    }
+                })
                 if (sim.current!.isDone()) nextState = "done"
             } catch (e: any) { // this shouldn't happen.
                 nextState = "done"
@@ -133,7 +138,7 @@ export default function App(props: Props) {
         // otherwise keep the current code etc.
     }
 
-    useInterval(() => step("play"), (state == "playing") ? speed : null)
+    useInterval(() => step("play", speed == 0 ? 1000 : 1), (state == "playing") ? speed : null)
 
     return (
         <div id="app">
