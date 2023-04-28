@@ -1,12 +1,13 @@
 import React, {useState} from "react"
 import { Button } from "react-bootstrap";
 
+import type { SimState } from "./App";
 import HelpModal from "./HelpModal";
 import "./SimControls.css"
 
 type Props = {
-    state: "unstarted"|"playing"|"paused"|"done",
-    /** Speed of the play, as steps per second */
+    state: SimState,
+    /** Speed of the play, in ms */
     speed: number,
     onStep?: () => void,
     onReset?: () => void,
@@ -17,7 +18,8 @@ type Props = {
 
 export default function SimControls({state, ...props}: Props) {
     const [showHelp, setShowHelp] = useState(false)
-    const speedTick = Math.trunc(Math.log2(props.speed))
+    // Speed slider ticks convert to 2**tick steps per second
+    const speedTick = Math.log2(1000 / props.speed)
 
     return (
         <div className="sim-controls card">
@@ -40,10 +42,10 @@ export default function SimControls({state, ...props}: Props) {
                     </Button>
                 ) : ""}
                 <div className="flex-grow-1"> {/* Spacer, even if the slider is hidden */}
-                    {(state == "playing") ? ( // 2**x steps per second
-                        <input type="range" className="form-range" title="Speed" min={-2} max={4}
+                    {(state == "playing") ? ( 
+                        <input type="range" className="form-range" title="Speed" min={-2} max={6}
                             value={speedTick}
-                            onChange={e => props.onSpeedChange?.(+e.target.value)}
+                            onChange={e => props.onSpeedChange?.((1 / (2 ** (+e.target.value))) * 1000)}
                         />
                     ) : ""}
                 </div>

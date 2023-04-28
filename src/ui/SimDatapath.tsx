@@ -12,13 +12,13 @@ import { registerNames } from "simulator/constants";
 import { Example } from "./examples";
 import { StyleProps, getStyleProps } from "./reactUtils";
 import { DataPathElem } from "./datapath";
+import type { SimState } from "./App";
 
 import "./SimDatapath.css"
 
-type State = "unstarted"|"playing"|"paused"|"done" // TODO think about this
 type Props = {
     sim: Simulator,
-    state: State,
+    state: SimState,
     /** url to the datapath svg */
     datapathUrl: string,
     /** Map CSS selectors to how to render the components */
@@ -128,7 +128,7 @@ function setupDatapath(svg: SVGElement, datapathElements: Record<string, DataPat
     generateDynamicSvgCss(svg)
 }
 
-function updateDatapath(svg: SVGElement, sim: Simulator, datapathElements: Record<string, DataPathElem>, state: State) {
+function updateDatapath(svg: SVGElement, sim: Simulator, datapathElements: Record<string, DataPathElem>, state: SimState) {
     let running = (state == "playing" || state == "paused")
 
     for (let [id, config] of Object.entries(datapathElements)) {

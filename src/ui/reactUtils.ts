@@ -1,4 +1,5 @@
 
+import React, {useRef, useEffect} from "react"
 import CSS from "csstype"
 import classNames from "classnames"
 
@@ -26,4 +27,25 @@ export function getStyleProps(props: StyleProps, defaults: StyleProps = {}): Sty
     // Remove undefined values
     for (const key in obj) if (obj[key] === undefined) delete obj[key]
     return obj;
+}
+
+
+/**
+ * React hook version of useInterval. Handles a changing callback or interval.
+ * @param func The function to call every interval
+ * @param delay The interval in milliseconds. Set to null to disable interval.
+ */
+export function useInterval(callback: () => void, delay: number|null) {
+    const savedCallback = useRef(callback);
+  
+    useEffect(() => {
+        savedCallback.current = callback;
+    }, [callback]);
+  
+    useEffect(() => {
+        if (delay !== null) {
+            let id = setInterval(() => savedCallback.current(), delay);
+            return () => clearInterval(id);
+        }
+    }, [delay]);
 }

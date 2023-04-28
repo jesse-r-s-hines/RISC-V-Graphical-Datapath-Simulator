@@ -11,6 +11,7 @@ import SimControls from "./SimControls";
 import SimDatapath from "./SimDatapath";
 import datapath from "assets/datapath.svg" // import path to the svg
 import { DataPathElem, datapathElements } from "./datapath";
+import { useInterval } from "./reactUtils";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "@fortawesome/fontawesome-free/css/all.css"
@@ -26,6 +27,8 @@ function error(message: string) {
     toast.error(message, {id: "error"})
 }
 
+export type SimState = "unstarted"|"playing"|"paused"|"done"
+
 export default function App(props: Props) {
     // NOTE: Simulator is mutable, so use a ref, and manually update a counter to trigger rerender.
     // It is not recommended to read a Ref during render, so maybe consider doing deepClone? Though that seems to be a bit expensive.
@@ -39,8 +42,8 @@ export default function App(props: Props) {
         return rtrn;
     }
 
-    const [state, setState] = useState<"unstarted"|"playing"|"paused"|"done">("unstarted")
-    const [speed, setSpeed] = useState(1)
+    const [state, setState] = useState<SimState>("unstarted")
+    const [speed, setSpeed] = useState(1000) // in ms
 
     const [code, setCode] = useState("")
     const [assembled, setAssembled] = useState<[number, bigint][]>([])
@@ -126,6 +129,8 @@ export default function App(props: Props) {
         reset(example)
     }
 
+    useInterval(() => step("play"), (state == "playing") ? speed : null)
+
     return (
         <div id="app">
             <div className="container-fluid d-flex flex-row p-2" style={{height: "100vh"}}>
@@ -146,12 +151,12 @@ export default function App(props: Props) {
                         />
                     )}
                     <SimControls
-                        state="unstarted"
+                        state={state}
                         speed={speed}
                         onStep={() => step("step")}
                         onReset={reset}
-                        // onPlay={() => step("play")}
-                        // onPause={pause}
+                        onPlay={() => step("play")}
+                        onPause={() => { if (state == 'playing') setState("paused") }}
                         onSpeedChange={setSpeed}
                     />
                 </div>
