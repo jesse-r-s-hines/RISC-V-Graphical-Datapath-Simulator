@@ -55,14 +55,10 @@ export default function App(props: Props) {
     const [dataRadix, setDataRadix] = useState<Radix>("hex")
     const [dataWordSize, setDataWordSize] = useState(32)
 
-    const reset = (example?: Example) => {
+    const reset = () => {
         setState("unstarted")
-        setCode(example?.code ?? "")
         setAssembled([])
-        setRegisters(Array(32).fill(0n).map((_, i) => example?.registers?.[i] ?? 0n))
-        setData(example?.memory ?? "")
-        setDataRadix(example?.dataMemRadix ?? "hex")
-        setDataWordSize(example?.dataMemWordSize ?? 32)
+        console.log("reset")
     }
 
     /**
@@ -123,10 +119,18 @@ export default function App(props: Props) {
     }
 
     const loadExample = async (example: Example) => {
+        console.log("loading example", {example})
+
         if (!example.code && example.url) {
             example.code = await fetch(example.url).then(res => res.text())
         }
-        reset(example)
+        reset()
+        setCode(example.code ?? "")
+        setRegisters(Array(32).fill(0n).map((_, i) => example.registers?.[i] ?? 0n))
+        setData(example.memory ?? "")
+        setDataRadix(example?.dataMemRadix ?? "hex")
+        setDataWordSize(example?.dataMemWordSize ?? 32)
+        // otherwise keep the current code etc.
     }
 
     useInterval(() => step("play"), (state == "playing") ? speed : null)
