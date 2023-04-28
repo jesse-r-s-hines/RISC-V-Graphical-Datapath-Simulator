@@ -58,7 +58,6 @@ export default function App(props: Props) {
     const reset = () => {
         setState("unstarted")
         setAssembled([])
-        console.log("reset")
     }
 
     /**
@@ -124,8 +123,6 @@ export default function App(props: Props) {
     }
 
     const loadExample = async (example: Example) => {
-        console.log("loading example", {example})
-
         if (!example.code && example.url) {
             example.code = await fetch(example.url).then(res => res.text())
         }
