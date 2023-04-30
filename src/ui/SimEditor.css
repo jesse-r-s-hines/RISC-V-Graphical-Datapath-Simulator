@@ -10,8 +10,3 @@
 .sim-editor .nav-link, .sim-editor .nav-link:hover {
     color: inherit; /* Don't color the nav links as links */
 }
-
-/* Fix for annoying popper warning. See https://github.com/react-bootstrap/react-bootstrap/issues/5081 */
-.popper-warning-fix.dropdown-menu, .popper-warning-fix .dropdown-menu {
-    margin: 0 !important;
-}
