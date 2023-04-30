@@ -24,12 +24,12 @@ export class Memory {
      * @param bytes the number of bytes to load (ie. 1, 2, 4, 8 for byte/half-word/word/double-word)
      */
     public load(addr: bigint, bytes: number): bigint {
-        let bytesB = BigInt(bytes) // Convert to bigint so we can add it to bigints
+        const bytesB = BigInt(bytes) // Convert to bigint so we can add it to bigints
         if (addr < 0n || (addr + bytesB) > this.size) throw Error(`Memory address ${addr} out of range for ${bytes} bytes.`)
 
         let val = 0n
         for (let i = bytesB - 1n; i >= 0; i--) { // Backwards because little-endian
-            let byte = this.data.get(addr + i) ?? 0n
+            const byte = this.data.get(addr + i) ?? 0n
             val = (val << 8n) | byte
         }
         return val
@@ -43,7 +43,7 @@ export class Memory {
      * @param val the number to store
      */
     public store(addr: bigint, bytes: number, val: bigint) {
-        let bytesB = BigInt(bytes) // Convert to bigint so we can add it to bigints
+        const bytesB = BigInt(bytes) // Convert to bigint so we can add it to bigints
         if (addr < 0n || (addr + bytesB) > this.size) throw Error(`Memory address ${addr} out of range for ${bytes} bytes.`)
         if (val < 0n || val >= 2n ** (8n * bytesB))
             throw Error(`${val} is invalid. Expected a positive integer that fits in ${bytes} bytes.`)
@@ -83,7 +83,7 @@ export class Memory {
      * @param size The number of elements in the array to load
      */
     loadArray(addr: bigint, elemBytes: number, size: number): bigint[] {
-        let arr: bigint[] = Array(size)
+        const arr: bigint[] = Array(size)
         for (let i = 0; i < size; i++)
             arr[i] = this.load(addr + BigInt(elemBytes * i), elemBytes)
         return arr
@@ -96,7 +96,7 @@ export class Memory {
      * @param arr The array to store. Should contain positive integers.
      */
     storeArray(addr: bigint, elemBytes: number, arr: bigint[]) {
-        for (let [i, val] of arr.entries())
+        for (const [i, val] of arr.entries())
             this.store(addr + BigInt(elemBytes * i), elemBytes, val)
     }
 
@@ -110,23 +110,23 @@ export class Memory {
      *                     collapseSize Infinity will turn off collasping entirely (Not recommended unless your memory
      *                     size is tiny). Should be a integer >= 1.
      */
-    *dump(wordSize: number = 8, collapseSize: number = 4): Generator<[bigint|[bigint, bigint], bigint]> {
-        let addrShift = BigInt(Math.ceil(Math.log2(wordSize)))
-        let wordSizeB = BigInt(wordSize)
+    *dump(wordSize = 8, collapseSize = 4): Generator<[bigint|[bigint, bigint], bigint]> {
+        const addrShift = BigInt(Math.ceil(Math.log2(wordSize)))
+        const wordSizeB = BigInt(wordSize)
 
         let addresses = [...this.data.keys()]
             .map(a => ((a >> addrShift) << addrShift)) // word align all entries
         addresses = [...new Set(addresses)]
         addresses.sort((a, b) => (a < b) ? -1 : ((a > b) ? 1 : 0)) // have to specify sort func for BigInts
         
-        let dump = addresses
+        const dump = addresses
             .map(addr => [addr, this.load(addr, wordSize)])
             .filter(([addr, val]) => val != 0n)
         dump.push([this.size, 0n]) // Make it add a range at the end.
 
         let prevAddr: bigint = -wordSizeB
-        for (let [addr, val] of dump) {
-            let gap = (addr - prevAddr) / wordSizeB - 1n // gap between the last address and this one
+        for (const [addr, val] of dump) {
+            const gap = (addr - prevAddr) / wordSizeB - 1n // gap between the last address and this one
 
             if (gap >= collapseSize) { // collapse missing entries
                 yield [[prevAddr + wordSizeB, addr - wordSizeB], 0n]
@@ -150,12 +150,12 @@ export class Memory {
      * @param hex If true each value will be converted to hex. Otherwise it will converted to decimal
      */
     toString(wordSize = 8, hex = true) {
-        let addrSize = (this.size - 1n).toString(16).length // hex chars needed.
-        let addrStr = (addr: bigint) => `0x${addr.toString(16).toUpperCase().padStart(addrSize, "0")}`
+        const addrSize = (this.size - 1n).toString(16).length // hex chars needed.
+        const addrStr = (addr: bigint) => `0x${addr.toString(16).toUpperCase().padStart(addrSize, "0")}`
 
-        let rows = []
-        for (let [addr, val] of this.dump(wordSize)) {
-            let valStr = hex ? `0x${val.toString(16).toUpperCase().padStart(wordSize*2, "0")}` : val.toString()
+        const rows = []
+        for (const [addr, val] of this.dump(wordSize)) {
+            const valStr = hex ? `0x${val.toString(16).toUpperCase().padStart(wordSize*2, "0")}` : val.toString()
             if (typeof addr == "bigint") {
                 rows.push(`${addrStr(addr)}: ${valStr}`)
             } else { // skipped section

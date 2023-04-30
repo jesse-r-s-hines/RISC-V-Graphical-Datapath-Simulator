@@ -1,6 +1,5 @@
 import { Parser, Grammar } from 'nearley';
-import * as moo from 'moo';
-import { Bit, Bits, b } from "utils/bits"
+import { Bits } from "utils/bits"
 import { registers, opcodes } from "simulator/constants";
 import grammar from './assembler.ne';
 
@@ -116,7 +115,7 @@ const instrRules: Rule[]  = [
  * Doesn't check registers, labels, etc.
  */
 function parse(program: string): AsmStatement[] {
-    let parser = new Parser(Grammar.fromCompiled(grammar));
+    const parser = new Parser(Grammar.fromCompiled(grammar));
 
     try {
         parser.feed(program);
@@ -124,7 +123,7 @@ function parse(program: string): AsmStatement[] {
         throw new AssemblerError("Syntax error", program, e.token.line, e.token.col)
     }
     if (parser.results.length < 1) {
-        let lines = program.split("\n")
+        const lines = program.split("\n")
         throw new AssemblerError(`Unexpected end of program`, program, lines.length, lines[lines.length - 1].length)
     } else if (parser.results.length > 1) {
         throw Error("Code is ambiguous.") // This shouldn't be possible
@@ -137,20 +136,20 @@ function parse(program: string): AsmStatement[] {
  * Returns a list of [lineNum, machineCodeInstruction] tuples, where lineNum is the 1 indexed line in the string.
  */
 export function assembleKeepLineInfo(program: string): [number, bigint][] {
-    let parsed = parse(program)
+    const parsed = parse(program)
 
-    let labels: Record<string, number> = {}
-    let instructions: Instr[] = [];
-    let machineCode: [number, bigint][] = []
+    const labels: Record<string, number> = {}
+    const instructions: Instr[] = [];
+    const machineCode: [number, bigint][] = []
 
     // Pass 1, read labels, convert AST into Instruction types
-    for (let instr of parsed) {
+    for (const instr of parsed) {
         if (instr.type == "label") {
             labels[instr.label] = instructions.length // Point to next instruction
         } else {
-            let matchingRule = instrRules.find(r => ruleMatch(r, instr as AsmInstr))
+            const matchingRule = instrRules.find(r => ruleMatch(r, instr as AsmInstr))
             if (matchingRule) {
-                let newInstr = matchingRule.conv(instr.op.toLowerCase(), instr.args.map((a) => a.value), instr.line)
+                const newInstr = matchingRule.conv(instr.op.toLowerCase(), instr.args.map((a) => a.value), instr.line)
                 instructions.push(newInstr)
             } else {
                 throw new AssemblerError("Unknown instruction or incorrect args", program, instr.line)
@@ -159,9 +158,10 @@ export function assembleKeepLineInfo(program: string): [number, bigint][] {
     }
 
     // Pass 2, actually assemble the assembly
-    for (let [instrNum, instr] of instructions.entries()) {
+    for (const [instrNum, instr] of instructions.entries()) {
+        let machineCodeInstr: Bits;
         try {
-            var machineCodeInstr = assembleInstr(instrNum, instr, labels)
+            machineCodeInstr = assembleInstr(instrNum, instr, labels)
         } catch (e: any) {
             throw new AssemblerError(e.message, program, instr.line)
         }
@@ -181,12 +181,12 @@ export function assembleKeepLineInfo(program: string): [number, bigint][] {
 
 /** Assembles a single instruction. */
 function assembleInstr(instrNum: number, instr: Instr, labels: Record<string, number>): Bits {
-    let temp: any = {...instr} // Copy instr into an any so we can store Bits and BigInts in it.
+    const temp: any = {...instr} // Copy instr into an any so we can store Bits and BigInts in it.
     if ("imm" in instr && typeof instr.imm == "string") {
         if (!(instr.imm in labels)) throw Error(`Unknown label "${temp.imm}"`)
         temp.imm = (labels[instr.imm] - instrNum) * 4;
     }
-    for (let field of ["rd", "rs1", "rs2"]) {
+    for (const field of ["rd", "rs1", "rs2"]) {
         if (field in temp) {
             if (!(temp[field] in registers))
                 throw Error(`Unknown register "${temp[field]}"`)
@@ -194,7 +194,7 @@ function assembleInstr(instrNum: number, instr: Instr, labels: Record<string, nu
         }
     }
 
-    let [opcode, funct3, funct7] = opcodes[instr.op]
+    const [opcode, funct3, funct7] = opcodes[instr.op]
     if (instr.type == "R") {
         return Bits.join(funct7, temp.rs2, temp.rs1, funct3, temp.rd, opcode)
     } else if (instr.type == "I") {
@@ -202,15 +202,15 @@ function assembleInstr(instrNum: number, instr: Instr, labels: Record<string, nu
     } else if (instr.type == "IS") {
         return Bits.join(funct7, Bits(temp.imm, 5, true), temp.rs1, funct3, temp.rd, opcode)
     } else if (instr.type == "S") {
-        let imm = Bits(temp.imm, 12, true)
+        const imm = Bits(temp.imm, 12, true)
         return Bits.join(imm.slice(5, 12), temp.rs2, temp.rs1, funct3, imm.slice(0, 5), opcode)
     } else if (instr.type == "SB") {
-        let imm = Bits(temp.imm, 13, true)
+        const imm = Bits(temp.imm, 13, true)
         return Bits.join(imm[12], imm.slice(5, 11), temp.rs2, temp.rs1, funct3, imm.slice(1, 5), imm[11], opcode)
     } else if (instr.type == "U") {
         return Bits.join(Bits(temp.imm, 20, true), temp.rd, opcode)
     } else if (instr.type == "UJ") {
-        let imm = Bits(temp.imm, 21, true)
+        const imm = Bits(temp.imm, 21, true)
         return Bits.join(imm[20], imm.slice(1, 11), imm[11], imm.slice(12, 20), temp.rd, opcode)
     } else {
         throw Error("Unknown instruction type")
@@ -223,9 +223,9 @@ class AssemblerError extends Error {
     line: number; col?: number;
 
     constructor(message: string, program: string, line: number, col?: number) {
-        let lines = program.split("\n")
-        let preview = lines[line - 1].trimLeft()
-        let whitespace = lines[line - 1].length - preview.length
+        const lines = program.split("\n")
+        const preview = lines[line - 1].trimLeft()
+        const whitespace = lines[line - 1].length - preview.length
         if (col != undefined) {
             message = `${message}\n` +
                       `at line ${line} col ${col}:\n` +

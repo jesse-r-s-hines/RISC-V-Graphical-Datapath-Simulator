@@ -1,4 +1,4 @@
-import React, {useState} from "react"
+import {useState} from "react"
 import { Button } from "react-bootstrap";
 import { FontAwesomeIcon as Icon } from '@fortawesome/react-fontawesome'
 import { faPause, faPlay, faStepForward, faStop, faQuestionCircle } from '@fortawesome/free-solid-svg-icons'

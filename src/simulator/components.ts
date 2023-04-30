@@ -8,10 +8,7 @@ export class PC {
     // output
     public out: Bits = []; // 32 bits
     // state
-    public data: bigint = 0n; // 32 bits
-
-    constructor() {
-    }
+    public data = 0n; // 32 bits
 
     tick() {
         this.data = Bits.toInt(this.in) // edge-triggered write
@@ -137,11 +134,11 @@ export class ALU {
     ])
 
     tick() {
-        let signed = ALU.tableSigned.match(this.aluControl)
-        let [a, b] = [Bits.toInt(this.in1, signed), Bits.toInt(this.in2, signed)]
+        const signed = ALU.tableSigned.match(this.aluControl)
+        const [a, b] = [Bits.toInt(this.in1, signed), Bits.toInt(this.in2, signed)]
 
-        let op = ALU.table.match(this.aluControl)
-        let resultInt = op(a, b)
+        const op = ALU.table.match(this.aluControl)
+        const resultInt = op(a, b)
 
         this.result = Bits(resultInt, 33, signed).slice(0, 32) // give room for overflow, then discard extra.
         this.zero = Number(Bits.toInt(this.result) == 0n)
@@ -180,9 +177,9 @@ export class ImmGen {
     ])
 
     tick() {
-        let opcode = this.instruction.slice(0, 7)
-        let fun = ImmGen.table.match(opcode)
-        let imm = fun(this.instruction)
+        const opcode = this.instruction.slice(0, 7)
+        const fun = ImmGen.table.match(opcode)
+        const imm = fun(this.instruction)
         this.immediate = Bits.extended(imm, 32, true)
     }
 }
@@ -208,7 +205,7 @@ export class RegisterFile {
 
     tick() {
         if (this.regWrite) { // edge-triggered write
-            let writeReg = Bits.toNumber(this.writeReg)
+            const writeReg = Bits.toNumber(this.writeReg)
             if (writeReg != 0) { // Ignore writes to zero reg
                 this.registers[writeReg] = Bits.toInt(this.writeData)
             }
@@ -317,15 +314,15 @@ export class DataMemory {
 
     tick() {
         if (this.memRead && this.memWrite) throw Error("Only memRead or memWrite allowed")
-        let bytes = DataMemory.table.match(this.size)
+        const bytes = DataMemory.table.match(this.size)
  
         this.readData = Bits(0n, 32) // Not required but will make visualization clearer
         if (this.memRead) {
-            let dataInt = this.data.load(Bits.toInt(this.address), bytes)
-            let dataBits = Bits(dataInt, bytes * 8) // memory returns an unsigned int.
+            const dataInt = this.data.load(Bits.toInt(this.address), bytes)
+            const dataBits = Bits(dataInt, bytes * 8) // memory returns an unsigned int.
             this.readData = Bits.extended(dataBits, 32, Boolean(this.signed)) // sign extend to 32 bits if signed
         } else if (this.memWrite) {
-            let data = this.writeData.slice(0, bytes * 8)
+            const data = this.writeData.slice(0, bytes * 8)
             this.data.store(Bits.toInt(this.address), bytes, Bits.toInt(data)) // always store as unsigned
         }
     }
@@ -360,7 +357,7 @@ export class BranchAdder {
     public result: Bits = [] // 32 bits
 
     tick() {
-        let resultInt = Bits.toInt(this.in1, true) + Bits.toInt(this.in2, true)
+        const resultInt = Bits.toInt(this.in1, true) + Bits.toInt(this.in2, true)
         this.result = Bits(resultInt, 33, true).slice(0, 32) // handle overflow. (overflow can occur when non-branch instructions are run)
         this.result[0] = 0 // Drop lowest bit to word-align to 2-byte instructions
     }

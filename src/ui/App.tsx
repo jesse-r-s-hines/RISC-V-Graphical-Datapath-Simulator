@@ -1,5 +1,5 @@
 import React from "react"
-import toast, { Toaster } from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "css/site.css"

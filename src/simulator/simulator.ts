@@ -1,4 +1,4 @@
-import { Bit, Bits, b } from "utils/bits"
+import { Bits, b } from "utils/bits"
 import * as Comp from "./components"
 
 export class Simulator {

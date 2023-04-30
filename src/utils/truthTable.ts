@@ -8,9 +8,9 @@ export class TruthTable<T> {
     constructor(table: [string[], T][]) {
         this.table = []
 
-        for (let [rowInput, rowOutput] of table) {
+        for (const [rowInput, rowOutput] of table) {
             // Convert to boolean[] with nulls for X
-            let rowInputConv = rowInput.map(str =>
+            const rowInputConv = rowInput.map(str =>
                 [...str].reverse().map(c => c == "X" ? null : Number(c)) // convert to BitDontCares
             )
             this.table.push([rowInputConv, rowOutput])
@@ -35,7 +35,7 @@ export class TruthTable<T> {
      * Return the proper output for the given inputs to the truth table.
      */
     match(...inputs: Bits[]): T {
-        for (let [rowInputs, rowOutputs] of this.table) {
+        for (const [rowInputs, rowOutputs] of this.table) {
             if (rowInputs.every( (expected, i) => TruthTable.matchInput(inputs[i], expected) )) {
                 return rowOutputs
             }

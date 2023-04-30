@@ -5,7 +5,7 @@ import { Bits, b } from 'utils/bits';
 
 describe("Components", () => {
     it('Imm Gen', () => {
-        let imm = new Comps.ImmGen()
+        const imm = new Comps.ImmGen()
 
         // addi t0, t0, -1
         imm.instruction = b`111111111111_00101_000_00101_0010011`
@@ -58,9 +58,9 @@ describe("Components", () => {
     });
 
     it('ALU', () => {
-        let alu = new Comps.ALU()
-        let minInt = Bits(-(2n**31n), 32, true)
-        let maxInt = Bits(2n**31n - 1n, 32, true)
+        const alu = new Comps.ALU()
+        const minInt = Bits(-(2n**31n), 32, true)
+        const maxInt = Bits(2n**31n - 1n, 32, true)
 
         alu.in1 = minInt
         alu.in2 = maxInt

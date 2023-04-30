@@ -1,4 +1,4 @@
-import React, {useState} from "react"
+import {useState} from "react"
 import {Tab, Nav, NavDropdown} from 'react-bootstrap';
 import CodeMirror from '@uiw/react-codemirror';
 import { bbedit } from '@uiw/codemirror-theme-bbedit';
@@ -13,7 +13,7 @@ import { StyleProps, getStyleProps } from "./reactUtils";
 import css from "./EditorPanels.m.css"
 
 /** Converts a line number into a hex address. */
-function hexLine(num: number, inc: number, start: bigint = 0n): string {
+function hexLine(num: number, inc: number, start = 0n): string {
     return intToStr(start + BigInt((num - 1) * inc), "hex")
 }
 

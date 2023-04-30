@@ -1,15 +1,7 @@
-import React, {useEffect, useState, useRef, createElement} from "react"
-import {Tab, Nav, NavDropdown} from 'react-bootstrap';
-import CodeMirror from '@uiw/react-codemirror';
-import { bbedit } from '@uiw/codemirror-theme-bbedit';
-import { lineNumbers } from "@codemirror/view"
+import {useEffect, useState, useRef} from "react"
 import tippy, { followCursor, Instance as Tippy } from 'tippy.js';
 
-import { riscv as riscvLang } from './riscvLang';
-import { Radix, parseInt, intToStr } from "utils/radix"
 import { Simulator } from "simulator/simulator";
-import { registerNames } from "simulator/constants";
-import { Example } from "./examples";
 import { StyleProps, getStyleProps } from "./reactUtils";
 import { DataPathElem } from "./datapath";
 import type { SimState } from "./SimulatorUI";
@@ -48,21 +40,21 @@ function camelCase(s: string) {
 function generateDynamicSvgCss(svg: SVGElement) {
     const wires = [...svg.querySelectorAll<SVGSVGElement>(".wire:not(marker *)")]
 
-    let strokeWidths = new Set(wires.map(wire => {
-        let width = getComputedStyle(wire).strokeWidth
+    const strokeWidths = new Set(wires.map(wire => {
+        const width = getComputedStyle(wire).strokeWidth
         wire.dataset.strokeWidth = width
         return width
     }))
-    let hoverRules = [...strokeWidths].map(width => `
+    const hoverRules = [...strokeWidths].map(width => `
         .wires:hover .wire[data-stroke-width="${width}"], .wire[data-stroke-width="${width}"]:hover {
             stroke-width: calc(${width} * 1.5) !important
         }
     `)
 
-    let markerPos = ["start", "mid", "end"] as const
-    let markers = new Set(wires.flatMap(wire => markerPos.map(pos => {
+    const markerPos = ["start", "mid", "end"] as const
+    const markers = new Set(wires.flatMap(wire => markerPos.map(pos => {
         // marker must be of form "url(#marker-id)" or "url(https://current-address.com/#marker-id)"
-        let marker = getComputedStyle(wire)[`marker-${pos}` as any].trim().match(/url\(\s*"?.*?#(.+?)"?\s*\)/)?.[1]
+        const marker = getComputedStyle(wire)[`marker-${pos}` as any].trim().match(/url\(\s*"?.*?#(.+?)"?\s*\)/)?.[1]
 
         if (marker && marker != "none") {
             wire.dataset[camelCase(`marker-${pos}`)] = marker
@@ -70,7 +62,7 @@ function generateDynamicSvgCss(svg: SVGElement) {
         }
         return ""
     }).filter(marker => marker)))
-    let markerRules = [...markers].flatMap(marker => markerPos.map(pos => `
+    const markerRules = [...markers].flatMap(marker => markerPos.map(pos => `
         .powered.wire[data-marker-${pos}="${marker}"] {
             marker-${pos}: url("#${marker}-powered") !important
         }
@@ -85,19 +77,19 @@ function generateDynamicSvgCss(svg: SVGElement) {
         orig.insertAdjacentElement('afterend', copy)
     })
 
-    let rules = [...hoverRules, ...markerRules]
+    const rules = [...hoverRules, ...markerRules]
 
     // inject the generated styles into the SVG
     // rules.forEach(rule => style.sheet!.insertRule(rule)) // this works, but doesn't show the CSS in the inspector
-    let style = document.createElement("style")
+    const style = document.createElement("style")
     style.classList.add("dynamic-styles")
     style.textContent = rules.join("\n")
     svg.prepend(style)
 }
 
 function setupDatapath(svg: SVGElement, datapathElements: Record<string, DataPathElem>) {
-    for (let [id, config] of Object.entries(datapathElements)) {
-        let elem = svg.querySelector(`#${id}`)
+    for (const [id, config] of Object.entries(datapathElements)) {
+        const elem = svg.querySelector(`#${id}`)
 
         // Verify the SVG contains the things we expect
         if (!elem) throw Error(`${id} doesn't exist`);
@@ -129,16 +121,16 @@ function setupDatapath(svg: SVGElement, datapathElements: Record<string, DataPat
 }
 
 function updateDatapath(svg: SVGElement, sim: Simulator, datapathElements: Record<string, DataPathElem>, state: SimState) {
-    let running = (state == "playing" || state == "paused")
+    const running = (state == "playing" || state == "paused")
 
-    for (let [id, config] of Object.entries(datapathElements)) {
-        let elem = svg.querySelector(`#${id}`)!
+    for (const [id, config] of Object.entries(datapathElements)) {
+        const elem = svg.querySelector(`#${id}`)!
        
         if (config.description || config.tooltip) {
-            let tooltip = (elem as any)._tippy as Tippy
-            let value = running && config.tooltip ? config.tooltip(sim) : undefined
-            let description = (!running || !config.hideDescriptionWhenRunning) ? config.description : undefined
-            let content = [description, value].filter(s => s).join("<hr/>")
+            const tooltip = (elem as any)._tippy as Tippy
+            const value = running && config.tooltip ? config.tooltip(sim) : undefined
+            const description = (!running || !config.hideDescriptionWhenRunning) ? config.description : undefined
+            const content = [description, value].filter(s => s).join("<hr/>")
             tooltip.setContent(content)
 
             if (content) {
@@ -158,10 +150,10 @@ function updateDatapath(svg: SVGElement, sim: Simulator, datapathElements: Recor
         }
 
         if (config.label) {
-            let content = running ? config.label(sim) : "" // set labels empty if not running
-            for (const [i, text] of elem.querySelectorAll(".value-label").entries()) {
+            const content = running ? config.label(sim) : "" // set labels empty if not running
+            for (const text of elem.querySelectorAll(".value-label")) {
                 // use first tspan if there is one, else place directly in text element.
-                let labelElem = text.querySelector("tspan") ?? text
+                const labelElem = text.querySelector("tspan") ?? text
                 labelElem.textContent = content
             }
         }
@@ -171,7 +163,7 @@ function updateDatapath(svg: SVGElement, sim: Simulator, datapathElements: Recor
                 elem.style.display = "none"
             })
             if (running) {
-                let val = config.showSubElemsByValue(sim)
+                const val = config.showSubElemsByValue(sim)
                 elem.querySelectorAll<SVGSVGElement>(`[data-show-on-value="${val}"]`).forEach(elem => {
                     elem.style.removeProperty("display") // TODO reset to previous value
                 })

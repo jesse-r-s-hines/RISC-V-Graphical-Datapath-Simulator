@@ -4,7 +4,7 @@ import dedent from 'ts-dedent';
 
 describe("Load/Store", () => {
     it('Test Byte', () => {
-        let mem = new Memory(2n**32n)
+        const mem = new Memory(2n**32n)
     
         expect(mem.loadByte(0n)).to.equal(0n) // Returns zero for new memory spots
         mem.storeByte(0n, 10n)
@@ -15,7 +15,7 @@ describe("Load/Store", () => {
     });
     
     it('Test Words', () => {
-        let mem = new Memory(2n**32n)
+        const mem = new Memory(2n**32n)
     
         mem.storeHalfWord(64n, 1000n)
         expect(mem.loadHalfWord(64n)).to.equal(1000n)
@@ -34,12 +34,12 @@ describe("Load/Store", () => {
     });
     
     it('Test Endianness', () => {
-        let mem = new Memory(2n**32n)
+        const mem = new Memory(2n**32n)
     
         mem.storeDoubleWord(0n, 0x01_23_45_67_89_AB_CD_EFn)
     
-        let bytes = [0xEFn, 0xCDn, 0xABn, 0x89n, 0x67n, 0x45n, 0x23n, 0x01n] // backwards
-        for (let [i, byte] of bytes.entries()) {
+        const bytes = [0xEFn, 0xCDn, 0xABn, 0x89n, 0x67n, 0x45n, 0x23n, 0x01n] // backwards
+        for (const [i, byte] of bytes.entries()) {
           expect(mem.loadByte(BigInt(i))).to.equal(byte)
         }
     
@@ -51,12 +51,12 @@ describe("Load/Store", () => {
     });
 
     it('Test Load/Store slice', () => {
-        let mem = new Memory(2n**32n)
+        const mem = new Memory(2n**32n)
     
         mem.store(0n, 8, 0x01_23_45_67_89_AB_CD_EFn)
     
-        let bytes = [0xEFn, 0xCDn, 0xABn, 0x89n, 0x67n, 0x45n, 0x23n, 0x01n] // backwards
-        for (let [i, byte] of bytes.entries()) {
+        const bytes = [0xEFn, 0xCDn, 0xABn, 0x89n, 0x67n, 0x45n, 0x23n, 0x01n] // backwards
+        for (const [i, byte] of bytes.entries()) {
           expect(mem.load(BigInt(i), 1)).to.equal(byte)
         }
     
@@ -68,7 +68,7 @@ describe("Load/Store", () => {
     });
     
     it('Test Out Of Bounds', () => {
-        let mem = new Memory(2n**16n)
+        const mem = new Memory(2n**16n)
     
         expect(() => mem.storeByte(-1n, 1n)).to.throw("out of range")
         expect(() => mem.loadByte(-1n)).to.throw("out of range")
@@ -84,7 +84,7 @@ describe("Load/Store", () => {
     });
     
     it('Test Invalid Value', () => {
-        let mem = new Memory(2n**16n)
+        const mem = new Memory(2n**16n)
     
         expect(() => mem.storeByte(0n, -2n)).to.throw("invalid")
         expect(() => mem.storeByte(0n, 300n)).to.throw("invalid")
@@ -98,9 +98,9 @@ describe("Load/Store", () => {
     });
 
     it("Test store/load array", () => {
-        let mem = new Memory(2n**16n)
+        const mem = new Memory(2n**16n)
 
-        let arr = [0x0011_2233_4455_6677n, 0x8899_AABB_CCDD_EEFFn]
+        const arr = [0x0011_2233_4455_6677n, 0x8899_AABB_CCDD_EEFFn]
 
         mem.storeArray(100n, 8, arr)
         expect(mem.loadArray(100n, 8, 2)).to.eql(arr)
@@ -117,7 +117,7 @@ describe("Load/Store", () => {
 
 describe("Dump", () => {
     it("Basic", () => {
-        let mem = new Memory(2n**16n)
+        const mem = new Memory(2n**16n)
 
         expect([...mem.dump(8)]).to.eql([[[0x0000n, 0xFFF8n], 0n]])
 
@@ -158,7 +158,7 @@ describe("Dump", () => {
     })
 
     it("Edges", () => {
-        let mem = new Memory(2n**16n)
+        const mem = new Memory(2n**16n)
         mem.storeWord(0x0000n, 0x11_22_33_44n)
         mem.storeWord(0xFFFCn, 0x55_66_77_88n)
         expect([...mem.dump(4)]).to.eql([
@@ -233,7 +233,7 @@ describe("Dump", () => {
     })
 
     it("No collapse", () => {
-        let mem = new Memory(2n**4n)
+        const mem = new Memory(2n**4n)
         mem.storeByte(0x0n, 0x11n)
         mem.storeByte(0xFn, 0x22n)
         expect([...mem.dump(1, Infinity)]).to.eql([
@@ -244,7 +244,7 @@ describe("Dump", () => {
     })
 
     it("Manual 0s", () => {
-        let mem = new Memory(2n**16n)
+        const mem = new Memory(2n**16n)
         mem.storeHalfWord(0x0000n, 0x11_22n)
         for (let i = 0x0002n; i < 0x00FEn; i += 2n) {
             mem.storeHalfWord(i, 0x0n)
@@ -261,7 +261,7 @@ describe("Dump", () => {
 
 describe("Other", () => {
     it('Test toString', () => {
-        let mem = new Memory(2n**32n)
+        const mem = new Memory(2n**32n)
         mem.storeDoubleWord(0n, 100n)
         mem.storeDoubleWord(8n, 101n)
         mem.storeDoubleWord(64n, 10n**10n)

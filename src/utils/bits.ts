@@ -63,13 +63,13 @@ function fromString(str: string): Bits {
     return [...str].map(b => Number(b)).reverse()
 }
 
-function fromInt(num: number|bigint, length: number, signed: boolean = false): Bits {
+function fromInt(num: number|bigint, length: number, signed = false): Bits {
     if (typeof num == "number") num = BigInt(num)
-    let len =  BigInt(length)
-    let [a, b] = signed ? [-(2n**(len-1n)), 2n**(len-1n) - 1n] : [0, 2n**len - 1n]
+    const len =  BigInt(length)
+    const [a, b] = signed ? [-(2n**(len-1n)), 2n**(len-1n) - 1n] : [0, 2n**len - 1n]
     if (num < a || num > b) throw Error(`${num} is invalid. Expected a ${signed ? "" : "un"}signed integer that fits in ${length} bits.`)
 
-    let bits = Array(length)
+    const bits = Array(length)
     for (let i = 0; i < length; i++) {
         bits[i] = Number(num & 0x1n) // Least Significant Bit 0
         num = num >> 1n
@@ -83,8 +83,8 @@ export namespace Bits {
      * @param bits The bits to convert to an int
      * @param signed Whether the bits should be interpreted signed or not. Defaults to false.
      */
-    export function toInt(bits: Bits, signed: boolean = false): bigint {
-        let negative = (signed && bits[bits.length - 1])
+    export function toInt(bits: Bits, signed = false): bigint {
+        const negative = (signed && bits[bits.length - 1])
 
         if (negative) bits = bits.map(b => +!b) // two's complement, +1 later
 
@@ -103,7 +103,7 @@ export namespace Bits {
      * @param bits The bits to convert to an number
      * @param signed Whether the bits should be interpreted signed or not. Defaults to false.
      */
-    export function toNumber(bits: Bits, signed: boolean = false): number {
+    export function toNumber(bits: Bits, signed = false): number {
         return Number(Bits.toInt(bits, signed))
     }
 
@@ -113,8 +113,8 @@ export namespace Bits {
      * @param signed if True, will sign extend
      */
      export function extended(bits: Bits, size: number, signed = false): Bits {
-        let sign = signed ? bits[bits.length - 1] : 0 // sign bit
-        let extend = Array(size - bits.length).fill(sign)
+        const sign = signed ? bits[bits.length - 1] : 0 // sign bit
+        const extend = Array(size - bits.length).fill(sign)
         return bits.concat(extend)
     }
 
@@ -144,9 +144,9 @@ export namespace Bits {
  * Converts an unsigned int to a signed one.
  * @param bits The number of bits the int should be. Default 32.
  */
-export function fromTwosComplement(num: bigint, bits: number = 32): bigint {
+export function fromTwosComplement(num: bigint, bits = 32): bigint {
     // ~num + 1 doesn't work because of how Javscript does ~
-    let bitsB = BigInt(bits)
+    const bitsB = BigInt(bits)
     if (num >= (1n << (bitsB - 1n))) num -= (1n << bitsB) // interpret as two's complement
     return num
 }
@@ -155,7 +155,7 @@ export function fromTwosComplement(num: bigint, bits: number = 32): bigint {
  * Converts an signed int to an unsigned one.
  * @param bits The number of bits the int should be. Default 32.
  */
-export function toTwosComplement(num: bigint, bits: number = 32): bigint {
+export function toTwosComplement(num: bigint, bits = 32): bigint {
     if (num < 0) num += (1n << BigInt(bits))
     return num
 }

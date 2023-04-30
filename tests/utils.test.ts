@@ -104,7 +104,7 @@ describe("Bits", () => {
     });
 
     it('msb0', () => {
-        let ba = Bits(10n, 4)
+        const ba = Bits(10n, 4)
         expect(Bits.msb0(ba)).to.eql([1, 0, 1, 0])
         expect(ba).to.eql([0, 1, 0, 1]) // original unchanged
 
@@ -198,7 +198,7 @@ describe("Bits", () => {
 
 describe("Truth Table", () => {
     it('Basic', () => {
-        let table = new TruthTable([
+        const table = new TruthTable([
             [["0X", "0"], 0b00n],
             [["00", "1"], 0b01n],
             [["01", "1"], 0b10n],

@@ -1,4 +1,4 @@
-import { Bit, Bits, b } from "utils/bits"
+import { Bits, b } from "utils/bits"
 
 /** Maps numbers to their register name. */
 export const registerNames = [

@@ -1,10 +1,9 @@
 import { Simulator } from "simulator/simulator"
-// import { VisualSim } from "./visualSim.ts"
 import { registerNames } from "simulator/constants"
 
-import { Bits, Bit } from "utils/bits"
+import { Bits } from "utils/bits"
 import { TruthTable } from "utils/truthTable"
-import { Radix, intToStr } from "utils/radix"
+import { intToStr } from "utils/radix"
 
 /**
  * # SVG
@@ -46,9 +45,9 @@ export interface DataPathElem {
 
 
 /** Returns html showing num as hex, signed, and unsigned */
-export function intToAll(num: bigint|Bits, bits: number = 32): string {
-    let radices = [["Hex", "hex"], ["Unsigned", "unsigned"], ["Signed", "signed"]]
-    let lines = radices.map(([l, r]) => `${l}: ${intToStr(num, r, bits)}`)
+export function intToAll(num: bigint|Bits, bits = 32): string {
+    const radices = [["Hex", "hex"], ["Unsigned", "unsigned"], ["Signed", "signed"]]
+    const lines = radices.map(([l, r]) => `${l}: ${intToStr(num, r, bits)}`)
     return lines.join("<br/>")
 }
 

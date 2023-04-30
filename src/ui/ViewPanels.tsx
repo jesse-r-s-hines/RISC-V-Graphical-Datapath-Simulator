@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef} from "react"
+import {useEffect, useState, useRef} from "react"
 import {Tab, Nav} from 'react-bootstrap';
 import classNames from 'classnames';
 

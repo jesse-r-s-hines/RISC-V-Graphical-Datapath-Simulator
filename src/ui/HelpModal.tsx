@@ -1,4 +1,4 @@
-import React, {} from "react"
+import {} from "react"
 import Modal from 'react-bootstrap/Modal';
 import css from "./HelpModal.m.css"
 
@@ -32,7 +32,7 @@ export default function HelpModal({
                     and current value.
                 </p>
                 <p>
-                    You can view the source or contribute on <a href="https://github.com/jesse-r-s-hines/RISC-V-Graphical-Datapath-Simulator" target="_blank">GitHub</a>.
+                    You can view the source or contribute on <a href="https://github.com/jesse-r-s-hines/RISC-V-Graphical-Datapath-Simulator" target="_blank" rel="noreferrer">GitHub</a>.
                 </p>
             </Modal.Body>
         </Modal>

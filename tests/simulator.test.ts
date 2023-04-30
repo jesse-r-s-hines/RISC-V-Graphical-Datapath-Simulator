@@ -1,20 +1,20 @@
 import { expect } from "chai";
 import { Simulator } from "simulator/simulator";
-import { Bits, fromTwosComplement, toTwosComplement } from "utils/bits";
+import { toTwosComplement } from "utils/bits";
 import { assemble } from "assembler/assembler"
 
 function testCode(code: string, regs: Record<number, bigint> = {}, expected: Record<number, bigint> = {}) {
-    for (let reg in regs) regs[reg] = toTwosComplement(regs[reg])
-    let sim = new Simulator(assemble(code), regs)
+    for (const reg in regs) regs[reg] = toTwosComplement(regs[reg])
+    const sim = new Simulator(assemble(code), regs)
     sim.run()
-    for (let reg in expected) {
+    for (const reg in expected) {
         expect(sim.regFile.registers[reg], `${code}\n\nregister x${reg}`).to.equal(toTwosComplement(expected[reg]))
     }
 }
 
 /** Test if a branch is taken. The branch should branch to "label"*/
 function testBranch(branch: string, regs: Record<number, bigint> = {}, taken: boolean) {
-    let code = `
+    const code = `
         ${branch}
         addi x30, zero, 1
         label: addi x31, zero, 1
@@ -29,19 +29,19 @@ describe("Misc", () => {
     })
 
     it('Empty', () => {
-        let sim = new Simulator()
+        const sim = new Simulator()
         expect( () => sim.run() ).does.not.throw()
     })
 
     it('Set Zero', () => {
-        let sim = new Simulator()
+        const sim = new Simulator()
         expect( () => sim.setRegisters({0: 10n})).to.throw()
     })
 })
 
 describe("Arithmetic", () => {
     it("Can't write zero", () => {
-        let code = `addi x0, x0, 6`
+        const code = `addi x0, x0, 6`
         testCode(code, {}, {0: 0n})
     })
 
@@ -70,7 +70,7 @@ describe("Arithmetic", () => {
     })
     
     it('and', () => {
-        let code = `and x5, x6, x28`
+        const code = `and x5, x6, x28`
         testCode(code, {5: 5n, 6: 6n, 28: 12n}, {5: 4n})
     })
     
@@ -91,7 +91,7 @@ describe("Arithmetic", () => {
     })
     
     it('ori', () => {
-        let code = `ori x5, x6, 7`
+        const code = `ori x5, x6, 7`
         testCode(code, {5: 5n, 6: 6n}, {5: 7n})
     })
     
@@ -104,7 +104,7 @@ describe("Arithmetic", () => {
     })
     
     it('xori', () => {
-        let code = `xori x6, x6, 6`
+        const code = `xori x6, x6, 6`
         testCode(code, {6: 5n}, {6: 3n})
     })
     
@@ -120,7 +120,7 @@ describe("Arithmetic", () => {
     })
     
     it('slli', () => {
-        let code = `slli x6, x6, 3`
+        const code = `slli x6, x6, 3`
         testCode(code, {6: 2n}, {6: 16n})
     })
     
@@ -165,7 +165,7 @@ describe("Arithmetic", () => {
     })
     
     it('slti', () => {
-        let code = `slti x5, x6, 7`
+        const code = `slti x5, x6, 7`
         testCode(code, {6: 6n, 7: 7n}, {5: 1n})
     })
     
@@ -191,10 +191,10 @@ describe("Arithmetic", () => {
 
 describe("Branch", () => {
     it('beq', () => {
-        let code = `beq x5, x28, label`
+        const code = `beq x5, x28, label`
         testBranch(code, {5: 1n, 28: 1n}, true)
 
-        let code2 = `beq x0, x0, label`
+        const code2 = `beq x0, x0, label`
         testBranch(code2, {}, true)
     })
     
@@ -210,7 +210,7 @@ describe("Branch", () => {
     })
     
     it('bgeu', () => {
-        let code = `bgeu x5, x28, label`
+        const code = `bgeu x5, x28, label`
         testBranch(code, {5: 0n, 28: -1n}, false)
     })
     
@@ -226,20 +226,20 @@ describe("Branch", () => {
     })
     
     it('bltu', () => {
-        let code = `bltu x5, x28, label`
+        const code = `bltu x5, x28, label`
         testBranch(code, {5: -0n, 28: 0n}, false)
     })
     
     it('bne', () => {
-        let code = `bne x5, x28, label`
+        const code = `bne x5, x28, label`
         testBranch(code, {5: 1n, 28: 3n}, true)
 
-        let code2 = `bne x0, x0, label`
+        const code2 = `bne x0, x0, label`
         testBranch(code2, {}, false)
     })
 
     it('long branch', () => {
-        let code = `
+        const code = `
             beq x5, x28, label
             addi zero, zero, 0
             addi zero, zero, 0
@@ -251,7 +251,7 @@ describe("Branch", () => {
 
         testCode(code, {5: 1n, 28: 1n}, {6: 1n, 7: 0n}) // take
 
-        let code2 = `
+        const code2 = `
             li x6, 4
             label:
             addi x5, x5, 1
@@ -264,14 +264,14 @@ describe("Branch", () => {
     })
     
     it('jal', () => {
-        let code = `
+        const code = `
             jal x5, dest
             addi x7, zero, 1
             dest: addi x6, zero, 1
         `
         testCode(code, {}, {5: 0x0000_0004n, 6: 1n, 7: 0n})
 
-        let code2 = `
+        const code2 = `
             jal x1, label1
             label2:
             li x2, 1

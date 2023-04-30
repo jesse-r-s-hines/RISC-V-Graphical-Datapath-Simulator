@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { Simulator } from "simulator/simulator";
-import { Bits, fromTwosComplement, toTwosComplement } from "utils/bits";
+import { fromTwosComplement, toTwosComplement } from "utils/bits";
 import { assemble } from "assembler/assembler"
 import * as fs from "fs";
 
@@ -9,20 +9,20 @@ import * as fs from "fs";
  */
 
 function makeSim(file: string, regs: Record<number, bigint> = {}): Simulator {
-    let code = fs.readFileSync(file, 'utf8')
-    let machineCode = assemble(code)
+    const code = fs.readFileSync(file, 'utf8')
+    const machineCode = assemble(code)
     return new Simulator(machineCode, regs)
 }
 
 describe("Bubble Sort", () => {
-    let file ='./tests/assembly/bubbleSort.s'
-    let base = 0x1000_8000n // gp
+    const file ='./tests/assembly/bubbleSort.s'
+    const base = 0x1000_8000n // gp
 
     it("Basic", () => {
         let array = [3n, 2n, 1n, 0n, -1n, -2n, -3n].map(e => toTwosComplement(e))
-        let size = BigInt(array.length)
+        const size = BigInt(array.length)
 
-        let sim = makeSim(file, {10: base, 11: size}) // a0, a1
+        const sim = makeSim(file, {10: base, 11: size}) // a0, a1
         sim.dataMem.data.storeArray(base, 4, array)
 
         sim.run()
@@ -36,7 +36,7 @@ describe("Bubble Sort", () => {
         let array: bigint[] = []
         for (let i = 0n; i < 10n; i++) array.push( toTwosComplement(BigInt(Math.floor(Math.random() * (2**32-1)))) )
 
-        let sim = makeSim(file, {10: base, 11: 10n}) // a0, a1
+        const sim = makeSim(file, {10: base, 11: 10n}) // a0, a1
 
         sim.dataMem.data.storeArray(base, 4, array)
 
@@ -51,14 +51,14 @@ describe("Bubble Sort", () => {
 })
 
 describe("Selection Sort", () => {
-    let file = './tests/assembly/selectionSort.s'
-    let base = 0x1000_8000n // gp
+    const file = './tests/assembly/selectionSort.s'
+    const base = 0x1000_8000n // gp
 
     it("Basic", () => {
         let array = [3n, 2n, 6n, 0n, -1n, -2n, 0n].map(e => toTwosComplement(e))
-        let size = BigInt(array.length)
+        const size = BigInt(array.length)
 
-        let sim = makeSim(file, {10: base, 11: size}) // a0, a1
+        const sim = makeSim(file, {10: base, 11: size}) // a0, a1
         sim.dataMem.data.storeArray(base, 4, array)
 
         sim.run()
@@ -72,7 +72,7 @@ describe("Selection Sort", () => {
         let array: bigint[] = []
         for (let i = 0n; i < 10n; i++) array.push( toTwosComplement(BigInt(Math.floor(Math.random() * (2**32-1)))) )
 
-        let sim = makeSim(file, {10: base, 11: 10n}) // a0, a1
+        const sim = makeSim(file, {10: base, 11: 10n}) // a0, a1
 
         sim.dataMem.data.storeArray(base, 4, array)
 

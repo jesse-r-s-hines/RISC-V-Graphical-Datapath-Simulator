@@ -1,4 +1,4 @@
-import React, {useState, useRef} from "react"
+import {useState, useRef} from "react"
 import toast from 'react-hot-toast';
 
 import { examples, Example } from "./examples";
@@ -78,8 +78,9 @@ export default function SimulatorUI() {
      * Returns true if started successfully, false otherwise.
      */
     const start = () => {
+        let newAssembled: [number, bigint][];
         try {
-            var newAssembled = assembleKeepLineInfo(code)
+            newAssembled = assembleKeepLineInfo(code)
             setAssembled(newAssembled)
         } catch (e: any) {
             error(`Couldn't parse code:\n${e.message}`)
@@ -91,8 +92,9 @@ export default function SimulatorUI() {
             return false
         }
 
+        let mem: bigint[];
         try {
-            var mem = data.split("\n").filter(s => s).map(s => parseInt(s, dataRadix, dataWordSize));
+            mem = data.split("\n").filter(s => s).map(s => parseInt(s, dataRadix, dataWordSize));
         } catch (e: any) {
             error(`Couldn't parse data memory:\n${e.message}`)
             return false

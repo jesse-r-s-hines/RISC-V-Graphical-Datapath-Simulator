@@ -10,15 +10,16 @@ export type Radix = "hex" | "bin" | "signed" | "unsigned"
  * @param bits the number of bits the output will be. 
  */
 export function parseInt(str: string, radix: Radix, bits: number): bigint {
+    let num: bigint
     try {
         if (radix == "hex") {
-            var num = BigInt( /^0[xb]/.test(str) ? str : `0x${str}` )
+            num = BigInt( /^0[xb]/.test(str) ? str : `0x${str}` )
         } else if (radix == "bin") {
-            var num = BigInt( /^0[xb]/.test(str) ? str : `0b${str}` )
+            num = BigInt( /^0[xb]/.test(str) ? str : `0b${str}` )
         } else if (radix == "signed") {
-            var num =  toTwosComplement(BigInt(str), bits)
+            num =  toTwosComplement(BigInt(str), bits)
         } else { // (radix == "unsigned")
-            var num =  BigInt(str)
+            num =  BigInt(str)
         }
         if (num < 0n || num >= 2n ** BigInt(bits)) throw Error() // just trigger catch.
     } catch { // Int to big or parsing failed

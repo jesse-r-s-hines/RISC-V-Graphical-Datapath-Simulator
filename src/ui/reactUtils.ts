@@ -1,5 +1,5 @@
 
-import React, {useRef, useEffect} from "react"
+import {useRef, useEffect} from "react"
 import CSS from "csstype"
 import classNames from "classnames"
 
@@ -44,7 +44,7 @@ export function useInterval(callback: () => void, delay: number|null) {
   
     useEffect(() => {
         if (delay !== null) {
-            let id = setInterval(() => savedCallback.current(), delay);
+            const id = setInterval(() => savedCallback.current(), delay);
             return () => clearInterval(id);
         }
     }, [delay]);

@@ -1,10 +1,10 @@
 import { expect } from 'chai';
 import { assemble, assembleKeepLineInfo } from 'assembler/assembler';
-import { Bits, b } from 'utils/bits';
+import { Bits } from 'utils/bits';
 
 function assembleExpect(program: string, expected: bigint[]) {
     // convert to string to make it easier to see what bits are off.
-    let result = assemble(program).map((instr) => Bits.toString(Bits(instr, 32)))
+    const result = assemble(program).map((instr) => Bits.toString(Bits(instr, 32)))
     expect(result, program).to.eql(expected.map(i => Bits.toString(Bits(i, 32))))
 }
 
@@ -27,7 +27,7 @@ describe('Basic All Types', () => {
     })
 
     it("IS-type", () => {
-        let code = `srai x5, x6, 2`;
+        const code = `srai x5, x6, 2`;
         assembleExpect(code, [0x40235293n]);
     })
 
@@ -63,7 +63,7 @@ describe('Basic All Types', () => {
     })
 
     it("U-type", () => {
-        let code = `lui x16, 100`;
+        const code = `lui x16, 100`;
         assembleExpect(code, [0x00064837n]);
     })
 
@@ -76,7 +76,7 @@ describe('Basic All Types', () => {
     })
 
     it("Store S-type", () => {
-        let code = `sh x1, 3(x2)`;
+        const code = `sh x1, 3(x2)`;
         assembleExpect(code, [0x001111A3n]);
     })
 
@@ -147,7 +147,7 @@ describe('Numbers', () => {
 
 describe('Formatting', () => {
     it("Spacing & Line Numbers", () => {
-        let code = `
+        const code = `
             lui   x1  ,   0   
             \taddi\tx1\t,\t x1\t,\t1\t
 
@@ -176,7 +176,7 @@ describe('Formatting', () => {
 
 describe("Line Info", () => {
     it("Line info", () => {
-        let code = `
+        const code = `
             lui x1, 0
             addi x1, x1, 1
 
@@ -196,7 +196,7 @@ describe("Line Info", () => {
 
 describe('Labels', () => {
     it("Labels", () => {
-        let code = `
+        const code = `
             label1:
             label_2:
             jal label1
