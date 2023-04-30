@@ -7,10 +7,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 // env.prod, env.dev, or env.test can be set.
 module.exports = (env) => ({
   entry: {
-    jquery: 'jquery',
     main: {
       import: './src/index.tsx',
-      dependOn: 'jquery',
     },
   },
   devtool: (env.prod) ? 'source-map' : 'inline-source-map', // inline-source-map makes debugging work better.
@@ -78,11 +76,6 @@ module.exports = (env) => ({
       assets: path.resolve(__dirname, 'assets'),
       css: path.resolve(__dirname, 'css'),
     },
-  },
-  output: {
-    filename: '[name].bundle.js',
-    path: path.resolve(__dirname, 'dist'),
-    clean: true,
   },
   optimization: {
     minimize: env.prod ? true : false // Debugger has trouble if you minify, even with the source map.

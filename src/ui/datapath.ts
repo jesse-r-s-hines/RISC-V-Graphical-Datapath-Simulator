@@ -37,7 +37,7 @@ export interface DataPathElem {
     label?: (sim: Simulator) => string, // the current value to display in a textbox
     tooltip?: (sim: Simulator) => string, // the current value with explanation shown in the tooltip.
     powered?: (sim: Simulator) => boolean, // return true if a wire is "powered" (powered wires will colored)
-    onclick?: (visSim: any) => void, // call when an element is clicked
+    // onclick?: (visSim: any) => void, // call when an element is clicked
     // return a value, and will show matching elements under this element that marked with value in `data-show-on-value`
     showSubElemsByValue?: (sim: Simulator) => string,
 }
@@ -116,14 +116,14 @@ export const datapathElements: Record<string, DataPathElem> = {
     },
     "instrMem": {
         description: "Stores the program.",
-        onclick: (visSim) => $("#instrMem-tab").tab("show")
+        // onclick: (visSim) => $("#instrMem-tab").tab("show") // TODO
     },
     "control": {
         description: "Tells the rest of the processor what to do.",
     },
     "regFile": {
         description: "Stores the 32 registers.",
-        onclick: (visSim) => $("#regFile-tab").tab("show")
+        // onclick: (visSim) => $("#regFile-tab").tab("show") // TODO
     },
     "immGen": {
         description: "Extracts the sign-extended immediate from the instruction.",
@@ -141,7 +141,7 @@ export const datapathElements: Record<string, DataPathElem> = {
     },
     "dataMem": {
         description: "Stores the data the program is working with.",
-        onclick: (visSim) => $("#dataMem-tab").tab("show")
+        // onclick: (visSim) => $("#dataMem-tab").tab("show") // TODO
     },
     "pcAdd4": {
         description: "Increment PC to the next instruction.",
