@@ -1,9 +1,6 @@
-declare module '*.svg' { // Allow you to import svg's using webpack's magic
-    const content: string;
-    export default content;
-}
+ // Allow you to import svg's using webpack's magic
+declare module '*.svg' { const d: string; export default d; }
 
-declare module '*.ne' {
-    const content: import("nearley").CompiledRules;
-    export default content;
-}
+declare module '*.ne' { const d: import("nearley").CompiledRules; export default d; }
+
+declare module '*.css' { const d: any; export default d; }
