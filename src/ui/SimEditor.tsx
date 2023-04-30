@@ -48,7 +48,7 @@ export default function SimEditor({
                     <Nav.Item><Nav.Link eventKey="registers">Registers</Nav.Link></Nav.Item>
                     <Nav.Item><Nav.Link eventKey="memory">Memory</Nav.Link></Nav.Item>
                     <Nav.Item>
-                        <NavDropdown title="Load Example">
+                        <NavDropdown title="Load Example" className="popper-warning-fix">
                             {props.examples.map(example => (
                                 <NavDropdown.Item key={example.name} title={example.description}
                                     onClick={() => props.onLoadExample?.(example)}
