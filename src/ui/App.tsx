@@ -10,7 +10,7 @@ import SimView from "./SimView";
 import SimControls from "./SimControls";
 import SimDatapath from "./SimDatapath";
 import datapath from "assets/datapath.svg" // import path to the svg
-import { DataPathElem, datapathElements } from "./datapath";
+import { datapathElements } from "./datapath";
 import { useInterval } from "./reactUtils";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
