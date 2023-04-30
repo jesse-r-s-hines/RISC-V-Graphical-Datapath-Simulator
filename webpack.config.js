@@ -10,10 +10,10 @@ module.exports = (env, argv) => {
     /** @type { import('webpack').Configuration } */
     const config =  {
         mode: (env.prod) ? "production" : "development",
-        entry: [path.resolve(__dirname, 'src/index.tsx')],
+        entry: [path.join(__dirname, 'src/index.tsx')],
         output: {
             filename: '[name]-[contenthash].bundle.js',
-            path: path.resolve(__dirname, 'dist'),
+            path: path.join(__dirname, 'dist'),
             clean: true,
         },
         devtool: (env.prod) ? 'source-map' : 'inline-source-map', // inline-source-map makes debugging work better.
@@ -21,7 +21,8 @@ module.exports = (env, argv) => {
         plugins: [
             new MiniCssExtractPlugin(),
             new HtmlWebpackPlugin({
-                template: "./index.html",
+                filename: 'index.html',
+                template: path.join(__dirname, "src/index.html.ejs"),
             }),
         ],
         module: {
@@ -37,15 +38,18 @@ module.exports = (env, argv) => {
                     use: [
                         {
                             loader: 'svgo-loader',
-                            options: { configFile:  path.resolve(__dirname, "./svgo.config.js") }
+                            options: { configFile:  path.join(__dirname, "svgo.config.js") }
                         }
                     ],
                     generator: {filename: "[name]-[hash][ext][query]"},
-                    include: path.resolve(__dirname, "assets"),
+                    include: path.join(__dirname, "assets"),
                 },
                 {
                     test: /\.css$/i,
-                    use: [MiniCssExtractPlugin.loader, 'css-loader'],
+                    use: [
+                        MiniCssExtractPlugin.loader,
+                        "css-loader",
+                    ],
                 },
                 {
                     test: /\.(s|asm)$/, // assembly examples
@@ -55,20 +59,20 @@ module.exports = (env, argv) => {
                 {
                     test: /\.ne$/,
                     use: ['nearley-loader'],
-                    include: path.resolve(__dirname, "src"),
+                    include: path.join(__dirname, "src"),
                 },
             ],
         },
         resolve: {
             extensions: ['.tsx', '.ts', '.js'],
-            modules: [path.resolve(__dirname, 'src'), 'node_modules'],
+            modules: [path.join(__dirname, 'src'), 'node_modules'],
             alias: {
-                assets: path.resolve(__dirname, 'assets'),
-                css: path.resolve(__dirname, 'css'),
+                assets: path.join(__dirname, 'assets'),
+                css: path.join(__dirname, 'css'),
             },
         },
         optimization: {
-            minimize: env.prod ? true : false // Debugger has trouble if you minify, even with the source map.
+            minimize: !!env.prod, // Debugger has trouble if you minify, even with the source map.
         },
         devServer: {
             static: path.join(__dirname, 'dist'),
