@@ -30,19 +30,19 @@ function error(message: string) {
 export type SimState = "unstarted"|"playing"|"paused"|"done"
 
 /**
- * Hack to use Simulator as state. Simulator is mutable, so we internally use a ref and manually update a wrapper state
- * object to trigger rerender. This is hacky and not good react style, but deepCopying the simulator every time would be
- * expensive.
+ * Hack to use Simulator as state. Simulator is mutable, so we internally use a ref and manually update a wrapper proxy
+ * object so the object identity changes trigger rerender. This is hacky and not good react style, but deepCopying the
+ * simulator every time would be expensive.
  * 
- * Do all updates to sim via updateSim, and be careful about mixing mutations and reads since the sim wrapper may not
- * be in sync with the ref until the next render when you assign create a new Simulator. You should treat the `sim`
- * result like normal immutable state that doesn't update until next render, even if that isn't always true in this case.
+ * Do all updates to sim via updateSim, and be careful about mixing mutations and reads since if you create a new sim
+ * the sim wrapper won't update until the next render like normal state. You should treat the `sim` result like normal
+ * immutable state that doesn't update until next render, even if that isn't always true in this case.
  */
-function useSim(): [{sim: Simulator}, <T=void>(val: Simulator|((sim: Simulator) => T)) => T] {
+function useSim(): [Simulator, <T=void>(val: Simulator|((sim: Simulator) => T)) => T] {
     const simRef = useRef<Simulator>()
     if (!simRef.current) simRef.current = new Simulator()
 
-    const [simWrapper, setSimWrapper] = useState({sim: simRef.current!})
+    const [simWrapper, setSimWrapper] = useState(new Proxy(simRef.current!, {})) // Dummy proxy to change identity
 
     // Updates the sim and updates the wrapper so react rerenders
     const updateSim = <T=void,>(val: Simulator|((sim: Simulator) => T)): T => {
@@ -52,7 +52,7 @@ function useSim(): [{sim: Simulator}, <T=void>(val: Simulator|((sim: Simulator) 
         } else {
             rtrn = val(simRef.current!)
         }
-        setSimWrapper({sim: simRef.current!})
+        setSimWrapper(new Proxy(simRef.current!, {}))
         return rtrn;
     }
 

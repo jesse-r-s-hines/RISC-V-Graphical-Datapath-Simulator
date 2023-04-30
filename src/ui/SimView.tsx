@@ -10,7 +10,7 @@ import { StyleProps, getStyleProps } from "./reactUtils";
 import "./SimView.css"
 
 type Props = {
-    sim: {sim: Simulator},
+    sim: Simulator,
     code: string,
     assembled: [number, bigint][],
 } & StyleProps
@@ -30,7 +30,7 @@ export default function SimView({sim, ...props}: Props) {
     const instrMemTable = useRef<HTMLTableElement>(null)
     useEffect(() => {
         instrMemTable.current?.querySelector(".current-instruction")?.scrollIntoView({behavior: "smooth", block: "nearest"})
-    }, [sim.sim.pc.data])
+    }, [sim.pc.data])
 
 
     return (
@@ -50,7 +50,7 @@ export default function SimView({sim, ...props}: Props) {
                                 </thead>
                                 <tbody>
                                     {listing.map(({addr, instr, line}) => (
-                                        <tr key={`${addr}`} className={classNames({"current-instruction": addr === sim.sim.pc.data})}>
+                                        <tr key={`${addr}`} className={classNames({"current-instruction": addr === sim.pc.data})}>
                                             <td>{intToStr(addr, "hex")}</td><td>{intToStr(instr, "hex")}</td><td>{line}</td>
                                         </tr>
                                     ))}
@@ -73,7 +73,7 @@ export default function SimView({sim, ...props}: Props) {
                                     spellCheck={false}
                                 >
                                     <tbody>
-                                        {sim.sim.regFile.registers.map((reg, i) => (
+                                        {sim.regFile.registers.map((reg, i) => (
                                             <tr key={i}>
                                                 <td>{`${registerNames[i]} (x${i})`}</td><td>{intToStr(reg, regRadix)}</td>
                                             </tr>
@@ -107,7 +107,7 @@ export default function SimView({sim, ...props}: Props) {
                                     spellCheck={false}
                                 >
                                     <tbody>
-                                        {[...sim.sim.dataMem.data.dump(memWordSize / 8)].map(([addr, val]) =>
+                                        {[...sim.dataMem.data.dump(memWordSize / 8)].map(([addr, val]) =>
                                             (typeof addr == "bigint") ? (
                                                 <tr key={`${addr}`}><td>{intToStr(addr, "hex")}</td><td>{intToStr(val, memRadix, memWordSize)}</td></tr>
                                             ) : (
