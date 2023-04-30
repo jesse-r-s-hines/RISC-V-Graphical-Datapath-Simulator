@@ -12,7 +12,7 @@ import { registerNames } from "simulator/constants";
 import { Example } from "./examples";
 import { StyleProps, getStyleProps } from "./reactUtils";
 import { DataPathElem } from "./datapath";
-import type { SimState } from "./App";
+import type { SimState } from "./SimComponent";
 
 import "./SimDatapath.css"
 
