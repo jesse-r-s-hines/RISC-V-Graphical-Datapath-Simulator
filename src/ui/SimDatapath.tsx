@@ -17,7 +17,7 @@ import type { SimState } from "./App";
 import "./SimDatapath.css"
 
 type Props = {
-    sim: Simulator,
+    sim: {sim: Simulator},
     state: SimState,
     /** url to the datapath svg */
     datapathUrl: string,
@@ -181,7 +181,7 @@ function updateDatapath(svg: SVGElement, sim: Simulator, datapathElements: Recor
 }
 
 
-export default function SimDatapath(props: Props) {
+export default function SimDatapath({sim, ...props}: Props) {
     const divRef = useRef<HTMLDivElement>(null)
     const [datapathSrc, setDatapathSrc] = useState<string>()
     
@@ -195,9 +195,9 @@ export default function SimDatapath(props: Props) {
             divRef.current!.innerHTML = datapathSrc
             const svg = divRef.current!.querySelector("svg")!
             setupDatapath(svg, props.datapathElements)
-            updateDatapath(svg, props.sim, props.datapathElements, props.state)
+            updateDatapath(svg, sim.sim, props.datapathElements, props.state)
         }
-    }, [datapathSrc, props.datapathElements])
+    }, [datapathSrc, props.datapathElements, props.state, sim])
 
     return (
         <div ref={divRef} {...getStyleProps(props, {className: "sim-datapath"})}></div>

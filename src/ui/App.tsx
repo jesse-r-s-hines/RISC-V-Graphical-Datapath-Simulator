@@ -29,18 +29,39 @@ function error(message: string) {
 
 export type SimState = "unstarted"|"playing"|"paused"|"done"
 
-export default function App(props: Props) {
-    // NOTE: Simulator is mutable, so use a ref, and manually update a counter to trigger rerender.
-    // It is not recommended to read a Ref during render, so maybe consider doing deepClone? Though that seems to be a bit expensive.
-    const sim = useRef<Simulator>()
-    if (!sim.current) sim.current = new Simulator()
-    const [simUpdateCounter_, setSimUpdateCounter_] = useState(0)
-    // Updates the sim and updates the counter so react rerenders
-    const updateSim = <T,>(func: (sim: Simulator) => T): T => {
-        const rtrn = func(sim.current!)
-        setSimUpdateCounter_(c => c + 1)
+/**
+ * Hack to use Simulator as state. Simulator is mutable, so we internally use a ref and manually update a wrapper state
+ * object to trigger rerender. This is hacky and not good react style, but deepCopying the simulator every time would be
+ * expensive.
+ * 
+ * Do all updates to sim via updateSim, and be careful about mixing mutations and reads since the sim wrapper may not
+ * be in sync with the ref until the next render when you assign create a new Simulator. You should treat the `sim`
+ * result like normal immutable state that doesn't update until next render, even if that isn't always true in this case.
+ */
+function useSim(): [{sim: Simulator}, <T=void>(val: Simulator|((sim: Simulator) => T)) => T] {
+    const simRef = useRef<Simulator>()
+    if (!simRef.current) simRef.current = new Simulator()
+
+    const [simWrapper, setSimWrapper] = useState({sim: simRef.current!})
+
+    // Updates the sim and updates the wrapper so react rerenders
+    const updateSim = <T=void,>(val: Simulator|((sim: Simulator) => T)): T => {
+        let rtrn: any = undefined;
+        if (val instanceof Simulator) {
+            simRef.current = val
+        } else {
+            rtrn = val(simRef.current!)
+        }
+        setSimWrapper({sim: simRef.current!})
         return rtrn;
     }
+
+    return [simWrapper, updateSim]
+}
+
+
+export default function App(props: Props) {
+    const [sim, updateSim] = useSim()
 
     const [state, setState] = useState<SimState>("unstarted")
     const [speed, setSpeed] = useState(1000) // in ms
@@ -86,12 +107,11 @@ export default function App(props: Props) {
         }
 
         // We've got all the data so we can start the simulator
-        sim.current = new Simulator()
-        updateSim(sim => {
-            sim.setCode(newAssembled.map(([line, instr]) => instr))
-            sim.setRegisters(registers)
-            sim.dataMem.data.storeArray(0n, dataWordSize / 8, mem)
-        })
+        const newSim = new Simulator()
+        newSim.setCode(newAssembled.map(([line, instr]) => instr))
+        newSim.setRegisters(registers)
+        newSim.dataMem.data.storeArray(0n, dataWordSize / 8, mem)
+        updateSim(newSim)
 
         return true
     }
@@ -107,12 +127,13 @@ export default function App(props: Props) {
         if (["paused", "playing"].includes(nextState)) { // don't do anything if we are "done" or if start failed
             try {
                 // step the simulation `count` times. We step multiple at once when playing at full speed to avoid rendering each tick
-                updateSim(sim => {
-                    for (let i = 0; i < count && !sim!.isDone(); i++) {
+                const done = updateSim(sim => {
+                    for (let i = 0; i < count && !sim.isDone(); i++) {
                         sim.tick()
                     }
+                    return sim.isDone()
                 })
-                if (sim.current!.isDone()) nextState = "done"
+                if (done) nextState = "done"
             } catch (e: any) { // this shouldn't happen.
                 nextState = "done"
                 error(`Error in simulation:\n${e.message}`)
@@ -140,7 +161,7 @@ export default function App(props: Props) {
     return (
         <div id="app">
             <div className="container-fluid d-flex flex-row p-2" style={{height: "100vh"}}>
-                <SimDatapath className="flex-grow-1" sim={sim.current!} datapathUrl={datapath} datapathElements={datapathElements} state={state}/>
+                <SimDatapath className="flex-grow-1" sim={sim} datapathUrl={datapath} datapathElements={datapathElements} state={state}/>
                 <div className="d-flex flex-column" style={{height: "100%", maxWidth: "50%"}}>
                     {state == "unstarted" ? (
                         <SimEditor className="flex-grow-overflow"
@@ -153,7 +174,7 @@ export default function App(props: Props) {
                         />
                     ) : (
                         <SimView className="flex-grow-overflow"
-                            sim={sim.current!} code={code} assembled={assembled}
+                            sim={sim} code={code} assembled={assembled}
                         />
                     )}
                     <SimControls
