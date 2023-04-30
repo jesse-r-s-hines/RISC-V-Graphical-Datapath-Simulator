@@ -10,7 +10,7 @@ import { registerNames } from "simulator/constants";
 import { Example } from "./examples";
 import { StyleProps, getStyleProps } from "./reactUtils";
 
-import "./EditorPanels.css"
+import css from "./EditorPanels.m.css"
 
 /** Converts a line number into a hex address. */
 function hexLine(num: number, inc: number, start: bigint = 0n): string {
@@ -28,7 +28,7 @@ export function CodeEditor({code, onCodeChange}: CodeEditorProps) {
 
     return (
         <CodeMirror
-            className="sim-code-editor"
+            className={css.codeEditor}
             style={{height: "100%"}} height="100%"
             placeholder="Write RISC&#8209;V assembly..."
             theme={bbedit}
@@ -55,7 +55,7 @@ export function RegisterEditor({registers, onRegisterChange}: RegisterEditorProp
     const [regRadix, setRegRadix] = useState<Radix>("hex")
     
     return (
-        <div className="sim-register-editor d-flex flex-column h-100">
+        <div className={`${css.registerEditor} d-flex flex-column h-100`}>
             <select id="regFile-radix" className="form-select m-1" value={regRadix}
                     onChange={(e) => setRegRadix(e.target.value as Radix)}
             >
@@ -99,7 +99,7 @@ type DataEditorProps = {
 
 export function DataEditor({data, dataRadix, dataWordSize, ...props}: DataEditorProps) {
     return (
-        <div className="sim-data-editor d-flex flex-column h-100">
+        <div className={`${css.dataEditor} d-flex flex-column h-100`}>
             <div className="d-flex flex-row">
                 <select id="dataMem-radix" className="form-select m-1" value={dataRadix}
                     onChange={(e) => props.onDataRadixChange?.(e.target.value as Radix)}
@@ -145,7 +145,7 @@ type Props = {
 export default function EditorPanels(props: Props) {
     return (
         <Tab.Container defaultActiveKey="code">
-            <div {...getStyleProps(props, {className: "sim-editor-panels d-flex flex-column"})}>
+            <div {...getStyleProps(props, {className: `${css.editorPanels} d-flex flex-column`})}>
                 <Nav variant="tabs" className="flex-row flex-nowrap">
                     <Nav.Item><Nav.Link eventKey="code">Code</Nav.Link></Nav.Item>
                     <Nav.Item><Nav.Link eventKey="registers">Registers</Nav.Link></Nav.Item>

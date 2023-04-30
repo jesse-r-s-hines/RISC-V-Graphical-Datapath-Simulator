@@ -1,0 +1,21 @@
+
+.editorPanels :global(.tab-content) {
+    border-left: 1px solid #dee2e6
+}
+
+.editorPanels :global(.tab-pane) {
+    height: 100%;
+}
+
+.editorPanels :global(.nav-link), .editorPanels :global(.nav-link:hover) {
+    color: inherit; /* Don't color the nav links as links */
+}
+
+.codeEditor {
+}
+
+.registerEditor {
+}
+
+.dataEditor {
+}

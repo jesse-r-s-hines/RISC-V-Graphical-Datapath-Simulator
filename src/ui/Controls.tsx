@@ -5,7 +5,7 @@ import { faPause, faPlay, faStepForward, faStop, faQuestionCircle } from '@forta
 
 import type { SimState } from "./SimulatorUI";
 import HelpModal from "./HelpModal";
-import "./Controls.css"
+import css from "./Controls.m.css"
 
 type Props = {
     state: SimState,
@@ -32,23 +32,23 @@ export default function SimControls({state, ...props}: Props) {
     }
 
     return (
-        <div className="sim-controls card">
+        <div className={`${css.controls} card`}>
             <div className="card-body d-flex flex-row">
                 {(state == "playing") ? (
                     <Button variant="" size="sm" title="Pause Simulation" onClick={props.onPause}>
-                        <Icon icon={faPause} className="sim-icon text-warning"/>
+                        <Icon icon={faPause} className={`${css.icon} text-warning`}/>
                     </Button>
                 ) : (<>
                     <Button variant="" size="sm" title="Run Simulation" disabled={state == "done"} onClick={props.onPlay}>
-                        <Icon icon={faPlay} className="sim-icon text-success"/>
+                        <Icon icon={faPlay} className={`${css.icon} text-success`}/>
                     </Button>
                     <Button variant="" size="sm" title="Step Simulation" disabled={state == "done"} onClick={props.onStep}>
-                        <Icon icon={faStepForward} className="sim-icon text-success"/>
+                        <Icon icon={faStepForward} className={`${css.icon} text-success`}/>
                     </Button>
                 </>)}
                 {(state != "unstarted") ? (
                     <Button variant="" size="sm" title="Reset Simulation" onClick={props.onReset}>
-                        <Icon icon={faStop} className="sim-icon text-danger"/>
+                        <Icon icon={faStop} className={`${css.icon} text-danger`}/>
                     </Button>
                 ) : ""}
                 <div className="flex-grow-1"> {/* Spacer, even if the slider is hidden */}
@@ -60,7 +60,7 @@ export default function SimControls({state, ...props}: Props) {
                 </div>
   
                 <Button variant="" size="sm" title="Help / About" onClick={() => setShowHelp(true)}>
-                    <Icon icon={faQuestionCircle} className="sim-icon text-info"/>
+                    <Icon icon={faQuestionCircle} className={`${css.icon} text-info`}/>
                 </Button>
             </div>
             <HelpModal show={showHelp} onHide={() => setShowHelp(false)}/>

@@ -1,0 +1,15 @@
+.viewPanels :global(.tab-content) {
+    border-left: 1px solid #dee2e6
+}
+
+.viewPanels :global(.tab-pane) {
+    height: 100%;
+}
+
+.viewPanels :global(.nav-link), .viewPanels :global(.nav-link:hover) {
+    color: inherit; /* Don't color the nav links as links */
+}
+
+.viewPanels .currentInstruction {
+    background-color: yellow
+}

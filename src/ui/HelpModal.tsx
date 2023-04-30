@@ -1,6 +1,6 @@
 import React, {} from "react"
 import Modal from 'react-bootstrap/Modal';
-import "./HelpModal.css"
+import css from "./HelpModal.m.css"
 
 type Props = {
     show?: boolean
@@ -12,7 +12,7 @@ export default function HelpModal({
     show = false, ...props
 }: Props) {
     return (
-        <Modal show={show} onHide={props.onHide} size="lg" className="sim-help-modal">
+        <Modal show={show} onHide={props.onHide} size="lg" className={css.helpModal}>
             <Modal.Header closeButton>
                 <Modal.Title>Help / About</Modal.Title>
             </Modal.Header>

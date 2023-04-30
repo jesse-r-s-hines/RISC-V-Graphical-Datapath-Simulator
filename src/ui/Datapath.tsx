@@ -14,7 +14,7 @@ import { StyleProps, getStyleProps } from "./reactUtils";
 import { DataPathElem } from "./datapath";
 import type { SimState } from "./SimulatorUI";
 
-import "./Datapath.css"
+import css from "./Datapath.m.css"
 
 type Props = {
     sim: Simulator,
@@ -200,6 +200,6 @@ export default function Datapath({sim, ...props}: Props) {
     }, [datapathSrc, props.datapathElements, props.state, sim])
 
     return (
-        <div ref={divRef} {...getStyleProps(props, {className: "sim-datapath"})}></div>
+        <div ref={divRef} {...getStyleProps(props, {className: css.datapath})}></div>
    )
 }
