@@ -12,9 +12,9 @@ import { registerNames } from "simulator/constants";
 import { Example } from "./examples";
 import { StyleProps, getStyleProps } from "./reactUtils";
 import { DataPathElem } from "./datapath";
-import type { SimState } from "./SimComponent";
+import type { SimState } from "./SimulatorUI";
 
-import "./SimDatapath.css"
+import "./Datapath.css"
 
 type Props = {
     sim: Simulator,
@@ -181,7 +181,7 @@ function updateDatapath(svg: SVGElement, sim: Simulator, datapathElements: Recor
 }
 
 
-export default function SimDatapath({sim, ...props}: Props) {
+export default function Datapath({sim, ...props}: Props) {
     const divRef = useRef<HTMLDivElement>(null)
     const [datapathSrc, setDatapathSrc] = useState<string>()
     

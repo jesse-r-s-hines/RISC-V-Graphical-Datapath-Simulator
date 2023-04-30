@@ -7,7 +7,7 @@ import { Simulator } from "simulator/simulator";
 import { registerNames } from "simulator/constants";
 import { StyleProps, getStyleProps } from "./reactUtils";
 
-import "./SimView.css"
+import "./ViewPanels.css"
 
 type Props = {
     sim: Simulator,
@@ -15,7 +15,7 @@ type Props = {
     assembled: [number, bigint][],
 } & StyleProps
 
-export default function SimView({sim, ...props}: Props) {
+export default function ViewPanels({sim, ...props}: Props) {
     const [memRadix, setMemRadix] = useState<Radix>("hex")
     const [memWordSize, setDataMemWordSize] = useState<number>(32)
     const [regRadix, setRegRadix] = useState<Radix>("hex")
@@ -29,13 +29,13 @@ export default function SimView({sim, ...props}: Props) {
 
     const instrMemTable = useRef<HTMLTableElement>(null)
     useEffect(() => {
-        instrMemTable.current?.querySelector(".current-instruction")?.scrollIntoView({behavior: "smooth", block: "nearest"})
+        instrMemTable.current?.querySelector(".sim-current-instruction")?.scrollIntoView({behavior: "smooth", block: "nearest"})
     }, [sim.pc.data])
 
 
     return (
         <Tab.Container activeKey={tab} onSelect={(k) => setTab(k ?? "code")}>
-            <div {...getStyleProps(props, {className: "sim-view d-flex flex-column"})}>
+            <div {...getStyleProps(props, {className: "sim-view-panels d-flex flex-column"})}>
                 <Nav variant="tabs" className="flex-row flex-nowrap">
                     <Nav.Item><Nav.Link eventKey="code">Code</Nav.Link></Nav.Item>
                     <Nav.Item><Nav.Link eventKey="registers">Registers</Nav.Link></Nav.Item>
@@ -50,7 +50,7 @@ export default function SimView({sim, ...props}: Props) {
                                 </thead>
                                 <tbody>
                                     {listing.map(({addr, instr, line}) => (
-                                        <tr key={`${addr}`} className={classNames({"current-instruction": addr === sim.pc.data})}>
+                                        <tr key={`${addr}`} className={classNames({"sim-current-instruction": addr === sim.pc.data})}>
                                             <td>{intToStr(addr, "hex")}</td><td>{intToStr(instr, "hex")}</td><td>{line}</td>
                                         </tr>
                                     ))}

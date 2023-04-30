@@ -3,9 +3,9 @@ import { Button } from "react-bootstrap";
 import { FontAwesomeIcon as Icon } from '@fortawesome/react-fontawesome'
 import { faPause, faPlay, faStepForward, faStop, faQuestionCircle } from '@fortawesome/free-solid-svg-icons'
 
-import type { SimState } from "./SimComponent";
+import type { SimState } from "./SimulatorUI";
 import HelpModal from "./HelpModal";
-import "./SimControls.css"
+import "./Controls.css"
 
 type Props = {
     state: SimState,

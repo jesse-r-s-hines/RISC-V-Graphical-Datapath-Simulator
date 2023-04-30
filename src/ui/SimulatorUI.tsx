@@ -5,10 +5,10 @@ import { examples, Example } from "./examples";
 import { Radix, parseInt } from "utils/radix";
 import { Simulator } from "simulator/simulator";
 import { assembleKeepLineInfo } from "assembler/assembler"
-import SimEditor from "./SimEditor";
-import SimView from "./SimView";
-import SimControls from "./SimControls";
-import SimDatapath from "./SimDatapath";
+import SimEditor from "./EditorPanels";
+import SimView from "./ViewPanels";
+import SimControls from "./Controls";
+import SimDatapath from "./Datapath";
 import datapath from "assets/datapath.svg" // import path to the svg
 import { datapathElements } from "./datapath";
 import { useInterval } from "./reactUtils";
@@ -52,7 +52,7 @@ function useSim(): [Simulator, <T=void>(val: Simulator|((sim: Simulator) => T)) 
 }
 
 
-export default function SimComponent() {
+export default function SimulatorUI() {
     const [sim, updateSim] = useSim()
 
     const [state, setState] = useState<SimState>("unstarted")

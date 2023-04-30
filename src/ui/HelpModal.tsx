@@ -12,7 +12,7 @@ export default function HelpModal({
     show = false, ...props
 }: Props) {
     return (
-        <Modal show={show} onHide={props.onHide} size="lg" className="help-modal">
+        <Modal show={show} onHide={props.onHide} size="lg" className="sim-help-modal">
             <Modal.Header closeButton>
                 <Modal.Title>Help / About</Modal.Title>
             </Modal.Header>

@@ -10,7 +10,7 @@ import { registerNames } from "simulator/constants";
 import { Example } from "./examples";
 import { StyleProps, getStyleProps } from "./reactUtils";
 
-import "./SimEditor.css"
+import "./EditorPanels.css"
 
 /** Converts a line number into a hex address. */
 function hexLine(num: number, inc: number, start: bigint = 0n): string {
@@ -142,10 +142,10 @@ type Props = {
 } & CodeEditorProps & RegisterEditorProps & DataEditorProps & StyleProps
 
 
-export default function SimEditor(props: Props) {
+export default function EditorPanels(props: Props) {
     return (
         <Tab.Container defaultActiveKey="code">
-            <div {...getStyleProps(props, {className: "sim-editor d-flex flex-column"})}>
+            <div {...getStyleProps(props, {className: "sim-editor-panels d-flex flex-column"})}>
                 <Nav variant="tabs" className="flex-row flex-nowrap">
                     <Nav.Item><Nav.Link eventKey="code">Code</Nav.Link></Nav.Item>
                     <Nav.Item><Nav.Link eventKey="registers">Registers</Nav.Link></Nav.Item>
