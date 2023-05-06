@@ -25,5 +25,8 @@
     fill: blue !important;
 }
 
-/** Styles for wire hover and fixing powered wire markers will be generated dynamically in JS since we can't make CSS
-    base off of width dynamically or make markers inherit the color of their path */
+.datapath :global(.wires:hover .wire), .datapath :global(.wire:hover) {
+    stroke-width: calc(var(--sim-stroke-width) * 1.5) !important /* --sim-stroke-width is set dynamically in JS */
+}
+
+/** Styles powered wire markers will be generated dynamically in JS since we can't make markers inherit the color of their path */

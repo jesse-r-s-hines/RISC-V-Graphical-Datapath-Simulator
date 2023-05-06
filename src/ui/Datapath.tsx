@@ -40,17 +40,6 @@ function camelCase(s: string) {
 function generateDynamicSvgCss(svg: SVGElement) {
     const wires = [...svg.querySelectorAll<SVGSVGElement>(".wire:not(marker *)")]
 
-    const strokeWidths = new Set(wires.map(wire => {
-        const width = getComputedStyle(wire).strokeWidth
-        wire.dataset.strokeWidth = width
-        return width
-    }))
-    const hoverRules = [...strokeWidths].map(width => `
-        .wires:hover .wire[data-stroke-width="${width}"], .wire[data-stroke-width="${width}"]:hover {
-            stroke-width: calc(${width} * 1.5) !important
-        }
-    `)
-
     const markerPos = ["start", "mid", "end"] as const
     const markers = new Set(wires.flatMap(wire => markerPos.map(pos => {
         // marker must be of form "url(#marker-id)" or "url(https://current-address.com/#marker-id)"
@@ -62,7 +51,7 @@ function generateDynamicSvgCss(svg: SVGElement) {
         }
         return ""
     }).filter(marker => marker)))
-    const markerRules = [...markers].flatMap(marker => markerPos.map(pos => `
+    const rules = [...markers].flatMap(marker => markerPos.map(pos => `
         .powered.wire[data-marker-${pos}="${marker}"] {
             marker-${pos}: url("#${marker}-powered") !important
         }
@@ -76,8 +65,6 @@ function generateDynamicSvgCss(svg: SVGElement) {
         copy.classList.add("powered")
         orig.insertAdjacentElement('afterend', copy)
     })
-
-    const rules = [...hoverRules, ...markerRules]
 
     // inject the generated styles into the SVG
     // rules.forEach(rule => style.sheet!.insertRule(rule)) // this works, but doesn't show the CSS in the inspector
@@ -115,6 +102,11 @@ function setupDatapath(svg: SVGElement, datapathElements: Record<string, DataPat
 
         if (config.showSubElemsByValue && !elem.querySelector("[data-show-on-value]"))
             throw Error(`#${id} has showSubElemsByValue defined, but no "[data-show-on-value]" elements`);
+    }
+
+    for (const wire of svg.querySelectorAll<SVGSVGElement>(".wire:not(marker *)")) {
+        // Set a CSS var for original width so we can use in the hover CSS
+        wire.style.setProperty("--sim-stroke-width", getComputedStyle(wire).strokeWidth)
     }
 
     generateDynamicSvgCss(svg)
