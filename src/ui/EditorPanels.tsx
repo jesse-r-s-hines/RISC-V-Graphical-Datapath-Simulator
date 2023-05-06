@@ -1,4 +1,4 @@
-import {useState} from "react"
+import {useEffect, useState} from "react"
 import {Tab, Nav, NavDropdown} from 'react-bootstrap';
 import CodeMirror from '@uiw/react-codemirror';
 import { bbedit } from '@uiw/codemirror-theme-bbedit';
@@ -25,6 +25,7 @@ type CodeEditorProps = {
 
 export function CodeEditor({code, onCodeChange}: CodeEditorProps) {
     const [localCode, setLocalCode] = useState(code)
+    useEffect(() => setLocalCode(code), [code])
 
     return (
         <CodeMirror
@@ -98,6 +99,9 @@ type DataEditorProps = {
 }
 
 export function DataEditor({data, dataRadix, dataWordSize, ...props}: DataEditorProps) {
+    const [localData, setLocalData] = useState(data)
+    useEffect(() => setLocalData(data), [data])
+
     return (
         <div className={`${css.dataEditor} d-flex flex-column h-100`}>
             <div className="d-flex flex-row">
@@ -128,7 +132,8 @@ export function DataEditor({data, dataRadix, dataWordSize, ...props}: DataEditor
                     extensions={[
                         lineNumbers({formatNumber: (l) => hexLine(l, dataWordSize / 8)}),
                     ]}
-                    onChange={(value) => props.onDataChange?.(value)}
+                    onChange={setLocalData}
+                    onBlur={() => props.onDataChange?.(localData)}
                 />
             </div>
         </div>
