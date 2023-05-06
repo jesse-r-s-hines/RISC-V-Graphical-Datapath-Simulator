@@ -1,5 +1,6 @@
 import {useState, useRef} from "react"
 import toast from 'react-hot-toast';
+import { Row, Col, Container } from "react-bootstrap";
 
 import { examples, Example } from "./examples";
 import { Radix, parseInt } from "utils/radix";
@@ -153,33 +154,37 @@ export default function SimulatorUI() {
     useInterval(() => step("play", speed == 0 ? 1000 : 1), (state == "playing") ? speed : null)
 
     return (
-        <div className="container-fluid d-flex flex-row p-2" style={{height: "100vh"}}>
-            <SimDatapath className="flex-grow-1" sim={sim} datapathUrl={datapath} datapathElements={datapathElements} state={state}/>
-            <div className="d-flex flex-column" style={{height: "100%", maxWidth: "50%"}}>
-                {state == "unstarted" ? (
-                    <SimEditor className="flex-grow-overflow"
-                        code={code} onCodeChange={setCode}
-                        data={data} onDataChange={setData}
-                        dataRadix={dataRadix} onDataRadixChange={setDataRadix}
-                        dataWordSize={dataWordSize} onDataWordSizeChange={setDataWordSize}
-                        registers={registers} onRegisterChange={(i, val) => setRegisters({[i]: val})}
-                        examples={examples} onLoadExample={loadExample}
+        <Container fluid className="d-flex flex-row p-2" style={{height: "100vh"}}>
+            <Row className="h-100 w-100">
+                <Col xs={6} xl={8} className="h-100">
+                    <SimDatapath sim={sim} datapathUrl={datapath} datapathElements={datapathElements} state={state}/>
+                </Col>
+                <Col xs={6} xl={4} className="h-100 d-flex flex-column">
+                    {state == "unstarted" ? (
+                        <SimEditor className="flex-grow-overflow"
+                            code={code} onCodeChange={setCode}
+                            data={data} onDataChange={setData}
+                            dataRadix={dataRadix} onDataRadixChange={setDataRadix}
+                            dataWordSize={dataWordSize} onDataWordSizeChange={setDataWordSize}
+                            registers={registers} onRegisterChange={(i, val) => setRegisters({[i]: val})}
+                            examples={examples} onLoadExample={loadExample}
+                        />
+                    ) : (
+                        <SimView className="flex-grow-overflow"
+                            sim={sim} code={code} assembled={assembled}
+                        />
+                    )}
+                    <SimControls
+                        state={state}
+                        speed={speed}
+                        onStep={() => step("step")}
+                        onReset={reset}
+                        onPlay={() => step("play")}
+                        onPause={() => { if (state == 'playing') setState("paused") }}
+                        onSpeedChange={setSpeed}
                     />
-                ) : (
-                    <SimView className="flex-grow-overflow"
-                        sim={sim} code={code} assembled={assembled}
-                    />
-                )}
-                <SimControls
-                    state={state}
-                    speed={speed}
-                    onStep={() => step("step")}
-                    onReset={reset}
-                    onPlay={() => step("play")}
-                    onPause={() => { if (state == 'playing') setState("paused") }}
-                    onSpeedChange={setSpeed}
-                />
-            </div>
-        </div>
+                </Col>
+            </Row>
+        </Container>
    )
 }

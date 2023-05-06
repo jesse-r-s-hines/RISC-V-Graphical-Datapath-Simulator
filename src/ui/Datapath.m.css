@@ -1,3 +1,8 @@
+.datapath {
+    width: 100%;
+    height: 100%;
+}
+
 .datapath svg {
     width: 100%;
     height: 100%;
