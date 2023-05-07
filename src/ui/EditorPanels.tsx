@@ -155,7 +155,7 @@ export default function EditorPanels(props: Props) {
                     <Nav.Item><Nav.Link eventKey="code">Code</Nav.Link></Nav.Item>
                     <Nav.Item><Nav.Link eventKey="registers">Registers</Nav.Link></Nav.Item>
                     <Nav.Item><Nav.Link eventKey="memory">Memory</Nav.Link></Nav.Item>
-                    <Nav.Item>
+                    <Nav.Item className="ms-auto">
                         <NavDropdown title="Load Example" className="popper-warning-fix">
                             {props.examples.map(example => (
                                 <NavDropdown.Item key={example.name} title={example.description}
