@@ -4,11 +4,11 @@ import { toTwosComplement } from "utils/bits";
 import { assemble } from "assembler/assembler"
 
 function testCode(code: string, regs: Record<number, bigint> = {}, expected: Record<number, bigint> = {}) {
-    for (const reg in regs) regs[reg] = toTwosComplement(regs[reg])
+    for (const reg in regs) regs[reg] = toTwosComplement(regs[reg], 32)
     const sim = new Simulator(assemble(code), regs)
     sim.run()
     for (const reg in expected) {
-        expect(sim.regFile.registers[reg], `${code}\n\nregister x${reg}`).to.equal(toTwosComplement(expected[reg]))
+        expect(sim.regFile.registers[reg], `${code}\n\nregister x${reg}`).to.equal(toTwosComplement(expected[reg], 32))
     }
 }
 

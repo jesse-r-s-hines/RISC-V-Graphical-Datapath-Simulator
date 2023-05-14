@@ -1,4 +1,4 @@
-import { Bit, Bits } from "./bits"
+import { Bit, Bits, bit } from "./bits"
 
 export type BitDontCares = (Bit|null)[]
 export class TruthTable<T> {
@@ -11,7 +11,7 @@ export class TruthTable<T> {
         for (const [rowInput, rowOutput] of table) {
             // Convert to boolean[] with nulls for X
             const rowInputConv = rowInput.map(str =>
-                [...str].reverse().map(c => c == "X" ? null : Number(c)) // convert to BitDontCares
+                [...str].reverse().map(c => c == "X" ? null : bit(c)) // convert to BitDontCares
             )
             this.table.push([rowInputConv, rowOutput])
         }
@@ -24,7 +24,7 @@ export class TruthTable<T> {
     private static matchInput(input: Bits, expected: BitDontCares): boolean {
         if (input.length != expected.length) throw Error("Size mismatch in TruthTable")
         for (let i = 0; i < input.length; i++) {
-            if (expected[i] != null && expected[i] != input[i]) {
+            if (expected[i] != null && expected[i] != input.at(i)) {
                 return false
             }
         }
@@ -40,6 +40,6 @@ export class TruthTable<T> {
                 return rowOutputs
             }
         }
-        throw Error(`No match for inputs [${inputs.map(b => `"${Bits.toString(b)}"`).join(", ")}] in truth table.`)
+        throw Error(`No match for inputs [${inputs.map(b => `"${b}"`).join(", ")}] in truth table.`)
     }
 }

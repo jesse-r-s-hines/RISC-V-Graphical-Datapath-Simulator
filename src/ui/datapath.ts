@@ -173,7 +173,7 @@ export const riscv32DataPath: DataPath = {
             description: "Switches between source register 2 or the immediate value.",
         },
         "#aluInputMux [data-mux-val]": (sim, elem) => ({
-            show: +elem.dataset.muxVal! == Bits.toNumber(sim.aluInputMux.select, false),
+            show: +elem.dataset.muxVal! == sim.aluInputMux.select.toNumber(),
         }),
         "#alu": (sim) => ({
             description: "Does arithmetic on two values.",
@@ -190,7 +190,7 @@ export const riscv32DataPath: DataPath = {
             description: "Switch between PC or source register 1. JALR sets the PC to a register plus an immediate.",
         },
         "#jalrMux [data-mux-val]": (sim, elem) => ({
-            show: +elem.dataset.muxVal! == Bits.toNumber(sim.jalrMux.select, false),
+            show: +elem.dataset.muxVal! == sim.jalrMux.select.toNumber(),
         }),
         "#branchAdder": {
             description: "Calculate the target address of a branch or jump.",
@@ -202,13 +202,13 @@ export const riscv32DataPath: DataPath = {
             description: "Switch between PC + 4 or the branch target.",
         },
         "#pcMux [data-mux-val]": (sim, elem) => ({
-            show: +elem.dataset.muxVal! == Bits.toNumber(sim.pcMux.select, false),
+            show: +elem.dataset.muxVal! == sim.pcMux.select.toNumber(),
         }),
         "#writeSrcMux": {
             description: "Switch between ALU result, memory read data, or PC + 4.",
         },
         "#writeSrcMux [data-mux-val]": (sim, elem) => ({
-            show: +elem.dataset.muxVal! == Bits.toNumber(sim.writeSrcMux.select, false),
+            show: +elem.dataset.muxVal! == sim.writeSrcMux.select.toNumber(),
         }),
     
         // Wires
@@ -227,7 +227,7 @@ export const riscv32DataPath: DataPath = {
         }),
         "#instrMem-instruction-rd": (sim) => ({
             description: "The register to write.",
-            tooltip: `${intToStr(sim.instrSplit.rd, "unsigned")} (${registerNames[Bits.toNumber(sim.instrSplit.rd)]})`,
+            tooltip: `${intToStr(sim.instrSplit.rd, "unsigned")} (${registerNames[sim.instrSplit.rd.toNumber()]})`,
             label: intToStr(sim.instrSplit.rd, "unsigned"),
         }),
         "#instrMem-instruction-funct3": (sim) => ({
@@ -237,12 +237,12 @@ export const riscv32DataPath: DataPath = {
         }),
         "#instrMem-instruction-rs1": (sim) => ({
             description: "The first register to read.",
-            tooltip: `${intToStr(sim.instrSplit.rs1, "unsigned")} (${registerNames[Bits.toNumber(sim.instrSplit.rs1)]})`,
+            tooltip: `${intToStr(sim.instrSplit.rs1, "unsigned")} (${registerNames[sim.instrSplit.rs1.toNumber()]})`,
             label: intToStr(sim.instrSplit.rs1, "unsigned"),
         }),
         "#instrMem-instruction-rs2": (sim) => ({
             description: "The second register to read.",
-            tooltip: `${intToStr(sim.instrSplit.rs2, "unsigned")} (${registerNames[Bits.toNumber(sim.instrSplit.rs2)]})`,
+            tooltip: `${intToStr(sim.instrSplit.rs2, "unsigned")} (${registerNames[sim.instrSplit.rs2.toNumber()]})`,
             label: intToStr(sim.instrSplit.rs2, "unsigned"),
         }),
         "#instrMem-instruction-funct7": (sim) => ({
@@ -268,13 +268,13 @@ export const riscv32DataPath: DataPath = {
         "#control-aluOp": (sim) => ({
             description: "What type of instruction this is. ALU Control will determine the exact ALU operation to use.",
             tooltip: `${intToStr(sim.control.aluOp, "bin")} (${aluOpNames.match(sim.control.aluOp)})`,
-            powered: Bits.toInt(sim.control.aluOp) != 0n,
+            powered: sim.control.aluOp.toInt() != 0n,
             label: intToStr(sim.control.aluOp, "bin"),
         }),
         "#control-writeSrc": (sim) => ({
             description: "What to write to the register file.",
             tooltip: `${intToStr(sim.control.writeSrc, "unsigned")} (write ${writeSrcNames.match(sim.control.writeSrc)} to register)`,
-            powered: Bits.toInt(sim.control.writeSrc) != 0n,
+            powered: sim.control.writeSrc.toInt() != 0n,
             label: intToStr(sim.control.writeSrc, "unsigned"),
         }),
         "#control-memRead": (sim) => ({

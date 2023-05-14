@@ -1,11 +1,12 @@
 import { expect } from 'chai';
 import { assemble, assembleKeepLineInfo } from 'assembler/assembler';
-import { Bits } from 'utils/bits';
+import { Bits, bits } from 'utils/bits';
 
 function assembleExpect(program: string, expected: bigint[]) {
     // convert to string to make it easier to see what bits are off.
-    const result = assemble(program).map((instr) => Bits.toString(Bits(instr, 32)))
-    expect(result, program).to.eql(expected.map(i => Bits.toString(Bits(i, 32))))
+    const actual = assemble(program).map((instr) => bits(instr, 32).toString())
+    const expectedStr = expected.map((instr) => bits(instr, 32).toString())
+    expect(actual, program).to.eql(expectedStr)
 }
 
 // TODO test farther labels and big immediates
@@ -222,8 +223,8 @@ describe("Empty", () => {
 it("Errors", () => {
     expect(() => assemble("jal notALabel")).to.throw('Unknown label "notALabel"');
     expect(() => assemble("addi z0, x1, 2")).to.throw('Unknown register "z0"');
-    expect(() => assemble("addi x1, x1, 0xFFFF")).to.throw("Expected a signed integer that fits in 12 bits");
-    expect(() => assemble("slli x1, x1, 64")).to.throw("Expected a signed integer that fits in 5 bits");
+    expect(() => assemble("addi x1, x1, 0xFFFF")).to.throw("Expected an integer that fits in 12 bits");
+    expect(() => assemble("slli x1, x1, 64")).to.throw("Expected an integer that fits in 5 bits");
     expect(() => assemble("addi, x1, x2, x3")).to.throw("line 1 col 5");
     expect(() => assemble("!!!")).to.throw("line 1 col 1");
     expect(() => assemble("blah x1, x2, x3")).to.throw();

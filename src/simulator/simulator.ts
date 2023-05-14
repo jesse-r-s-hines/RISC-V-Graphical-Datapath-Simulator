@@ -1,4 +1,4 @@
-import { Bits, b } from "utils/bits"
+import { Bits, b, bits } from "utils/bits"
 import * as Comp from "./components"
 
 export class Simulator {
@@ -56,7 +56,7 @@ export class Simulator {
         this.setRegisters(regs) // set custom registers
 
         // These values need to be initialized since they are set until the end of the tick
-        this.pc.in = Bits(Simulator.textStart, 32)
+        this.pc.in = bits(Simulator.textStart, 32)
         this.regFile.regWrite = 0
     }
 
@@ -118,7 +118,7 @@ export class Simulator {
 
         this.aluInputMux.in[0] = this.regFile.readData2
         this.aluInputMux.in[1] = this.immGen.immediate
-        this.aluInputMux.select = [this.control.aluSrc] 
+        this.aluInputMux.select = bits(this.control.aluSrc, 1)
         this.aluInputMux.tick()
 
         this.alu.in1 = this.regFile.readData1
@@ -139,18 +139,17 @@ export class Simulator {
 
         this.pcAdd4.aluControl = b`0010` // add
         this.pcAdd4.in1 = this.pc.out
-        this.pcAdd4.in2 = Bits(4n, 32)
+        this.pcAdd4.in2 = bits(4n, 32)
         this.pcAdd4.tick()
 
         this.jalrMux.in[0] = this.pc.out
         this.jalrMux.in[1] = this.regFile.readData1
-        this.jalrMux.select = [this.control.jalr]
+        this.jalrMux.select = bits(this.control.jalr, 1)
         this.jalrMux.tick()
 
         this.branchAdder.in1 = this.jalrMux.out
         this.branchAdder.in2 = this.immGen.immediate
         this.branchAdder.tick()
-        this.branchAdder.result[0] = 0; // Word align the PC
 
         this.jumpControl.branchZero = this.control.branchZero
         this.jumpControl.branchNotZero = this.control.branchNotZero
@@ -160,7 +159,7 @@ export class Simulator {
 
         this.pcMux.in[0] = this.pcAdd4.result
         this.pcMux.in[1] = this.branchAdder.result
-        this.pcMux.select = [this.jumpControl.takeBranch]
+        this.pcMux.select = bits(this.jumpControl.takeBranch, 1)
         this.pcMux.tick()
 
         this.writeSrcMux.in[0] = this.alu.result

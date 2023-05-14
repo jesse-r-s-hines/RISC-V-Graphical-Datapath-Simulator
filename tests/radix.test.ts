@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { Bits } from 'utils/bits';
+import { bits } from 'utils/bits';
 import { parseInt, intToStr } from 'utils/radix';
 
 
@@ -64,7 +64,7 @@ describe("Radix", () => {
 
     intToStrTests.forEach(([[[num, length], radix], expected]) => {
         it(`intToStr ${[num, length, radix]}`, () => {
-            expect(intToStr(Bits(num, length), radix)).to.equal(expected)
+            expect(intToStr(bits(num, length), radix)).to.equal(expected)
         });
     });
 

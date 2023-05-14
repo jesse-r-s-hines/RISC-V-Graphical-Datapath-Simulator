@@ -1,29 +1,29 @@
 import { Memory } from "./memory"
-import { Bit, Bits, b } from "utils/bits"
+import { Bit, Bits, b, bits, bit } from "utils/bits"
 import { TruthTable } from "utils/truthTable"
 
 export class PC {
     // inputs
-    public in = Bits(0n, 32)
+    public in = bits(0n, 32)
     // output
-    public out = Bits(0n, 32)
+    public out = bits(0n, 32)
     // state
     public data = 0n; // 32 bits
 
     tick() {
-        this.data = Bits.toInt(this.in) // edge-triggered write
-        this.out = Bits(this.data, 32)
+        this.data = this.in.toInt() // edge-triggered write
+        this.out = bits(this.data, 32)
     }
 }
 
 export class Control {
     // inputs
-    public opCode = Bits(0n, 7)
-    public funct3 = Bits(0n, 3)
+    public opCode = bits(0n, 7)
+    public funct3 = bits(0n, 3)
 
     // outputs
     public aluSrc: Bit = 0
-    public writeSrc = Bits(0n, 2)
+    public writeSrc = bits(0n, 2)
     public regWrite: Bit = 0
     public memRead: Bit = 0
     public memWrite: Bit = 0
@@ -31,7 +31,7 @@ export class Control {
     public branchNotZero: Bit = 0
     public jump: Bit = 0
     public jalr: Bit = 0
-    public aluOp = Bits(0n, 3)
+    public aluOp = bits(0n, 3)
 
     private static table = new TruthTable<[Bit, Bits, Bit, Bit, Bit, Bits]>([
         //  opcode   | aluSrc | writeSrc | regWrite | memRead | memWrite |  aluOp |
@@ -44,7 +44,7 @@ export class Control {
         [["0110111"], [  1,      b`00`,       1,         0,        0,      b`100`]], // lui
     ])
 
-    private static branchTable = new TruthTable([
+    private static branchTable = new TruthTable<[Bit, Bit, Bit, Bit]>([
         // opcode  | funct3 | branchZero | branchNotZero | jump | jalr
         [["1100011", "000"], [     1,           0,          0,     0]], // beq
         [["1100011", "1X1"], [     1,           0,          0,     0]], // bge, bgeu
@@ -64,12 +64,12 @@ export class Control {
 export class ALUControl {
     // inputs
     // tells us if op is (000) load/store, (001) branch, (010) R-type, (011) I-type, (100) lui
-    public aluOp = Bits(0n, 3)
-    public funct7 = Bits(0n, 7)
-    public funct3 = Bits(0n, 3)
+    public aluOp = bits(0n, 3)
+    public funct7 = bits(0n, 7)
+    public funct3 = bits(0n, 3)
 
     // output
-    public aluControl = Bits(0n, 4)
+    public aluControl = bits(0n, 4)
 
     private static table = new TruthTable([
         // ALUOp |  funct7  | funct3 |   ALUControl // instr  -> op
@@ -105,12 +105,12 @@ export class ALUControl {
 
 export class ALU {
     // input
-    public in1 = Bits(0n, 32)
-    public in2 = Bits(0n, 32)
-    public aluControl = Bits(0n, 4)
+    public in1 = bits(0n, 32)
+    public in2 = bits(0n, 32)
+    public aluControl = bits(0n, 4)
     
     // output
-    public result = Bits(0n, 32)
+    public result = bits(0n, 32)
     public zero: Bit = 0
 
     // whether to interpret operands as signed or unsigned
@@ -135,26 +135,26 @@ export class ALU {
 
     tick() {
         const signed = ALU.tableSigned.match(this.aluControl)
-        const [a, b] = [Bits.toInt(this.in1, signed), Bits.toInt(this.in2, signed)]
+        const [a, b] = [this.in1.toInt(signed), this.in2.toInt(signed)]
 
         const op = ALU.table.match(this.aluControl)
         const resultInt = op(a, b)
 
-        this.result = Bits(resultInt, 33, signed).slice(0, 32) // give room for overflow, then discard extra.
-        this.zero = Number(Bits.toInt(this.result) == 0n)
+        this.result = bits(resultInt, 33).slice(0, 32) // give room for overflow, then discard extra.
+        this.zero = bit(this.result.toInt() == 0n)
     }
 }
 
 export class ImmGen {
     // inputs
-    public instruction = Bits(0n, 32)
+    public instruction = bits(0n, 32)
 
     // outputs
-    public immediate: Bits = []// 32 bits
+    public immediate: Bits = bits(0n, 32)
 
     private static table = new TruthTable<(i: Bits) => Bits>([
         [["1100011"], (i) => // SB-type -> imm[12|10:5] | rs2 | rs1 | funct3 | imm[4:1|11]
-            Bits.join(i[31], i[7], i.slice(25,31), i.slice(8, 12), 0) // RISC-V uses LSB 0
+            Bits.join([i.at(31)], [i.at(7)], i.slice(25,31), i.slice(8, 12), [0]) // RISC-V uses LSB 0
         ], 
         [["0100011"], (i) => // S-type -> imm[11:5] | rs2 | rs1 | funct3 | imm[4:0]
             Bits.join(i.slice(25, 32), i.slice(7, 12))
@@ -163,7 +163,7 @@ export class ImmGen {
             i.slice(12, 32)
         ],
         [["1101111"], (i) => // UJ-type -> imm[20|10:1|11|19:12] | rd | opcode
-            Bits.join(i[31], i.slice(12, 20), i[20], i.slice(21,31), 0)
+            Bits.join([i.at(31)], i.slice(12, 20), [i.at(20)], i.slice(21,31), [0])
         ],
         [["1100111"], (i) => // I-type (JALR) -> imm[11:0] | rs1 | funct3 | rd
             i.slice(20, 32)
@@ -180,21 +180,21 @@ export class ImmGen {
         const opcode = this.instruction.slice(0, 7)
         const fun = ImmGen.table.match(opcode)
         const imm = fun(this.instruction)
-        this.immediate = Bits.extended(imm, 32, true)
+        this.immediate = imm.extend(32, true)
     }
 }
 
 export class RegisterFile {
     // inputs
-    public readReg1 = Bits(0n, 5)
-    public readReg2 = Bits(0n, 5)
+    public readReg1 = bits(0n, 5)
+    public readReg2 = bits(0n, 5)
     public regWrite: Bit = 0
-    public writeReg = Bits(0n, 5)
-    public writeData = Bits(0n, 32)
+    public writeReg = bits(0n, 5)
+    public writeData = bits(0n, 32)
 
     // outputs
-    public readData1 = Bits(0n, 32)
-    public readData2 = Bits(0n, 32)
+    public readData1 = bits(0n, 32)
+    public readData2 = bits(0n, 32)
 
     // state
     public registers: bigint[]; // stored as unsigned ints
@@ -205,23 +205,23 @@ export class RegisterFile {
 
     tick() {
         if (this.regWrite) { // edge-triggered write
-            const writeReg = Bits.toNumber(this.writeReg)
+            const writeReg = this.writeReg.toNumber()
             if (writeReg != 0) { // Ignore writes to zero reg
-                this.registers[writeReg] = Bits.toInt(this.writeData)
+                this.registers[writeReg] = this.writeData.toInt()
             }
         }
 
-        this.readData1 = Bits(this.registers[Bits.toNumber(this.readReg1)], 32)
-        this.readData2 = Bits(this.registers[Bits.toNumber(this.readReg2)], 32)
+        this.readData1 = bits(this.registers[this.readReg1.toNumber()], 32)
+        this.readData2 = bits(this.registers[this.readReg2.toNumber()], 32)
     }
 }
 
 export class InstructionMemory {
     // inputs
-    public address = Bits(0n, 32)
+    public address = bits(0n, 32)
 
     // outputs
-    public instruction = Bits(0n, 32)
+    public instruction = bits(0n, 32)
 
     // state
     public data: Memory;
@@ -231,22 +231,22 @@ export class InstructionMemory {
     }
 
     tick() {
-        this.instruction = Bits(this.data.loadWord(Bits.toInt(this.address)), 32)
+        this.instruction = bits(this.data.loadWord(this.address.toInt()), 32)
     }
 }
 
 /** Splits the instruction into named logical sections. */
 export class InstructionSplitter {
     // inputs
-    public instruction = Bits(0n, 32)
+    public instruction = bits(0n, 32)
 
     // outputs
-    public opCode = Bits(0n, 7)
-    public rd = Bits(0n, 5)
-    public funct3 = Bits(0n, 3)
-    public rs1 = Bits(0n, 5)
-    public rs2 = Bits(0n, 5)
-    public funct7 = Bits(0n, 7)
+    public opCode = bits(0n, 7)
+    public rd = bits(0n, 5)
+    public funct3 = bits(0n, 3)
+    public rs1 = bits(0n, 5)
+    public rs2 = bits(0n, 5)
+    public funct7 = bits(0n, 7)
 
     tick() {
         this.opCode = this.instruction.slice(0, 7)
@@ -267,10 +267,10 @@ export class InstructionSplitter {
  */
 export class MemoryControl {
     // inputs
-    public funct3 = Bits(0n, 3)
+    public funct3 = bits(0n, 3)
 
     // outputs
-    public size = Bits(0n, 2)
+    public size = bits(0n, 2)
     public signed: Bit = 0
 
     private static table = new TruthTable<[Bits, Bit]>([
@@ -291,14 +291,14 @@ export class DataMemory {
     // inputs
     public memRead: Bit = 0
     public memWrite: Bit = 0
-    public address = Bits(0n, 32)
-    public writeData = Bits(0n, 32)
+    public address = bits(0n, 32)
+    public writeData = bits(0n, 32)
 
-    public size = Bits(0n, 2)
+    public size = bits(0n, 2)
     public signed: Bit = 0 // 1 bit (whether to sign extend the output from memory)
 
     // outputs
-    public readData = Bits(0n, 32)
+    public readData = bits(0n, 32)
 
     // state
     public data: Memory;
@@ -316,14 +316,14 @@ export class DataMemory {
         if (this.memRead && this.memWrite) throw Error("Only memRead or memWrite allowed")
         const bytes = DataMemory.table.match(this.size)
  
-        this.readData = Bits(0n, 32) // Not required but will make visualization clearer
+        this.readData = bits(0n, 32) // Not required but will make visualization clearer
         if (this.memRead) {
-            const dataInt = this.data.load(Bits.toInt(this.address), bytes)
-            const dataBits = Bits(dataInt, bytes * 8) // memory returns an unsigned int.
-            this.readData = Bits.extended(dataBits, 32, Boolean(this.signed)) // sign extend to 32 bits if signed
+            const dataInt = this.data.load(this.address.toInt(), bytes)
+            const dataBits = bits(dataInt, bytes * 8) // memory returns an unsigned int.
+            this.readData = dataBits.extend(32, !!this.signed) // sign extend to 32 bits (if signed)
         } else if (this.memWrite) {
             const data = this.writeData.slice(0, bytes * 8)
-            this.data.store(Bits.toInt(this.address), bytes, Bits.toInt(data)) // always store as unsigned
+            this.data.store(this.address.toInt(), bytes, data.toInt()) // always store as unsigned
         }
     }
 }
@@ -339,7 +339,7 @@ export class JumpControl {
     public takeBranch: Bit = 0
 
     tick() {
-        this.takeBranch = +(this.jump || (this.branchZero && this.zero) || (this.branchNotZero && !this.zero))
+        this.takeBranch = bit(this.jump || (this.branchZero && this.zero) || (this.branchNotZero && !this.zero))
     }
 }
 
@@ -350,41 +350,49 @@ export class JumpControl {
  */
 export class BranchAdder {
     // input
-    public in1 = Bits(0n, 32)
-    public in2 = Bits(0n, 32)
+    public in1 = bits(0n, 32)
+    public in2 = bits(0n, 32)
     
     // output
-    public result = Bits(0n, 32)
+    public result = bits(0n, 32)
 
     tick() {
-        const resultInt = Bits.toInt(this.in1, true) + Bits.toInt(this.in2, true)
-        this.result = Bits(resultInt, 33, true).slice(0, 32) // handle overflow. (overflow can occur when non-branch instructions are run)
-        this.result[0] = 0 // Drop lowest bit to word-align to 2-byte instructions
+        const resultInt = this.in1.toInt(true) + this.in2.toInt(true)
+        // handle overflow (which can occur when non-branch instructions are run) and drop lowest bit to word-align to 2-byte instructions
+        this.result = bits(resultInt, 33).slice(0, 32).set(0, 0)
     }
 }
 
 export class And {
     // input
-    public in = Bits(0n, 2)
+    public in
 
     // output
     public out: Bit = 0
 
+    constructor(public readonly length: number) {
+        this.in = bits(0n, length)
+    }
+
     tick() {
-        this.out = +this.in.every(x => x)
+        this.out = bit(~this.in.toInt() == 0n)
     }
 }
 
 
 export class Or {
     // input
-    public in = Bits(0n, 2)
+    public in = bits(0n, 2)
 
     // output
     public out: Bit = 0
 
+    constructor(public readonly length: number) {
+        this.in = bits(0n, length)
+    }
+
     tick() {
-        this.out = +this.in.some(x => x)
+        this.out = bit(this.in.toInt() != 0n)
     }
 }
 
@@ -396,7 +404,7 @@ export class Not {
     public out: Bit = 0
 
     tick() {
-        this.out = +!this.in
+        this.out = bit(!this.in)
     }
 }
 
@@ -409,18 +417,15 @@ export class Mux {
     // outputs
     public out: Bits
 
-    readonly choices;
-    readonly bits;
-
-    constructor(choices: number, bits: number) {
-        this.in = Array(choices).fill(undefined).map(() => Bits(0n, bits))
-        this.select = Bits(0n, Math.ceil(Math.log2(choices)))
-        this.out = Bits(0n, bits)
-        this.choices = choices;
-        this.bits = bits;
+    constructor(public readonly choices: number, public readonly length: number) {
+        this.in = Array(choices).fill(undefined).map(() => bits(0n, length))
+        this.select = bits(0n, Math.ceil(Math.log2(choices)))
+        this.out = bits(0n, length)
     }
 
     tick() {
-        this.out = this.in[Bits.toNumber(this.select)]
+        const index = this.select.toNumber()
+        if (index >= this.choices) throw Error(`Mux select ${index} out of range`)
+        this.out = this.in[index]
     }
 }

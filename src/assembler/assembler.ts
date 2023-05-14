@@ -1,5 +1,5 @@
 import { Parser, Grammar } from 'nearley';
-import { Bits } from "utils/bits"
+import { Bits, bits } from "utils/bits"
 import { registers, opcodes } from "simulator/constants";
 import grammar from './assembler.ne';
 
@@ -165,7 +165,7 @@ export function assembleKeepLineInfo(program: string): [number, bigint][] {
         } catch (e: any) {
             throw new AssemblerError(e.message, program, instr.line)
         }
-        machineCode.push([instr.line, Bits.toInt(machineCodeInstr)])
+        machineCode.push([instr.line, machineCodeInstr.toInt()])
     }
 
     return machineCode
@@ -190,28 +190,28 @@ function assembleInstr(instrNum: number, instr: Instr, labels: Record<string, nu
         if (field in temp) {
             if (!(temp[field] in registers))
                 throw Error(`Unknown register "${temp[field]}"`)
-            temp[field] = Bits(registers[temp[field]], 5)
+            temp[field] = bits(registers[temp[field]], 5)
         }
     }
 
     const [opcode, funct3, funct7] = opcodes[instr.op]
     if (instr.type == "R") {
-        return Bits.join(funct7, temp.rs2, temp.rs1, funct3, temp.rd, opcode)
+        return Bits.join(funct7!, temp.rs2, temp.rs1, funct3!, temp.rd, opcode)
     } else if (instr.type == "I") {
-        return Bits.join(Bits(temp.imm, 12, true), temp.rs1, funct3, temp.rd, opcode)
+        return Bits.join(bits(temp.imm, 12), temp.rs1, funct3!, temp.rd, opcode)
     } else if (instr.type == "IS") {
-        return Bits.join(funct7, Bits(temp.imm, 5, true), temp.rs1, funct3, temp.rd, opcode)
+        return Bits.join(funct7!, bits(temp.imm, 5), temp.rs1, funct3!, temp.rd, opcode)
     } else if (instr.type == "S") {
-        const imm = Bits(temp.imm, 12, true)
-        return Bits.join(imm.slice(5, 12), temp.rs2, temp.rs1, funct3, imm.slice(0, 5), opcode)
+        const imm = bits(temp.imm, 12)
+        return Bits.join(imm.slice(5, 12), temp.rs2, temp.rs1, funct3!, imm.slice(0, 5), opcode)
     } else if (instr.type == "SB") {
-        const imm = Bits(temp.imm, 13, true)
-        return Bits.join(imm[12], imm.slice(5, 11), temp.rs2, temp.rs1, funct3, imm.slice(1, 5), imm[11], opcode)
+        const imm = bits(temp.imm, 13)
+        return Bits.join([imm.at(12)], imm.slice(5, 11), temp.rs2, temp.rs1, funct3!, imm.slice(1, 5), [imm.at(11)], opcode)
     } else if (instr.type == "U") {
-        return Bits.join(Bits(temp.imm, 20, true), temp.rd, opcode)
+        return Bits.join(bits(temp.imm, 20), temp.rd, opcode)
     } else if (instr.type == "UJ") {
-        const imm = Bits(temp.imm, 21, true)
-        return Bits.join(imm[20], imm.slice(1, 11), imm[11], imm.slice(12, 20), temp.rd, opcode)
+        const imm = bits(temp.imm, 21)
+        return Bits.join([imm.at(20)], imm.slice(1, 11), [imm.at(11)], imm.slice(12, 20), temp.rd, opcode)
     } else {
         throw Error("Unknown instruction type")
     }
