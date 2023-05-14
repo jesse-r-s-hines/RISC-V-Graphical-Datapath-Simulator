@@ -40,13 +40,13 @@ export class Simulator {
         this.alu = new Comp.ALU()
     
         this.pcAdd4 = new Comp.ALU()
-        this.jalrMux = new Comp.Mux(2)
+        this.jalrMux = new Comp.Mux(2, 32)
         this.branchAdder = new Comp.BranchAdder()
         this.jumpControl = new Comp.JumpControl()
         
-        this.pcMux = new Comp.Mux(2)
-        this.aluInputMux = new Comp.Mux(2)
-        this.writeSrcMux = new Comp.Mux(3)
+        this.pcMux = new Comp.Mux(2, 32)
+        this.aluInputMux = new Comp.Mux(2, 32)
+        this.writeSrcMux = new Comp.Mux(3, 32)
 
         this.pc.data = Simulator.textStart
         this.setRegisters({2: 0xBFFFFFF0n, 3: 0x10008000n}) // sp and gp

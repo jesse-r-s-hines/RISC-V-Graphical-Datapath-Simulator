@@ -4,9 +4,9 @@ import { TruthTable } from "utils/truthTable"
 
 export class PC {
     // inputs
-    public in: Bits = [] // 32 bits
+    public in = Bits(0n, 32)
     // output
-    public out: Bits = []; // 32 bits
+    public out = Bits(0n, 32)
     // state
     public data = 0n; // 32 bits
 
@@ -18,20 +18,20 @@ export class PC {
 
 export class Control {
     // inputs
-    public opCode: Bits = [] // 7 bits
-    public funct3: Bits = [] // 3 bits
+    public opCode = Bits(0n, 7)
+    public funct3 = Bits(0n, 3)
 
     // outputs
     public aluSrc: Bit = 0
-    public writeSrc: Bits = [] // 2 bits
+    public writeSrc = Bits(0n, 2)
     public regWrite: Bit = 0
     public memRead: Bit = 0
     public memWrite: Bit = 0
     public branchZero: Bit = 0
     public branchNotZero: Bit = 0
-    public jump: Bit =  0
-    public jalr: Bit =  0
-    public aluOp: Bits = [] // 3 bits
+    public jump: Bit = 0
+    public jalr: Bit = 0
+    public aluOp = Bits(0n, 3)
 
     private static table = new TruthTable<[Bit, Bits, Bit, Bit, Bit, Bits]>([
         //  opcode   | aluSrc | writeSrc | regWrite | memRead | memWrite |  aluOp |
@@ -64,12 +64,12 @@ export class Control {
 export class ALUControl {
     // inputs
     // tells us if op is (000) load/store, (001) branch, (010) R-type, (011) I-type, (100) lui
-    public aluOp: Bits = [] // 3 bits
-    public funct7: Bits = [] // 7 bits
-    public funct3: Bits = [] // 3 bits
+    public aluOp = Bits(0n, 3)
+    public funct7 = Bits(0n, 7)
+    public funct3 = Bits(0n, 3)
 
     // output
-    public aluControl: Bits = [] // 4 bits
+    public aluControl = Bits(0n, 4)
 
     private static table = new TruthTable([
         // ALUOp |  funct7  | funct3 |   ALUControl // instr  -> op
@@ -105,12 +105,12 @@ export class ALUControl {
 
 export class ALU {
     // input
-    public in1: Bits = [] // 32 bits
-    public in2: Bits = [] // 32 bits
-    public aluControl: Bits = [] // 4 bits
+    public in1 = Bits(0n, 32)
+    public in2 = Bits(0n, 32)
+    public aluControl = Bits(0n, 4)
     
     // output
-    public result: Bits = [] // 32 bits
+    public result = Bits(0n, 32)
     public zero: Bit = 0
 
     // whether to interpret operands as signed or unsigned
@@ -147,7 +147,7 @@ export class ALU {
 
 export class ImmGen {
     // inputs
-    public instruction: Bits = [] // 32 bits
+    public instruction = Bits(0n, 32)
 
     // outputs
     public immediate: Bits = []// 32 bits
@@ -186,15 +186,15 @@ export class ImmGen {
 
 export class RegisterFile {
     // inputs
-    public readReg1: Bits = [] // 5 bits
-    public readReg2: Bits = [] // 5 bits
+    public readReg1 = Bits(0n, 5)
+    public readReg2 = Bits(0n, 5)
     public regWrite: Bit = 0
-    public writeReg: Bits = [] // 5 bits
-    public writeData: Bits = [] // 32 bits
+    public writeReg = Bits(0n, 5)
+    public writeData = Bits(0n, 32)
 
     // outputs
-    public readData1: Bits = [] // 32 bits
-    public readData2: Bits = [] // 32 bits
+    public readData1 = Bits(0n, 32)
+    public readData2 = Bits(0n, 32)
 
     // state
     public registers: bigint[]; // stored as unsigned ints
@@ -218,10 +218,10 @@ export class RegisterFile {
 
 export class InstructionMemory {
     // inputs
-    public address: Bits = [] // 32 bits
+    public address = Bits(0n, 32)
 
     // outputs
-    public instruction: Bits = [] // 32 bits
+    public instruction = Bits(0n, 32)
 
     // state
     public data: Memory;
@@ -238,15 +238,15 @@ export class InstructionMemory {
 /** Splits the instruction into named logical sections. */
 export class InstructionSplitter {
     // inputs
-    public instruction: Bits = [] // 32 bits
+    public instruction = Bits(0n, 32)
 
     // outputs
-    public opCode: Bits = [] // 7 bits
-    public rd: Bits = [] // 5 bits
-    public funct3: Bits = [] // 3 bits
-    public rs1: Bits = [] // 5 bits
-    public rs2: Bits = [] // 5 bits
-    public funct7: Bits = [] // 7 bits
+    public opCode = Bits(0n, 7)
+    public rd = Bits(0n, 5)
+    public funct3 = Bits(0n, 3)
+    public rs1 = Bits(0n, 5)
+    public rs2 = Bits(0n, 5)
+    public funct7 = Bits(0n, 7)
 
     tick() {
         this.opCode = this.instruction.slice(0, 7)
@@ -267,10 +267,10 @@ export class InstructionSplitter {
  */
 export class MemoryControl {
     // inputs
-    public funct3: Bits = [] // 3 bits
+    public funct3 = Bits(0n, 3)
 
     // outputs
-    public size: Bits = [] // 2 bits
+    public size = Bits(0n, 2)
     public signed: Bit = 0
 
     private static table = new TruthTable<[Bits, Bit]>([
@@ -291,14 +291,14 @@ export class DataMemory {
     // inputs
     public memRead: Bit = 0
     public memWrite: Bit = 0
-    public address: Bits = [] // 32 bits
-    public writeData: Bits = [] // 32 bits
+    public address = Bits(0n, 32)
+    public writeData = Bits(0n, 32)
 
-    public size: Bits = [] // 2 bits (byte/half-word/word)
+    public size = Bits(0n, 2)
     public signed: Bit = 0 // 1 bit (whether to sign extend the output from memory)
 
     // outputs
-    public readData: Bits = [] // 32 bits
+    public readData = Bits(0n, 32)
 
     // state
     public data: Memory;
@@ -350,11 +350,11 @@ export class JumpControl {
  */
 export class BranchAdder {
     // input
-    public in1: Bits = [] // 32 bits
-    public in2: Bits = [] // 32 bits
+    public in1 = Bits(0n, 32)
+    public in2 = Bits(0n, 32)
     
     // output
-    public result: Bits = [] // 32 bits
+    public result = Bits(0n, 32)
 
     tick() {
         const resultInt = Bits.toInt(this.in1, true) + Bits.toInt(this.in2, true)
@@ -365,7 +365,7 @@ export class BranchAdder {
 
 export class And {
     // input
-    public in: Bit[] = []
+    public in = Bits(0n, 2)
 
     // output
     public out: Bit = 0
@@ -378,7 +378,7 @@ export class And {
 
 export class Or {
     // input
-    public in: Bit[] = []
+    public in = Bits(0n, 2)
 
     // output
     public out: Bit = 0
@@ -403,16 +403,21 @@ export class Not {
 /** Select between inputs */
 export class Mux {
     // inputs
-    public in: Bits[] = []
-    public select: Bit[] = []
+    public in: Bits[]
+    public select: Bits
 
     // outputs
-    public out: Bits = []
+    public out: Bits
 
-    readonly size;
+    readonly choices;
+    readonly bits;
 
-    constructor(size: number) {
-        this.size = size
+    constructor(choices: number, bits: number) {
+        this.in = Array(choices).fill(undefined).map(() => Bits(0n, bits))
+        this.select = Bits(0n, Math.ceil(Math.log2(choices)))
+        this.out = Bits(0n, bits)
+        this.choices = choices;
+        this.bits = bits;
     }
 
     tick() {
