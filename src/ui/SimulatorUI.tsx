@@ -102,9 +102,7 @@ export default function SimulatorUI() {
         }
 
         // We've got all the data so we can start the simulator
-        const newSim = new Simulator()
-        newSim.setCode(newAssembled.map(([line, instr]) => instr))
-        newSim.setRegisters(registers)
+        const newSim = new Simulator(newAssembled.map(([line, instr]) => instr), registers)
         newSim.dataMem.data.storeArray(0n, dataWordSize / 8, mem)
         updateSim(newSim)
 
