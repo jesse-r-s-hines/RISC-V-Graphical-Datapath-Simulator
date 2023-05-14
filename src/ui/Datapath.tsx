@@ -1,9 +1,10 @@
 import {useEffect, useState, useRef} from "react"
 import tippy, { followCursor, Instance as Tippy } from 'tippy.js';
+import classNames from "classnames";
 
 import { Simulator } from "simulator/simulator";
 import { StyleProps, getStyleProps } from "./reactUtils";
-import { DataPathElem } from "./datapath";
+import type  { DataPath } from "./datapath";
 import type { SimState } from "./SimulatorUI";
 
 import css from "./Datapath.m.css"
@@ -11,10 +12,7 @@ import css from "./Datapath.m.css"
 type Props = {
     sim: Simulator,
     state: SimState,
-    /** url to the datapath svg */
-    datapathUrl: string,
-    /** Map CSS selectors to how to render the components */
-    datapathElements: Record<string, DataPathElem>,
+    datapath: DataPath,
 } & StyleProps
 
 function camelCase(s: string) {
@@ -36,6 +34,8 @@ function camelCase(s: string) {
  * then I'd have to worry about reverting state back to default. I might consider changing to that, but I think
  * making the CSS is simpler and faster. Its also easier to switch to static CSS if SVG2 or the `attr()` CSS
  * function ever get supported.
+ * 
+ * // TODO: Refactor this
  */
 function generateDynamicSvgCss(svg: SVGElement) {
     const wires = [...svg.querySelectorAll<SVGSVGElement>(".wire:not(marker *)")]
@@ -74,36 +74,7 @@ function generateDynamicSvgCss(svg: SVGElement) {
     svg.prepend(style)
 }
 
-function setupDatapath(svg: SVGElement, datapathElements: Record<string, DataPathElem>) {
-    for (const [id, config] of Object.entries(datapathElements)) {
-        const elem = svg.querySelector(`#${id}`)
-
-        // Verify the SVG contains the things we expect
-        if (!elem) throw Error(`${id} doesn't exist`);
-        if (config.powered && !elem.classList.contains("wire") && !elem.querySelector(".wire"))
-            throw Error(`#${id} has powered defined, but no ".wire" elements`);
-
-        if (config.description || config.tooltip) {
-            tippy(elem, {
-                followCursor: true, // or "initial" keep it where you entered
-                allowHTML: true,
-                maxWidth: "20em",
-                plugins: [followCursor],
-            });
-        }
-
-        // if (config.onclick) {
-            // let onclick = config.onclick // rescope to capture current value and let typescript know is defined.
-            // elem.on("click", (event) => onclick(this)) // TODO
-        // }
-
-        if (config.label && !elem.querySelector("text.value-label"))
-            throw Error(`#${id} has label defined, but no ".value-label" elements`);
-
-        if (config.showSubElemsByValue && !elem.querySelector("[data-show-on-value]"))
-            throw Error(`#${id} has showSubElemsByValue defined, but no "[data-show-on-value]" elements`);
-    }
-
+function setupDatapath(svg: SVGElement) {
     for (const wire of svg.querySelectorAll<SVGSVGElement>(".wire:not(marker *)")) {
         // Set a CSS var for original width so we can use in the hover CSS
         wire.style.setProperty("--sim-stroke-width", getComputedStyle(wire).strokeWidth)
@@ -112,76 +83,107 @@ function setupDatapath(svg: SVGElement, datapathElements: Record<string, DataPat
     generateDynamicSvgCss(svg)
 }
 
-function updateDatapath(svg: SVGElement, sim: Simulator, datapathElements: Record<string, DataPathElem>, state: SimState) {
+function updateDatapath(svg: SVGElement, sim: Simulator, state: SimState, datapath: DataPath) {
     const running = (state == "playing" || state == "paused")
 
-    for (const [id, config] of Object.entries(datapathElements)) {
-        const elem = svg.querySelector(`#${id}`)!
-       
-        if (config.description || config.tooltip) {
-            const tooltip = (elem as any)._tippy as Tippy
-            const value = running && config.tooltip ? config.tooltip(sim) : undefined
-            const description = (!running || !config.hideDescriptionWhenRunning) ? config.description : undefined
-            const content = [description, value].filter(s => s).join("<hr/>")
-            tooltip.setContent(content)
+    for (const [selector, configOrFunc] of Object.entries(datapath.elements)) {
+        const svgElems = svg.querySelectorAll<SVGElement>(selector)
+        if (svgElems.length <= 0) throw Error(`No elements matching "${selector}"`);
 
-            if (content) {
+        for (const svgElem of svgElems) {
+            const config = configOrFunc instanceof Function ? configOrFunc(sim, svgElem) : configOrFunc
+
+
+            let tooltip = (svgElem as any)._tippy as Tippy|undefined
+            const tooltipContent = [config.description, running ? config.tooltip : undefined].filter(s => s).join("<hr/>")
+            if (tooltipContent) {
+                if (!tooltip) {
+                    tooltip = tippy(svgElem, {
+                        followCursor: true, // or "initial" keep it where you entered
+                        allowHTML: true,
+                        maxWidth: "20em",
+                        plugins: [followCursor],
+                    });
+                }
+                tooltip.setContent(tooltipContent)
                 tooltip.enable()
             } else {
-                tooltip.hide(); // disable will lock the tooltip open if it was open
-                tooltip.disable()
+                tooltip?.hide();
+                tooltip?.disable()
             }
-        }
 
-        const wires = [...(elem.matches(".wire") ? [elem] : []), ...elem.querySelectorAll('.wire')]
-        if (running && config.powered && config.powered(sim)) {
-            // add powered to elem if its a wire, and any wires under elem
-            for (const wire of wires) wire.classList.add("powered")
-        } else {
-            for (const wire of wires) wire.classList.remove("powered")
-        }
 
-        if (config.label) {
-            const content = running ? config.label(sim) : "" // set labels empty if not running
-            for (const text of elem.querySelectorAll(".value-label")) {
-                // use first tspan if there is one, else place directly in text element.
-                const labelElem = text.querySelector("tspan") ?? text
-                labelElem.textContent = content
-            }
-        }
+            // if (config.showOnClick) {
+            //     elem.on("click", (event) => onclick(this)) // TODO
+            // }
 
-        if (config.showSubElemsByValue) {
-            elem.querySelectorAll<SVGSVGElement>("[data-show-on-value]").forEach(elem => {
-                elem.style.display = "none"
-            })
+
+            // All other changes will only run while sim is running. We'll reset the SVG html content when we reset the sim
             if (running) {
-                const val = config.showSubElemsByValue(sim)
-                elem.querySelectorAll<SVGSVGElement>(`[data-show-on-value="${val}"]`).forEach(elem => {
-                    elem.style.removeProperty("display") // TODO reset to previous value
-                })
+                const labelContent = config.label ?? ""
+                const textElems = svgElem.querySelectorAll<SVGTextElement>("text.value-label")
+                if (config.label && textElems.length <= 0)
+                    throw Error(`${selector} has label defined, but no ".value-label" elements`)
+                for (const text of textElems) {
+                    // use first tspan if there is one, else place directly in text element.
+                    (text.querySelector("tspan") ?? text).textContent = labelContent
+                }
+    
+    
+                if (config.powered !== undefined && !svgElem.classList.contains("wire") && !svgElem.querySelector(".wire"))
+                    throw Error(`${selector} has powered defined, but no ".wire" elements`);
+                // TODO: Make the css handle the nesting instead
+                const wires = [...(svgElem.matches(".wire") ? [svgElem] : []), ...svgElem.querySelectorAll('.wire')]
+                if (config.powered === true) {
+                    // add powered to elem if its a wire, and any wires under elem
+                    for (const wire of wires) wire.classList.add("powered")
+                } else {
+                    for (const wire of wires) wire.classList.remove("powered")
+                }
+    
+    
+                const style = {...config.style, ...(config.show !== undefined ? {display: config.show ? 'inline' : 'none'} : {})};
+                for (const [key, value] of Object.entries(style)) {
+                    svgElem.style.setProperty(key, `${value}`)
+                }
+    
+    
+                if (svgElem.dataset.simOrigClassName === undefined)
+                    svgElem.dataset.simOrigClassName = svgElem.getAttribute('class') ?? ""
+                svgElem.setAttribute('class', classNames(svgElem.dataset.simOrigClassName, config.className))
+    
+    
+                for (const [key, value] of Object.entries(config.attrs ?? {})) {
+                    svgElem.setAttribute(key, `${value}`)
+                }
             }
         }
     }
 }
 
 
-export default function Datapath({sim, ...props}: Props) {
+export default function Datapath({sim, state, datapath, ...props}: Props) {
     const divRef = useRef<HTMLDivElement>(null)
-    const [datapathSrc, setDatapathSrc] = useState<string>()
+    const [loadedSVG, setLoadedSVG] = useState<{url: string, src: string}>()
     
     useEffect(() => {
-        fetch(props.datapathUrl).then(r => r.text()).then(src => setDatapathSrc(src))
-        // TODO: Cleanup
-    }, [props.datapathUrl])
+        const abortController = new AbortController();
 
-    useEffect(() => {
-        if (datapathSrc) {
-            divRef.current!.innerHTML = datapathSrc
-            const svg = divRef.current!.querySelector("svg")!
-            setupDatapath(svg, props.datapathElements)
-            updateDatapath(svg, sim, props.datapathElements, props.state)
+        if (loadedSVG?.url != datapath.svgURL) {
+            fetch(datapath.svgURL, { signal: abortController.signal }).then(r => r.text()).then(src => {
+                divRef.current!.innerHTML = src
+                setLoadedSVG({url: datapath.svgURL, src: src})
+                setupDatapath(divRef.current!.querySelector("svg")!)
+                // setState wil trigger rerender, which will call updateDatapath
+            }).catch(e => {
+                if (e.name != "AbortError") { throw e } // silence aborts
+            })
+        } else {
+            updateDatapath(divRef.current!.querySelector("svg")!, sim, state, datapath)
         }
-    }, [datapathSrc, props.datapathElements, props.state, sim])
+
+        return () => { abortController.abort() }
+    }, [loadedSVG, datapath, sim, state])
 
     return (
         <div ref={divRef} {...getStyleProps(props, {className: css.datapath})}></div>

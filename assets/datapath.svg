@@ -1069,19 +1069,19 @@ text.value-label, text.value-label tspan {
          d="M 298.95253,142.61825 307.598,159.017"
          id="path1597-36"
          sodipodi:nodetypes="cc"
-         data-show-on-value="2" />
+         data-mux-val="2" />
       <path
          class="wire"
          d="M 298.98507,175.77092 307.598,159.017"
          id="path1597-3-6-0"
          sodipodi:nodetypes="cc"
-         data-show-on-value="0" />
+         data-mux-val="0" />
       <path
          class="label"
          d="M 298.90787,159.07369 307.598,159.017"
          id="path1597-36-7"
          sodipodi:nodetypes="cc"
-         data-show-on-value="1" />
+         data-mux-val="1" />
     </g>
     <g
        id="aluInputMux">
@@ -1132,13 +1132,13 @@ text.value-label, text.value-label tspan {
          d="m 196.19935,160.63867 8.59586,7.13388"
          id="path1597"
          sodipodi:nodetypes="cc"
-         data-show-on-value="0" />
+         data-mux-val="0" />
       <path
          class="wire"
          d="m 196.16311,176.797 8.6321,-9.02445"
          id="path1597-3-6"
          sodipodi:nodetypes="cc"
-         data-show-on-value="1" />
+         data-mux-val="1" />
     </g>
     <g
        id="pcMux">
@@ -1189,13 +1189,13 @@ text.value-label, text.value-label tspan {
          d="M 268.94698,19.57831 277.565,30.7631"
          id="path1597-3"
          sodipodi:nodetypes="cc"
-         data-show-on-value="0" />
+         data-mux-val="0" />
       <path
          class="wire"
          d="M 268.92382,43.417577 277.565,30.7631"
          id="path1597-3-6-56"
          sodipodi:nodetypes="cc"
-         data-show-on-value="1" />
+         data-mux-val="1" />
     </g>
     <g
        id="instrMem-instruction-funct3"
@@ -1521,13 +1521,13 @@ text.value-label, text.value-label tspan {
          d="m 192.61406,26.367025 8.41375,8.014614"
          id="path1597-7"
          sodipodi:nodetypes="cc"
-         data-show-on-value="0" />
+         data-mux-val="0" />
       <path
          class="wire"
          d="m 192.61777,42.236845 8.41004,-7.855206"
          id="path1597-3-6-5"
          sodipodi:nodetypes="cc"
-         data-show-on-value="1" />
+         data-mux-val="1" />
     </g>
     <g
        id="control-jalr"

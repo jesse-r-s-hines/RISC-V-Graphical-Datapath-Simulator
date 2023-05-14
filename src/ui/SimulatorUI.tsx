@@ -9,8 +9,7 @@ import SimEditor from "./EditorPanels";
 import SimView from "./ViewPanels";
 import SimControls from "./Controls";
 import SimDatapath from "./Datapath";
-import datapath from "assets/datapath.svg" // import path to the svg
-import { datapathElements } from "./datapath";
+import { riscv32DataPath } from "./datapath";
 import { useInterval } from "./reactUtils";
 import css from "./SimulatorUI.m.css"
 
@@ -33,7 +32,10 @@ export type SimState = "unstarted"|"playing"|"paused"|"done"
  */
 function useSim(): [Simulator, <T=void>(val: Simulator|((sim: Simulator) => T)) => T] {
     const simRef = useRef<Simulator>()
-    if (!simRef.current) simRef.current = new Simulator()
+    if (!simRef.current) {
+        simRef.current = new Simulator()
+        simRef.current.tick() // tick once to initialize the sim so its valid for datapath (we'll recreate the sim we actually start it)
+    }
 
     const [simWrapper, setSimWrapper] = useState(new Proxy(simRef.current!, {})) // Dummy proxy to change identity
 
@@ -154,8 +156,7 @@ export default function SimulatorUI() {
     return (
         <div className={`${css.simUI} container-fluid p-2`}>
             <SimDatapath className={css.datapath}
-                sim={sim} state={state}
-                datapathUrl={datapath} datapathElements={datapathElements}
+                sim={sim} state={state} datapath={riscv32DataPath}
             />
             <div className={css.panel}>
                 {state == "unstarted" ? (

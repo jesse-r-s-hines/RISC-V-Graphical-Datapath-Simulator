@@ -27,7 +27,8 @@ export class Simulator {
     public aluInputMux: Comp.Mux
     public writeSrcMux: Comp.Mux
 
-    constructor(code: bigint[] = [], regs: Record<number, bigint> = {}) {
+    /** Construct the simulator. Default code is a no-op */
+    constructor(code: bigint[] = [0x00000013n], regs: Record<number, bigint> = {}) {
         this.pc = new Comp.PC()
         this.instrMem = new Comp.InstructionMemory()
         this.instrSplit = new Comp.InstructionSplitter()

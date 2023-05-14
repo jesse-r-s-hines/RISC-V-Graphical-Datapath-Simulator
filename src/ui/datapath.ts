@@ -1,48 +1,87 @@
 import { Simulator } from "simulator/simulator"
 import { registerNames } from "simulator/constants"
+import datapathSVG from "assets/datapath.svg"
+import CSS from "csstype"
 
 import { Bits } from "utils/bits"
 import { TruthTable } from "utils/truthTable"
 import { intToStr } from "utils/radix"
 
 /**
- * # SVG
+ * This object contains the information needed to render the datapath svg.
  * 
- * The datapath is rendered on an SVG file. Each wire and component of the simulator is mapped to an ID
- * in the SVG. The SVG also uses classes and data attributes on elements so that we can render the current
- * state of the simulation.
+ * We start with a plain SVG file made with inkscape. Then we use this object to update properties of the elements each
+ * tick to show the simulation state. Each wire and component of the simulator is mapped to an CSS selector.
  * 
- * ## Classes
+ * ## Special classes within the SVG
+ * Most of the styling and CSS should be done on the SVG file itself via inkscape. However we have a few special classes
+ * 
  * - wire 
- *   Can go on a path. Used for emphasizing the hovered wire and coloring powered wires.
+ *   Can go on a path. Used for emphasizing the hovered wire.
  * - wires 
- *   Can go on a group containing wire paths. When a wire-group is hovered all wire paths in it will be emphasized. 
- *   Lets you make labels emphasize their associated wire, or to treat multiple paths as one wire.
+ *   Can go on a group containing multiple wire paths. When a wire-group is hovered all wire paths in it will be
+ *   emphasized. Lets you make labels emphasize their associated wire, or to treat multiple paths as one wire.
  * - value-label 
  *   Indicates a text box which we will show the current value of a wire.
  * - powered 
- *   This class is added in JS. Indicates a wire that is high.
- * 
- * ## Data attributes
- * - data-show-on-value -- Used in muxes to make a wire showing which input is being used. 
+ *   This class is added in JS based on the `powered` prop. Indicates a wire that is high.
  */
+export interface DataPath {
+    /** Name of the datapath */
+    name: string,
+    /** URL to the SVG of the datapath. */
+    svgURL: string,
 
-/** 
- * Describe an element in the datapath and how to render it.
- */
-export interface DataPathElem {
-    description?: string, // a description shown in the tooltip.
-    hideDescriptionWhenRunning?: boolean // if the description is redundant when the value is being shown.
-    label?: (sim: Simulator) => string, // the current value to display in a textbox
-    tooltip?: (sim: Simulator) => string, // the current value with explanation shown in the tooltip.
-    powered?: (sim: Simulator) => boolean, // return true if a wire is "powered" (powered wires will colored)
-    // onclick?: (visSim: any) => void, // call when an element is clicked
-    // return a value, and will show matching elements under this element that marked with value in `data-show-on-value`
-    showSubElemsByValue?: (sim: Simulator) => string,
+    /**
+     * Maps CSS selectors to `DataPathElement`s or functions that return `DataPathElement` that tell it how to render the
+     * element this tick.
+     * 
+     * The functions will be called and applied to each element matching the selector. The functions will be passed on
+     * object containing `{sim: Simulator, elem: SVGElement}`.
+     */
+    elements: Record<string, DataPathElementFunc|DataPathElement>,
 }
 
+export type DataPathElementFunc = (sim: Simulator, elem: SVGElement) => DataPathElement
 
+export interface DataPathElement {
+    /** a description shown in the tooltip. Shown even when not running. */
+    description?: string,
 
+    /** The current value to display in a textbox in the `.value-label` text box under this element */
+    label?: string,
+
+    /**
+     * Current value to show in the tooltip this tick.
+     * If `description` is also defined, this will be shown below the description
+     */
+    tooltip?: string,
+
+    /** return true if a wire is "powered" (powered wires will colored) */
+    powered?: boolean,
+
+    /** Hide/show the element. Shortcut for `{style: {display: none}}` */
+    show?: boolean,
+
+    /** Show the specified view detail tab when clicking on this element */
+    showOnClick?: "code"|"registers"|"memory",
+
+    /** Classes to add to the element */
+    className?: string,
+
+    /**
+     * Styles to add to the element using a react-like style object.
+     * Should return an object with the same keys each tick so that you always override the previous tick's changes.
+     */
+    style?: CSS.Properties,
+
+    /**
+     * Arbitrary html attributes to set on the element.
+     * Should return an object with the same keys each tick so that you always override the previous tick's changes.
+     */
+    attrs?: Record<string, string>,
+
+}
 
 /** Returns html showing num as hex, signed, and unsigned */
 export function intToAll(num: bigint|Bits, bits = 32): string {
@@ -105,222 +144,222 @@ const writeSrcNames = new TruthTable([
 ])
 
 
-
-/** All the elements in the datapath and how to render them, tooltips, etc. */
-export const datapathElements: Record<string, DataPathElem> = {
-    // Components
-    "pc": {
-        description: "The program counter stores the address of the current instruction.",
-        tooltip: (sim) => `Current Instruction: ${intToStr(sim.pc.data, "hex")}`,
-    },
-    "instrMem": {
-        description: "Stores the program.",
-        // onclick: (visSim) => $("#instrMem-tab").tab("show") // TODO
-    },
-    "control": {
-        description: "Tells the rest of the processor what to do.",
-    },
-    "regFile": {
-        description: "Stores the 32 registers.",
-        // onclick: (visSim) => $("#regFile-tab").tab("show") // TODO
-    },
-    "immGen": {
-        description: "Extracts the sign-extended immediate from the instruction.",
-    },
-    "aluControl": {
-        description: "Tells the ALU which operation to preform.",
-    },
-    "aluInputMux": {
-        description: "Switches between source register 2 or the immediate value.",
-        showSubElemsByValue: (sim) => intToStr(sim.aluInputMux.select, "unsigned"),
-    },
-    "alu": {
-        description: "Does arithmetic on two values.",
-        tooltip: (sim) => aluSummaries.match(sim.alu.aluControl)(sim.alu.in1, sim.alu.in2),
-    },
-    "dataMem": {
-        description: "Stores the data the program is working with.",
-        // onclick: (visSim) => $("#dataMem-tab").tab("show") // TODO
-    },
-    "pcAdd4": {
-        description: "Increment PC to the next instruction.",
-    },
-    "jalrMux": {
-        description: "Switch between PC or source register 1. JALR sets the PC to a register plus an immediate.",
-        showSubElemsByValue: (sim) => intToStr(sim.jalrMux.select, "unsigned"),
-    },
-    "branchAdder": {
-        description: "Calculate the target address of a branch or jump.",
-    },
-    "jumpControl": {
-        description: "Determine whether a branch should be taken or not.",
-    },
-    "pcMux": {
-        description: "Switch between PC + 4 or the branch target.",
-        showSubElemsByValue: (sim) => intToStr(sim.pcMux.select, "unsigned"),
-    },
-    "writeSrcMux": {
-        description: "Switch between ALU result, memory read data, or PC + 4.",
-        showSubElemsByValue: (sim) => intToStr(sim.writeSrcMux.select, "unsigned"),
-    },
-
-    // Wires
-    "pc-out": {
-        tooltip: (sim) => intToStr(sim.pc.out, "hex"),
-        label: (sim) => intToStr(sim.pc.out, "hex"),
-    },
-    "instrMem-instruction": {
-        tooltip: (sim) => intToStr(sim.instrMem.instruction, "hex"),
-        label: (sim) => intToStr(sim.instrMem.instruction, "hex"),
-    },
-    "instrMem-instruction-opcode": {
-        description: "The opcode of the instruction.",
-        tooltip: (sim) => `${intToStr(sim.instrSplit.opCode, "bin")} (${opCodeNames.match(sim.instrSplit.opCode)})`,
-        label: (sim) => intToStr(sim.instrSplit.opCode, "bin"),
-    },
-    "instrMem-instruction-rd": {
-        description: "The register to write.",
-        tooltip: (sim) => `${intToStr(sim.instrSplit.rd, "unsigned")} (${registerNames[Bits.toNumber(sim.instrSplit.rd)]})`,
-        label: (sim) => intToStr(sim.instrSplit.rd, "unsigned"),
-    },
-    "instrMem-instruction-funct3": {
-        description: "More bits to determine the instruction.",
-        tooltip: (sim) => `${intToStr(sim.instrSplit.funct3, "bin")}`, // TODO show what type of instruction?
-        label: (sim) => intToStr(sim.instrSplit.funct3, "bin"),
-    },
-    "instrMem-instruction-rs1": {
-        description: "The first register to read.",
-        tooltip: (sim) => `${intToStr(sim.instrSplit.rs1, "unsigned")} (${registerNames[Bits.toNumber(sim.instrSplit.rs1)]})`,
-        label: (sim) => intToStr(sim.instrSplit.rs1, "unsigned"),
-    },
-    "instrMem-instruction-rs2": {
-        description: "The second register to read.",
-        tooltip: (sim) => `${intToStr(sim.instrSplit.rs2, "unsigned")} (${registerNames[Bits.toNumber(sim.instrSplit.rs2)]})`,
-        label: (sim) => intToStr(sim.instrSplit.rs2, "unsigned"),
-    },
-    "instrMem-instruction-funct7": {
-        description: "More bits to determine the instruction.",
-        tooltip: (sim) => `${intToStr(sim.instrSplit.funct7, "bin")}`,
-        label: (sim) => intToStr(sim.instrSplit.funct7, "bin"),
-    },
-    "control-regWrite": {
-        description: "Whether to write the register file.",
-        hideDescriptionWhenRunning: true,
-        tooltip: (sim) => `${sim.control.regWrite} (${sim.control.regWrite ? "write register file" : "don't write register file"})`,
-        powered: (sim) => sim.control.regWrite != 0,
-    },
-    "control-aluSrc": {
-        description: "Whether to use source register 2 or the immediate.",
-        tooltip: (sim) => `${sim.control.aluSrc} (${sim.control.aluSrc ? "use immediate" : "use register"})`,
-        powered: (sim) => sim.control.aluSrc != 0,
-    },
-    "control-memWrite": {
-        description: "Whether to write memory.",
-        hideDescriptionWhenRunning: true,
-        tooltip: (sim) => `${sim.control.memWrite} (${sim.control.memWrite ? "write memory" : "don't write memory"})`,
-        powered: (sim) => sim.control.memWrite != 0,
-    },
-    "control-aluOp": {
-        description: "What type of instruction this is. ALU Control will determine the exact ALU operation to use.",
-        tooltip: (sim) => `${intToStr(sim.control.aluOp, "bin")} (${aluOpNames.match(sim.control.aluOp)})`,
-        powered: (sim) => Bits.toInt(sim.control.aluOp) != 0n,
-        label: (sim) => intToStr(sim.control.aluOp, "bin"),
-    },
-    "control-writeSrc": {
-        description: "What to write to the register file.",
-        hideDescriptionWhenRunning: true,
-        tooltip: (sim) => `${intToStr(sim.control.writeSrc, "unsigned")} (write ${writeSrcNames.match(sim.control.writeSrc)} to register)`,
-        powered: (sim) => Bits.toInt(sim.control.writeSrc) != 0n,
-        label: (sim) => intToStr(sim.control.writeSrc, "unsigned"),
-    },
-    "control-memRead": {
-        description: "Whether to read from memory.",
-        hideDescriptionWhenRunning: true,
-        tooltip: (sim) => `${sim.control.memRead} (${sim.control.memRead ? "read memory" : "don't read memory"})`,
-        powered: (sim) => sim.control.memRead != 0,
-    },
-    "control-branchZero": {
-        description: "Whether to branch when ALU result is zero.",
-        hideDescriptionWhenRunning: true,
-        tooltip: (sim) => `${sim.control.branchZero} (${sim.control.branchZero ? "branch on zero" : "don't branch on zero"})`,
-        powered: (sim) => sim.control.branchZero != 0,
-    },
-    "control-branchNotZero": {
-        description: "Whether to branch when ALU result is not zero.",
-        hideDescriptionWhenRunning: true,
-        tooltip: (sim) => `${sim.control.branchNotZero} (${sim.control.branchNotZero ? "branch on not zero" : "don't branch on not zero"})`,
-        powered: (sim) => sim.control.branchNotZero != 0,
-    },
-    "control-jump": {
-        description: "Unconditionally jump.",
-        hideDescriptionWhenRunning: true,
-        tooltip: (sim) => `${sim.control.jump} (${sim.control.jump ? "do jump" : "don't jump"})`,
-        powered: (sim) => sim.control.jump != 0,
-    },
-    "control-jalr": {
-        description: "Jump to a register + immediate.",
-        tooltip: (sim) => `${sim.control.jalr} (${sim.control.jalr ? "do jump register" : "don't jump register"})`,
-        powered: (sim) => sim.control.jalr != 0,
-    },
-    "immGen-immediate": {
-        tooltip: (sim) => intToAll(sim.immGen.immediate),
-        label: (sim) => intToStr(sim.immGen.immediate, "signed"),
-    },
-    "regFile-readData1": {
-        tooltip: (sim) => intToAll(sim.regFile.readData1),
-        label: (sim) => intToStr(sim.regFile.readData1, "signed"),
-    },
-    "regFile-readData2": {
-        tooltip: (sim) => intToAll(sim.regFile.readData2),
-        label: (sim) => intToStr(sim.regFile.readData2, "signed"),
-    },
-    "aluControl-aluControl": {
-        description: "What operation for the ALU to preform.",
-        tooltip: (sim) => `${intToStr(sim.aluControl.aluControl, "bin")} (${aluControlNames.match(sim.aluControl.aluControl)})`,
-        label: (sim) => intToStr(sim.aluControl.aluControl, "bin"),
-    },
-    "aluInputMux-out": {
-        tooltip: (sim) => intToAll(sim.aluInputMux.out),
-    },
-    "alu-result": {
-        tooltip: (sim) => intToAll(sim.alu.result),
-        label: (sim) => intToStr(sim.alu.result, "signed"),
-    },
-    "alu-zero": {
-        description: "Whether the ALU result was zero.",
-        hideDescriptionWhenRunning: true,
-        tooltip: (sim) => `${sim.alu.zero} (ALU result was ${sim.alu.zero ? "zero" : "not zero"})`,
-        powered: (sim) => sim.alu.zero != 0,
-    },
-    "literalFour": {
-        tooltip: (sim) => "4",
-    },
-    "pcAdd4-result": {
-        tooltip: (sim) => intToStr(sim.pcAdd4.result, "hex"),
-        label: (sim) => intToStr(sim.pcAdd4.result, "hex"),
-    },
-    "branchAdder-result": {
-        tooltip: (sim) => intToStr(sim.branchAdder.result, "hex"),
-        label: (sim) => intToStr(sim.branchAdder.result, "hex"),
-    },
-    "jumpControl-takeBranch": {
-        description: "Whether to take the branch or not.",
-        hideDescriptionWhenRunning: true,
-        tooltip: (sim) => `${sim.jumpControl.takeBranch} (${sim.jumpControl.takeBranch ? "take branch" : "don't take branch"})`,
-        powered: (sim) => sim.jumpControl.takeBranch != 0,
-    },
-    "dataMem-readData": {
-        tooltip: (sim) => intToAll(sim.dataMem.readData),
-    },
-    "pcMux-out": {
-        tooltip: (sim) => intToStr(sim.pcMux.out, "hex"),
-        label: (sim) => intToStr(sim.pcMux.out, "hex"),
-    },
-    "writeSrcMux-out": {
-        tooltip: (sim) => intToAll(sim.writeSrcMux.out),
-        label: (sim) => intToStr(sim.writeSrcMux.out, "hex"),
-    },
-    "jalrMux-out": {
-        tooltip: (sim) => intToStr(sim.jalrMux.out, "hex"),
-    },
-} 
+export const riscv32DataPath: DataPath = {
+    name: "RISC-V 32-bit",
+    svgURL: datapathSVG,
+    elements: {
+        "#pc": (sim) => ({
+            description: "The program counter stores the address of the current instruction.",
+            tooltip: `Current Instruction: ${intToStr(sim.pc.data, "hex")}`,
+        }),
+        "#instrMem": (sim) => ({
+            description: "Stores the program.",
+            showOnClick: 'code',
+        }),
+        "#control": {
+            description: "Tells the rest of the processor what to do.",
+        },
+        "#regFile": {
+            description: "Stores the 32 registers.",
+            showOnClick: 'registers',
+        },
+        "#immGen": {
+            description: "Extracts the sign-extended immediate from the instruction.",
+        },
+        "#aluControl": {
+            description: "Tells the ALU which operation to preform.",
+        },
+        "#aluInputMux": {
+            description: "Switches between source register 2 or the immediate value.",
+        },
+        "#aluInputMux [data-mux-val]": (sim, elem) => ({
+            show: +elem.dataset.muxVal! == Bits.toNumber(sim.aluInputMux.select, false),
+        }),
+        "#alu": (sim) => ({
+            description: "Does arithmetic on two values.",
+            tooltip: aluSummaries.match(sim.alu.aluControl)(sim.alu.in1, sim.alu.in2),
+        }),
+        "#dataMem": {
+            description: "Stores the data the program is working with.",
+            showOnClick: 'memory',
+        },
+        "#pcAdd4": {
+            description: "Increment PC to the next instruction.",
+        },
+        "#jalrMux": {
+            description: "Switch between PC or source register 1. JALR sets the PC to a register plus an immediate.",
+        },
+        "#jalrMux [data-mux-val]": (sim, elem) => ({
+            show: +elem.dataset.muxVal! == Bits.toNumber(sim.jalrMux.select, false),
+        }),
+        "#branchAdder": {
+            description: "Calculate the target address of a branch or jump.",
+        },
+        "#jumpControl": {
+            description: "Determine whether a branch should be taken or not.",
+        },
+        "#pcMux": {
+            description: "Switch between PC + 4 or the branch target.",
+        },
+        "#pcMux [data-mux-val]": (sim, elem) => ({
+            show: +elem.dataset.muxVal! == Bits.toNumber(sim.pcMux.select, false),
+        }),
+        "#writeSrcMux": {
+            description: "Switch between ALU result, memory read data, or PC + 4.",
+        },
+        "#writeSrcMux [data-mux-val]": (sim, elem) => ({
+            show: +elem.dataset.muxVal! == Bits.toNumber(sim.writeSrcMux.select, false),
+        }),
+    
+        // Wires
+        "#pc-out": (sim) => ({
+            tooltip: intToStr(sim.pc.out, "hex"),
+            label: intToStr(sim.pc.out, "hex"),
+        }),
+        "#instrMem-instruction": (sim) => ({
+            tooltip: intToStr(sim.instrMem.instruction, "hex"),
+            label: intToStr(sim.instrMem.instruction, "hex"),
+        }),
+        "#instrMem-instruction-opcode": (sim) => ({
+            description: "The opcode of the instruction.",
+            tooltip: `${intToStr(sim.instrSplit.opCode, "bin")} (${opCodeNames.match(sim.instrSplit.opCode)})`,
+            label: intToStr(sim.instrSplit.opCode, "bin"),
+        }),
+        "#instrMem-instruction-rd": (sim) => ({
+            description: "The register to write.",
+            tooltip: `${intToStr(sim.instrSplit.rd, "unsigned")} (${registerNames[Bits.toNumber(sim.instrSplit.rd)]})`,
+            label: intToStr(sim.instrSplit.rd, "unsigned"),
+        }),
+        "#instrMem-instruction-funct3": (sim) => ({
+            description: "More bits to determine the instruction.",
+            tooltip: `${intToStr(sim.instrSplit.funct3, "bin")}`, // TODO show what type of instruction?
+            label: intToStr(sim.instrSplit.funct3, "bin"),
+        }),
+        "#instrMem-instruction-rs1": (sim) => ({
+            description: "The first register to read.",
+            tooltip: `${intToStr(sim.instrSplit.rs1, "unsigned")} (${registerNames[Bits.toNumber(sim.instrSplit.rs1)]})`,
+            label: intToStr(sim.instrSplit.rs1, "unsigned"),
+        }),
+        "#instrMem-instruction-rs2": (sim) => ({
+            description: "The second register to read.",
+            tooltip: `${intToStr(sim.instrSplit.rs2, "unsigned")} (${registerNames[Bits.toNumber(sim.instrSplit.rs2)]})`,
+            label: intToStr(sim.instrSplit.rs2, "unsigned"),
+        }),
+        "#instrMem-instruction-funct7": (sim) => ({
+            description: "More bits to determine the instruction.",
+            tooltip: `${intToStr(sim.instrSplit.funct7, "bin")}`,
+            label: intToStr(sim.instrSplit.funct7, "bin"),
+        }),
+        "#control-regWrite": (sim) => ({
+            description: "Whether to write the register file.",
+            tooltip: `${sim.control.regWrite} (${sim.control.regWrite ? "write register file" : "don't write register file"})`,
+            powered: sim.control.regWrite != 0,
+        }),
+        "#control-aluSrc": (sim) => ({
+            description: "Whether to use source register 2 or the immediate.",
+            tooltip: `${sim.control.aluSrc} (${sim.control.aluSrc ? "use immediate" : "use register"})`,
+            powered: sim.control.aluSrc != 0,
+        }),
+        "#control-memWrite": (sim) => ({
+            description: "Whether to write memory.",
+            tooltip: `${sim.control.memWrite} (${sim.control.memWrite ? "write memory" : "don't write memory"})`,
+            powered: sim.control.memWrite != 0,
+        }),
+        "#control-aluOp": (sim) => ({
+            description: "What type of instruction this is. ALU Control will determine the exact ALU operation to use.",
+            tooltip: `${intToStr(sim.control.aluOp, "bin")} (${aluOpNames.match(sim.control.aluOp)})`,
+            powered: Bits.toInt(sim.control.aluOp) != 0n,
+            label: intToStr(sim.control.aluOp, "bin"),
+        }),
+        "#control-writeSrc": (sim) => ({
+            description: "What to write to the register file.",
+            tooltip: `${intToStr(sim.control.writeSrc, "unsigned")} (write ${writeSrcNames.match(sim.control.writeSrc)} to register)`,
+            powered: Bits.toInt(sim.control.writeSrc) != 0n,
+            label: intToStr(sim.control.writeSrc, "unsigned"),
+        }),
+        "#control-memRead": (sim) => ({
+            description: "Whether to read from memory.",
+            tooltip: `${sim.control.memRead} (${sim.control.memRead ? "read memory" : "don't read memory"})`,
+            powered: sim.control.memRead != 0,
+        }),
+        "#control-branchZero": (sim) => ({
+            description: "Whether to branch when ALU result is zero.",
+            tooltip: `${sim.control.branchZero} (${sim.control.branchZero ? "branch on zero" : "don't branch on zero"})`,
+            powered: sim.control.branchZero != 0,
+        }),
+        "#control-branchNotZero": (sim) => ({
+            description: "Whether to branch when ALU result is not zero.",
+            tooltip: `${sim.control.branchNotZero} (${sim.control.branchNotZero ? "branch on not zero" : "don't branch on not zero"})`,
+            powered: sim.control.branchNotZero != 0,
+        }),
+        "#control-jump": (sim) => ({
+            description: "Unconditionally jump.",
+            tooltip: `${sim.control.jump} (${sim.control.jump ? "do jump" : "don't jump"})`,
+            powered: sim.control.jump != 0,
+        }),
+        "#control-jalr": (sim) => ({
+            description: "Jump to a register + immediate.",
+            tooltip: `${sim.control.jalr} (${sim.control.jalr ? "do jump register" : "don't jump register"})`,
+            powered: sim.control.jalr != 0,
+        }),
+        "#immGen-immediate": (sim) => ({
+            tooltip: intToAll(sim.immGen.immediate),
+            label: intToStr(sim.immGen.immediate, "signed"),
+        }),
+        "#regFile-readData1": (sim) => ({
+            tooltip: intToAll(sim.regFile.readData1),
+            label: intToStr(sim.regFile.readData1, "signed"),
+        }),
+        "#regFile-readData2": (sim) => ({
+            tooltip: intToAll(sim.regFile.readData2),
+            label: intToStr(sim.regFile.readData2, "signed"),
+        }),
+        "#aluControl-aluControl": (sim) => ({
+            description: "What operation for the ALU to preform.",
+            tooltip: `${intToStr(sim.aluControl.aluControl, "bin")} (${aluControlNames.match(sim.aluControl.aluControl)})`,
+            label: intToStr(sim.aluControl.aluControl, "bin"),
+        }),
+        "#aluInputMux-out": (sim) => ({
+            tooltip: intToAll(sim.aluInputMux.out),
+        }),
+        "#alu-result": (sim) => ({
+            tooltip: intToAll(sim.alu.result),
+            label: intToStr(sim.alu.result, "signed"),
+        }),
+        "#alu-zero": (sim) => ({
+            description: "Whether the ALU result was zero.",
+            tooltip: `${sim.alu.zero} (ALU result was ${sim.alu.zero ? "zero" : "not zero"})`,
+            powered: sim.alu.zero != 0,
+        }),
+        "#literalFour": (sim) => ({
+            tooltip: "4",
+        }),
+        "#pcAdd4-result": (sim) => ({
+            tooltip: intToStr(sim.pcAdd4.result, "hex"),
+            label: intToStr(sim.pcAdd4.result, "hex"),
+        }),
+        "#branchAdder-result": (sim) => ({
+            tooltip: intToStr(sim.branchAdder.result, "hex"),
+            label: intToStr(sim.branchAdder.result, "hex"),
+        }),
+        "#jumpControl-takeBranch": (sim) => ({
+            description: "Whether to take the branch or not.",
+            tooltip: `${sim.jumpControl.takeBranch} (${sim.jumpControl.takeBranch ? "take branch" : "don't take branch"})`,
+            powered: sim.jumpControl.takeBranch != 0,
+        }),
+        "#dataMem-readData": (sim) => ({
+            tooltip: intToAll(sim.dataMem.readData),
+        }),
+        "#pcMux-out": (sim) => ({
+            tooltip: intToStr(sim.pcMux.out, "hex"),
+            label: intToStr(sim.pcMux.out, "hex"),
+        }),
+        "#writeSrcMux-out": (sim) => ({
+            tooltip: intToAll(sim.writeSrcMux.out),
+            label: intToStr(sim.writeSrcMux.out, "hex"),
+        }),
+        "#jalrMux-out": (sim) => ({
+            tooltip: intToStr(sim.jalrMux.out, "hex"),
+        }),
+    }
+}
