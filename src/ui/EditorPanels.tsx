@@ -5,8 +5,7 @@ import { bbedit } from '@uiw/codemirror-theme-bbedit';
 import { lineNumbers } from "@codemirror/view"
 
 import { riscv as riscvLang } from './riscvLang';
-import { Radix, bits } from "utils/bits"
-import { parseInt } from "utils/radix"
+import { Radix, bits, Bits } from "utils/bits"
 import { registerNames } from "simulator/constants";
 import { Example } from "./examples";
 import { StyleProps, getStyleProps } from "./reactUtils";
@@ -77,7 +76,7 @@ export function RegisterEditor({registers, onRegisterChange}: RegisterEditorProp
                                 <td>
                                     <input type="text" disabled={i == 0}
                                         value={bits(reg, 32).toString(regRadix)}
-                                        onChange={e => onRegisterChange?.(i, parseInt(e.target.value, regRadix, 32))}
+                                        onChange={e => onRegisterChange?.(i, Bits.parse(e.target.value, regRadix, 32).toInt())}
                                     />
                                 </td>
                             </tr>

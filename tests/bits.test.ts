@@ -133,7 +133,7 @@ describe("Bits", () => {
     ]
 
     shouldThrow.forEach((args) => {
-        it(`parseInt throws ${args}`, () => {
+        it(`Bits.parse throws ${args}`, () => {
             expect(() => (Bits.parse as any)(...args)).to.throw()
         });
     });

@@ -1,4 +1,4 @@
-import { Radix } from "utils/radix"
+import { Radix } from "utils/bits"
 
 /**
  * Stores a snapshot of code, register, and memory settings

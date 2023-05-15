@@ -2,7 +2,7 @@ import {useState, useRef} from "react"
 import toast from 'react-hot-toast';
 
 import { examples, Example } from "./examples";
-import { Radix, parseInt } from "utils/radix";
+import { Radix, Bits } from "utils/bits";
 import { Simulator } from "simulator/simulator";
 import { assembleKeepLineInfo } from "assembler/assembler"
 import SimEditor from "./EditorPanels";
@@ -97,7 +97,7 @@ export default function SimulatorUI() {
 
         let mem: bigint[];
         try {
-            mem = data.split("\n").filter(s => s).map(s => parseInt(s, dataRadix, dataWordSize));
+            mem = data.split("\n").filter(s => s).map(s => Bits.parse(s, dataRadix, dataWordSize).toInt());
         } catch (e: any) {
             error(`Couldn't parse data memory:\n${e.message}`)
             return false
