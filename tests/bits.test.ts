@@ -1,6 +1,5 @@
 import { expect } from 'chai';
-import { Bits, Bit, bits, bit, b, fromTwosComplement, toTwosComplement } from 'utils/bits';
-import { TruthTable } from "utils/truthTable"
+import { Bits, bits, bit, b, fromTwosComplement, toTwosComplement, Radix } from 'utils/bits';
 
 describe("Bit", () => {
     const tests = [
@@ -128,13 +127,31 @@ describe("Bits", () => {
         expect(bits("0101").extend(6, true).equals(b`000101`))
         expect(bits("101").extend(5, true).equals(b`11101`))
         expect(bits("101").extend(3, true).equals(b`101`))
-        expect(b`001111101011`.extend(32, true).toString()).to.eql("00000000000000000000001111101011")
+        expect(b`001111101011`.extend(32, true).toString()).to.eql('0b00000000000000000000001111101011')
     })
 
-    it("To String", () => {
-        expect(bits(0n, 3).toString()).to.eql("000")
-        expect(bits('1011').toString()).to.eql("1011")
-    })
+    const toStringTests: [[[bigint, number], Radix], string][] = [
+        [[[0n, 3], 'bin'], "0b000"],
+        [[[0b1011n, 4], 'bin'], "0b1011"],
+        [[[0n, 4], 'hex'],  "0x0"],
+        [[[0n, 8], 'hex'],  "0x00"],
+        [[[5n, 4], 'hex'],  "0x5"],
+        [[[5n, 8], 'hex'],  "0x05"],
+        [[[0n, 4], 'bin'],  "0b0000"],
+        [[[0n, 8], 'bin'],  "0b00000000"],
+        [[[5n, 4], 'bin'],  "0b0101"],
+        [[[5n, 8], 'bin'],  "0b00000101"],
+        [[[0b10101001n, 8], 'bin'],  "0b10101001"],
+        [[[7n, 4], 'signed'],  "7"],
+        [[[15n, 4], 'signed'],  "-1"],
+        [[[15n, 4], 'unsigned'],  "15"],
+    ]
+
+    toStringTests.forEach(([[[num, length], radix], expected]) => {
+        it(`toString ${[num, length, radix]}`, () => {
+            expect(bits(num, length).toString(radix)).to.equal(expected)
+        });
+    });
 
     it("Equal", () => {
         expect(bits(0n, 3).equals(bits(0n, 3))).to.be.true

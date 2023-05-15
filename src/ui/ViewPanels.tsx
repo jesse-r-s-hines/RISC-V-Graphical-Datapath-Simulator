@@ -2,7 +2,7 @@ import {useEffect, useState, useRef} from "react"
 import {Tab, Nav} from 'react-bootstrap';
 import classNames from 'classnames';
 
-import { Radix, intToStr } from "utils/radix"
+import { Radix, bits } from "utils/bits";
 import { Simulator } from "simulator/simulator";
 import { registerNames } from "simulator/constants";
 import { StyleProps, getStyleProps } from "./reactUtils";
@@ -51,7 +51,7 @@ export default function ViewPanels({sim, ...props}: Props) {
                                 <tbody>
                                     {listing.map(({addr, instr, line}) => (
                                         <tr key={`${addr}`} className={classNames({[css.currentInstruction]: addr === sim.pc.data})}>
-                                            <td>{intToStr(addr, "hex")}</td><td>{intToStr(instr, "hex")}</td><td>{line}</td>
+                                            <td>{bits(addr, 32).toString("hex")}</td><td>{bits(instr, 32).toString("hex")}</td><td>{line}</td>
                                         </tr>
                                     ))}
                                 </tbody>
@@ -75,7 +75,7 @@ export default function ViewPanels({sim, ...props}: Props) {
                                     <tbody>
                                         {sim.regFile.registers.map((reg, i) => (
                                             <tr key={i}>
-                                                <td>{`${registerNames[i]} (x${i})`}</td><td>{intToStr(reg, regRadix)}</td>
+                                                <td>{`${registerNames[i]} (x${i})`}</td><td>{bits(reg, 32).toString(regRadix)}</td>
                                             </tr>
                                         ))}
                                     </tbody>
@@ -109,7 +109,7 @@ export default function ViewPanels({sim, ...props}: Props) {
                                     <tbody>
                                         {[...sim.dataMem.data.dump(memWordSize / 8)].map(([addr, val]) =>
                                             (typeof addr == "bigint") ? (
-                                                <tr key={`${addr}`}><td>{intToStr(addr, "hex")}</td><td>{intToStr(val, memRadix, memWordSize)}</td></tr>
+                                                <tr key={`${addr}`}><td>{bits(addr, 32).toString("hex")}</td><td>{bits(val, memWordSize).toString(memRadix)}</td></tr>
                                             ) : (
                                                 <tr key={`${addr}`}><td colSpan={2}>...</td></tr>
                                             )

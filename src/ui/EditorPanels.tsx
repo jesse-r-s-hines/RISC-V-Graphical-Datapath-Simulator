@@ -5,7 +5,8 @@ import { bbedit } from '@uiw/codemirror-theme-bbedit';
 import { lineNumbers } from "@codemirror/view"
 
 import { riscv as riscvLang } from './riscvLang';
-import { Radix, parseInt, intToStr } from "utils/radix"
+import { Radix, bits } from "utils/bits"
+import { parseInt } from "utils/radix"
 import { registerNames } from "simulator/constants";
 import { Example } from "./examples";
 import { StyleProps, getStyleProps } from "./reactUtils";
@@ -14,7 +15,7 @@ import css from "./EditorPanels.m.css"
 
 /** Converts a line number into a hex address. */
 function hexLine(num: number, inc: number, start = 0n): string {
-    return intToStr(start + BigInt((num - 1) * inc), "hex")
+    return bits(start + BigInt((num - 1) * inc), 32).toString("hex")
 }
 
 
@@ -75,7 +76,7 @@ export function RegisterEditor({registers, onRegisterChange}: RegisterEditorProp
                                 <td>{`${registerNames[i]} (x${i})`}</td>
                                 <td>
                                     <input type="text" disabled={i == 0}
-                                        value={intToStr(reg, regRadix)}
+                                        value={bits(reg, 32).toString(regRadix)}
                                         onChange={e => onRegisterChange?.(i, parseInt(e.target.value, regRadix, 32))}
                                     />
                                 </td>

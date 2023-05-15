@@ -8,6 +8,7 @@ export function bit(value: bigint|number|boolean|string): Bit { return Number(va
  * RISC-V instructions and integers are "Least Significant Bit 0" order.
  */
 export type BitOrder = "msb0"|"lsb0"
+export type Radix = "hex" | "bin" | "signed" | "unsigned"
 
 /** A class that represents an immutable bit array */
 export class Bits {
@@ -134,8 +135,20 @@ export class Bits {
         return Bits.create([...extend, ...arr])
     }
 
-    toString(): string {
-        return this.toArray('msb0').join("")
+    /**
+     * Convert bits into a string using the given radix (defaults to bin)
+     * @param radix The radix to use. Defaults to bin
+     */
+    toString(radix: Radix = 'bin'): string {
+        if (radix == "hex") {
+            return "0x" + this.value.toString(16).toUpperCase().padStart(Math.ceil(this.length / 4), "0")
+        } else if (radix == "bin") {
+            return "0b" + this.value.toString(2).padStart(this.length, "0")
+        } else if (radix == "signed") {
+            return fromTwosComplement(this.value, this.length).toString()
+        } else { // (radix == "unsigned")
+            return this.value.toString()
+        }
     }
 
     /**

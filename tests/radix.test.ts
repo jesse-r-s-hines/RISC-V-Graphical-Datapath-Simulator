@@ -1,6 +1,5 @@
 import { expect } from 'chai';
-import { bits } from 'utils/bits';
-import { parseInt, intToStr } from 'utils/radix';
+import { parseInt } from 'utils/radix';
 
 
 describe("Radix", () => {
@@ -45,31 +44,5 @@ describe("Radix", () => {
         it(`parseInt throws ${args}`, () => {
             expect(() => parseInt(...args)).to.throw()
         });
-    });
-
-    const intToStrTests: [[[bigint, number], string], string][] = [
-        [[[0n, 4], 'hex'],  "0x0"],
-        [[[0n, 8], 'hex'],  "0x00"],
-        [[[5n, 4], 'hex'],  "0x5"],
-        [[[5n, 8], 'hex'],  "0x05"],
-        [[[0n, 4], 'bin'],  "0b0000"],
-        [[[0n, 8], 'bin'],  "0b00000000"],
-        [[[5n, 4], 'bin'],  "0b0101"],
-        [[[5n, 8], 'bin'],  "0b00000101"],
-        [[[0b10101001n, 8], 'bin'],  "0b10101001"],
-        [[[7n, 4], 'signed'],  "7"],
-        [[[15n, 4], 'signed'],  "-1"],
-        [[[15n, 4], 'unsigned'],  "15"],
-    ]
-
-    intToStrTests.forEach(([[[num, length], radix], expected]) => {
-        it(`intToStr ${[num, length, radix]}`, () => {
-            expect(intToStr(bits(num, length), radix)).to.equal(expected)
-        });
-    });
-
-    it(`intToStr bigint`, () => {
-        expect(intToStr(15n, 'unsigned', 4)).to.equal("15")
-        expect(intToStr(15n, 'signed', 4)).to.equal("-1")
     });
 })

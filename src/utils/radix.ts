@@ -27,28 +27,3 @@ export function parseInt(str: string, radix: Radix, length: number): bigint {
     }
     return num
 }
-
-/**
- * Outputs a string from an positive bigint or Bits with the radix.
- * TODO: Move into bits.ts
- * @param length the number of bits the output will be. If omitted and you pass a Bits, it will get the size from the
- *               bits, otherwise it will default to 32.
- */
-export function intToStr(num: bigint|Bits, radix: string, length?: number): string {
-    if (num instanceof Bits) {
-        length = length ?? num.length
-        num = num.toInt()
-    } else {
-        length = length ?? 32
-    }
-
-    if (radix == "hex") {
-        return "0x" + num.toString(16).toUpperCase().padStart(Math.ceil(length / 4), "0")
-    } else if (radix == "bin") {
-        return "0b" + num.toString(2).padStart(length, "0")
-    } else if (radix == "signed") {
-        return fromTwosComplement(num, length).toString()
-    } else { // (radix == "unsigned")
-        return num.toString()
-    }
-}

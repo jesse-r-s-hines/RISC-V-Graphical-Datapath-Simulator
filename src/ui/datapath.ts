@@ -3,9 +3,8 @@ import { registerNames } from "simulator/constants"
 import datapathSVG from "assets/datapath.svg"
 import CSS from "csstype"
 
-import { Bits } from "utils/bits"
+import { Bits, Radix, bits } from "utils/bits"
 import { TruthTable } from "utils/truthTable"
-import { intToStr } from "utils/radix"
 
 /**
  * This object contains the information needed to render the datapath svg.
@@ -84,9 +83,9 @@ export interface DataPathElement {
 }
 
 /** Returns html showing num as hex, signed, and unsigned */
-export function intToAll(num: bigint|Bits, bits = 32): string {
-    const radices = [["Hex", "hex"], ["Unsigned", "unsigned"], ["Signed", "signed"]]
-    const lines = radices.map(([l, r]) => `${l}: ${intToStr(num, r, bits)}`)
+export function bitsToAll(b: Bits): string {
+    const radices: [string, Radix][] = [["Hex", "hex"], ["Unsigned", "unsigned"], ["Signed", "signed"]]
+    const lines = radices.map(([l, r]) => `${l}: ${b.toString(r)}`)
     return lines.join("<br/>")
 }
 
@@ -124,17 +123,17 @@ const aluControlNames = new TruthTable([
 ])
 
 const aluSummaries = new TruthTable<(a: Bits, b: Bits) => string>([
-    [["0000"], (a, b) => `${intToStr(a, "hex")} AND ${intToStr(b, "hex")}`],
-    [["0001"], (a, b) => `${intToStr(a, "hex")} OR ${intToStr(b, "hex")}`],
-    [["0010"], (a, b) => `${intToStr(a, "signed")} + ${intToStr(b, "signed")}`],
-    [["0110"], (a, b) => `${intToStr(a, "signed")} - ${intToStr(b, "signed")}`],
-    [["0111"], (a, b) => `${intToStr(a, "signed")} < ${intToStr(b, "signed")}`],
-    [["1111"], (a, b) => `${intToStr(a, "unsigned")} < ${intToStr(b, "unsigned")}`],
-    [["1000"], (a, b) => `${intToStr(a, "hex")} << ${intToStr(b, "unsigned")}`],
-    [["1001"], (a, b) => `${intToStr(a, "hex")} >>> ${intToStr(b, "unsigned")}`],
-    [["1011"], (a, b) => `${intToStr(a, "hex")} >> ${intToStr(b, "unsigned")}`],
-    [["1100"], (a, b) => `${intToStr(a, "hex")} XOR ${intToStr(b, "hex")}`],
-    [["1101"], (a, b) => `LUI ${intToStr(a, "hex")}`],
+    [["0000"], (a, b) => `${a.toString("hex")} AND ${b.toString("hex")}`],
+    [["0001"], (a, b) => `${a.toString("hex")} OR ${b.toString("hex")}`],
+    [["0010"], (a, b) => `${a.toString("signed")} + ${b.toString("signed")}`],
+    [["0110"], (a, b) => `${a.toString("signed")} - ${b.toString("signed")}`],
+    [["0111"], (a, b) => `${a.toString("signed")} < ${b.toString("signed")}`],
+    [["1111"], (a, b) => `${a.toString("unsigned")} < ${b.toString("unsigned")}`],
+    [["1000"], (a, b) => `${a.toString("hex")} << ${b.toString("unsigned")}`],
+    [["1001"], (a, b) => `${a.toString("hex")} >>> ${b.toString("unsigned")}`],
+    [["1011"], (a, b) => `${a.toString("hex")} >> ${b.toString("unsigned")}`],
+    [["1100"], (a, b) => `${a.toString("hex")} XOR ${b.toString("hex")}`],
+    [["1101"], (a, b) => `LUI ${a.toString("hex")}`],
 ])
 
 const writeSrcNames = new TruthTable([
@@ -150,7 +149,7 @@ export const riscv32DataPath: DataPath = {
     elements: {
         "#pc": (sim) => ({
             description: "The program counter stores the address of the current instruction.",
-            tooltip: `Current Instruction: ${intToStr(sim.pc.data, "hex")}`,
+            tooltip: `Current Instruction: ${bits(sim.pc.data, 32).toString("hex")}`,
         }),
         "#instrMem": (sim) => ({
             description: "Stores the program.",
@@ -213,42 +212,42 @@ export const riscv32DataPath: DataPath = {
     
         // Wires
         "#pc-out": (sim) => ({
-            tooltip: intToStr(sim.pc.out, "hex"),
-            label: intToStr(sim.pc.out, "hex"),
+            tooltip: sim.pc.out.toString("hex"),
+            label: sim.pc.out.toString("hex"),
         }),
         "#instrMem-instruction": (sim) => ({
-            tooltip: intToStr(sim.instrMem.instruction, "hex"),
-            label: intToStr(sim.instrMem.instruction, "hex"),
+            tooltip: sim.instrMem.instruction.toString("hex"),
+            label: sim.instrMem.instruction.toString("hex"),
         }),
         "#instrMem-instruction-opcode": (sim) => ({
             description: "The opcode of the instruction.",
-            tooltip: `${intToStr(sim.instrSplit.opCode, "bin")} (${opCodeNames.match(sim.instrSplit.opCode)})`,
-            label: intToStr(sim.instrSplit.opCode, "bin"),
+            tooltip: `${sim.instrSplit.opCode.toString("bin")} (${opCodeNames.match(sim.instrSplit.opCode)})`,
+            label: sim.instrSplit.opCode.toString("bin"),
         }),
         "#instrMem-instruction-rd": (sim) => ({
             description: "The register to write.",
-            tooltip: `${intToStr(sim.instrSplit.rd, "unsigned")} (${registerNames[sim.instrSplit.rd.toNumber()]})`,
-            label: intToStr(sim.instrSplit.rd, "unsigned"),
+            tooltip: `${sim.instrSplit.rd.toString("unsigned")} (${registerNames[sim.instrSplit.rd.toNumber()]})`,
+            label: sim.instrSplit.rd.toString("unsigned"),
         }),
         "#instrMem-instruction-funct3": (sim) => ({
             description: "More bits to determine the instruction.",
-            tooltip: `${intToStr(sim.instrSplit.funct3, "bin")}`, // TODO show what type of instruction?
-            label: intToStr(sim.instrSplit.funct3, "bin"),
+            tooltip: `${sim.instrSplit.funct3.toString("bin")}`, // TODO show what type of instruction?
+            label: sim.instrSplit.funct3.toString("bin"),
         }),
         "#instrMem-instruction-rs1": (sim) => ({
             description: "The first register to read.",
-            tooltip: `${intToStr(sim.instrSplit.rs1, "unsigned")} (${registerNames[sim.instrSplit.rs1.toNumber()]})`,
-            label: intToStr(sim.instrSplit.rs1, "unsigned"),
+            tooltip: `${sim.instrSplit.rs1.toString("unsigned")} (${registerNames[sim.instrSplit.rs1.toNumber()]})`,
+            label: sim.instrSplit.rs1.toString("unsigned"),
         }),
         "#instrMem-instruction-rs2": (sim) => ({
             description: "The second register to read.",
-            tooltip: `${intToStr(sim.instrSplit.rs2, "unsigned")} (${registerNames[sim.instrSplit.rs2.toNumber()]})`,
-            label: intToStr(sim.instrSplit.rs2, "unsigned"),
+            tooltip: `${sim.instrSplit.rs2.toString("unsigned")} (${registerNames[sim.instrSplit.rs2.toNumber()]})`,
+            label: sim.instrSplit.rs2.toString("unsigned"),
         }),
         "#instrMem-instruction-funct7": (sim) => ({
             description: "More bits to determine the instruction.",
-            tooltip: `${intToStr(sim.instrSplit.funct7, "bin")}`,
-            label: intToStr(sim.instrSplit.funct7, "bin"),
+            tooltip: `${sim.instrSplit.funct7.toString("bin")}`,
+            label: sim.instrSplit.funct7.toString("bin"),
         }),
         "#control-regWrite": (sim) => ({
             description: "Whether to write the register file.",
@@ -267,15 +266,15 @@ export const riscv32DataPath: DataPath = {
         }),
         "#control-aluOp": (sim) => ({
             description: "What type of instruction this is. ALU Control will determine the exact ALU operation to use.",
-            tooltip: `${intToStr(sim.control.aluOp, "bin")} (${aluOpNames.match(sim.control.aluOp)})`,
+            tooltip: `${sim.control.aluOp.toString("bin")} (${aluOpNames.match(sim.control.aluOp)})`,
             powered: sim.control.aluOp.toInt() != 0n,
-            label: intToStr(sim.control.aluOp, "bin"),
+            label: sim.control.aluOp.toString("bin"),
         }),
         "#control-writeSrc": (sim) => ({
             description: "What to write to the register file.",
-            tooltip: `${intToStr(sim.control.writeSrc, "unsigned")} (write ${writeSrcNames.match(sim.control.writeSrc)} to register)`,
+            tooltip: `${sim.control.writeSrc.toString("unsigned")} (write ${writeSrcNames.match(sim.control.writeSrc)} to register)`,
             powered: sim.control.writeSrc.toInt() != 0n,
-            label: intToStr(sim.control.writeSrc, "unsigned"),
+            label: sim.control.writeSrc.toString("unsigned"),
         }),
         "#control-memRead": (sim) => ({
             description: "Whether to read from memory.",
@@ -303,28 +302,28 @@ export const riscv32DataPath: DataPath = {
             powered: sim.control.jalr != 0,
         }),
         "#immGen-immediate": (sim) => ({
-            tooltip: intToAll(sim.immGen.immediate),
-            label: intToStr(sim.immGen.immediate, "signed"),
+            tooltip: bitsToAll(sim.immGen.immediate),
+            label: sim.immGen.immediate.toString("signed"),
         }),
         "#regFile-readData1": (sim) => ({
-            tooltip: intToAll(sim.regFile.readData1),
-            label: intToStr(sim.regFile.readData1, "signed"),
+            tooltip: bitsToAll(sim.regFile.readData1),
+            label: sim.regFile.readData1.toString("signed"),
         }),
         "#regFile-readData2": (sim) => ({
-            tooltip: intToAll(sim.regFile.readData2),
-            label: intToStr(sim.regFile.readData2, "signed"),
+            tooltip: bitsToAll(sim.regFile.readData2),
+            label: sim.regFile.readData2.toString("signed"),
         }),
         "#aluControl-aluControl": (sim) => ({
             description: "What operation for the ALU to preform.",
-            tooltip: `${intToStr(sim.aluControl.aluControl, "bin")} (${aluControlNames.match(sim.aluControl.aluControl)})`,
-            label: intToStr(sim.aluControl.aluControl, "bin"),
+            tooltip: `${sim.aluControl.aluControl.toString("bin")} (${aluControlNames.match(sim.aluControl.aluControl)})`,
+            label: sim.aluControl.aluControl.toString("bin"),
         }),
         "#aluInputMux-out": (sim) => ({
-            tooltip: intToAll(sim.aluInputMux.out),
+            tooltip: bitsToAll(sim.aluInputMux.out),
         }),
         "#alu-result": (sim) => ({
-            tooltip: intToAll(sim.alu.result),
-            label: intToStr(sim.alu.result, "signed"),
+            tooltip: bitsToAll(sim.alu.result),
+            label: sim.alu.result.toString("signed"),
         }),
         "#alu-zero": (sim) => ({
             description: "Whether the ALU result was zero.",
@@ -335,12 +334,12 @@ export const riscv32DataPath: DataPath = {
             tooltip: "4",
         }),
         "#pcAdd4-result": (sim) => ({
-            tooltip: intToStr(sim.pcAdd4.result, "hex"),
-            label: intToStr(sim.pcAdd4.result, "hex"),
+            tooltip: sim.pcAdd4.result.toString("hex"),
+            label: sim.pcAdd4.result.toString("hex"),
         }),
         "#branchAdder-result": (sim) => ({
-            tooltip: intToStr(sim.branchAdder.result, "hex"),
-            label: intToStr(sim.branchAdder.result, "hex"),
+            tooltip: sim.branchAdder.result.toString("hex"),
+            label: sim.branchAdder.result.toString("hex"),
         }),
         "#jumpControl-takeBranch": (sim) => ({
             description: "Whether to take the branch or not.",
@@ -348,18 +347,18 @@ export const riscv32DataPath: DataPath = {
             powered: sim.jumpControl.takeBranch != 0,
         }),
         "#dataMem-readData": (sim) => ({
-            tooltip: intToAll(sim.dataMem.readData),
+            tooltip: bitsToAll(sim.dataMem.readData),
         }),
         "#pcMux-out": (sim) => ({
-            tooltip: intToStr(sim.pcMux.out, "hex"),
-            label: intToStr(sim.pcMux.out, "hex"),
+            tooltip: sim.pcMux.out.toString("hex"),
+            label: sim.pcMux.out.toString("hex"),
         }),
         "#writeSrcMux-out": (sim) => ({
-            tooltip: intToAll(sim.writeSrcMux.out),
-            label: intToStr(sim.writeSrcMux.out, "hex"),
+            tooltip: bitsToAll(sim.writeSrcMux.out),
+            label: sim.writeSrcMux.out.toString("hex"),
         }),
         "#jalrMux-out": (sim) => ({
-            tooltip: intToStr(sim.jalrMux.out, "hex"),
+            tooltip: sim.jalrMux.out.toString("hex"),
         }),
     }
 }
