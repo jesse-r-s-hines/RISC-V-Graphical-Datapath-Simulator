@@ -33,6 +33,7 @@ export class Bits {
      * - Make Bits from an string of 0 and 1s. Will ignore _ and spaces in the string (so you can use them as spacers)
      *   The string should be given in MSB 0 order, i.e. most significant bit first.
      *   E.g. `new Bits("1010")` represents 10
+     *   Use Bits.parse to parse more complex strings
      * - Another Bits object
      * - Or a number or bigint. You'll need to explicitly pass the length and whether it's signed or not.
      *   E.g. `new Bits(10, 4)` represents 10
@@ -46,7 +47,7 @@ export class Bits {
             return Bits.fromArray(value)
         } else if (typeof value == "string") {
             if (length != undefined) throw Error("Invalid arguments to Bits.create()");
-            return Bits.fromString(value)
+            return Bits.parse(value, 'bin')
         } else if (typeof value == "bigint" || typeof value == "number") {
             if (length == undefined) throw Error("Invalid arguments to Bits.create()");
             return Bits.fromInt(value, length)
@@ -70,12 +71,6 @@ export class Bits {
         return new Bits(num, arr.length)
     }
 
-    private static fromString(str: string): Bits {
-        str = str.replace(/[ _]/g, "") // ignore " " and "_"
-        if (!str.match(/^[01]+$/)) throw Error(`Invalid bit string "${str}"`)
-        return Bits.fromInt(BigInt(`0b${str}`), str.length)
-    }
-
     private static fromInt(num: number|bigint, length: number, check = true): Bits {
         num = BigInt(num)
         const unsigned = toTwosComplement(num, length)
@@ -89,6 +84,63 @@ export class Bits {
         }
 
         return new Bits(truncated, length)
+    }
+
+    static parse(str: string, radix?: 'bin'|'hex'): Bits;
+    static parse(str: string, radix: Radix, length: number): Bits;
+
+    /**
+     * Parses a string into a Bits with the given radix. Throw exception if fails.
+     * 
+     * Strings with "0x" and "0b" prefixes will be interpreted as hex and binary regardless of radix.
+     * 
+     * Examples:
+     * - parse("1010", 'bin')
+     * - parse("0b1010", 'bin')
+     * - parse("0b1010 1111_0000", 'bin')
+     * - parse("DECAF", 'hex')
+     * - parse("5", 'signed')
+     * - parse("-5", 'unsigned')
+     * 
+     * @param str The string to parse
+     * @param radix The radix to use. Defaults to bin.
+     * @param length The length to interpret the bits as. For 'bin' and 'hex', it will be inferred.
+     */
+    static parse(str: string, radix: Radix = 'bin', length?: number): Bits {
+        str = str.trim()
+
+        // If radix is explicitly specified in the string, override radix
+        if (/^0x/i.test(str)) {
+            str = str.replace(/^0x/i, '')
+            radix = 'hex'
+        } else if (/^0b/i.test(str)) {
+            str = str.replace(/^0b/i, '')
+            radix = 'bin'
+        }
+
+        let num: bigint
+        try {
+            if (radix == "bin") {
+                str = str.replace(/[ _]/g, "") // ignore " " and "_"
+                length = length ?? str.length
+                num = BigInt(`0b${str}`)
+            } else if (radix == "hex") {
+                str = str.replace(/[ _]/g, "")
+                length = length ?? str.length * 4
+                num = BigInt(`0x${str}`)
+            } else if (radix == "signed") {
+                if (!length) throw Error("Length must be specified for signed radix")
+                num =  toTwosComplement(BigInt(str), length!)
+            } else { // (radix == "unsigned")
+                if (!length) throw Error("Length must be specified for unsigned radix")
+                num =  BigInt(str)
+            }
+            if (num < 0n || num >= 2n ** BigInt(length)) throw Error() // just trigger catch.
+        } catch { // Parsing failed
+            throw Error(`"${str}" is invalid. Expected a ${length} bit ${radix} integer.`)
+        }
+
+        return Bits.fromInt(num, length, true)
     }
 
     /**

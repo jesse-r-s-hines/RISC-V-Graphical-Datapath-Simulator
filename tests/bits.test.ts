@@ -37,9 +37,9 @@ describe("Bits", () => {
 
         expect(b`100`.toInt()).to.eql(0b100n)
 
-        expect(() => bits("")).to.throw("Invalid bit string")
-        expect(() => bits("stuff")).to.throw("Invalid bit string")
-        expect(() => bits("012")).to.throw("Invalid bit string")
+        expect(() => bits("")).to.throw()
+        expect(() => bits("stuff")).to.throw()
+        expect(() => bits("012")).to.throw()
     });
 
     it('From int', () => {
@@ -73,6 +73,69 @@ describe("Bits", () => {
         expect(() => bits(15n, 4)).to.not.throw()
         expect(() => bits(16n, 4)).to.throw("invalid")
         expect(() => bits(0.5, 4)).to.throw("not an integer")
+    });
+
+    const parseTests: [[string, Radix, number|undefined], [bigint, number]][] = [
+        [['0x0', 'hex', 4], [0n, 4]],
+        [['0x0', 'hex', undefined], [0n, 4]],
+        [['0x0', 'hex', 8], [0n, 8]],
+        [['0x00', 'hex', undefined], [0n, 8]],
+        [['0x5', 'hex', 4], [5n, 4]],
+        [['0x05', 'hex', 4], [5n, 4]],
+        [['0xF', 'hex', 4], [15n, 4]],
+        [['0x12', 'hex', 8], [0x12n, 8]],
+        [['0x12', 'hex', undefined], [0x12n, 8]],
+        [['0x012', 'hex', undefined], [0x12n, 12]],
+        [['012', 'hex', undefined], [0x12n, 12]],
+        [[' 0x012 ', 'hex', undefined], [0x12n, 12]],
+        [[' 0x0_1 2 ', 'hex', undefined], [0x12n, 12]],
+        [[' 0_1 2 ', 'hex', undefined], [0x12n, 12]],
+
+        [['0b0101', 'bin', 4], [0b0101n, 4]],
+        [['0b0101', 'bin', undefined], [0b0101n, 4]],
+        [['0b10111', 'bin', undefined], [0b10111n, 5]],
+        [['0b10111', 'bin', 6], [0b010111n, 6]],
+        [['0b101', 'bin', 3], [0b101n, 3]],
+        [[' 0b101 ', 'bin', 3], [0b101n, 3]],
+        [[' 0b1 0_1 ', 'bin', 3], [0b101n, 3]],
+        [[' 1 0_1 ', 'bin', 3], [0b101n, 3]],
+
+        [['7', 'signed', 4], [7n, 4]],
+        [['-1', 'signed', 4], [15n, 4]],
+        [['-8', 'signed', 4], [8n, 4]],
+        [['0', 'signed', 4], [0n, 4]],
+        [['7', 'unsigned', 4], [7n, 4]],
+        [['15', 'unsigned', 4], [15n, 4]],
+        [['8', 'signed', 4], [8n, 4]],
+        [['15', 'signed', 4], [15n, 4]],
+
+        [['0x11', 'unsigned', 8], [0x11n, 8]],
+        [['0x11', 'signed', 8], [0x11n, 8]],
+        [['0b11', 'hex', 3], [0b11n, 3]],
+    ]
+
+    parseTests.forEach(([args, [num, len]]) => {
+        it(`parse (${args})`, () => {
+            expect((Bits.parse as any)(...args).toString('bin')).to.equal(bits(num, len).toString('bin'))
+        });
+    });
+
+    const shouldThrow: [string, Radix, number|undefined][] = [
+        ['-0x00', 'hex', 8],
+        ['0x100', 'hex', 8],
+        ['0xZ', 'hex', 4],
+        ['0b10101', 'bin', 4],
+        ['16', 'unsigned', 4],
+        ['-9', 'unsigned', 3],
+        ['-1', 'unsigned', 3],
+        ['16', 'signed', 4],
+        ['0', 'signed', undefined],
+    ]
+
+    shouldThrow.forEach((args) => {
+        it(`parseInt throws ${args}`, () => {
+            expect(() => (Bits.parse as any)(...args)).to.throw()
+        });
     });
 
     it('Large Ints', () => {
