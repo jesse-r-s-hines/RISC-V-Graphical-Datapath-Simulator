@@ -53,7 +53,7 @@ function generateDynamicSvgCss(svg: SVGElement) {
         return ""
     }).filter(marker => marker)))
     const rules = [...markers].flatMap(marker => markerPos.map(pos => `
-        .powered.wire[data-marker-${pos}="${marker}"] {
+        .powered.wire[data-marker-${pos}="${marker}"], .powered .wire[data-marker-${pos}="${marker}"] {
             marker-${pos}: url("#${marker}-powered") !important
         }
     `))
@@ -134,13 +134,11 @@ function updateDatapath(svg: SVGElement, sim: Simulator, state: SimState, datapa
     
                 if (config.powered !== undefined && !svgElem.classList.contains("wire") && !svgElem.querySelector(".wire"))
                     throw Error(`${selector} has powered defined, but no ".wire" elements`);
-                // TODO: Make the css handle the nesting instead
-                const wires = [...(svgElem.matches(".wire") ? [svgElem] : []), ...svgElem.querySelectorAll('.wire')]
                 if (config.powered === true) {
                     // add powered to elem if its a wire, and any wires under elem
-                    for (const wire of wires) wire.classList.add("powered")
+                    svgElem.classList.add("powered")
                 } else {
-                    for (const wire of wires) wire.classList.remove("powered")
+                    svgElem.classList.remove("powered")
                 }
     
     
