@@ -1,7 +1,7 @@
 import {useState} from "react"
 import { Button } from "react-bootstrap";
 import { FontAwesomeIcon as Icon } from '@fortawesome/react-fontawesome'
-import { faPause, faPlay, faStepForward, faStop, faQuestionCircle } from '@fortawesome/free-solid-svg-icons'
+import { faPause, faPlay, faStepForward, faQuestionCircle, faSync } from '@fortawesome/free-solid-svg-icons'
 
 import type { SimState } from "./SimulatorUI";
 import HelpModal from "./HelpModal";
@@ -18,17 +18,26 @@ type Props = {
     onSpeedChange?: (speed: number) => void,
 }
 
-export default function SimControls({state, ...props}: Props) {
+// in steps/second -> ms/step
+const speedTicks = [0.25, 0.5, 1, 2, 4, 8, 16, 32, Infinity].map(d => 1000 / d)
+
+export default function SimControls({state, speed, ...props}: Props) {
     const [showHelp, setShowHelp] = useState(false)
-    const [minTick, maxTick] = [-2, 5]
-    // Speed slider ticks convert to 2**tick steps per second
-    const speedTick = Math.max(minTick, Math.min(Math.round(Math.log2(1000 / props.speed)), maxTick))
-    const onSpeedChange = (tick: number) => {
-        if (tick >= maxTick) {
-            return props.onSpeedChange?.(0)
-        } else {
-            return props.onSpeedChange?.((1 / (2 ** tick)) * 1000)
-        }
+
+    // find closest tick in speedTicks
+    const speedTick = speedTicks.indexOf(speedTicks.reduce((prev, curr) => Math.abs(curr - speed) < Math.abs(prev - speed) ? curr : prev))
+    const onSpeedChange = (tick: number) => props.onSpeedChange?.(speedTicks[tick])
+    const stepsPerSecond = 1000 / speedTicks[speedTick] // snap the speed to a tick mark
+
+    let speedTitle: string;
+    if (stepsPerSecond >= Infinity) {
+        speedTitle = "Simulation Speed: Max"
+    } else if (stepsPerSecond < 1) {
+        speedTitle = `Simulation Speed: ${1 / stepsPerSecond} seconds/step`
+    } else if (stepsPerSecond == 1) {
+        speedTitle = "Simulation Speed: 1 step/second"
+    } else { // stepsPerSecond >= 1
+        speedTitle = `Simulation Speed: ${stepsPerSecond} steps/second`
     }
 
     return (
@@ -48,12 +57,14 @@ export default function SimControls({state, ...props}: Props) {
                 </>)}
                 {(state != "unstarted") ? (
                     <Button variant="" size="sm" title="Reset Simulation" onClick={props.onReset}>
-                        <Icon icon={faStop} className={`${css.icon} text-danger`}/>
+                        <Icon icon={faSync} className={`${css.icon} text-danger`}/>
                     </Button>
                 ) : ""}
                 <div className="flex-grow-1"> {/* Spacer, even if the slider is hidden */}
-                    {(state == "playing") ? ( 
-                        <input type="range" className="form-range" title="Speed" min={minTick} max={maxTick}
+                    {(state != "unstarted") ? ( 
+                        <input type="range" className="form-range"
+                            title={speedTitle}
+                            min={0} max={speedTicks.length - 1}
                             value={speedTick} onChange={e => onSpeedChange(+e.target.value)}
                         />
                     ) : ""}
