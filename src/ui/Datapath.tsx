@@ -21,67 +21,47 @@ function camelCase(s: string) {
 }
 
 /**
- * Create some CSS rules for hover and powered wires so that we can have the hover width and wire markers relative 
- * to what is defined in the SVG.
+ * Setup some initial state for the SVG. This is called once when the SVG is loaded.
  * 
- * If we did this in static CSS we'd have to hardcode the hover width. And we can't fix the powered marker colors in
- * static CSS unless we make inkscape (or SVGO) output marker-start/mid/end as attributes instead of styles somehow
- * so we could use `[marker-end] { marker-end: url(#Arrow-powered) }`. In SVG2, there's a context-fill value that
- * can be used to inherit colors from the line easily, but its not supported yet.
+ * Add a CSS variable for the original stroke width so we can use it in the hover CSS and make hover size based on the
+ * original stroke width.
  * 
- * The purpose of this is to make the SVG more flexible, and allow us to have multiple database SVGs in the future.
+ * Also add a hack to let markers inherit powered color from their path. SVG can't do this by default. In SVG2, there's
+ * a context-fill value that can be used to inherit colors from the line easily, but its not supported yet. So, here we
+ * generate "powered" versions of all markers, and add some CSS variables that we can use to switch between markers.
  * 
- * An alternative, more traditional method would be to make JS events on power/hover that set the inline styles. But
- * then I'd have to worry about reverting state back to default. I might consider changing to that, but I think
- * making the CSS is simpler and faster. Its also easier to switch to static CSS if SVG2 or the `attr()` CSS
- * function ever get supported.
- * 
- * // TODO: Refactor this
+ * Inkscape outputs `marker-start/mid/end` as inline styles so the only way to select them is `getComputedStyle`. If we
+ * made inkscape or SVGO output `marker-start/mid/end` we could use just `[marker-start/mid/end]` in CSS instead of the
+ * CSS variables, but we'd still need to either generate or manually add powered versions of the markers in the SVG
  */
-function generateDynamicSvgCss(svg: SVGElement) {
-    const wires = [...svg.querySelectorAll<SVGSVGElement>(".wire:not(marker *)")]
-
-    const markerPos = ["start", "mid", "end"] as const
-    const markers = new Set(wires.flatMap(wire => markerPos.map(pos => {
-        // marker must be of form "url(#marker-id)" or "url(https://current-address.com/#marker-id)"
-        const marker = getComputedStyle(wire)[`marker-${pos}` as any].trim().match(/url\(\s*"?.*?#(.+?)"?\s*\)/)?.[1]
-
-        if (marker && marker != "none") {
-            wire.dataset[camelCase(`marker-${pos}`)] = marker
-            return marker
-        }
-        return ""
-    }).filter(marker => marker)))
-    const rules = [...markers].flatMap(marker => markerPos.map(pos => `
-        .powered.wire[data-marker-${pos}="${marker}"], .powered .wire[data-marker-${pos}="${marker}"] {
-            marker-${pos}: url("#${marker}-powered") !important
-        }
-    `))
-
-    // Create "powered" versions of markers used on paths so that we can make the markers change color with the wire
-    markers.forEach(markerId => {
-        const orig = svg.querySelector<SVGSVGElement>(`#${markerId}`)!
-        const copy = orig.cloneNode(true) as SVGSVGElement
-        copy.id = `${markerId}-powered`
-        copy.classList.add("powered")
-        orig.insertAdjacentElement('afterend', copy)
-    })
-
-    // inject the generated styles into the SVG
-    // rules.forEach(rule => style.sheet!.insertRule(rule)) // this works, but doesn't show the CSS in the inspector
-    const style = document.createElement("style")
-    style.classList.add("dynamic-styles")
-    style.textContent = rules.join("\n")
-    svg.prepend(style)
-}
-
 function setupDatapath(svg: SVGElement) {
     for (const wire of svg.querySelectorAll<SVGSVGElement>(".wire:not(marker *)")) {
         // Set a CSS var for original width so we can use in the hover CSS
         wire.style.setProperty("--sim-stroke-width", getComputedStyle(wire).strokeWidth)
     }
 
-    generateDynamicSvgCss(svg)
+    const wires = [...svg.querySelectorAll<SVGSVGElement>(".wire:not(marker *)")]
+
+    const markers = new Set<string>()
+    for (const wire of wires) {
+        for (const pos of ["start", "mid", "end"] as const) {
+            // marker must be of form "url(#marker-id)" or "url(https://current-address.com/#marker-id)"
+            const marker = getComputedStyle(wire)[`marker-${pos}` as any].trim().match(/url\(\s*"?.*?#(.+?)"?\s*\)/)?.[1]
+            if (marker && marker != "none") {
+                wire.style.setProperty(`--sim-powered-marker-${pos}`, `url("#${marker}-powered")`)
+                markers.add(marker)
+            }
+        }
+    }
+
+    // Create "powered" versions of markers used on paths so that we can make the markers change color with the wire
+    for (const marker of markers) {
+        const orig = svg.querySelector<SVGSVGElement>(`#${marker}`)!
+        const copy = orig.cloneNode(true) as SVGSVGElement
+        copy.id = `${marker}-powered`
+        copy.classList.add("powered")
+        orig.insertAdjacentElement('afterend', copy)
+    }
 }
 
 function updateDatapath(svg: SVGElement, sim: Simulator, state: SimState, datapath: DataPath) {

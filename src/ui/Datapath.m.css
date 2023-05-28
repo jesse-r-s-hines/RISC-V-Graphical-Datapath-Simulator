@@ -16,8 +16,13 @@
 
 /** Highlight powered wires. */
 .datapath :global(.powered.wire), .datapath :global(.powered .wire)  {
-    stroke: blue !important; /* I'm abusing !important, but it lets us override inline styles and inkscapes's svg will
-                                  usually have lots of inline styles.  */
+    /* I'm abusing !important, but it lets us override inline styles and inkscapes's svg will usually have lots of
+       inline styles. */
+    stroke: blue !important;
+    marker-start: var(--sim-powered-marker-start) !important;
+    marker-mid: var(--sim-powered-marker-mid) !important;
+    marker-end: var(--sim-powered-marker-end) !important;
+
 }
 
 .datapath :global(marker.powered .wire) {
