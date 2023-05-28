@@ -13,7 +13,7 @@ import { riscv32DataPath } from "./datapath";
 import { useInterval } from "./reactUtils";
 import css from "./SimulatorUI.m.css"
 
-/** Display an error message to the user. Newlines will be converted to <br/> */
+/** Display an error message to the user. */
 function error(message: string) {
     console.error(message)
     toast.error(message, {id: "error"})
@@ -34,7 +34,7 @@ function useSim(): [Simulator, <T=void>(val: Simulator|((sim: Simulator) => T)) 
     const simRef = useRef<Simulator>()
     if (!simRef.current) {
         simRef.current = new Simulator()
-        simRef.current.tick() // tick once to initialize the sim so its valid for datapath (we'll recreate the sim we actually start it)
+        simRef.current.tick() // tick once to initialize the sim so its valid for datapath (we'll recreate the sim when we actually start it)
     }
 
     const [simWrapper, setSimWrapper] = useState(new Proxy(simRef.current!, {})) // Dummy proxy to change identity
@@ -128,7 +128,11 @@ export default function SimulatorUI() {
                     }
                     return sim.isDone()
                 })
-                if (done) nextState = "done"
+                if (done) {
+                    nextState = "done"
+                } else {
+                    nextState = (mode == "play" ? 'playing' : 'paused')
+                }
             } catch (e: any) { // this shouldn't happen.
                 nextState = "done"
                 error(`Error in simulation:\n${e.message}`)
