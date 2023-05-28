@@ -6,6 +6,7 @@ import { Radix, bits } from "utils/bits";
 import { Simulator } from "simulator/simulator";
 import { registerNames } from "simulator/constants";
 import { StyleProps, getStyleProps } from "./reactUtils";
+import type { SimTab } from "./SimulatorUI";
 
 import css from "./ViewPanels.m.css"
 
@@ -13,9 +14,10 @@ type Props = {
     sim: Simulator,
     code: string,
     assembled: [number, bigint][],
+    tab: SimTab, onTabChange?: (tab: SimTab) => void,
 } & StyleProps
 
-export default function ViewPanels({sim, ...props}: Props) {
+export default function ViewPanels({sim, tab, ...props}: Props) {
     const [memRadix, setMemRadix] = useState<Radix>("hex")
     const [memWordSize, setDataMemWordSize] = useState<number>(32)
     const [regRadix, setRegRadix] = useState<Radix>("hex")
@@ -25,8 +27,6 @@ export default function ViewPanels({sim, ...props}: Props) {
         {addr: Simulator.textStart + BigInt(i * 4), instr, line: lines[line - 1].trim()}
     ))
 
-    const [tab, setTab] = useState("code")
-
     const instrMemTable = useRef<HTMLTableElement>(null)
     useEffect(() => {
         instrMemTable.current?.querySelector(`.${css.currentInstruction}`)?.scrollIntoView({behavior: "smooth", block: "nearest"})
@@ -34,7 +34,7 @@ export default function ViewPanels({sim, ...props}: Props) {
 
 
     return (
-        <Tab.Container activeKey={tab} onSelect={(k) => setTab(k ?? "code")}>
+        <Tab.Container activeKey={tab} onSelect={(k) => props.onTabChange?.((k ?? "code") as SimTab)}>
             <div {...getStyleProps(props, {className: `${css.viewPanels} d-flex flex-column`})}>
                 <Nav variant="tabs" className="flex-row flex-nowrap">
                     <Nav.Item><Nav.Link eventKey="code">Code</Nav.Link></Nav.Item>

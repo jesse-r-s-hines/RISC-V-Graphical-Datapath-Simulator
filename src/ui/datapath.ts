@@ -42,6 +42,7 @@ export interface DataPath {
 }
 
 export type DataPathElementFunc = (sim: Simulator, elem: SVGElement) => DataPathElement
+export type SimTab = "code"|"registers"|"memory"
 
 export interface DataPathElement {
     /** a description shown in the tooltip. Shown even when not running. */
@@ -63,7 +64,7 @@ export interface DataPathElement {
     show?: boolean,
 
     /** Show the specified view detail tab when clicking on this element */
-    showOnClick?: "code"|"registers"|"memory",
+    showOnClick?: SimTab,
 
     /** Classes to add to the element */
     className?: string,

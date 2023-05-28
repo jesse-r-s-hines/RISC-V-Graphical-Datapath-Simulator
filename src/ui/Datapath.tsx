@@ -4,7 +4,7 @@ import classNames from "classnames";
 
 import { Simulator } from "simulator/simulator";
 import { StyleProps, getStyleProps } from "./reactUtils";
-import type  { DataPath } from "./datapath";
+import type  { DataPath, SimTab } from "./datapath";
 import type { SimState } from "./SimulatorUI";
 
 import css from "./Datapath.m.css"
@@ -13,6 +13,7 @@ type Props = {
     sim: Simulator,
     state: SimState,
     datapath: DataPath,
+    onTabChange?: (tab: SimTab) => void,
 } & StyleProps
 
 function camelCase(s: string) {
@@ -93,7 +94,6 @@ function updateDatapath(svg: SVGElement, sim: Simulator, state: SimState, datapa
         for (const svgElem of svgElems) {
             const config = configOrFunc instanceof Function ? configOrFunc(sim, svgElem) : configOrFunc
 
-
             let tooltip = (svgElem as any)._tippy as Tippy|undefined
             const tooltipContent = [config.description, running ? config.tooltip : undefined].filter(s => s).join("<hr/>")
             if (tooltipContent) {
@@ -113,9 +113,11 @@ function updateDatapath(svg: SVGElement, sim: Simulator, state: SimState, datapa
             }
 
 
-            // if (config.showOnClick) {
-            //     elem.on("click", (event) => onclick(this)) // TODO
-            // }
+            if (config.showOnClick) {
+                svgElem.dataset.simShowOnClick = config.showOnClick;
+            } else {
+                delete svgElem.dataset.simShowOnClick
+            }
 
 
             // All other changes will only run while sim is running. We'll reset the SVG html content when we reset the sim
@@ -185,7 +187,12 @@ export default function Datapath({sim, state, datapath, ...props}: Props) {
         return () => { abortController.abort() }
     }, [loadedSVG, datapath, sim, state])
 
+    const onClick = (e: React.MouseEvent) => {
+        const target = (e.target as SVGElement).closest<SVGElement>("[data-sim-show-on-click]")
+        if (target) props.onTabChange?.(target?.dataset.simShowOnClick as SimTab)
+    }
+
     return (
-        <div ref={divRef} {...getStyleProps(props, {className: css.datapath})}></div>
+        <div ref={divRef} onClick={onClick} {...getStyleProps(props, {className: css.datapath})}></div>
    )
 }

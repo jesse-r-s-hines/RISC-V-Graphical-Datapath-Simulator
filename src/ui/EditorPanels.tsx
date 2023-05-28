@@ -9,6 +9,7 @@ import { Radix, bits, Bits } from "utils/bits"
 import { registerNames } from "simulator/constants";
 import { Example } from "./examples";
 import { StyleProps, getStyleProps } from "./reactUtils";
+import type { SimTab } from "./SimulatorUI";
 
 import css from "./EditorPanels.m.css"
 
@@ -144,12 +145,13 @@ export function DataEditor({data, dataRadix, dataWordSize, ...props}: DataEditor
 type Props = {
     examples: Example[],
     onLoadExample?: (example: Example) => void,
+    tab: SimTab, onTabChange?: (tab: SimTab) => void,
 } & CodeEditorProps & RegisterEditorProps & DataEditorProps & StyleProps
 
 
 export default function EditorPanels(props: Props) {
     return (
-        <Tab.Container defaultActiveKey="code">
+        <Tab.Container activeKey={props.tab} onSelect={(k) => props.onTabChange?.((k ?? 'code') as SimTab)}>
             <div {...getStyleProps(props, {className: `${css.editorPanels} d-flex flex-column`})}>
                 <Nav variant="tabs" className="flex-row flex-nowrap">
                     <Nav.Item><Nav.Link eventKey="code">Code</Nav.Link></Nav.Item>

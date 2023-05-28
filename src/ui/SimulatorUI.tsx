@@ -20,6 +20,7 @@ function error(message: string) {
 }
 
 export type SimState = "unstarted"|"playing"|"paused"|"done"
+export type SimTab = "code"|"registers"|"memory"
 
 /**
  * Hack to use Simulator as state. Simulator is mutable, so we internally use a ref and manually update a wrapper proxy
@@ -70,6 +71,8 @@ export default function SimulatorUI() {
     const [data, setData] = useState<string>("")
     const [dataRadix, setDataRadix] = useState<Radix>("hex")
     const [dataWordSize, setDataWordSize] = useState(32)
+
+    const [tab, setTab] = useState<SimTab>("code")
 
     const reset = () => {
         setState("unstarted")
@@ -161,6 +164,7 @@ export default function SimulatorUI() {
         <div className={`${css.simUI} container-fluid p-2`}>
             <SimDatapath className={css.datapath}
                 sim={sim} state={state} datapath={riscv32DataPath}
+                onTabChange={setTab}
             />
             <div className={css.panel}>
                 {state == "unstarted" ? (
@@ -171,9 +175,11 @@ export default function SimulatorUI() {
                         dataWordSize={dataWordSize} onDataWordSizeChange={setDataWordSize}
                         registers={registers} onRegisterChange={(i, val) => setRegisters({[i]: val})}
                         examples={examples} onLoadExample={loadExample}
+                        tab={tab} onTabChange={setTab}
                     />
                 ) : (
                     <SimView className="flex-grow-overflow"
+                        tab={tab} onTabChange={setTab}
                         sim={sim} code={code} assembled={assembled}
                     />
                 )}
