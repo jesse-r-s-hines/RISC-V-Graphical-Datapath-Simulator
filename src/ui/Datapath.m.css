@@ -14,7 +14,8 @@
     outline: none;
 }
 
-/** Highlight powered wires. */
+/** Highlight powered wires. Powered wire markers and sim-powered-marker-* will be generated dynamically in JS since we
+    can't make markers inherit the color of their path */
 .datapath :global(.powered.wire), .datapath :global(.powered .wire)  {
     /* I'm abusing !important, but it lets us override inline styles and inkscapes's svg will usually have lots of
        inline styles. */
@@ -22,15 +23,16 @@
     marker-start: var(--sim-powered-marker-start) !important;
     marker-mid: var(--sim-powered-marker-mid) !important;
     marker-end: var(--sim-powered-marker-end) !important;
-
 }
 
 .datapath :global(marker.powered .wire) {
     fill: blue !important;
 }
 
+.datapath :global(.wire) {
+    transition: stroke-width 25ms ease;
+}
+
 .datapath :global(.wires:hover .wire), .datapath :global(.wire:hover) {
     stroke-width: calc(var(--sim-stroke-width) * 1.5) !important /* --sim-stroke-width is set dynamically in JS */
 }
-
-/** Styles powered wire markers will be generated dynamically in JS since we can't make markers inherit the color of their path */
