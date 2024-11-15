@@ -10,6 +10,6 @@
     color: inherit; /* Don't color the nav links as links */
 }
 
-.viewPanels .currentInstruction {
+.viewPanels .currentInstruction, .viewPanels .currentInstruction * {
     background-color: yellow
 }
