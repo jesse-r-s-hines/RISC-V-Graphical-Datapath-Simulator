@@ -1,5 +1,5 @@
 import { Simulator } from "simulator/simulator"
-import { VisualSim } from "./visualSim"
+// import { VisualSim } from "./visualSim.ts"
 import { registerNames } from "simulator/constants"
 
 import { Bits, Bit } from "utils/bits"
@@ -43,10 +43,10 @@ export interface DataPathElem {
     label?: (sim: Simulator) => string, // the current value to display in a textbox
     tooltip?: (sim: Simulator) => string, // the current value with explanation shown in the tooltip.
     powered?: (sim: Simulator) => boolean, // return true if a wire is "powered" (powered wires will colored)
-    onclick?: (visSim: VisualSim) => void, // call when an element is clicked
+    onclick?: (visSim: any) => void, // call when an element is clicked
     // return a value, and will show matching elements under this element that marked with value in `data-show-on-value`
     showSubElemsByValue?: (sim: Simulator) => string,
-    callback?: (visSim: VisualSim) => void, // arbitrary callback on each update.
+    callback?: (visSim: any) => void, // arbitrary callback on each update.
 }
 
 

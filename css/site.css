@@ -1,116 +1,9 @@
-/** ==== Editors and Positioning ==== */
+/* Global CSS helpers and styling */
 
-#editors > .tab-pane {
-    height: 100%;
+.flex-grow-overflow {
+    flex-grow: 1;
+    min-height: 0; /* Have to set min-height 0 or flexbox won't overflow and make scrollbars */
 }
-
-/** Can't `display: flex` on the table panel as it is `display: none` by bootstrap. */
-#editors > .tab-pane > div {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-}
-
-#editors .editor, #editors .view {
-    height: 100%;
-    /* There is a bug in Firefox (see https://bugzilla.mozilla.org/show_bug.cgi?id=764076) where the scrollbar isn't accounted for,
-       causing a x scrollbar to show even though it should be expanding to fit. A workaround is "overflow-y: scroll" but then the
-       scrollbar always shows. */
-    overflow: auto;
-}
-
-#editors .form-select {
-    margin: 0.25rem;
-}
-
-.nav-link, .nav-link:hover {
-    color: inherit; /* Don't color the nav links as links */
-}
-
-/*
-/* Hack to make the tabs keep the width of the widest tab, so that the view doesn't shift every time you change tabs.
-   see https://stackoverflow.com/questions/42394208/tab-box-sized-by-biggest-panel-content-in-pure-css (though I've changed
-   it quite a bit from the SO post to make it work for width instead of height) * /
-#editors > .tab-pane {
-    /* Change the panel from "display: hidden" to "visibility: hidden" so it takes up space * /
-    display: block;
-    visibility: hidden;
-}
-#editors > .tab-pane.active {
-    visibility: visible;
-}
-/* Move the two panels up so they are overlaying each other. * /
-#editors > .tab-pane:nth-child(2)  { transform: translate(0, -100%); } 
-#editors > .tab-pane:nth-child(3)  { transform: translate(0, -200%); }
-*/
-
-
-
-/* ==== Controls Styling ==== */
-
-#controls button {
-    transition: transform 50ms;
-    margin-right: 2px;
-    margin-left: 2px;
-}
-
-#controls button:hover {
-    transform: scale(1.25);
-}
-
-#controls button:active {
-    transform: scale(1.1);
-}
-
-#controls button:focus {
-    box-shadow: none; /* After click it was showing outline until you clicked somewhere else. */
-}
-
-#controls input[type="range"] {
-    height: 100%;
-    padding: 0 5%; /* Some left/right padding */
-}
-
-#controls input[type="range"]::-webkit-slider-thumb:hover {
-    transform: scale(1.25);
-}
-#controls input[type="range"]::-moz-range-thumb:hover {
-    transform: scale(1.25);
-}
-
-#controls input[type="range"]::-webkit-slider-thumb:active {
-    transform: scale(1.1);
-}
-#controls input[type="range"]::-moz-range-thumb:active {
-    transform: scale(1.1);
-}
-
-
-
-/** Misc **/
-
-p {
-    text-indent: 2em;
-}
-
-.fas {
-    font-size: 150%
-}
-
-
-
-/** ==== Table Styling === */
-
-/* table.table-fit {
-    width: auto !important;
-    table-layout: auto !important;
-}
-table.table-fit thead th, table.table-fit tfoot th {
-    width: auto !important;
-}
-table.table-fit tbody td, table.table-fit tfoot td {
-    width: auto !important;
-} */
 
 .address-table {
     font-family: monospace;
@@ -148,36 +41,157 @@ table.table-fit tbody td, table.table-fit tfoot td {
     text-align: center;
 }
 
-.current-instruction {
-    background-color: yellow
+/** Library Styling */
+
+/** Don't highlight the current line unless the editor is focused */
+.cm-editor:not(.cm-focused) .cm-activeLine {
+    background-color: inherit;
 }
 
 
 
 
+
+
+/** ==== Editors and Positioning ==== */
+/* 
+#editors > .tab-pane {
+    height: 100%;
+}
+
+/** Can't `display: flex` on the table panel as it is `display: none` by bootstrap. * /
+#editors > .tab-pane > div {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+} */
+
+
+    /* There is a bug in Firefox (see https://bugzilla.mozilla.org/show_bug.cgi?id=764076) where the scrollbar isn't accounted for,
+       causing a x scrollbar to show even though it should be expanding to fit. A workaround is "overflow-y: scroll" but then the
+       scrollbar always shows. */
+
+
+/* editors .form-select {
+    margin: 0.25rem;
+} */
+
+
+
+/*
+/* Hack to make the tabs keep the width of the widest tab, so that the view doesn't shift every time you change tabs.
+   see https://stackoverflow.com/questions/42394208/tab-box-sized-by-biggest-panel-content-in-pure-css (though I've changed
+   it quite a bit from the SO post to make it work for width instead of height) * /
+#editors > .tab-pane {
+    /* Change the panel from "display: hidden" to "visibility: hidden" so it takes up space * /
+    display: block;
+    visibility: hidden;
+}
+#editors > .tab-pane.active {
+    visibility: visible;
+}
+/* Move the two panels up so they are overlaying each other. * /
+#editors > .tab-pane:nth-child(2)  { transform: translate(0, -100%); } 
+#editors > .tab-pane:nth-child(3)  { transform: translate(0, -200%); }
+*/
+
+
+
+/* ==== Controls Styling ==== */
+/* 
+#controls button {
+    transition: transform 50ms;
+    margin-right: 2px;
+    margin-left: 2px;
+}
+
+#controls button:hover {
+    transform: scale(1.25);
+}
+
+#controls button:active {
+    transform: scale(1.1);
+}
+
+#controls button:focus {
+    box-shadow: none; /* After click it was showing outline until you clicked somewhere else. * /
+}
+
+#controls input[type="range"] {
+    height: 100%;
+    padding: 0 5%; /* Some left/right padding * /
+}
+
+#controls input[type="range"]::-webkit-slider-thumb:hover {
+    transform: scale(1.25);
+}
+#controls input[type="range"]::-moz-range-thumb:hover {
+    transform: scale(1.25);
+}
+
+#controls input[type="range"]::-webkit-slider-thumb:active {
+    transform: scale(1.1);
+}
+#controls input[type="range"]::-moz-range-thumb:active {
+    transform: scale(1.1);
+} */
+
+
+
+/** Misc **/
+
+/* p {
+    text-indent: 2em;
+}
+
+.fas {
+    font-size: 150%
+} */
+
+
+
+/** ==== Table Styling === */
+
+/* table.table-fit {
+    width: auto !important;
+    table-layout: auto !important;
+}
+table.table-fit thead th, table.table-fit tfoot th {
+    width: auto !important;
+}
+table.table-fit tbody td, table.table-fit tfoot td {
+    width: auto !important;
+} */
+ 
+
+/* .current-instruction {
+    background-color: yellow
+} */
+
+
 /** ==== SVG Styling ==== */
 
-#datapath svg {
+/* #datapath svg {
     width: 100%;
     height: 100%;
 }
 
 /* Fix weird bug where adding a tooltip would make an svg element "selectable" and show a border on click.
-   The bug only seems to occur on Chrome for me. See https://github.com/atomiks/tippyjs/issues/121 */
+   The bug only seems to occur on Chrome for me. See https://github.com/atomiks/tippyjs/issues/121 * /
 #datapath *:focus {
     outline: none;
 }
 
-/** Highlight powered wires. */
+/** Highlight powered wires. * /
 #datapath .powered.wire {
     stroke: blue !important; /* I'm abusing !important, but it lets us override inline styles and inkscapes's svg will
-                                  usually have lots of inline styles. */
+                                  usually have lots of inline styles.  * /
 }
 
 #datapath marker.powered * {
     stroke: blue !important;
     fill: blue !important;
-}
+} */
 
 /** Styles for wire hover and fixing powered wire markers will be generated dynamically in JS since we can't make CSS
     base off of width dynamically or make markers inherit the color of their path */
@@ -187,11 +201,9 @@ table.table-fit tbody td, table.table-fit tfoot td {
 
 /* ==== Library styling ==== */
 
-.CodeMirror {
-    height: 100%;
-    width: 100%;
-}
 
+
+/*
 .CodeMirror pre.CodeMirror-placeholder {
     color: #999;
 }
@@ -201,7 +213,7 @@ table.table-fit tbody td, table.table-fit tfoot td {
 }
 
 #toast-container > .toast {
-    width: 350px; /* Make toast a little wider (default is 300px) */
+    width: 350px; /* Make toast a little wider (default is 300px) * /
 }
 
 .tippy-box {
@@ -211,4 +223,4 @@ table.table-fit tbody td, table.table-fit tfoot td {
 
 .tippy-box hr {
     margin: 5px 0px;
-}
+} */

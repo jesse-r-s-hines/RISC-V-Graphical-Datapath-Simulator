@@ -1,0 +1,12 @@
+
+.sim-editor .tab-content {
+    border-left: 1px solid #dee2e6
+}
+
+.sim-editor .tab-pane {
+    height: 100%;
+}
+
+.sim-editor .nav-link, .sim-editor .nav-link:hover {
+    color: inherit; /* Don't color the nav links as links */
+}
