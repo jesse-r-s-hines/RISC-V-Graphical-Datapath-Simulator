@@ -10,19 +10,18 @@ import { Radix, parseInt, intToStr } from "utils/radix"
 import { Simulator } from "simulator/simulator";
 import { registerNames } from "simulator/constants";
 import { Example } from "./examples";
+import { StyleProps, getStyleProps } from "./reactUtils";
 
 import "./SimEditor.css"
 
 type Props = {
     sim: {sim: Simulator},
     examples: Example[]
-    className?: string,
-    style?: CSS.Properties,
     onCodeChange?: (code: string) => void,
     onRegisterChange?: (i: number, val: bigint) => void,
     onDataChange?: (data: bigint[]) => void,
     onLoadExample?: (example: Example) => void,
-}
+} & StyleProps
 
 /** Converts a line number into a hex address. */
 function hexLine(num: number, inc: number, start: bigint = 0n): string {
@@ -37,8 +36,7 @@ export default function SimEditor(props: Props) {
 
     return (
         <Tab.Container defaultActiveKey="code">
-            <div className={`sim-editor d-flex flex-column ${props.className}`} style={{...props.style}}
-            >
+            <div {...getStyleProps(props, {className: "sim-editor d-flex flex-column"})}>
                 <Nav variant="tabs" className="flex-row flex-nowrap">
                     <Nav.Item><Nav.Link eventKey="code">Code</Nav.Link></Nav.Item>
                     <Nav.Item><Nav.Link eventKey="registers">Registers</Nav.Link></Nav.Item>
