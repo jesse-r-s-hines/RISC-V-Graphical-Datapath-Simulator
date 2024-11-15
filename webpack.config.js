@@ -48,12 +48,6 @@ module.exports = (env, argv) => {
                     use: [MiniCssExtractPlugin.loader, 'css-loader'],
                 },
                 {
-                    test: /\.(svg|woff|woff2|eot|ttf|otf)$/,
-                    type: 'asset/resource',
-                    generator: {filename: 'fonts/[name]-[hash][ext][query]'},
-                    include: path.resolve("./node_modules/")
-                },
-                {
                     test: /\.(s|asm)$/, // assembly examples
                     type: 'asset/resource',
                     generator: {filename: 'assembly/[name]-[hash][ext][query]'},

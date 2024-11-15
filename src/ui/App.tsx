@@ -14,7 +14,6 @@ import { datapathElements } from "./datapath";
 import { useInterval } from "./reactUtils";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-import "@fortawesome/fontawesome-free/css/all.css"
 import "css/site.css"
 import "tippy.js/dist/tippy.css";
 

@@ -1,5 +1,7 @@
 import React, {useState} from "react"
 import { Button } from "react-bootstrap";
+import { FontAwesomeIcon as Icon } from '@fortawesome/react-fontawesome'
+import { faPause, faPlay, faStepForward, faStop, faQuestionCircle } from '@fortawesome/free-solid-svg-icons'
 
 import type { SimState } from "./App";
 import HelpModal from "./HelpModal";
@@ -34,19 +36,19 @@ export default function SimControls({state, ...props}: Props) {
             <div className="card-body d-flex flex-row">
                 {(state == "playing") ? (
                     <Button variant="" size="sm" title="Pause Simulation" onClick={props.onPause}>
-                        <i className="fas fa-pause text-warning"></i>
+                        <Icon icon={faPause} className="sim-icon text-warning"/>
                     </Button>
                 ) : (<>
                     <Button variant="" size="sm" title="Run Simulation" disabled={state == "done"} onClick={props.onPlay}>
-                        <i className="fas fa-play text-success"></i>
+                        <Icon icon={faPlay} className="sim-icon text-success"/>
                     </Button>
                     <Button variant="" size="sm" title="Step Simulation" disabled={state == "done"} onClick={props.onStep}>
-                        <i className="fas fa-step-forward text-success"></i>
+                        <Icon icon={faStepForward} className="sim-icon text-success"/>
                     </Button>
                 </>)}
                 {(state != "unstarted") ? (
                     <Button variant="" size="sm" title="Reset Simulation" onClick={props.onReset}>
-                        <i className="fas fa-sync text-danger"></i>
+                        <Icon icon={faStop} className="sim-icon text-danger"/>
                     </Button>
                 ) : ""}
                 <div className="flex-grow-1"> {/* Spacer, even if the slider is hidden */}
@@ -58,7 +60,7 @@ export default function SimControls({state, ...props}: Props) {
                 </div>
   
                 <Button variant="" size="sm" title="Help / About" onClick={() => setShowHelp(true)}>
-                    <i className="fas fa-question-circle text-info"></i>
+                    <Icon icon={faQuestionCircle} className="sim-icon text-info"/>
                 </Button>
             </div>
             <HelpModal show={showHelp} onHide={() => setShowHelp(false)}/>

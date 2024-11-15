@@ -1,5 +1,5 @@
 .sim-controls button {
-    transition: transform 50ms;
+    transition: transform 50ms ease-in-out;
     margin-right: 2px;
     margin-left: 2px;
     border: inherit;
@@ -36,7 +36,8 @@
     transform: scale(1.1);
 }
 
-.sim-controls .fas {
-    font-size: 150%
+.sim-controls .sim-icon {
+    width: 1.75em;
+    height: 1.75em;
 }
 
