@@ -1,4 +1,4 @@
-import React, {useEffect} from "react"
+import React, {useEffect, useState} from "react"
 import $ from "jquery"
 import "bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -8,6 +8,7 @@ import "toastr/build/toastr.css"
 
 import { VisualSim } from "ui/visualSim";
 import datapath from "assets/datapath.svg" // import path to the svg
+import HelpModal from "./HelpModal";
 
 // This needs to be imported last so that my css overrides any defaults
 import "css/site.css"
@@ -25,6 +26,8 @@ toastr.options = {
 }
 
 export default function App(props: Props) {
+    const [showHelp, setShowHelp] = useState(false)
+
     useEffect(() => {
         $(function() {
             // Load databath svg then run the simulation. Load SVG inline so we can manipulate it.
@@ -142,42 +145,14 @@ export default function App(props: Props) {
                         <div className="flex-grow-1">
                             <input id="speed" type="range" className="form-range" title="Speed" min="-2" max="4"/> {/* 2**x steps per second */}
                         </div>
-                        <button id="help" className="btn btn-sm" title="Help / About" data-bs-toggle="modal" data-bs-target="#help-modal">
+                        <button id="help" className="btn btn-sm" title="Help / About" onClick={() => setShowHelp(true)}>
                             <i className="fas fa-question-circle text-info"></i>
                         </button>
                     </div></div>
                 </div>
             </div>
  
-            <div className="modal fade" id="help-modal" tabIndex={-1} aria-labelledby="help-modal-label" aria-hidden="true">
-                <div className="modal-dialog modal-lg">
-                    <div className="modal-content">
-                        <div className="modal-header">
-                            <h5 className="modal-title" id="help-modal-label">Help / About</h5>
-                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div className="modal-body">
-                            {/* Using &#8209; to prevent text-break in middle of RISC-V */}
-                            <p>
-                                Welcome to the RISC&#8209;V Graphical Datapath Simulator! This is a 32&#8209;bit, single-cycle implementation of
-                                RISC&#8209;V.  All the 32-bit integer instructions are supported except the syscall and concurrency related
-                                instructions and <code>auipc</code>. The datapath is closely based on the design described in
-                                <i>Computer Organization and Design RISC&#8209;V Edition</i>
-                            </p>
-                            <p>
-                                You can write RISC&#8209;V assembly and set the initial registers and initial data memory, and then step through
-                                the demo. You can input registers and memory as hex, unsigned decimal or signed decimal by using the dropdowns.
-                                While the demo is running, you can use the side pane to view the current memory and registers and labels show the
-                                values on each wire. Most components and wires also have a tooltip which gives more details on their functionality
-                                and current value.
-                            </p>
-                            <p>You can view the source or contribute on 
-                                <a href="https://github.com/jesse-r-s-hines/RISC-V-Graphical-Datapath-Simulator" target="_blank">GitHub</a>.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <HelpModal show={showHelp} onHide={() => setShowHelp(false)}/>
         </div>
    )
 }
