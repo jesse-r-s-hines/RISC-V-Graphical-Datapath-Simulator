@@ -33,6 +33,8 @@ function camelCase(s: string) {
  * Inkscape outputs `marker-start/mid/end` as inline styles so the only way to select them is `getComputedStyle`. If we
  * made inkscape or SVGO output `marker-start/mid/end` we could use just `[marker-start/mid/end]` in CSS instead of the
  * CSS variables, but we'd still need to either generate or manually add powered versions of the markers in the SVG
+ * 
+ * Currently only safari doesn't support context-fill, so we may be able to remove this hack soon.
  */
 function setupDatapath(svg: SVGElement) {
     for (const wire of svg.querySelectorAll<SVGSVGElement>(".wire:not(marker *)")) {
