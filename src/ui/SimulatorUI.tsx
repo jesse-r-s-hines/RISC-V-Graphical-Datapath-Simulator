@@ -41,7 +41,7 @@ function useSim(): [Simulator, <T=void>(val: Simulator|((sim: Simulator) => T)) 
     const [simWrapper, setSimWrapper] = useState(new Proxy(simRef.current!, {})) // Dummy proxy to change identity
 
     // Updates the sim and updates the wrapper so react rerenders
-    const updateSim = <T=void,>(val: Simulator|((sim: Simulator) => T)): T => {
+    const updateSim = <T=void>(val: Simulator|((sim: Simulator) => T)): T => {
         let rtrn: any = undefined;
         if (val instanceof Simulator) {
             simRef.current = val
