@@ -11,7 +11,7 @@ export default function App() {
         <React.StrictMode>
             <SimulatorUI/>
             <Toaster
-                position="top-left"
+                position="top-center"
                 containerStyle={{
                     opacity: "90%",
                 }}
