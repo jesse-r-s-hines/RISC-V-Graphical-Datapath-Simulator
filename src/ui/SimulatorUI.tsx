@@ -56,6 +56,8 @@ function useSim(): [Simulator, <T=void>(val: Simulator|((sim: Simulator) => T)) 
 }
 
 
+const defaultRegisters = new Simulator().regFile.registers;
+
 export default function SimulatorUI() {
     const [sim, updateSim] = useSim()
 
@@ -64,10 +66,7 @@ export default function SimulatorUI() {
 
     const [code, setCode] = useState("")
     const [assembled, setAssembled] = useState<[number, bigint][]>([])
-    const [registers, setRegisters_] = useState<bigint[]>(() => Array(32).fill(0n))
-    const setRegisters = (regs: Record<number, bigint>) => {
-        setRegisters_(registers.map((val, i) => regs[i] ?? val))
-    }
+    const [registers, setRegisters] = useState<bigint[]>(defaultRegisters)
     const [data, setData] = useState<string>("")
     const [dataRadix, setDataRadix] = useState<Radix>("hex")
     const [dataWordSize, setDataWordSize] = useState(32)
@@ -151,11 +150,10 @@ export default function SimulatorUI() {
         }
         reset()
         setCode(example.code ?? "")
-        setRegisters(Array(32).fill(0n).map((_, i) => example.registers?.[i] ?? 0n))
+        setRegisters(defaultRegisters.map((reg, i) => example.registers?.[i] ?? reg))
         setData(example.memory ?? "")
         setDataRadix(example?.dataMemRadix ?? "hex")
         setDataWordSize(example?.dataMemWordSize ?? 32)
-        // otherwise keep the current code etc.
     }
 
     useInterval(() => step("play", speed == 0 ? 1000 : 1), (state == "playing") ? speed : null)
@@ -173,7 +171,7 @@ export default function SimulatorUI() {
                         data={data} onDataChange={setData}
                         dataRadix={dataRadix} onDataRadixChange={setDataRadix}
                         dataWordSize={dataWordSize} onDataWordSizeChange={setDataWordSize}
-                        registers={registers} onRegisterChange={(i, val) => setRegisters({[i]: val})}
+                        registers={registers} onRegistersChange={setRegisters}
                         examples={examples} onLoadExample={loadExample}
                         tab={tab} onTabChange={setTab}
                     />

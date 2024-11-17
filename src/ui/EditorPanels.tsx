@@ -50,12 +50,16 @@ export function CodeEditor({code, onCodeChange}: CodeEditorProps) {
 
 type RegisterEditorProps = {
     registers: bigint[],
-    onRegisterChange?: (i: number, val: bigint) => void,
+    onRegistersChange?: (newRegisters: bigint[]) => void,
 }
 
-export function RegisterEditor({registers, onRegisterChange}: RegisterEditorProps) {
+export function RegisterEditor({registers, onRegistersChange}: RegisterEditorProps) {
     const [regRadix, setRegRadix] = useState<Radix>("hex")
-    
+
+    const registersToStr = (registers: bigint[]) => registers.map(reg => bits(reg, 32).toString(regRadix))
+    const [localRegisters, setLocalRegisters] = useState(registersToStr(registers))
+    useEffect(() => setLocalRegisters(registersToStr(registers)), [registers])
+
     return (
         <div className={`${css.registerEditor} d-flex flex-column h-100`}>
             <select id="regFile-radix" className="form-select m-1" value={regRadix}
@@ -71,13 +75,25 @@ export function RegisterEditor({registers, onRegisterChange}: RegisterEditorProp
                     spellCheck={false}
                 >
                     <tbody>
-                        {registers.map((reg, i) => (
+                        {localRegisters.map((reg, i) => (
                             <tr key={i}>
                                 <td>{`${registerNames[i]} (x${i})`}</td>
                                 <td>
                                     <input type="text" disabled={i == 0}
-                                        value={bits(reg, 32).toString(regRadix)}
-                                        onChange={e => onRegisterChange?.(i, Bits.parse(e.target.value, regRadix, 32).toInt())}
+                                        value={reg}
+                                        onChange={e => setLocalRegisters(localRegisters.map((r, j) => i == j ? e.target.value : r))}
+                                        onBlur={e => {
+                                            let newRegs: bigint[]|undefined
+                                            try {
+                                                newRegs = localRegisters.map(r => Bits.parse(r, regRadix, 32).toInt())
+                                            } catch {
+                                            }
+                                            if (newRegs !== undefined) {
+                                                onRegistersChange?.(newRegs)
+                                            } else { // wipe changes if invalid
+                                                setLocalRegisters(registersToStr(registers))
+                                            }
+                                        }}
                                     />
                                 </td>
                             </tr>
@@ -174,7 +190,7 @@ export default function EditorPanels(props: Props) {
                         <CodeEditor code={props.code} onCodeChange={props.onCodeChange} />
                     </Tab.Pane>
                     <Tab.Pane eventKey="registers" title="Registers">
-                        <RegisterEditor registers={props.registers} onRegisterChange={props.onRegisterChange} />
+                        <RegisterEditor registers={props.registers} onRegistersChange={props.onRegistersChange} />
                     </Tab.Pane>
                     <Tab.Pane eventKey="memory" title="Memory" className="">
                         <DataEditor
