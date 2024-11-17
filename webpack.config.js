@@ -4,6 +4,7 @@
 // see https://sysgears.github.io/mochapack/docs/installation/webpack-configuration.html
 const path = require('path');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = (env, argv) => {
@@ -19,6 +20,7 @@ module.exports = (env, argv) => {
         devtool: (env.prod) ? 'source-map' : 'inline-source-map', // inline-source-map makes debugging work better.
         target: (env.test) ? "node" : "web",
         plugins: [
+            new MiniCssExtractPlugin(),
             new MiniCssExtractPlugin(),
             new HtmlWebpackPlugin({
                 filename: 'index.html',
@@ -81,6 +83,10 @@ module.exports = (env, argv) => {
         },
         optimization: {
             minimize: !!env.prod, // Debugger has trouble if you minify, even with the source map.
+            minimizer: [
+                "...",
+                new CssMinimizerPlugin(),
+            ]
         },
         devServer: {
             static: path.join(__dirname, 'dist'),
