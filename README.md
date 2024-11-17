@@ -9,7 +9,7 @@ The simulator is available at https://jesse-r-s-hines.github.io/RISC-V-Graphical
 
 ## Building
 
-The project is written in [TypeScript](https://www.typescriptlang.org) and uses [webpack](https://webpack.js.org) to bundle the project.
+The project is written in [TypeScript](https://www.typescriptlang.org) and [React](https://react.dev) and uses [webpack](https://webpack.js.org) to bundle the project.
 
 If you want to build the project yourself, you'll need [Node and npm](https://nodejs.org). Then run
 ```
