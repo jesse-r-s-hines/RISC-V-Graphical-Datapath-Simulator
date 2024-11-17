@@ -5,10 +5,10 @@ import { examples, Example } from "./examples";
 import { Radix, Bits } from "utils/bits";
 import { Simulator } from "simulator/simulator";
 import { assembleKeepLineInfo } from "assembler/assembler"
-import SimEditor from "./EditorPanels";
-import SimView from "./ViewPanels";
-import SimControls from "./Controls";
-import SimDatapath from "./Datapath";
+import EditorPanels from "./EditorPanels";
+import ViewPanels from "./ViewPanels";
+import Controls from "./Controls";
+import Datapath from "./Datapath";
 import { riscv32DataPath } from "./datapath";
 import { useInterval } from "./reactUtils";
 import css from "./SimulatorUI.m.css"
@@ -160,13 +160,13 @@ export default function SimulatorUI() {
 
     return (
         <div className={`${css.simUI} container-fluid p-2`}>
-            <SimDatapath className={css.datapath}
+            <Datapath className={css.datapath}
                 sim={sim} state={state} datapath={riscv32DataPath}
                 onTabChange={setTab}
             />
             <div className={css.panel}>
                 {state == "unstarted" ? (
-                    <SimEditor className="flex-grow-overflow"
+                    <EditorPanels className="flex-grow-overflow"
                         code={code} onCodeChange={setCode}
                         data={data} onDataChange={setData}
                         dataRadix={dataRadix} onDataRadixChange={setDataRadix}
@@ -176,12 +176,12 @@ export default function SimulatorUI() {
                         tab={tab} onTabChange={setTab}
                     />
                 ) : (
-                    <SimView className="flex-grow-overflow"
+                    <ViewPanels className="flex-grow-overflow"
                         tab={tab} onTabChange={setTab}
                         sim={sim} code={code} assembled={assembled}
                     />
                 )}
-                <SimControls
+                <Controls
                     state={state}
                     speed={speed}
                     onStep={() => step("step")}

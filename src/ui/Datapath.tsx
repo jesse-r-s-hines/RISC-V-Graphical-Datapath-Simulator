@@ -1,6 +1,5 @@
 import {useEffect, useState, useRef} from "react"
 import tippy, { followCursor, Instance as Tippy } from 'tippy.js';
-import classNames from "classnames";
 
 import { Simulator } from "simulator/simulator";
 import { StyleProps, getStyleProps } from "./reactUtils";
@@ -16,9 +15,6 @@ type Props = {
     onTabChange?: (tab: SimTab) => void,
 } & StyleProps
 
-function camelCase(s: string) {
-    return s.replace(/-./g, x => x[1].toUpperCase())
-}
 
 /**
  * Setup some initial state for the SVG. This is called once when the SVG is loaded.

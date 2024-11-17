@@ -1,4 +1,4 @@
-import {useState} from "react"
+import { useState } from "react"
 import { Button } from "react-bootstrap";
 import { FontAwesomeIcon as Icon } from '@fortawesome/react-fontawesome'
 import { faPause, faPlay, faStepForward, faQuestionCircle, faSync } from '@fortawesome/free-solid-svg-icons'
@@ -21,7 +21,7 @@ type Props = {
 // in steps/second -> ms/step
 const speedTicks = [0.25, 0.5, 1, 2, 4, 8, 16, 32, Infinity].map(d => 1000 / d)
 
-export default function SimControls({state, speed, ...props}: Props) {
+export default function Controls({state, speed, ...props}: Props) {
     const [showHelp, setShowHelp] = useState(false)
 
     // find closest tick in speedTicks
