@@ -15,13 +15,15 @@ type Props = {
     code: string,
     assembled: [number, bigint][],
     tab: SimTab, onTabChange?: (tab: SimTab) => void,
+    registerRadix: Radix
+    onRegisterRadixChange?: (newRegisterRadix: Radix) => void,
+    memoryRadix: Radix
+    onMemoryRadixChange?: (newMemoryRadix: Radix) => void,
+    memoryWordSize: number
+    onMemoryWordSizeChange?: (newMemoryWordSize: number) => void,
 } & StyleProps
 
-export default function ViewPanels({sim, tab, ...props}: Props) {
-    const [memRadix, setMemRadix] = useState<Radix>("hex")
-    const [memWordSize, setDataMemWordSize] = useState<number>(32)
-    const [regRadix, setRegRadix] = useState<Radix>("hex")
-
+export default function ViewPanels({sim, tab, registerRadix, memoryRadix, memoryWordSize, ...props}: Props) {
     const lines = props.code.split("\n")
     const listing = props.assembled.map(([line, instr], i) => (
         {addr: Simulator.textStart + BigInt(i * 4), instr, line: lines[line - 1].trim()}
@@ -60,8 +62,8 @@ export default function ViewPanels({sim, tab, ...props}: Props) {
                     </Tab.Pane>
                     <Tab.Pane eventKey="registers" title="Registers">
                         <div className="d-flex flex-column h-100">
-                            <select id="regFile-radix" className="form-select m-1" value={regRadix}
-                                    onChange={(e) => setRegRadix(e.target.value as Radix)}
+                            <select id="regFile-radix" className="form-select m-1" value={registerRadix}
+                                    onChange={(e) => props.onRegisterRadixChange?.(e.target.value as Radix)}
                             >
                                 <option value="hex">Hex</option>
                                 <option value="signed">Signed Decimal</option>
@@ -75,7 +77,8 @@ export default function ViewPanels({sim, tab, ...props}: Props) {
                                     <tbody>
                                         {sim.regFile.registers.map((reg, i) => (
                                             <tr key={i}>
-                                                <td>{`${registerNames[i]} (x${i})`}</td><td>{bits(reg, 32).toString(regRadix)}</td>
+                                                <td>{`${registerNames[i]} (x${i})`}</td>
+                                                <td>{bits(reg, 32).toString(registerRadix)}</td>
                                             </tr>
                                         ))}
                                     </tbody>
@@ -86,15 +89,15 @@ export default function ViewPanels({sim, tab, ...props}: Props) {
                     <Tab.Pane eventKey="memory" title="Memory" className="">
                         <div className="d-flex flex-column h-100">
                             <div className="d-flex flex-row">
-                                <select id="dataMem-radix" className="form-select m-1" value={memRadix}
-                                    onChange={(e) => setMemRadix(e.target.value as Radix)}
+                                <select id="dataMem-radix" className="form-select m-1" value={memoryRadix}
+                                    onChange={(e) => props.onMemoryRadixChange?.(e.target.value as Radix)}
                                 >
                                     <option value="hex">Hex</option>
                                     <option value="signed">Signed Decimal</option>
                                     <option value="unsigned">Unsigned Decimal</option>
                                 </select>
-                                <select id="dataMem-word-size" className="form-select m-1" value={memWordSize}
-                                    onChange={(e) => setDataMemWordSize(+e.target.value)}
+                                <select id="dataMem-word-size" className="form-select m-1" value={memoryWordSize}
+                                    onChange={(e) => props.onMemoryWordSizeChange?.(+e.target.value)}
                                 >
                                     <option value="8">Byte</option>
                                     <option value="16">Half-Word</option>
@@ -107,9 +110,12 @@ export default function ViewPanels({sim, tab, ...props}: Props) {
                                     spellCheck={false}
                                 >
                                     <tbody>
-                                        {[...sim.dataMem.data.dump(memWordSize / 8)].map(([addr, val]) =>
+                                        {[...sim.dataMem.data.dump(memoryWordSize / 8)].map(([addr, val]) =>
                                             (typeof addr == "bigint") ? (
-                                                <tr key={`${addr}`}><td>{bits(addr, 32).toString("hex")}</td><td>{bits(val, memWordSize).toString(memRadix)}</td></tr>
+                                                <tr key={`${addr}`}>
+                                                    <td>{bits(addr, 32).toString("hex")}</td>
+                                                    <td>{bits(val, memoryWordSize).toString(memoryRadix)}</td>
+                                                </tr>
                                             ) : (
                                                 <tr key={`${addr}`}><td colSpan={2}>...</td></tr>
                                             )

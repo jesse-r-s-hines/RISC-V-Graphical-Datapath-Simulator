@@ -51,19 +51,21 @@ export function CodeEditor({code, onCodeChange}: CodeEditorProps) {
 type RegisterEditorProps = {
     registers: bigint[],
     onRegistersChange?: (newRegisters: bigint[]) => void,
+    registerRadix: Radix,
+    onRegisterRadixChange?: (newRadix: Radix) => void,
 }
 
-export function RegisterEditor({registers, onRegistersChange}: RegisterEditorProps) {
-    const [regRadix, setRegRadix] = useState<Radix>("hex")
-
-    const registersToStr = (registers: bigint[]) => registers.map(reg => bits(reg, 32).toString(regRadix))
+export function RegisterEditor({
+    registers, onRegistersChange, registerRadix, onRegisterRadixChange,
+}: RegisterEditorProps) {
+    const registersToStr = (registers: bigint[]) => registers.map(reg => bits(reg, 32).toString(registerRadix))
     const [localRegisters, setLocalRegisters] = useState(registersToStr(registers))
-    useEffect(() => setLocalRegisters(registersToStr(registers)), [registers, regRadix])
+    useEffect(() => setLocalRegisters(registersToStr(registers)), [registers, registerRadix])
 
     return (
         <div className={`${css.registerEditor} d-flex flex-column h-100`}>
-            <select id="regFile-radix" className="form-select m-1" value={regRadix} title="Register Radix"
-                    onChange={(e) => setRegRadix(e.target.value as Radix)}
+            <select id="regFile-radix" className="form-select m-1" value={registerRadix} title="Register Radix"
+                onChange={(e) => onRegisterRadixChange?.(e.target.value as Radix)}
             >
                 <option value="hex">Hex</option>
                 <option value="signed">Signed Decimal</option>
@@ -86,7 +88,7 @@ export function RegisterEditor({registers, onRegistersChange}: RegisterEditorPro
                                         onBlur={e => {
                                             let newRegs: bigint[]|undefined
                                             try {
-                                                newRegs = localRegisters.map(r => Bits.parse(r, regRadix, 32).toInt())
+                                                newRegs = localRegisters.map(r => Bits.parse(r, registerRadix, 32).toInt())
                                             } catch {
                                             }
                                             if (newRegs !== undefined) {
@@ -108,30 +110,30 @@ export function RegisterEditor({registers, onRegistersChange}: RegisterEditorPro
 
 
 type DataEditorProps = {
-    data: string,
-    dataRadix: Radix,
-    dataWordSize: number,
-    onDataChange?: (data: string) => void,
-    onDataRadixChange?: (radix: Radix) => void,
-    onDataWordSizeChange?: (wordSize: number) => void,
+    memory: string,
+    memoryRadix: Radix,
+    memoryWordSize: number,
+    onMemoryChange?: (data: string) => void,
+    onMemoryRadixChange?: (radix: Radix) => void,
+    onMemoryWordSizeChange?: (wordSize: number) => void,
 }
 
-export function DataEditor({data, dataRadix, dataWordSize, ...props}: DataEditorProps) {
-    const [localData, setLocalData] = useState(data)
-    useEffect(() => setLocalData(data), [data])
+export function MemoryEditor({memory, memoryRadix, memoryWordSize, ...props}: DataEditorProps) {
+    const [localData, setLocalData] = useState(memory)
+    useEffect(() => setLocalData(memory), [memory])
 
     return (
         <div className={`${css.dataEditor} d-flex flex-column h-100`}>
             <div className="d-flex flex-row">
-                <select id="dataMem-radix" className="form-select m-1" value={dataRadix} title="Memory Radix"
-                    onChange={(e) => props.onDataRadixChange?.(e.target.value as Radix)}
+                <select id="dataMem-radix" className="form-select m-1" value={memoryRadix} title="Memory Radix"
+                    onChange={(e) => props.onMemoryRadixChange?.(e.target.value as Radix)}
                 >
                     <option value="hex">Hex</option>
                     <option value="signed">Signed Decimal</option>
                     <option value="unsigned">Unsigned Decimal</option>
                 </select>
-                <select id="dataMem-word-size" className="form-select m-1" value={dataWordSize} title="Memory Word Size"
-                    onChange={(e) => props.onDataWordSizeChange?.(+e.target.value)}
+                <select id="dataMem-word-size" className="form-select m-1" value={memoryWordSize} title="Memory Word Size"
+                    onChange={(e) => props.onMemoryWordSizeChange?.(+e.target.value)}
                 >
                     <option value="8">Byte</option>
                     <option value="16">Half-Word</option>
@@ -142,16 +144,16 @@ export function DataEditor({data, dataRadix, dataWordSize, ...props}: DataEditor
                 <CodeMirror
                     style={{height: "100%"}} height="100%"
                     theme={bbedit}
-                    value={data}
+                    value={memory}
                     placeholder="Set initial memory..."
                     basicSetup={{
                         lineNumbers: true,
                     }}
                     extensions={[
-                        lineNumbers({formatNumber: (l) => hexLine(l, dataWordSize / 8)}),
+                        lineNumbers({formatNumber: (l) => hexLine(l, memoryWordSize / 8)}),
                     ]}
                     onChange={setLocalData}
-                    onBlur={() => props.onDataChange?.(localData)}
+                    onBlur={() => props.onMemoryChange?.(localData)}
                 />
             </div>
         </div>
@@ -191,13 +193,16 @@ export default function EditorPanels(props: Props) {
                         <CodeEditor code={props.code} onCodeChange={props.onCodeChange} />
                     </Tab.Pane>
                     <Tab.Pane eventKey="registers" title="Registers">
-                        <RegisterEditor registers={props.registers} onRegistersChange={props.onRegistersChange} />
+                        <RegisterEditor
+                            registers={props.registers} onRegistersChange={props.onRegistersChange}
+                            registerRadix={props.registerRadix} onRegisterRadixChange={props.onRegisterRadixChange}
+                        />
                     </Tab.Pane>
                     <Tab.Pane eventKey="memory" title="Memory" className="">
-                        <DataEditor
-                            data={props.data} dataRadix={props.dataRadix} dataWordSize={props.dataWordSize}
-                            onDataChange={props.onDataChange} onDataRadixChange={props.onDataRadixChange}
-                            onDataWordSizeChange={props.onDataWordSizeChange}
+                        <MemoryEditor
+                            memory={props.memory} onMemoryChange={props.onMemoryChange}
+                            memoryRadix={props.memoryRadix} onMemoryRadixChange={props.onMemoryRadixChange}
+                            memoryWordSize={props.memoryWordSize} onMemoryWordSizeChange={props.onMemoryWordSizeChange}
                         />
                     </Tab.Pane>
                 </Tab.Content>

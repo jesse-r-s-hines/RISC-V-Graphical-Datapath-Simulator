@@ -67,9 +67,10 @@ export default function SimulatorUI() {
     const [code, setCode] = useState("")
     const [assembled, setAssembled] = useState<[number, bigint][]>([])
     const [registers, setRegisters] = useState<bigint[]>(defaultRegisters)
-    const [data, setData] = useState<string>("")
-    const [dataRadix, setDataRadix] = useState<Radix>("hex")
-    const [dataWordSize, setDataWordSize] = useState(32)
+    const [registerRadix, setRegisterRadix] = useState<Radix>("hex")
+    const [memory, setMemory] = useState<string>("")
+    const [memoryRadix, setMemoryRadix] = useState<Radix>("hex")
+    const [memoryWordSize, setMemoryWordSize] = useState(32)
 
     const [tab, setTab] = useState<SimTab>("code")
 
@@ -99,7 +100,7 @@ export default function SimulatorUI() {
 
         let mem: bigint[];
         try {
-            mem = data.split("\n").filter(s => s).map(s => Bits.parse(s, dataRadix, dataWordSize).toInt());
+            mem = memory.split("\n").filter(s => s).map(s => Bits.parse(s, memoryRadix, memoryWordSize).toInt());
         } catch (e: any) {
             error(`Couldn't parse data memory:\n${e.message}`)
             return false
@@ -107,7 +108,7 @@ export default function SimulatorUI() {
 
         // We've got all the data so we can start the simulator
         const newSim = new Simulator(newAssembled.map(([line, instr]) => instr), registers)
-        newSim.dataMem.data.storeArray(0n, dataWordSize / 8, mem)
+        newSim.dataMem.data.storeArray(0n, memoryWordSize / 8, mem)
         updateSim(newSim)
 
         return true
@@ -151,9 +152,9 @@ export default function SimulatorUI() {
         reset()
         setCode(example.code ?? "")
         setRegisters(defaultRegisters.map((reg, i) => example.registers?.[i] ?? reg))
-        setData(example.memory ?? "")
-        setDataRadix(example?.dataMemRadix ?? "hex")
-        setDataWordSize(example?.dataMemWordSize ?? 32)
+        setMemory(example.memory ?? "")
+        setMemoryRadix(example?.dataMemRadix ?? "hex")
+        setMemoryWordSize(example?.dataMemWordSize ?? 32)
     }
 
     useInterval(() => step("play", speed == 0 ? 1000 : 1), (state == "playing") ? speed : null)
@@ -168,9 +169,10 @@ export default function SimulatorUI() {
                 {state == "unstarted" ? (
                     <EditorPanels className="flex-grow-overflow"
                         code={code} onCodeChange={setCode}
-                        data={data} onDataChange={setData}
-                        dataRadix={dataRadix} onDataRadixChange={setDataRadix}
-                        dataWordSize={dataWordSize} onDataWordSizeChange={setDataWordSize}
+                        memory={memory} onMemoryChange={setMemory}
+                        registerRadix={registerRadix} onRegisterRadixChange={setRegisterRadix}
+                        memoryRadix={memoryRadix} onMemoryRadixChange={setMemoryRadix}
+                        memoryWordSize={memoryWordSize} onMemoryWordSizeChange={setMemoryWordSize}
                         registers={registers} onRegistersChange={setRegisters}
                         examples={examples} onLoadExample={loadExample}
                         tab={tab} onTabChange={setTab}
@@ -179,6 +181,9 @@ export default function SimulatorUI() {
                     <ViewPanels className="flex-grow-overflow"
                         tab={tab} onTabChange={setTab}
                         sim={sim} code={code} assembled={assembled}
+                        registerRadix={registerRadix} onRegisterRadixChange={setRegisterRadix}
+                        memoryRadix={memoryRadix} onMemoryRadixChange={setMemoryRadix}
+                        memoryWordSize={memoryWordSize} onMemoryWordSizeChange={setMemoryWordSize}
                     />
                 )}
                 <Controls
