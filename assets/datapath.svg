@@ -18,7 +18,7 @@
      id="style1228">
 .wire { 
     stroke-opacity:1;
-    stroke-width:0.5;
+    stroke-width:0.55;
     stroke-miterlimit:4;
     stroke-linejoin:miter;
     stroke-linecap:butt;
@@ -32,7 +32,6 @@ text.value-label, text.value-label tspan {
     display:inline;
     fill:#000000;
     fill-opacity:1;
-    filter:url(#bg-filter);
     font-family:monospace;
     font-size:3.88056px;
     font-stretch:normal;
@@ -50,8 +49,11 @@ text.value-label, text.value-label tspan {
     text-align:center;
     text-anchor:middle ;
 }
+text.value-label {
+    filter:url(#bg-filter);
+}
 .component { 
-    stroke-width:0.265;
+    stroke-width:0.3;
     stroke-opacity:1;
     stroke-miterlimit:4;
     stroke-linejoin:round;
@@ -158,7 +160,7 @@ text.value-label, text.value-label tspan {
          id="feFlood705"
          result="result1"
          flood-color="rgb(255,255,255)"
-         flood-opacity="0.80000000000000004" />
+         flood-opacity="0.75" />
       <feComposite
          in2="result1"
          id="feComposite707"
