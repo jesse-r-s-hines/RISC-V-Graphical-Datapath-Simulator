@@ -102,42 +102,30 @@ function updateDatapath(svg: SVGElement, sim: Simulator, state: SimState, datapa
             }
 
 
-            // All other changes will only run while sim is running. We'll reset the SVG html content when we reset the sim
-            if (running) {
-                const labelContent = config.label ?? ""
-                const textElems = svgElem.querySelectorAll<SVGTextElement>("text.value-label")
-                if (config.label && textElems.length <= 0)
-                    throw Error(`${selector} has label defined, but no ".value-label" elements`)
-                for (const text of textElems) {
-                    // use first tspan if there is one, else place directly in text element.
-                    (text.querySelector("tspan") ?? text).textContent = labelContent
-                }
-    
-    
-                if (config.powered !== undefined && !svgElem.classList.contains("wire") && !svgElem.querySelector(".wire"))
-                    throw Error(`${selector} has powered defined, but no ".wire" elements`);
-                if (config.powered === true) {
-                    // add powered to elem if its a wire, and any wires under elem
-                    svgElem.classList.add("powered")
-                } else {
-                    svgElem.classList.remove("powered")
-                }
-    
-    
-                const style = {...config.style, ...(config.show !== undefined ? {display: config.show ? 'inline' : 'none'} : {})};
-                for (const [key, value] of Object.entries(style)) {
-                    svgElem.style.setProperty(key, `${value}`)
-                }
-    
-    
-                if (svgElem.dataset.simOrigClassName === undefined)
-                    svgElem.dataset.simOrigClassName = svgElem.getAttribute('class') ?? ""
-                svgElem.setAttribute('class', classNames(svgElem.dataset.simOrigClassName, config.className))
-    
-    
-                for (const [key, value] of Object.entries(config.attrs ?? {})) {
-                    svgElem.setAttribute(key, `${value}`)
-                }
+            const labelContent = running ? (config.label ?? "") : ""
+            const textElems = svgElem.querySelectorAll<SVGTextElement>("text.value-label")
+            if (config.label && textElems.length <= 0)
+                throw Error(`${selector} has label defined, but no ".value-label" elements`)
+            for (const text of textElems) {
+                // use first tspan if there is one, else place directly in text element.
+                (text.querySelector("tspan") ?? text).textContent = labelContent
+            }
+
+
+            if (config.powered !== undefined && !svgElem.classList.contains("wire") && !svgElem.querySelector(".wire"))
+                throw Error(`${selector} has powered defined, but no ".wire" elements`);
+            if (running && config.powered === true) {
+                // add powered to elem if its a wire, and any wires under elem
+                svgElem.classList.add("powered")
+            } else {
+                svgElem.classList.remove("powered")
+            }
+
+
+            if ((running && config.show === false) || (!running && config.show !== undefined)) {
+                svgElem.classList.add("d-none")
+            } else {
+                svgElem.classList.remove("d-none")
             }
         }
     }

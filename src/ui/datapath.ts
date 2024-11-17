@@ -1,7 +1,6 @@
 import { Simulator } from "simulator/simulator"
 import { registerNames } from "simulator/constants"
 import datapathSVG from "assets/datapath.svg"
-import CSS from "csstype"
 
 import { Bits, Radix, bits } from "utils/bits"
 import { TruthTable } from "utils/truthTable"
@@ -65,22 +64,6 @@ export interface DataPathElement {
 
     /** Show the specified view detail tab when clicking on this element */
     showOnClick?: SimTab,
-
-    /** Classes to add to the element */
-    className?: string,
-
-    /**
-     * Styles to add to the element using a react-like style object.
-     * Should return an object with the same keys each tick so that you always override the previous tick's changes.
-     */
-    style?: CSS.Properties,
-
-    /**
-     * Arbitrary html attributes to set on the element.
-     * Should return an object with the same keys each tick so that you always override the previous tick's changes.
-     */
-    attrs?: Record<string, string>,
-
 }
 
 /** Returns html showing num as hex, signed, and unsigned */
