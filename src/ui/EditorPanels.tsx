@@ -58,11 +58,11 @@ export function RegisterEditor({registers, onRegistersChange}: RegisterEditorPro
 
     const registersToStr = (registers: bigint[]) => registers.map(reg => bits(reg, 32).toString(regRadix))
     const [localRegisters, setLocalRegisters] = useState(registersToStr(registers))
-    useEffect(() => setLocalRegisters(registersToStr(registers)), [registers])
+    useEffect(() => setLocalRegisters(registersToStr(registers)), [registers, regRadix])
 
     return (
         <div className={`${css.registerEditor} d-flex flex-column h-100`}>
-            <select id="regFile-radix" className="form-select m-1" value={regRadix}
+            <select id="regFile-radix" className="form-select m-1" value={regRadix} title="Register Radix"
                     onChange={(e) => setRegRadix(e.target.value as Radix)}
             >
                 <option value="hex">Hex</option>
@@ -79,7 +79,8 @@ export function RegisterEditor({registers, onRegistersChange}: RegisterEditorPro
                             <tr key={i}>
                                 <td>{`${registerNames[i]} (x${i})`}</td>
                                 <td>
-                                    <input type="text" disabled={i == 0}
+                                    <input type="text"
+                                        disabled={i == 0}
                                         value={reg}
                                         onChange={e => setLocalRegisters(localRegisters.map((r, j) => i == j ? e.target.value : r))}
                                         onBlur={e => {
@@ -122,14 +123,14 @@ export function DataEditor({data, dataRadix, dataWordSize, ...props}: DataEditor
     return (
         <div className={`${css.dataEditor} d-flex flex-column h-100`}>
             <div className="d-flex flex-row">
-                <select id="dataMem-radix" className="form-select m-1" value={dataRadix}
+                <select id="dataMem-radix" className="form-select m-1" value={dataRadix} title="Memory Radix"
                     onChange={(e) => props.onDataRadixChange?.(e.target.value as Radix)}
                 >
                     <option value="hex">Hex</option>
                     <option value="signed">Signed Decimal</option>
                     <option value="unsigned">Unsigned Decimal</option>
                 </select>
-                <select id="dataMem-word-size" className="form-select m-1" value={dataWordSize}
+                <select id="dataMem-word-size" className="form-select m-1" value={dataWordSize} title="Memory Word Size"
                     onChange={(e) => props.onDataWordSizeChange?.(+e.target.value)}
                 >
                     <option value="8">Byte</option>
