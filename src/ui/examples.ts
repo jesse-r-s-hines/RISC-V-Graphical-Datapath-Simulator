@@ -17,9 +17,6 @@ export interface Example {
 
 export const examples: Example[] = [
     {
-        name: "Blank",
-        description: "Clear the code, registers, and memory",
-    }, {
         name: "Bubble Sort",
         description: "The bubble sort algorithm",
         url: require("assets/examples/bubbleSort.s"),

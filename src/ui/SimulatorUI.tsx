@@ -194,6 +194,7 @@ export default function SimulatorUI() {
                     onPlay={() => step("play")}
                     onPause={() => { if (state == 'playing') setState("paused") }}
                     onSpeedChange={setSpeed}
+                    onClear={() => loadExample({ name: "Blank", description: "" })}
                 />
             </div>
         </div>

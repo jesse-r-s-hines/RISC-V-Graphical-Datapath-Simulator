@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { Button } from "react-bootstrap";
 import { FontAwesomeIcon as Icon } from '@fortawesome/react-fontawesome'
-import { faPause, faPlay, faStepForward, faQuestionCircle, faSync } from '@fortawesome/free-solid-svg-icons'
+import { faPause, faPlay, faStepForward, faQuestionCircle, faSync, faEraser } from '@fortawesome/free-solid-svg-icons'
 
 import type { SimState } from "./SimulatorUI";
 import HelpModal from "./HelpModal";
@@ -16,6 +16,7 @@ type Props = {
     onPlay?: () => void,
     onPause?: () => void,
     onSpeedChange?: (speed: number) => void,
+    onClear?: () => void,
 }
 
 // in steps/second -> ms/step
@@ -55,11 +56,15 @@ export default function Controls({state, speed, ...props}: Props) {
                         <Icon icon={faStepForward} className={`${css.icon} text-success`}/>
                     </Button>
                 </>)}
-                {(state != "unstarted") ? (
+                {(state == "unstarted") ? (
+                    <Button variant="" size="sm" title="Clear Editors" onClick={props.onClear}>
+                        <Icon icon={faEraser} className={`${css.icon} text-danger`}/>
+                    </Button>
+                ) : (
                     <Button variant="" size="sm" title="Reset Simulation" onClick={props.onReset}>
                         <Icon icon={faSync} className={`${css.icon} text-danger`}/>
                     </Button>
-                ) : ""}
+                )}
                 <div className="flex-grow-1"> {/* Spacer, even if the slider is hidden */}
                     {(state != "unstarted") ? ( 
                         <input type="range" className="form-range"
