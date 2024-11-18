@@ -62,9 +62,9 @@ module.exports = (env, argv) => {
                     ],
                 },
                 {
-                    test: /\.(s|asm)$/, // assembly examples
+                    test: /assets\/.*\.json$/,
                     type: 'asset/resource',
-                    generator: {filename: 'assembly/[name]-[hash][ext][query]'},
+                    generator: {filename: 'examples/[name]-[hash][ext][query]'},
                 },
                 {
                     test: /\.ne$/,

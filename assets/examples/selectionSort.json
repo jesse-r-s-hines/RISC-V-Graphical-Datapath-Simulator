@@ -1,0 +1,12 @@
+{
+    "name": "Selection Sort",
+    "description": "The selection sort algorithm",
+    "code": "# The selection sort algorithm. Based on\n# https://github.com/cgyurgyik/riscv-assembly\n\nMAIN:\n    # li a0, 0 # Base of array\n    # li a1, 10 # Length of array\n    jal ra, SEL_SORT\n\n    j EXIT\n\n# Takes a0 (base of array) and a1 (length of array)\nSEL_SORT:\naddi sp, sp, -8\nsw ra, 4(sp)\nsw s0, 0(sp)\n\naddi t0, x0, 0 # i\naddi t1, x0, 0 # j\naddi t2, x0, 0 # min_index\n\naddi s0, a1, 0 # store n.\naddi a1, a1, -1 # n-1\n\n# (while i < (n-1))\nUNSORTED_ARRAY_BOUNDARY_LOOP:\nbeq t0, a1, END_UNSORTED_ARRAY_BOUNDARY_LOOP\n\naddi t2, t0, 0   # min_index = i\naddi t1, t0, 1   # j = i + 1\n\nSUBARRAY_LOOP:\nbeq t1, s0, END_SUBARRAY_LOOP # (while j < n)\n\nslli t5, t1, 2  # j * sizeof(int)\nadd t6, a0, t5\nlw t4, 0(t6)    # Load arr[j]\n\nslli t5, t2, 2  # min_index * sizeof(int)\nadd t6, a0, t5  # arr[min_index]\nlw t3, 0(t6)    # Load arr[min_index] \n\n# if (arr[min_index] < arr[j]), don't change the min.\nblt t3, t4, MIN_REMAINS_SAME\naddi t2, t1,0   # min_index = j\nMIN_REMAINS_SAME:\n\naddi t1, t1, 1  # j = j + 1\nbeq x0, x0, SUBARRAY_LOOP\nEND_SUBARRAY_LOOP:\n\nslli t5, t2, 2    # min_index * sizeof(int)\nadd t6, a0, t5    # arr[min_index]\nlw t3, 0(t6)      # Load arr[min_index]  \n\nslli t1, t0, 2    # i * sizeof(int)\nadd t1, t1, a0    # arr[i] \nlw t4, 0(t1)      # Load arr[i]\n\nsw t3, 0(t1)\nsw t4, 0(t6)      # swap(&arr[min_index], &arr[i])\n\naddi t0, t0, 1 # i = i + 1\nbeq x0, x0, UNSORTED_ARRAY_BOUNDARY_LOOP\nEND_UNSORTED_ARRAY_BOUNDARY_LOOP: \n\nlw s0, 0(sp)\nlw ra, 4(sp)\naddi sp, sp, 8\njalr x0, 0(ra)\n\nEXIT:\n",
+    "memoryRadix": "signed",
+    "registerRadix": "signed",
+    "memory": "7\n3\n1\n5\n1\n5\n10\n0\n-5\n-2\n",
+    "registers": {
+        "10": "0",
+        "11": "10"
+    }
+}

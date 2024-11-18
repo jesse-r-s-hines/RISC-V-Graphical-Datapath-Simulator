@@ -1,7 +1,7 @@
 import {useState, useRef} from "react"
 import toast from 'react-hot-toast';
 
-import { examples, Example } from "./examples";
+import { examples, SimSetup } from "./examples";
 import { Radix, Bits } from "utils/bits";
 import { Simulator } from "simulator/simulator";
 import { assembleKeepLineInfo } from "assembler/assembler"
@@ -145,16 +145,14 @@ export default function SimulatorUI() {
         setState(nextState)
     }
 
-    const loadExample = async (example: Example) => {
-        if (!example.code && example.url) {
-            example.code = await fetch(example.url).then(res => res.text())
-        }
+    const loadSimSetup = async (setup: SimSetup) => {
         reset()
-        setCode(example.code ?? "")
-        setRegisters(defaultRegisters.map((reg, i) => example.registers?.[i] ?? reg))
-        setMemory(example.memory ?? "")
-        setMemoryRadix(example?.dataMemRadix ?? "hex")
-        setMemoryWordSize(example?.dataMemWordSize ?? 32)
+        setCode(setup.code ?? "")
+        setRegisters(defaultRegisters.map((reg, i) => BigInt(setup.registers?.[i] ?? reg)))
+        setRegisterRadix(setup.registerRadix ?? "hex")
+        setMemory(setup.memory ?? "")
+        setMemoryRadix(setup?.memoryRadix ?? "hex")
+        setMemoryWordSize(setup?.memoryWordSize ?? 32)
     }
 
     useInterval(() => step("play", speed == 0 ? 1000 : 1), (state == "playing") ? speed : null)
@@ -174,7 +172,11 @@ export default function SimulatorUI() {
                         memoryRadix={memoryRadix} onMemoryRadixChange={setMemoryRadix}
                         memoryWordSize={memoryWordSize} onMemoryWordSizeChange={setMemoryWordSize}
                         registers={registers} onRegistersChange={setRegisters}
-                        examples={examples} onLoadExample={loadExample}
+                        examples={examples}
+                        onLoadExample={async (example) => {
+                            const setup = await fetch(example.url).then(res => res.json() as SimSetup)
+                            loadSimSetup(setup)
+                        }}
                         tab={tab} onTabChange={setTab}
                     />
                 ) : (
@@ -194,7 +196,7 @@ export default function SimulatorUI() {
                     onPlay={() => step("play")}
                     onPause={() => { if (state == 'playing') setState("paused") }}
                     onSpeedChange={setSpeed}
-                    onClear={() => loadExample({ name: "Blank", description: "" })}
+                    onClear={() => loadSimSetup({})}
                 />
             </div>
         </div>
