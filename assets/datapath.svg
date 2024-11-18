@@ -1068,22 +1068,22 @@ text.value-label {
            sodipodi:role="line">x</tspan></text>
       <path
          class="wire"
-         d="M 298.95253,142.61825 307.598,159.017"
-         id="path1597-36"
-         sodipodi:nodetypes="cc"
-         data-mux-val="2" />
-      <path
-         class="wire"
          d="M 298.98507,175.77092 307.598,159.017"
          id="path1597-3-6-0"
          sodipodi:nodetypes="cc"
          data-mux-val="0" />
       <path
-         class="label"
+         class="wire"
          d="M 298.90787,159.07369 307.598,159.017"
          id="path1597-36-7"
          sodipodi:nodetypes="cc"
          data-mux-val="1" />
+      <path
+         class="wire"
+         d="M 298.95253,142.61825 307.598,159.017"
+         id="path1597-36"
+         sodipodi:nodetypes="cc"
+         data-mux-val="2" />
     </g>
     <g
        id="aluInputMux">
