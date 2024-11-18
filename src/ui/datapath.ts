@@ -106,18 +106,18 @@ const aluControlNames = new TruthTable([
     [["1101"], "Load upper immediate"],
 ])
 
-const aluSummaries = new TruthTable<(a: Bits, b: Bits) => string>([
-    [["0000"], (a, b) => `${a.toString("hex")} AND ${b.toString("hex")}`],
-    [["0001"], (a, b) => `${a.toString("hex")} OR ${b.toString("hex")}`],
-    [["0010"], (a, b) => `${a.toString("signed")} + ${b.toString("signed")}`],
-    [["0110"], (a, b) => `${a.toString("signed")} - ${b.toString("signed")}`],
-    [["0111"], (a, b) => `${a.toString("signed")} < ${b.toString("signed")}`],
-    [["1111"], (a, b) => `${a.toString("unsigned")} < ${b.toString("unsigned")}`],
-    [["1000"], (a, b) => `${a.toString("hex")} << ${b.toString("unsigned")}`],
-    [["1001"], (a, b) => `${a.toString("hex")} >>> ${b.toString("unsigned")}`],
-    [["1011"], (a, b) => `${a.toString("hex")} >> ${b.toString("unsigned")}`],
-    [["1100"], (a, b) => `${a.toString("hex")} XOR ${b.toString("hex")}`],
-    [["1101"], (a, b) => `LUI ${a.toString("hex")}`],
+const aluSummaries = new TruthTable<(a: Bits, b: Bits, r: Bits) => string>([
+    [["0000"], (a, b, r) => `${a.toString("hex")} AND ${b.toString("hex")} = ${r.toString("hex")}`],
+    [["0001"], (a, b, r) => `${a.toString("hex")} OR ${b.toString("hex")} = ${r.toString("hex")}`],
+    [["0010"], (a, b, r) => `${a.toString("signed")} + ${b.toString("signed")} = ${r.toString("signed")}`],
+    [["0110"], (a, b, r) => `${a.toString("signed")} - ${b.toString("signed")} = ${r.toString("signed")}`],
+    [["0111"], (a, b, r) => `${a.toString("signed")} < ${b.toString("signed")} = ${r.toString("signed")}`],
+    [["1111"], (a, b, r) => `${a.toString("unsigned")} < ${b.toString("unsigned")} = ${r.toString("unsigned")}`],
+    [["1000"], (a, b, r) => `${a.toString("hex")} << ${b.toString("unsigned")} = ${r.toString("hex")}`],
+    [["1001"], (a, b, r) => `${a.toString("hex")} >>> ${b.toString("unsigned")} = ${r.toString("hex")}`],
+    [["1011"], (a, b, r) => `${a.toString("hex")} >> ${b.toString("unsigned")} = ${r.toString("hex")}`],
+    [["1100"], (a, b, r) => `${a.toString("hex")} XOR ${b.toString("hex")} = ${r.toString("hex")}`],
+    [["1101"], (a, b, r) => `LUI ${a.toString("hex")}`],
 ])
 
 const writeSrcNames = new TruthTable([
@@ -160,7 +160,7 @@ export const riscv32DataPath: DataPath = {
         }),
         "#alu": (sim) => ({
             description: "Does arithmetic on two values.",
-            tooltip: aluSummaries.match(sim.alu.aluControl)(sim.alu.in1, sim.alu.in2),
+            tooltip: aluSummaries.match(sim.alu.aluControl)(sim.alu.in1, sim.alu.in2, sim.alu.result),
         }),
         "#dataMem": {
             description: "Stores the data the program is working with.",
