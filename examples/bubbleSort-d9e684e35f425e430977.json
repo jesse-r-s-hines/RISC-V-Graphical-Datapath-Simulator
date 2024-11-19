@@ -1,0 +1,12 @@
+{
+    "name": "Bubble Sort",
+    "description": "The bubble sort algorithm",
+    "code": "# The bubble sort algorithm\n\nmain:\n    # li a0, 0 # Base of array\n    # li a1, 10 # Length of array\n    jal ra, sort\n\n    j quit\n\nswap:\n    slli t1, a1, 2 # reg t1 = k * 4\n    add t1, a0, t1 # reg t1 = v + (k * 4)\n    lw t0, 0(t1) # reg t0 (temp) = v[k]\n    lw t2, 4(t1) # reg t2 = v[k + 1]\n    sw t2, 0(t1) # v[k] = reg t2\n    sw t0, 4(t1) # v[k + 1] = reg t0 (temp)\n    jalr x0, 0(ra) # return to calling routine\n\n# paramaters: a0: address of array, a1: length of array\nsort:\n    # Saving registers \n    addi sp, sp, -20 # make room on stack for 5 registers\n    sw ra, 16(sp) # save return address\n    sw s6, 12(sp) # save s6\n    sw s5, 8(sp) # save s5\n    sw s4, 4(sp) # save s4\n    sw s3, 0(sp) # save s3\n\n    # Procedure Body\n    mv s5, a0 # copy parameter v into s5 (address of array)\n    mv s6, a1 # copy parameter n into s6 (length of array)\n\n    li s3, 0 # i = 0\n    forI:\n    bge s3, s6, endForI # go to endForI if i >= n\n        addi s4, s3, -1 # j = i - 1\n        forJ:\n        blt s4, x0, endForJ # go to endForJ if j < 0\n            slli t0, s4, 2 # t0 = j * 4\n            add t0, s5, t0 # t0 = v + (j * 4)\n            lw t1, 0(t0) # t1 = v[j]\n            lw t2, 4(t0) # t2 = v[j + 1]\n            bge t2, t1, endForJ # go to endForJ if t1 < t2\n\n            mv a0, s5 # first swap parameter is v\n            mv a1, s4 # second swap parameter is j\n            jal ra, swap # call swap\n        addi s4, s4, -1 # j -= 1\n        j forJ\n        endForJ:\n    addi s3, s3, 1 # i += 1\n    j forI\n    endForI:\n\n    # Restoring registers\n    lw s3, 0(sp) # restore s3\n    lw s4, 4(sp) # restore s4\n    lw s5, 8(sp) # restore s5\n    lw s6, 12(sp) # restore s6\n    lw ra, 16(sp) # restore return address\n    addi sp, sp, 20 # restore stack pointer\n\n    jalr x0, 0(ra) # procedure return.\n\nquit:\n",
+    "memoryRadix": "signed",
+    "registerRadix": "signed",
+    "memory": "7\n3\n1\n5\n1\n5\n10\n0\n-5\n-2\n",
+    "registers": {
+        "10": "0",
+        "11": "10"
+    }
+}
