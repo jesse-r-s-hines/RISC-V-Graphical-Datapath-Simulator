@@ -5,6 +5,8 @@
     min-height: 0; /* Have to set min-height 0 or flexbox won't overflow and make scrollbars */
 }
 
+
+/** Address Table */
 .address-table {
     font-family: monospace;
     font-size: 110%;
@@ -40,6 +42,28 @@
 .address-table td:nth-child(1)[colspan] {
     text-align: center;
 }
+
+
+/** Button Styling */
+.btn.icon-button {
+    transition: transform 50ms ease-in-out;
+    margin-right: 2px;
+    margin-left: 2px;
+    border: inherit;
+}
+
+.btn.icon-button:hover {
+    transform: scale(1.25);
+}
+
+.btn.icon-button:active {
+    transform: scale(1.1);
+}
+
+.btn.icon-button:focus {
+    box-shadow: none; /* After click it was showing outline until you clicked somewhere else. */
+}
+
 
 /** Library Styling */
 

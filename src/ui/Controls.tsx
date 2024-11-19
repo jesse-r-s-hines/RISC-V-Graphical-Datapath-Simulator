@@ -45,23 +45,32 @@ export default function Controls({state, speed, ...props}: Props) {
         <div className={`${css.controls} card`}>
             <div className="card-body d-flex flex-row">
                 {(state == "playing") ? (
-                    <Button variant="" size="sm" title="Pause Simulation" onClick={props.onPause}>
+                    <Button variant="" size="sm" className="icon-button" title="Pause Simulation"
+                        onClick={props.onPause}
+                    >
                         <Icon icon={faPause} className={`${css.icon} text-warning`}/>
                     </Button>
                 ) : (<>
-                    <Button variant="" size="sm" title="Run Simulation" disabled={state == "done"} onClick={props.onPlay}>
+                    <Button variant="" size="sm" className="icon-button" title="Run Simulation"
+                        disabled={state == "done"} onClick={props.onPlay}
+                    >
                         <Icon icon={faPlay} className={`${css.icon} text-success`}/>
                     </Button>
-                    <Button variant="" size="sm" title="Step Simulation" disabled={state == "done"} onClick={props.onStep}>
+                    <Button variant="" size="sm" className="icon-button" title="Step Simulation"
+                        disabled={state == "done"} onClick={props.onStep}
+                    >
                         <Icon icon={faStepForward} className={`${css.icon} text-success`}/>
                     </Button>
                 </>)}
                 {(state == "unstarted") ? (
-                    <Button variant="" size="sm" title="Clear Editors" onClick={props.onClear}>
+                    <Button variant="" size="sm" className="icon-button" title="Clear Editors"
+                        onClick={props.onClear}
+                    >
                         <Icon icon={faEraser} className={`${css.icon} text-danger`}/>
                     </Button>
                 ) : (
-                    <Button variant="" size="sm" title="Reset Simulation" onClick={props.onReset}>
+                    <Button variant="" size="sm" className="icon-button" title="Reset Simulation"
+                        onClick={props.onReset}>
                         <Icon icon={faSync} className={`${css.icon} text-danger`}/>
                     </Button>
                 )}
@@ -75,7 +84,9 @@ export default function Controls({state, speed, ...props}: Props) {
                     ) : ""}
                 </div>
   
-                <Button variant="" size="sm" title="Help / About" onClick={() => setShowHelp(true)}>
+                <Button variant="" size="sm" className="icon-button" title="Help / About"
+                    onClick={() => setShowHelp(true)}
+                >
                     <Icon icon={faQuestionCircle} className={`${css.icon} text-info`}/>
                 </Button>
             </div>

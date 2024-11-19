@@ -1,22 +1,3 @@
-.controls button {
-    transition: transform 50ms ease-in-out;
-    margin-right: 2px;
-    margin-left: 2px;
-    border: inherit;
-}
-
-.controls button:hover {
-    transform: scale(1.25);
-}
-
-.controls button:active {
-    transform: scale(1.1);
-}
-
-.controls button:focus {
-    box-shadow: none; /* After click it was showing outline until you clicked somewhere else. */
-}
-
 .controls input[type="range"] {
     height: 100%;
     padding: 0 5%; /* Some left/right padding */
