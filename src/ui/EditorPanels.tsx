@@ -1,8 +1,10 @@
-import {useEffect, useState} from "react"
-import {Tab, Nav, NavDropdown} from 'react-bootstrap';
+import { useEffect, useState } from "react"
+import { Tab, Nav, NavDropdown, Button } from 'react-bootstrap';
 import CodeMirror from '@uiw/react-codemirror';
 import { bbedit } from '@uiw/codemirror-theme-bbedit';
 import { lineNumbers } from "@codemirror/view"
+import { FontAwesomeIcon as Icon } from '@fortawesome/react-fontawesome'
+import { faDownload, faUpload } from '@fortawesome/free-solid-svg-icons'
 
 import { riscv as riscvLang } from './riscvLang';
 import { Radix, bits, Bits } from "utils/bits"
@@ -164,6 +166,8 @@ export function MemoryEditor({memory, memoryRadix, memoryWordSize, ...props}: Da
 type Props = {
     examples: Example[],
     onLoadExample?: (example: Example) => void,
+    onExport?: () => void,
+    onImport?: () => void,
     tab: SimTab, onTabChange?: (tab: SimTab) => void,
 } & CodeEditorProps & RegisterEditorProps & DataEditorProps & StyleProps
 
@@ -176,8 +180,8 @@ export default function EditorPanels(props: Props) {
                     <Nav.Item><Nav.Link eventKey="code">Code</Nav.Link></Nav.Item>
                     <Nav.Item><Nav.Link eventKey="registers">Registers</Nav.Link></Nav.Item>
                     <Nav.Item><Nav.Link eventKey="memory">Memory</Nav.Link></Nav.Item>
-                    <Nav.Item className="ms-auto">
-                        <NavDropdown title="Load Example" className="popper-warning-fix">
+                    <Nav.Item className="ms-auto d-flex flex-row flex-nowrap">
+                        <NavDropdown title="Examples" className="popper-warning-fix">
                             {props.examples.map(example => (
                                 <NavDropdown.Item key={example.name} title={example.description}
                                     onClick={() => props.onLoadExample?.(example)}
@@ -186,6 +190,16 @@ export default function EditorPanels(props: Props) {
                                 </NavDropdown.Item>
                             ))}
                         </NavDropdown>
+                        <Button variant="" size="sm" className="icon-button" title="Export Sim Setup"
+                            onClick={props.onImport}
+                        >
+                            <Icon icon={faUpload} className={`${css.icon} text-secondary`}/>
+                        </Button>
+                        <Button variant="" size="sm" className="icon-button" title="Export Sim Setup"
+                            onClick={props.onExport}
+                        >
+                            <Icon icon={faDownload} className={`${css.icon} text-secondary`}/>
+                        </Button>
                     </Nav.Item>
                 </Nav>
                 <Tab.Content className="flex-grow-overflow">

@@ -11,6 +11,11 @@
     color: inherit; /* Don't color the nav links as links */
 }
 
+/** Reduce padding on the examples and import/export buttons */
+.editorPanels :global(.dropdown-toggle) {
+    padding-right: 0.5rem;
+}
+
 .codeEditor {
 }
 

@@ -155,6 +155,41 @@ export default function SimulatorUI() {
         setMemoryWordSize(setup?.memoryWordSize ?? 32)
     }
 
+    const importSimSetup = async () => {
+        const input = document.createElement("input")
+        input.setAttribute("type", "file");
+        input.addEventListener('change', async (event: any) => {
+            let setup: SimSetup
+            try {
+                setup = JSON.parse(await event.target.files[0].text())
+            } catch {
+                error("Invalid import file")
+                return
+            }
+            loadSimSetup(setup)
+            toast.success("Imported simulation setup", {duration: 2000})
+        }, false)
+        input.click()
+        input.remove()
+    }
+
+    const exportSimSetup = () => {
+        const setup: SimSetup = {
+            code: code,
+            memory: memory,
+            registers: Object.fromEntries(registers.map((v, i) => [i, `${v}`])),
+            memoryRadix: memoryRadix,
+            memoryWordSize: memoryWordSize,
+            registerRadix: registerRadix,
+        }
+
+        var link = document.createElement("a");
+        link.download = `risc-v-simulation-setup-${new Date().toISOString().replace(/[\-:.]/g, "")}.json`;
+        link.href = `data:application/json;base64,${btoa(JSON.stringify(setup, undefined, 4))}`;
+        link.click();
+        link.remove();
+    }
+
     useInterval(() => step("play", speed == 0 ? 1000 : 1), (state == "playing") ? speed : null)
 
     return (
@@ -172,12 +207,13 @@ export default function SimulatorUI() {
                         memoryRadix={memoryRadix} onMemoryRadixChange={setMemoryRadix}
                         memoryWordSize={memoryWordSize} onMemoryWordSizeChange={setMemoryWordSize}
                         registers={registers} onRegistersChange={setRegisters}
+                        tab={tab} onTabChange={setTab}
                         examples={examples}
                         onLoadExample={async (example) => {
                             const setup = await fetch(example.url).then(res => res.json() as SimSetup)
                             loadSimSetup(setup)
                         }}
-                        tab={tab} onTabChange={setTab}
+                        onImport={importSimSetup} onExport={exportSimSetup}
                     />
                 ) : (
                     <ViewPanels className="flex-grow-overflow"
