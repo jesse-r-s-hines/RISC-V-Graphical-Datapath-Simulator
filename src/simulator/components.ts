@@ -44,6 +44,7 @@ export class Control {
         [["1100011"], [     0,     b`00`,         0, b`001`]], // branch
         [["110X111"], [     0,     b`10`,         1, b`000`]], // jal/jalr
         [["0110111"], [     1,     b`00`,         1, b`100`]], // lui
+        [["0010111"], [     0,     b`11`,         1, b`000`]], // auipc
     ])
 
     private static memTable = new TruthTable<[Bit, Bit, Bit, Bits]>([
@@ -335,7 +336,6 @@ export class JumpControl {
 /**
  * Just an adder, but word-aligns the output (to 2-byte words).
  * RISC-V JALR drops the lowest bit of the calculated address.
- * 
  */
 export class BranchAdder {
     // input
@@ -351,6 +351,27 @@ export class BranchAdder {
         this.result = bits(resultInt, 33).slice(0, 32).set(0, 0)
     }
 }
+
+
+/**
+ * Implements the auipc instruction. This component isn't rendered to keep the datapath concise.
+ * There's probably better ways to do this, but I didn't want to modify the rest of the datapath or the datapath
+ * diagram.
+ */
+export class AuipcAdder {
+    // input
+    public pc: Bits = bits(0n, 32)
+    public imm: Bits = bits(0n, 32)
+
+    // output
+    public result = bits(0n, 32)
+
+    tick() {
+        const resultInt = this.pc.toInt() + (this.imm.toInt(true) << 12n)
+        this.result = bits(resultInt, 33).slice(0, 32) // give room for overflow, then discard extra
+    }
+}
+
 
 export class And {
     // input

@@ -1,6 +1,6 @@
 # RISC-V Graphical Datapath Simulator
 
-This is a web-based graphical simulator for a simple 32-bit, single-cycle implementation of RISC-V. The simulator lets you step through a RISC-V program and view the current values of wires and components on the datapath and explanations of what each of the datapath components do. This is very useful for teaching or learning about the RISC-V datapath. All the 32-bit integer instructions are supported except the syscall and concurrency related instructions and `auipc`. The datapath is closely based on the design described in *Computer Organization and Design RISC-V Edition*.
+This is a web-based graphical simulator for a simple 32-bit, single-cycle implementation of RISC-V. The simulator lets you step through a RISC-V program and view the current values of wires and components on the datapath and explanations of what each of the datapath components do. This is very useful for teaching or learning about the RISC-V datapath. All the 32-bit integer instructions are supported except the syscall and concurrency related instructions. The datapath is closely based on the design described in *Computer Organization and Design RISC-V Edition*.
 
 ## Online Demo
 ![Screenshot](docs/Screenshot.png)

@@ -21,6 +21,7 @@ export class Simulator {
     public jalrMux: Comp.Mux
     public branchAdder: Comp.BranchAdder
     public jumpControl: Comp.JumpControl
+    public auipcAdder: Comp.AuipcAdder // This isn't rendered
 
     public pcMux: Comp.Mux
     public aluInputMux: Comp.Mux
@@ -42,10 +43,11 @@ export class Simulator {
         this.jalrMux = new Comp.Mux(2, 32)
         this.branchAdder = new Comp.BranchAdder()
         this.jumpControl = new Comp.JumpControl()
+        this.auipcAdder = new Comp.AuipcAdder()
         
         this.pcMux = new Comp.Mux(2, 32)
         this.aluInputMux = new Comp.Mux(2, 32)
-        this.writeSrcMux = new Comp.Mux(3, 32)
+        this.writeSrcMux = new Comp.Mux(4, 32)
 
         this.pc.data = Simulator.textStart
         this.setRegisters({2: 0xBFFFFFF0n, 3: 0x10008000n}) // sp and gp
@@ -152,6 +154,10 @@ export class Simulator {
         this.jumpControl.zero = this.alu.zero
         this.jumpControl.tick()
 
+        this.auipcAdder.pc = this.pc.out
+        this.auipcAdder.imm = this.immGen.immediate
+        this.auipcAdder.tick()
+
         this.pcMux.in[0] = this.pcAdd4.result
         this.pcMux.in[1] = this.branchAdder.result
         this.pcMux.select = bits(this.jumpControl.takeBranch, 1)
@@ -160,6 +166,7 @@ export class Simulator {
         this.writeSrcMux.in[0] = this.alu.result
         this.writeSrcMux.in[1] = this.dataMem.readData
         this.writeSrcMux.in[2] = this.pcAdd4.result
+        this.writeSrcMux.in[3] = this.auipcAdder.result
         this.writeSrcMux.select = this.control.writeSrc
         this.writeSrcMux.tick()
 

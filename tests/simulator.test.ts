@@ -310,14 +310,24 @@ describe("Branch", () => {
         testCode(code, {28: 0x0000_0004n}, {5: 0x0000_0004n, 6: 1n, 7: 0n})
     })
 
-    // it('auipc', () => {
-    //     let code = `
-    //         addi zero, zero, 0
-    //         addi zero, zero, 0
-    //         auipc x5, 0xFFF0F # PC starts at 0x0001_0000
-    //     `
-    //     testCode(code, {}, {5: 0xFFF1_F008n})
-    // })
+    it('auipc', () => {
+        let code = `
+            addi zero, zero, 0
+            addi zero, zero, 0
+            auipc x5, 0x0FF0F
+        `
+        testCode(code, {}, {5: 0x0FF0_F008n})
+
+        code = `
+            addi zero, zero, 0
+            addi zero, zero, 0
+            addi zero, zero, 0
+            addi zero, zero, 0
+            addi zero, zero, 0
+            auipc x5, 0x80001 # Negative number
+        `
+        testCode(code, {}, {5: 0x8000_1014n})
+    })
 })
 
 describe("Memory", () => {

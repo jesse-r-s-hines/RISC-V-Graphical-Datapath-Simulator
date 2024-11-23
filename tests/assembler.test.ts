@@ -9,7 +9,7 @@ function assembleExpect(program: string, expected: bigint[]) {
     expect(actual, program).to.eql(expectedStr)
 }
 
-// TODO test farther labels and big immediates
+// TODO test further labels and big immediates
 describe('Basic All Types', () => {
     it("R-type", () => {
         let code = `add x0, x1, x2`;

@@ -106,6 +106,11 @@ const instrRules: Rule[]  = [
         format: "basic",
         signature: ["id", "num"],
         conv: (op, [rd, imm], line) => ({type: "I", op: "addi", rd, rs1: "zero", imm, line}),
+    }, {
+        instructions: ["auipc"],
+        format: "basic",
+        signature: ["id", "num"],
+        conv: (op, [rd, imm], line) => ({type: "U", op, rd, imm, line}),
     },
 ]
 
