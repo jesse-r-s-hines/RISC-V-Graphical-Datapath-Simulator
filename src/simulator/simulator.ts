@@ -130,6 +130,7 @@ export class Simulator {
         this.dataMem.writeData = this.regFile.readData2
         this.dataMem.memRead = this.control.memRead
         this.dataMem.memWrite = this.control.memWrite
+        // These last two aren't rendered in the datapath
         this.dataMem.signed = this.control.memSigned
         this.dataMem.size = this.control.memSize
         this.dataMem.tick()
@@ -154,6 +155,7 @@ export class Simulator {
         this.jumpControl.zero = this.alu.zero
         this.jumpControl.tick()
 
+        // Not rendered in datapath
         this.auipcAdder.pc = this.pc.out
         this.auipcAdder.imm = this.immGen.immediate
         this.auipcAdder.tick()
