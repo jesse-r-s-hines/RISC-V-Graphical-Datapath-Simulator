@@ -117,7 +117,7 @@ const aluSummaries = new TruthTable<(a: Bits, b: Bits, r: Bits) => string>([
     [["1001"], (a, b, r) => `${a.toString("hex")} >>> ${b.toString("unsigned")} = ${r.toString("hex")}`],
     [["1011"], (a, b, r) => `${a.toString("hex")} >> ${b.toString("unsigned")} = ${r.toString("hex")}`],
     [["1100"], (a, b, r) => `${a.toString("hex")} XOR ${b.toString("hex")} = ${r.toString("hex")}`],
-    [["1101"], (a, b, r) => `LUI ${a.toString("hex")}`],
+    [["1101"], (a, b, r) => `LUI ${b.toString("hex")} << 12`],
 ])
 
 const writeSrcNames = new TruthTable([
