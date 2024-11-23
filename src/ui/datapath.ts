@@ -82,6 +82,7 @@ const opCodeNames = new TruthTable([
     [["1100111"], "jalr"],
     [["1101111"], "jal"],
     [["0110111"], "lui"],
+    [["0010111"], "auipc"],
 ])
 
 const aluOpNames = new TruthTable([
@@ -120,10 +121,11 @@ const aluSummaries = new TruthTable<(a: Bits, b: Bits, r: Bits) => string>([
     [["1101"], (a, b, r) => `LUI ${b.toString("hex")} << 12`],
 ])
 
-const writeSrcNames = new TruthTable([
-    [["00"], "ALU result"],
-    [["01"], "memory result"],
-    [["10"], "PC + 4"],
+const writeSrcDescriptions = new TruthTable([
+    [["00"], "write ALU result to register"],
+    [["01"], "write memory result to register"],
+    [["10"], "write PC + 4 to register"],
+    [["11"], "PC + upper imm to register (auipc)"],
 ])
 
 
@@ -256,7 +258,7 @@ export const riscv32DataPath: DataPath = {
         }),
         "#control-writeSrc": (sim) => ({
             description: "WriteSrc: What to write to the register file.",
-            tooltip: `${sim.control.writeSrc.toString("unsigned")} (write ${writeSrcNames.match(sim.control.writeSrc)} to register)`,
+            tooltip: `${sim.control.writeSrc.toString("unsigned")} (${writeSrcDescriptions.match(sim.control.writeSrc)})`,
             powered: sim.control.writeSrc.toInt() != 0n,
             label: sim.control.writeSrc.toString("unsigned"),
         }),
