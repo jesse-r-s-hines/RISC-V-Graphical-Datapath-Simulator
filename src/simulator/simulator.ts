@@ -10,7 +10,6 @@ export class Simulator {
     public pc: Comp.PC
     public instrMem: Comp.InstructionMemory
     public instrSplit: Comp.InstructionSplitter
-    public memControl: Comp.MemoryControl // We don't render this to keep things simple
     public dataMem: Comp.DataMemory
     public regFile: Comp.RegisterFile
     public control: Comp.Control
@@ -32,7 +31,6 @@ export class Simulator {
         this.pc = new Comp.PC()
         this.instrMem = new Comp.InstructionMemory()
         this.instrSplit = new Comp.InstructionSplitter()
-        this.memControl = new Comp.MemoryControl()
         this.dataMem = new Comp.DataMemory()
         this.regFile = new Comp.RegisterFile()
         this.control = new Comp.Control()
@@ -126,15 +124,12 @@ export class Simulator {
         this.alu.aluControl = this.aluControl.aluControl
         this.alu.tick()
 
-        this.memControl.funct3 = this.instrSplit.funct3
-        this.memControl.tick()
-
         this.dataMem.address = this.alu.result
         this.dataMem.writeData = this.regFile.readData2
         this.dataMem.memRead = this.control.memRead
         this.dataMem.memWrite = this.control.memWrite
-        this.dataMem.signed = this.memControl.signed
-        this.dataMem.size = this.memControl.size
+        this.dataMem.signed = this.control.memSigned
+        this.dataMem.size = this.control.memSize
         this.dataMem.tick()
 
         this.pcAdd4.aluControl = b`0010` // add

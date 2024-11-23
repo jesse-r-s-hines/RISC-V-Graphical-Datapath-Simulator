@@ -27,36 +27,52 @@ export class Control {
     public regWrite: Bit = 0
     public memRead: Bit = 0
     public memWrite: Bit = 0
+    public memSigned: Bit = 0 // This wire isn't rendered
+    public memSize = bits(0n, 2) // This wire isn't rendered
     public branchZero: Bit = 0
     public branchNotZero: Bit = 0
     public jump: Bit = 0
     public jalr: Bit = 0
     public aluOp = bits(0n, 3)
 
-    private static table = new TruthTable<[Bit, Bits, Bit, Bit, Bit, Bits]>([
-        //  opcode   | aluSrc | writeSrc | regWrite | memRead | memWrite |  aluOp |
-        [["0110011"], [  0,      b`00`,       1,         0,        0,      b`010`]], // R-format
-        [["0010011"], [  1,      b`00`,       1,         0,        0,      b`011`]], // I-format
-        [["0000011"], [  1,      b`01`,       1,         1,        0,      b`000`]], // ld
-        [["0100011"], [  1,      b`00`,       0,         0,        1,      b`000`]], // st
-        [["1100011"], [  0,      b`00`,       0,         0,        0,      b`001`]], // branch
-        [["110X111"], [  0,      b`10`,       1,         0,        0,      b`000`]], // jal/jalr (Don't care aluOp)
-        [["0110111"], [  1,      b`00`,       1,         0,        0,      b`100`]], // lui
+    private static generalTable = new TruthTable<[Bit, Bits, Bit, Bits]>([
+        // opcode   | aluSrc | writeSrc | regWrite | aluOp |
+        [["0110011"], [     0,     b`00`,         1, b`010`]], // R-format
+        [["0010011"], [     1,     b`00`,         1, b`011`]], // I-format
+        [["0000011"], [     1,     b`01`,         1, b`000`]], // lb/lh/lw/lbu/lhu
+        [["0100011"], [     1,     b`00`,         0, b`000`]], // sb/sh/sw
+        [["1100011"], [     0,     b`00`,         0, b`001`]], // branch
+        [["110X111"], [     0,     b`10`,         1, b`000`]], // jal/jalr
+        [["0110111"], [     1,     b`00`,         1, b`100`]], // lui
+    ])
+
+    private static memTable = new TruthTable<[Bit, Bit, Bit, Bits]>([
+        // opcode  | funct3 | memRead | memWrite | memSigned | memSize |
+        [["0000011", "000" ], [      1,         0,          1,    b`00`]], // lb
+        [["0000011", "001" ], [      1,         0,          1,    b`01`]], // lh
+        [["0000011", "010" ], [      1,         0,          1,    b`10`]], // lw
+        [["0000011", "100" ], [      1,         0,          0,    b`00`]], // lbu
+        [["0000011", "101" ], [      1,         0,          0,    b`01`]], // lhu
+        [["0100011", "000" ], [      0,         1,          1,    b`00`]], // sb
+        [["0100011", "001" ], [      0,         1,          1,    b`01`]], // sh
+        [["0100011", "010" ], [      0,         1,          1,    b`10`]], // sw
+        [["XXXXXXX", "XXX" ], [      0,         0,          0,    b`00`]], // sw
     ])
 
     private static branchTable = new TruthTable<[Bit, Bit, Bit, Bit]>([
-        // opcode  | funct3 | branchZero | branchNotZero | jump | jalr
-        [["1100011", "000"], [     1,           0,          0,     0]], // beq
-        [["1100011", "1X1"], [     1,           0,          0,     0]], // bge, bgeu
-        [["1100011", "001"], [     0,           1,          0,     0]], // bne
-        [["1100011", "1X0"], [     0,           1,          0,     0]], // blt, bltu
-        [["1101111", "XXX"], [     0,           0,          1,     0]], // jal
-        [["1100111", "000"], [     0,           0,          1,     1]], // jalr
-        [["XXXXXXX", "XXX"], [     0,           0,          0,     0]], // not a branch
+        // opcode  | funct3 | branchZero | branchNotZero | jump | jalr |
+        [["1100011", "000" ], [         1,              0,     0,     0]], // beq
+        [["1100011", "1X1" ], [         1,              0,     0,     0]], // bge, bgeu
+        [["1100011", "001" ], [         0,              1,     0,     0]], // bne
+        [["1100011", "1X0" ], [         0,              1,     0,     0]], // blt, bltu
+        [["1101111", "XXX" ], [         0,              0,     1,     0]], // jal
+        [["1100111", "000" ], [         0,              0,     1,     1]], // jalr
+        [["XXXXXXX", "XXX" ], [         0,              0,     0,     0]], // not a branch
     ])
 
     public tick() {
-        [this.aluSrc, this.writeSrc, this.regWrite, this.memRead, this.memWrite, this.aluOp] = Control.table.match(this.opCode);
+        [this.aluSrc, this.writeSrc, this.regWrite, this.aluOp] = Control.generalTable.match(this.opCode);
+        [this.memRead, this.memWrite, this.memSigned, this.memSize] = Control.memTable.match(this.opCode, this.funct3);
         [this.branchZero, this.branchNotZero, this.jump, this.jalr] = Control.branchTable.match(this.opCode, this.funct3)
     }
 }
@@ -259,33 +275,6 @@ export class InstructionSplitter {
 
 }
 
-/**
- * Chooses between signed/unsigned and byte/half-word/word
- * This component won't be rendered to keep the animation simpler.
- * Doesn't worry about whether we are actually using memory this cycle, since memRead/memWrite will be off
- * anyways.
- */
-export class MemoryControl {
-    // inputs
-    public funct3 = bits(0n, 3)
-
-    // outputs
-    public size = bits(0n, 2)
-    public signed: Bit = 0
-
-    private static table = new TruthTable<[Bits, Bit]>([
-        [["000"], [b`00`, 1]], // lb/sb
-        [["001"], [b`01`, 1]], // lh/sh
-        [["010"], [b`10`, 1]], // lw/sw
-        [["100"], [b`00`, 0]], // lbu
-        [["101"], [b`01`, 0]], // lhu
-        [["XXX"], [b`00`, 0]], // don't care
-    ])
-
-    tick() {
-        [this.size, this.signed] = MemoryControl.table.match(this.funct3)
-    }
-}
 
 export class DataMemory {
     // inputs
