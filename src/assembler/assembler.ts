@@ -45,67 +45,67 @@ const instrRules: Rule[]  = [
         instructions: ["add", "sub", "and", "or", "xor", "sll", "sra", "srl", "slt", "sltu"],
         format: "basic",
         signature: ["id", "id", "id"],
-        conv: (op, [rd, rs1, rs2], line) => ({type: "R", op: op, rd: rd, rs1: rs1, rs2: rs2, line: line}),
+        conv: (op, [rd, rs1, rs2], line) => ({type: "R", op, rd, rs1, rs2, line}),
     }, {
         instructions: ["addi", "andi", "ori", "xori", "slti", "sltiu"],
         format: "basic",
         signature: ["id", "id", "num"],
-        conv: (op, [rd, rs1, imm], line) => ({type: "I", op: op, rd: rd, rs1: rs1, imm: imm, line: line}),
+        conv: (op, [rd, rs1, imm], line) => ({type: "I", op, rd, rs1, imm, line}),
     }, {
         instructions: ["slli", "srai", "srli"], // shifts are stored as a specialized I-format, 
         format: "basic",
         signature: ["id", "id", "num"],
-        conv: (op, [rd, rs1, imm], line) => ({type: "IS", op: op, rd: rd, rs1: rs1, imm: imm, line: line}),
+        conv: (op, [rd, rs1, imm], line) => ({type: "IS", op, rd, rs1, imm, line}),
     }, {
         instructions: ["beq", "bge", "bgeu", "blt", "bltu", "bne"],
         format: "basic",
         signature: ["id", "id", "id"],
-        conv: (op, [rs1, rs2, label], line) => ({type: "SB", op: op, rs1: rs1, rs2: rs2, imm: label, line: line}),
+        conv: (op, [rs1, rs2, label], line) => ({type: "SB", op, rs1, rs2, imm: label, line}),
     }, {
         instructions: ["jal"],
         format: "basic",
         signature: ["id", "id"],
-        conv: (op, [rd, label], line) => ({type: "UJ", op: op, rd: rd, imm: label, line: line}),
+        conv: (op, [rd, label], line) => ({type: "UJ", op, rd, imm: label, line}),
     }, {
         instructions: ["j"],
         format: "basic",
         signature: ["id"],
-        conv: (op, [label], line) => ({type: "UJ", op: "jal", rd: "zero", imm: label, line: line}),
+        conv: (op, [label], line) => ({type: "UJ", op: "jal", rd: "zero", imm: label, line}),
     }, {
         instructions: ["lui"],
         format: "basic",
         signature: ["id", "num"],
-        conv: (op, [rd, imm], line) => ({type: "U", op: op, rd: rd, imm: imm, line: line}),
+        conv: (op, [rd, imm], line) => ({type: "U", op, rd, imm, line}),
     }, {
         instructions: ["lb", "lbu", "lh", "lhu", "lw", "jalr"],
         format: "displacement",
         signature: ["id", "num", "id"],
-        conv: (op, [rd, imm, rs1], line) => ({type: "I", op: op, rd: rd, rs1: rs1, imm: imm, line: line}),
+        conv: (op, [rd, imm, rs1], line) => ({type: "I", op, rd, rs1, imm, line}),
     }, {
         instructions: ["sb","sh", "sw"],
         format: "displacement",
         signature: ["id", "num", "id"],
-        conv: (op, [rs2, imm, rs1], line) => ({type: "S", op: op, rs1: rs1, rs2: rs2, imm: imm, line: line}),
+        conv: (op, [rs2, imm, rs1], line) => ({type: "S", op, rs1, rs2, imm, line}),
     }, {
         instructions: ["jal"],
         format: "basic",
         signature: ["id", "id"],
-        conv: (op, [rd, label], line) => ({type: "UJ", op: op, rd: rd, imm: label, line: line}),
+        conv: (op, [rd, label], line) => ({type: "UJ", op, rd, imm: label, line}),
     }, {
         instructions: ["jal"],
         format: "basic",
         signature: ["id"],
-        conv: (op, [label], line) => ({type: "UJ", op: op, rd: "ra", imm: label, line: line}),
+        conv: (op, [label], line) => ({type: "UJ", op, rd: "ra", imm: label, line}),
     }, {
         instructions: ["mv"],
         format: "basic",
         signature: ["id", "id"],
-        conv: (op, [rd, rs1], line) => ({type: "I", op: "addi", rd: rd, rs1: rs1, imm: 0, line: line}),
+        conv: (op, [rd, rs1], line) => ({type: "I", op: "addi", rd, rs1, imm: 0, line}),
     }, {
         instructions: ["li"], // Does not support greater than 12-bit immediates. You have to `lui` and `li` yourself
         format: "basic",
         signature: ["id", "num"],
-        conv: (op, [rd, imm], line) => ({type: "I", op: "addi", rd: rd, rs1: "zero", imm: imm, line: line}),
+        conv: (op, [rd, imm], line) => ({type: "I", op: "addi", rd, rs1: "zero", imm, line}),
     },
 ]
 
