@@ -88,30 +88,30 @@ export class ALUControl {
     public aluControl = bits(0n, 4)
 
     private static table = new TruthTable([
-        // ALUOp |  funct7  | funct3 |   ALUControl // instr  -> op
-        [[ "000",  "XXXXXXX", "XXX"  ],   b`0010`], // memory -> add
+        // ALUOp |  funct7  | funct3 | ALUControl |  // instr  -> op
+        [[  "000", "XXXXXXX",  "XXX" ],    b`0010`], // memory -> add
 
-        [[ "001",  "XXXXXXX", "00X"  ],   b`0110`], // beq/bne   -> sub
-        [[ "001",  "XXXXXXX", "10X"  ],   b`0111`], // blt/bge   -> slt
-        [[ "001",  "XXXXXXX", "11X"  ],   b`1111`], // bltu/bgeu -> sltu
+        [[  "001", "XXXXXXX",  "00X" ],    b`0110`], // beq/bne   -> sub
+        [[  "001", "XXXXXXX",  "10X" ],    b`0111`], // blt/bge   -> slt
+        [[  "001", "XXXXXXX",  "11X" ],    b`1111`], // bltu/bgeu -> sltu
 
-        [[ "010",  "0000000", "000"  ],   b`0010`], // add    -> add
-        [[ "011",  "XXXXXXX", "000"  ],   b`0010`], // addi   -> add
-        [[ "010",  "0100000", "000"  ],   b`0110`], // sub    -> sub
-        [[ "010",  "0000000", "111"  ],   b`0000`], // and    -> AND
-        [[ "011",  "XXXXXXX", "111"  ],   b`0000`], // andi   -> AND
-        [[ "010",  "0000000", "110"  ],   b`0001`], // or     -> OR
-        [[ "011",  "XXXXXXX", "110"  ],   b`0001`], // ori    -> OR
-        [[ "010",  "0000000", "100"  ],   b`1100`], // xor    -> XOR
-        [[ "011",  "XXXXXXX", "100"  ],   b`1100`], // xori   -> XOR
-        [[ "010",  "0000000", "010"  ],   b`0111`], // slt    -> slt
-        [[ "011",  "XXXXXXX", "010"  ],   b`0111`], // slti   -> slt
-        [[ "010",  "0000000", "011"  ],   b`1111`], // sltu   -> sltu
-        [[ "011",  "XXXXXXX", "011"  ],   b`1111`], // sltiu  -> sltu
-        [[ "01X",  "0000000", "001"  ],   b`1000`], // sll(i) -> sll
-        [[ "01X",  "0000000", "101"  ],   b`1001`], // srl(i) -> srl
-        [[ "01X",  "0100000", "101"  ],   b`1011`], // sra(i) -> sra
-        [[ "100",  "XXXXXXX", "XXX"  ],   b`1101`], // lui    -> lui
+        [[  "010", "0000000",  "000" ],    b`0010`], // add    -> add
+        [[  "011", "XXXXXXX",  "000" ],    b`0010`], // addi   -> add
+        [[  "010", "0100000",  "000" ],    b`0110`], // sub    -> sub
+        [[  "010", "0000000",  "111" ],    b`0000`], // and    -> AND
+        [[  "011", "XXXXXXX",  "111" ],    b`0000`], // andi   -> AND
+        [[  "010", "0000000",  "110" ],    b`0001`], // or     -> OR
+        [[  "011", "XXXXXXX",  "110" ],    b`0001`], // ori    -> OR
+        [[  "010", "0000000",  "100" ],    b`1100`], // xor    -> XOR
+        [[  "011", "XXXXXXX",  "100" ],    b`1100`], // xori   -> XOR
+        [[  "010", "0000000",  "010" ],    b`0111`], // slt    -> slt
+        [[  "011", "XXXXXXX",  "010" ],    b`0111`], // slti   -> slt
+        [[  "010", "0000000",  "011" ],    b`1111`], // sltu   -> sltu
+        [[  "011", "XXXXXXX",  "011" ],    b`1111`], // sltiu  -> sltu
+        [[  "01X", "0000000",  "001" ],    b`1000`], // sll(i) -> sll
+        [[  "01X", "0000000",  "101" ],    b`1001`], // srl(i) -> srl
+        [[  "01X", "0100000",  "101" ],    b`1011`], // sra(i) -> sra
+        [[  "100", "XXXXXXX",  "XXX" ],    b`1101`], // lui    -> lui
     ])
 
     tick() {
