@@ -217,6 +217,27 @@ text.value-label {
        height="241.3898"
        x="0"
        y="1.1471907e-05" />
+    <g
+       class="wires"
+       id="control-ecall">
+      <path
+         class="wire"
+         style="marker-start:url(#Junction)"
+         d="m 123.20621,42.238088 0.0387,16.165581"
+         id="path17"
+         sodipodi:nodetypes="cc" />
+      <text
+         class="value-label"
+         xml:space="preserve"
+         x="123.22873"
+         y="51.644066"
+         id="text711-6-1-5"><tspan
+           sodipodi:role="line"
+           id="tspan709-4-3-3"
+           x="123.22873"
+           y="51.644066"
+           style="text-anchor:middle">Label</tspan></text>
+    </g>
   </g>
   <g
      inkscape:groupmode="layer"
@@ -368,12 +389,12 @@ text.value-label {
       <text
          class="value-label"
          xml:space="preserve"
-         x="121.45955"
+         x="148.97595"
          y="20.96104"
          id="text711-6-6-5-6-8-6-9-2-6"><tspan
            sodipodi:role="line"
            id="tspan709-4-2-8-2-4-2-9-0-6"
-           x="121.45955"
+           x="148.97595"
            y="20.96104"
            style="text-anchor:middle">Label</tspan></text>
     </g>

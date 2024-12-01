@@ -83,6 +83,7 @@ const opCodeNames = new TruthTable([
     [["1101111"], "jal"],
     [["0110111"], "lui"],
     [["0010111"], "auipc"],
+    [["1110011"], "ecall/ebreak"],
 ])
 
 const aluOpNames = new TruthTable([
@@ -128,6 +129,11 @@ const writeSrcDescriptions = new TruthTable([
     [["11"], "PC + upper imm to register (auipc)"],
 ])
 
+const ecallDescriptions = new TruthTable([
+    [["00"], "no syscall"],
+    [["01"], "ecall instruction"],
+    [["10"], "ebreak instruction"],
+])
 
 export const riscv32DataPath: DataPath = {
     name: "RISC-V 32-bit",
@@ -286,6 +292,12 @@ export const riscv32DataPath: DataPath = {
             description: "Jalr: Jump to a register + immediate.",
             tooltip: `${sim.control.jalr} (${sim.control.jalr ? "do jump register" : "don't jump register"})`,
             powered: sim.control.jalr != 0,
+        }),
+        "#control-ecall": (sim) => ({
+            description: "Ecall: Signal the system for a syscall or debugger breakpoint",
+            tooltip: `${sim.control.ecall.toString("unsigned")} (${ecallDescriptions.match(sim.control.ecall)})`,
+            powered: sim.control.ecall.toInt() != 0n,
+            label: sim.control.ecall.toNumber() ? sim.control.ecall.toString("unsigned") : undefined,
         }),
         "#immGen-immediate": (sim) => ({
             tooltip: bitsToAll(sim.immGen.immediate),
