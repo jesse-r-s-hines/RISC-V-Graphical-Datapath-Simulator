@@ -100,6 +100,8 @@ export class Simulator {
 
         this.control.opCode = this.instrSplit.opCode
         this.control.funct3 = this.instrSplit.funct3
+        // This input isn't rendered in the datapath, its only used for ebreak
+        this.control.instruction = this.instrMem.instruction
         this.control.tick()
 
         this.regFile.readReg1 = this.instrSplit.rs1
@@ -181,6 +183,11 @@ export class Simulator {
 
     isDone(): boolean {
         return (this.pc.data - Simulator.textStart) / 4n >= this.code.length // hit the end of the code
+    }
+
+    /** Returns true if current instruction is a sycall */
+    isSyscall(): boolean {
+        return !!this.control.ecall.toNumber()
     }
 
     /** Runs the simulator until the end of the code. */

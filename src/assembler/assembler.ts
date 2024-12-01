@@ -111,6 +111,16 @@ const instrRules: Rule[]  = [
         format: "basic",
         signature: ["id", "num"],
         conv: (op, [rd, imm], line) => ({type: "U", op, rd, imm, line}),
+    }, {
+        instructions: ["ecall"],
+        format: "basic",
+        signature: [],
+        conv: (op, [], line) => ({type: "I", op, rd: "zero", rs1: "zero", imm: 0, line}),
+    }, {
+        instructions: ["ebreak"],
+        format: "basic",
+        signature: [],
+        conv: (op, [], line) => ({type: "I", op: "ecall", rd: "zero", rs1: "zero", imm: 1, line}),
     },
 ]
 

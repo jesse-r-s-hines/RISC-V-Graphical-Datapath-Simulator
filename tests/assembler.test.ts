@@ -88,6 +88,14 @@ describe('Basic All Types', () => {
         code = `li a0, 200`
         assembleExpect(code, [0x0C800513n]);
     })
+
+    it("No arguments", () => {
+        let code = `ecall`
+        assembleExpect(code, [0x00000073n]);
+
+        code = `ebreak`
+        assembleExpect(code, [0x00100073n]);
+    })
 })
 
 describe("Registers", () => {

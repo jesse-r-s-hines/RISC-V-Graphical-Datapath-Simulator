@@ -44,6 +44,7 @@ export const opcodes: Record<string, [Bits, Bits|null, Bits|null]> = {
     "slli" : [b`0010011`, b`001`, b`0000000`], // I-type
     "srli" : [b`0010011`, b`101`, b`0000000`], // I-type
     "srai" : [b`0010011`, b`101`, b`0100000`], // I-type
+    "ecall": [b`1110011`, b`000`, null      ], // I-type
     "add"  : [b`0110011`, b`000`, b`0000000`], // R-type
     "sub"  : [b`0110011`, b`000`, b`0100000`], // R-type
     "sll"  : [b`0110011`, b`001`, b`0000000`], // R-type

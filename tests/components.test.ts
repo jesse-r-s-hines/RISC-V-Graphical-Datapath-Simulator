@@ -54,7 +54,6 @@ describe("Components", () => {
         imm.instruction = b`0000000_00111_00110_110_00101_0110011`
         imm.tick()
         expect(imm.immediate.toInt(true)).to.equal(0x0n)
-
     });
 
     it('ALU', () => {

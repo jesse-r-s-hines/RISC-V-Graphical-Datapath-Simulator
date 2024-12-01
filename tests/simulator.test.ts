@@ -10,6 +10,7 @@ function testCode(code: string, regs: Record<number, bigint> = {}, expected: Rec
     for (const reg in expected) {
         expect(sim.regFile.registers[reg], `${code}\n\nregister x${reg}`).to.equal(toTwosComplement(expected[reg], 32))
     }
+    return sim
 }
 
 /** Test if a branch is taken. The branch should branch to "label"*/
@@ -390,5 +391,33 @@ describe("Memory", () => {
             lw x7, 1003(gp)
         `
         testCode(code, {5: -20n, 6: 5n}, {7: -20n})
+    })
+})
+
+describe("Syscalls", () => {
+    it('no syscall', () => {
+        let code = `
+            addi zero, zero, 0
+        `
+        let sim = testCode(code)
+        expect(sim.control.ecall.toNumber()).to.equal(0)
+    })
+
+    it('ecall', () => {
+        let code = `
+            addi zero, zero, 0
+            ecall
+        `
+        let sim = testCode(code)
+        expect(sim.control.ecall.toNumber()).to.equal(1)
+    })
+
+    it('ebreak', () => {
+        let code = `
+            addi zero, zero, 0
+            ebreak
+        `
+        let sim = testCode(code)
+        expect(sim.control.ecall.toNumber()).to.equal(2)
     })
 })

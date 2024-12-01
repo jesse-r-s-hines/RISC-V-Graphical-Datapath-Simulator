@@ -21,6 +21,9 @@ export class Control {
     public opCode = bits(0n, 7)
     public funct3 = bits(0n, 3)
 
+    // this is not rendered, I just use it for ecall/ebreak
+    public instruction = bits(0n, 32)
+
     // outputs
     public aluSrc: Bit = 0
     public writeSrc = bits(0n, 2)
@@ -34,6 +37,7 @@ export class Control {
     public jump: Bit = 0
     public jalr: Bit = 0
     public aluOp = bits(0n, 3)
+    public ecall = bits(0n, 2)
 
     private static generalTable = new TruthTable<[Bit, Bits, Bit, Bits]>([
         //[ opcode ], [aluSrc, writeSrc, regWrite,  aluOp]
@@ -45,6 +49,7 @@ export class Control {
         [["110X111"], [     0,    b`10`,        1, b`000`]], // jal/jalr
         [["0110111"], [     1,    b`00`,        1, b`100`]], // lui
         [["0010111"], [     0,    b`11`,        1, b`000`]], // auipc
+        [["1110011"], [     0,    b`00`,        0, b`000`]], // ecall/ebreak
     ])
 
     private static memTable = new TruthTable<[Bit, Bit, Bit, Bits]>([
@@ -71,10 +76,18 @@ export class Control {
         [["XXXXXXX", "XXX" ], [         0,             0,    0,    0]], // not a branch
     ])
 
+    private static ecallTable = new TruthTable<[Bits]>([
+        //[  opcode,   imm], [ecall]
+        [["1110011", "000"], [b`01`]], // ecall
+        [["1110011", "001"], [b`10`]], // ebreak
+        [["XXXXXXX", "XXX"], [b`00`]],
+    ])
+
     public tick() {
         [this.aluSrc, this.writeSrc, this.regWrite, this.aluOp] = Control.generalTable.match(this.opCode);
         [this.memRead, this.memWrite, this.memSigned, this.memSize] = Control.memTable.match(this.opCode, this.funct3);
-        [this.branchZero, this.branchNotZero, this.jump, this.jalr] = Control.branchTable.match(this.opCode, this.funct3)
+        [this.branchZero, this.branchNotZero, this.jump, this.jalr] = Control.branchTable.match(this.opCode, this.funct3);
+        [this.ecall] = Control.ecallTable.match(this.opCode, this.instruction.slice(20, 23));
     }
 }
 
@@ -186,6 +199,9 @@ export class ImmGen {
             i.slice(20, 32)
         ],
         [["00X0011"], (i) => // I-type -> imm[11:0] | rs1 | funct3 | rd
+            i.slice(20, 32)
+        ],
+        [["1110011"], (i) => // I-type (ecall) -> imm[11:0] | rs1 | funct3 | rd
             i.slice(20, 32)
         ],
         [["0110011"], (i) => // R-type -> no immediate
