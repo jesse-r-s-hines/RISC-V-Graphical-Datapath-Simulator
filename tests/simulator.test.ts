@@ -401,6 +401,8 @@ describe("Syscalls", () => {
         `
         let sim = testCode(code)
         expect(sim.control.ecall.toNumber()).to.equal(0)
+        expect(sim.isSyscall()).to.equal(false)
+        expect(sim.isBreak()).to.equal(false)
     })
 
     it('ecall', () => {
@@ -410,6 +412,8 @@ describe("Syscalls", () => {
         `
         let sim = testCode(code)
         expect(sim.control.ecall.toNumber()).to.equal(1)
+        expect(sim.isSyscall()).to.equal(true)
+        expect(sim.isBreak()).to.equal(false)
     })
 
     it('ebreak', () => {
@@ -419,5 +423,7 @@ describe("Syscalls", () => {
         `
         let sim = testCode(code)
         expect(sim.control.ecall.toNumber()).to.equal(2)
+        expect(sim.isSyscall()).to.equal(true)
+        expect(sim.isBreak()).to.equal(true)
     })
 })

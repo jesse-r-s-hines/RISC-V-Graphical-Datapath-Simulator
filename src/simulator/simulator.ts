@@ -190,6 +190,10 @@ export class Simulator {
         return !!this.control.ecall.toNumber()
     }
 
+    isBreak(): boolean {
+        return this.control.ecall.toNumber() == 2
+    }
+
     /** Runs the simulator until the end of the code. */
     run() {
         while (!this.isDone()) this.tick()
