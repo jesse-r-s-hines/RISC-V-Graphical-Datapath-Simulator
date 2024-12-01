@@ -119,23 +119,31 @@ export default function SimulatorUI() {
         let nextState = state
         if (nextState == "unstarted") { // try to start if we are unstarted
             const started = start() // try to start, updates state to paused if success
-            if (started) nextState = (mode == "play" ? 'playing' : 'paused')
+            if (started) {
+                nextState = (mode == "play" ? 'playing' : 'paused')
+            }
         }
 
         if (["paused", "playing"].includes(nextState)) { // don't do anything if we are "done" or if start failed
             try {
                 // step the simulation `count` times. We step multiple at once when playing at full speed to avoid rendering each tick
-                const done = updateSim(sim => {
+                nextState = updateSim(sim => {
                     for (let i = 0; i < count && !sim.isDone(); i++) {
                         sim.tick()
+                        if (sim.isBreak()) break
                     }
-                    return sim.isDone()
+
+                    if (sim.isDone()) {
+                        return "done"
+                    } else if (sim.isBreak()) {
+                        clearPlayInterval()
+                        return "paused"
+                    } else if (mode == "play") {
+                        return "playing"
+                    } else {
+                        return "paused"
+                    }
                 })
-                if (done) {
-                    nextState = "done"
-                } else {
-                    nextState = (mode == "play" ? 'playing' : 'paused')
-                }
             } catch (e: any) { // this shouldn't happen.
                 nextState = "done"
                 error(`Error in simulation:\n${e.message}`)
@@ -190,7 +198,9 @@ export default function SimulatorUI() {
         link.remove();
     }
 
-    useInterval(() => step("play", speed == 0 ? 1000 : 1), (state == "playing") ? speed : null)
+    const clearPlayInterval = useInterval(() => {
+        step("play", speed == 0 ? 1000 : 1)
+    }, (state == "playing") ? speed : null)
 
     return (
         <div className={`${css.simUI} container-fluid p-2`}>

@@ -34,9 +34,13 @@ export function getStyleProps(props: StyleProps, defaults: StyleProps = {}): Sty
  * React hook version of useInterval. Handles a changing callback or interval.
  * @param func The function to call every interval
  * @param delay The interval in milliseconds. Set to null to disable interval.
+ * 
+ * Returns a function that can be used to cancel the timeout explicitly, which can be useful
+ * if you need make sure the interval doesn't trigger again before the next react re-render.
  */
 export function useInterval(callback: () => void, delay: number|null) {
     const savedCallback = useRef(callback);
+    const intervalId = useRef<NodeJS.Timeout>()
   
     useEffect(() => {
         savedCallback.current = callback;
@@ -45,7 +49,10 @@ export function useInterval(callback: () => void, delay: number|null) {
     useEffect(() => {
         if (delay !== null) {
             const id = setInterval(() => savedCallback.current(), delay);
+            intervalId.current = id;
             return () => clearInterval(id);
         }
     }, [delay]);
+
+    return () => { clearInterval(intervalId.current) };
 }
