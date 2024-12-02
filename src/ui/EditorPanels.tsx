@@ -190,7 +190,7 @@ export default function EditorPanels(props: Props) {
                                 </NavDropdown.Item>
                             ))}
                         </NavDropdown>
-                        <Button variant="" size="sm" className="icon-button" title="Export Sim Setup"
+                        <Button variant="" size="sm" className="icon-button" title="Import Sim Setup"
                             onClick={props.onImport}
                         >
                             <Icon icon={faUpload} className={`${css.icon} text-secondary`}/>
