@@ -9,7 +9,7 @@ import EditorPanels from "./EditorPanels";
 import ViewPanels from "./ViewPanels";
 import Controls from "./Controls";
 import Datapath from "./Datapath";
-import { riscv32DataPath } from "./datapath";
+import { riscv32DataPath } from "./datapathElements";
 import { useInterval } from "./reactUtils";
 import css from "./SimulatorUI.m.css"
 

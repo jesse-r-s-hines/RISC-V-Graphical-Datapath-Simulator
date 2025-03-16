@@ -3,7 +3,7 @@ import tippy, { followCursor, Instance as Tippy } from 'tippy.js';
 
 import { Simulator } from "simulator/simulator";
 import { StyleProps, getStyleProps } from "./reactUtils";
-import type  { DataPath, SimTab } from "./datapath";
+import type  { DataPath, SimTab } from "./datapathElements";
 import type { SimState } from "./SimulatorUI";
 
 import css from "./Datapath.m.css"
